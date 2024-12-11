@@ -17,7 +17,7 @@
       "withService": false,
       "withStyle": false,
       "withType": true,
-      "withTest": true,
+      "withTest": false,
       "withStory": false,
       "withLazy": false,
       "withIndex": true

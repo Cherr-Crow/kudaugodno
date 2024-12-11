@@ -1,7 +1,7 @@
 import {  test } from 'vitest'
 import { render } from '@testing-library/react'
-import {PopupWindow} from './PopupWindow'
+import {SvgSprite} from './SvgSprite'
  
 test('Название теста', () => {
-  render(<PopupWindow />)
+  render(<SvgSprite />)
 })
