@@ -1,3 +1,40 @@
 export interface ISvgSprite {
   className?: string;
+  name:
+    | 'entertainment'
+    | 'bus'
+    | 'icon_document'
+    | 'icon_video'
+    | 'trash-light'
+    | 'plant'
+    | 'tennis-racket'
+    | 'sort'
+    | 'airplane'
+    | 'arrow-pointer'
+    | 'bell'
+    | 'calendar'
+    | 'firecracker'
+    | 'waves'
+    | 'warning'
+    | 'user'
+    | 'telegram'
+    | 'star'
+    | 'star-full'
+    | 'sofa'
+    | 'phone'
+    | 'ru'
+    | 'gb'
+    | 'like-bold'
+    | 'location'
+    | 'magic-wand'
+    | 'mail'
+    | 'arrow'
+    | 'cross'
+    | 'fire'
+    | 'image'
+    | 'lightning'
+    | 'list';
+  color?: string;
+  width?: number;
+  height?: number;
 }
