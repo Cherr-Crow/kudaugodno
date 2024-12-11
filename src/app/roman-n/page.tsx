@@ -1,4 +1,4 @@
-import { PopupWindow } from '@/shared/ui/popup-window';
+import { PopupWindow } from '@/shared/popup-window';
 import { nanoid } from 'nanoid';
 import React from 'react';
 
