@@ -11,7 +11,7 @@
         "component": "templates/TemplateName.tsx",
         "index": "templates/index.ts",
         "type": "templates/TemplateName.types.ts",
-        "test":"templates/template-name.test.tsx"
+        "test": "templates/template-name.test.tsx"
       },
       "path": "src/shared",
       "withService": false,
@@ -26,7 +26,7 @@
       "customTemplates": {
         "component": "templates/page.tsx"
       },
-      "path": "src/pages",
+      "path": "src/app",
       "withService": false,
       "withStyle": false,
       "withType": false,
