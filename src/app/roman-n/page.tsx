@@ -8,7 +8,7 @@ export default function RomanN() {
   return (
     <div className='h-screen w-screen p-4'>
       <div className='relative'>
-        <h2 className='w-fit bg-slate-400'>'элемент PopupWindow'</h2>
+        <h2 className='bg-blue-primary w-fit'>'элемент PopupWindow'</h2>
         <PopupWindow className='top-15 left-3 px-4 py-5'>
           <ul className='w-fit'>
             {testList.map((option) => (
@@ -24,7 +24,7 @@ export default function RomanN() {
         </PopupWindow>
       </div>
       <div className='mt-60 flex flex-col items-center justify-center gap-3'>
-        <h2 className='w-fit bg-slate-400'>'элемент SvgSprite'</h2>
+        <h2 className='bg-blue-bold w-fit text-white'>'элемент SvgSprite'</h2>
         <div className='flex flex-wrap gap-3'>
           <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
             <p className=''>entertainment</p>
@@ -161,7 +161,7 @@ export default function RomanN() {
         </div>
       </div>
       <div className='mt-4 flex flex-col items-center gap-4'>
-        <h2 className='w-fit bg-slate-400'>'элемент Typography'</h2>
+        <h2 className='bg-blue-bold w-fit text-white'>'элемент Typography'</h2>
         <Typography children='h1 (60px/500)' variant='h1' />
         <Typography children='subtitle1 (60px/400)' variant='subtitle1' />
         <Typography children='h2 (48px/500)' variant='h2' />

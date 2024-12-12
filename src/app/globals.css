@@ -2,33 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  /* light */
-  /* оттенки белого */
-  --white: #f7f7f7;
+@layer base {
+  :root {
+    /* light */
+    /* оттенки белого */
+    --white: #f7f7f7;
 
-  /* оттенки чёрного */
-  --black: #363636;
-  --grey: #888888;
+    /* оттенки чёрного */
+    --black: #363636;
+    --grey: #888888;
 
-  /* оттенки зелёного */
-  --green-primary: #dffd99;
-  --green-secondary: #c7f85e;
-  --green-tetriary: #9be60f;
-  --green-bold: #c7f85e33;
+    /* оттенки зелёного */
+    --green-primary: #dffd99;
+    --green-secondary: #c7f85e;
+    --green-tetriary: #9be60f;
+    --green-bold: #c7f85e33;
 
-  /* оттенки синего */
-  --blue-extra-light: #dfecff;
-  --blue-light: #c5daff;
-  --blue-primary: #7e9cfb;
-  --blue-secondary: #3440ce;
-  --blue-tetriary: #c5daff33;
-  --blue-bold: #1a1f4c;
+    /* оттенки синего */
+    --blue-extra-light: #dfecff;
+    --blue-light: #c5daff;
+    --blue-primary: #7e9cfb;
+    --blue-secondary: #3440ce;
+    --blue-tetriary: #c5daff33;
+    --blue-bold: #1a1f4c;
 
-  /* оттенки красного */
-  --red-primary: #ff8282;
-  --red-secondary: #e94c4c66;
+    /* оттенки красного */
+    --red-primary: #ff8282;
+    --red-secondary: #e94c4c66;
 
-  /* оттенки жёлтого */
-  --yellow-primary: #ffcc00;
+    /* оттенки жёлтого */
+    --yellow-primary: #ffcc00;
+  }
 }
