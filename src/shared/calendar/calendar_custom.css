@@ -1,0 +1,79 @@
+.react-calendar{
+    border: none;
+    border-radius: 13px;
+    box-shadow: 0px 10px 60px 0px rgba(0, 0, 0, 0.1);
+}
+.react-calendar__navigation{
+    display: grid;
+    grid-template-rows: 1fr auto;
+    grid-template-areas:
+    " item2 item5  item4 item3 item1 "
+}
+.react-calendar__navigation__arrow{
+    grid-area: item1;
+    font-size: 24px;
+}
+
+.react-calendar__navigation__prev-button{
+    grid-area: item3;
+    font-size: 24px;
+  
+}
+.react-calendar__navigation__label__labelText{
+    grid-area: item2;
+    padding-left: 5%;
+}
+.react-calendar__navigation__prev2-button{
+    grid-area: item4;
+    font-size: 4px;
+    opacity: 0;
+    pointer-events: none;
+}
+.react-calendar__navigation__next2-button{
+    grid-area: item5;
+    font-size: 20px;
+    
+}
+.react-calendar__navigation button{
+  min-width: 1px;
+}
+
+.react-calendar__month-view__weekdays__weekday{
+    color: rgb(136, 136, 136);/*base/600*/
+}
+
+.react-calendar__navigation__label__labelText--from{
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.38px;
+    
+}
+
+
+.react-calendar__navigation__arrow,
+.react-calendar__navigation__prev-button,
+.react-calendar__navigation__label__labelText,
+.react-calendar__navigation__prev2-button,
+.react-calendar__navigation__next2-button,
+.react-calendar__tile abbr{
+    color: var(--blue-secondary);
+}
+
+.react-calendar__tile abbr{
+    
+    font-size: 20px;
+    line-height: 24px;
+   padding: 0;
+   margin: 0 auto;
+}
+.react-calendar__tile--active {
+    border-radius: 50%;
+   
+}
+.react-calendar__tile--active abbr{
+    color: rgb(255, 255, 255);
+}
+ .react-calendar__month-view__days__day--neighboringMonth abbr{
+    color: transparent;
+}
