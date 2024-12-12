@@ -1,5 +1,6 @@
 import { PopupWindow } from '@/shared/popup-window';
 import { SvgSprite } from '@/shared/svg-sprite';
+import { Typography } from '@/shared/typography';
 import { nanoid } from 'nanoid';
 import React from 'react';
 
@@ -158,6 +159,26 @@ export default function RomanN() {
             <SvgSprite name='list' width={30} />
           </div>
         </div>
+      </div>
+      <div className='mt-4 flex flex-col items-center gap-4'>
+        <h2 className='w-fit bg-slate-400'>'элемент Typography'</h2>
+        <Typography children='h1 (60px/500)' variant='h1' />
+        <Typography children='subtitle1 (60px/400)' variant='subtitle1' />
+        <Typography children='h2 (48px/500)' variant='h2' />
+        <Typography children='subtitle2 (48px/400)' variant='subtitle2' />
+        <Typography children='h3 (40px/500)' variant='h3' />
+        <Typography children='subtitle3 (40px/400)' variant='subtitle3' />
+        <Typography children='h4 (32px/500)' variant='h4' />
+        <Typography children='subtitle4 (32px/400)' variant='subtitle4' />
+        <Typography children='h5 (24px/500)' variant='h5' />
+        <Typography children='l (20px/400)' variant='l' />
+        <Typography children='l-bold (20px/500)' variant='l-bold' />
+        <Typography children='m (16px/400)' variant='m' />
+        <Typography children='m-bold (16px/500)' variant='m-bold' />
+        <Typography children='s (13px/400)' variant='s' />
+        <Typography children='s-bold (13px/500)' variant='s-bold' />
+        <Typography children='xs (11px/400)' variant='xs' />
+        <Typography>default (16px/400) = variant='m'</Typography>
       </div>
     </div>
   );
