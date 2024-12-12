@@ -20,11 +20,14 @@
     --green-bold: #c7f85e33;
 
     /* оттенки синего */
+    --blue-disabled: #EEF5FF;
     --blue-extra-light: #dfecff;
     --blue-light: #c5daff;
     --blue-primary: #7e9cfb;
     --blue-secondary: #3440ce;
     --blue-tetriary: #c5daff33;
+    --blue-300: #A3C0FE;
+    --blue-500: #5F79F5;
     --blue-bold: #1a1f4c;
 
     /* оттенки красного */
