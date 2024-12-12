@@ -14,7 +14,8 @@ export default {
     colors: {
       white: 'var(--white)',
       black: 'var(--black)',
-      grey: 'var(--grey)',
+      'grey-primary': 'var(--grey-primary)',
+      'grey-secondary': 'var(--grey-secondary)',
       'green-primary': 'var(--green-primary)',
       'green-secondary': 'var(--green-secondary)',
       'green-tetriary': 'var(--green-tetriary)',

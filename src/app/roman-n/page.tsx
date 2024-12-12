@@ -24,7 +24,7 @@ export default function RomanN() {
         </PopupWindow>
       </div>
       <div className='mt-60 flex flex-col items-center justify-center gap-3'>
-        <h2 className='bg-blue-bold w-fit text-white'>'элемент SvgSprite'</h2>
+        <h2 className='bg-blue-bold text-red-primary w-fit'>'элемент SvgSprite'</h2>
         <div className='flex flex-wrap gap-3'>
           <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
             <p className=''>entertainment</p>

@@ -1,6 +1,4 @@
-"use client";
-
-
+'use client';
 
 import { useState } from 'react';
 import Calendar from 'react-calendar';
@@ -16,17 +14,19 @@ export function CalendarBlock() {
 
   return (
     <div>
-      <Calendar className="mt-4 ml-4"  onChange={onChange} value={value}  next2Label="›"
-      prev2Label="›" 
-      navigationLabel={({ label }) => (
-        <span className="custom-calendar-label">
-          <span style={{ fontSize: '30px'}}>
-            {label.charAt(0)}
+      <Calendar
+        className='ml-4 mt-4'
+        onChange={onChange}
+        value={value}
+        next2Label='›'
+        prev2Label='›'
+        navigationLabel={({ label }) => (
+          <span className='custom-calendar-label'>
+            <span style={{ fontSize: '30px' }}>{label.charAt(0)}</span>
+            {label.slice(1)}
           </span>
-          {label.slice(1)}
-         
-        </span>
-      )} />
+        )}
+      />
     </div>
   );
 }

@@ -10,7 +10,8 @@
 
     /* оттенки чёрного */
     --black: #363636;
-    --grey: #888888;
+    --grey-primary: #adadad;
+    --grey-secondary: #7b7b7b;
 
     /* оттенки зелёного */
     --green-primary: #dffd99;
@@ -27,7 +28,7 @@
     --blue-bold: #1a1f4c;
 
     /* оттенки красного */
-    --red-primary: #ff8282;
+    --red-primary: #e94c4c;
     --red-secondary: #e94c4c66;
 
     /* оттенки жёлтого */
