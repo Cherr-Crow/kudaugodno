@@ -1,2 +1,2 @@
 export { default as Switcher } from './Switcher';
-export type { SwitcherProps } from './Switcher.types';
+export type { ISwitcher } from './Switcher.types';

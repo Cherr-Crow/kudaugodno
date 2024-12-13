@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { SwitcherProps } from './Switcher.types';
+import { ISwitcher } from './Switcher.types';
 
-const Switcher: React.FC<SwitcherProps> = ({
+const Switcher: React.FC<ISwitcher> = ({
   label = '',
   isActive = false,
   isDisabled = false,
@@ -13,9 +13,8 @@ const Switcher: React.FC<SwitcherProps> = ({
 
   const handleToggle = () => {
     if (isDisabled) return;
-    const newState = !active;
-    setActive(newState);
-    onToggle(newState);
+    setActive(!active);
+    onToggle(!active);
   };
 
   return (
