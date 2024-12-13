@@ -13,9 +13,8 @@ const Switcher: React.FC<ISwitcher> = ({
 
   const handleToggle = () => {
     if (isDisabled) return;
-    const newState = !active;
-    setActive(newState);
-    onToggle(newState);
+    setActive(!active);
+    onToggle(!active);
   };
 
   return (

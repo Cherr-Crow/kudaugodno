@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { ICheckbox } from './Checkbox.types';
 
 const Checkbox: React.FC<ICheckbox> = ({
-  label,
+  label = '',
   isChecked = false,
   isDisabled = false,
   onChange = () => {},
@@ -13,9 +13,8 @@ const Checkbox: React.FC<ICheckbox> = ({
 
   const handleToggle = () => {
     if (isDisabled) return;
-    const newChecked = !checked;
-    setChecked(newChecked);
-    onChange(newChecked);
+    setChecked(!checked);
+    onChange(!checked);
   };
 
   return (

@@ -13,9 +13,8 @@ const RadioButton: React.FC<IRadioButton> = ({
 
   const handleToggle = () => {
     if (isDisabled) return;
-    const newSelected = !selected;
-    setSelected(newSelected);
-    onChange(newSelected);
+    setSelected(!selected);
+    onChange(!selected);
   };
 
   return (
