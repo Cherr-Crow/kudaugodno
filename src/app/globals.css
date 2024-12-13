@@ -39,11 +39,3 @@
     --yellow-primary: #ffcc00;
   }
 }
-
-.notactive {
-  background-color: transparent;
-}
-.active {
-  background-color: red;
-  scale: 1.2;
-}
