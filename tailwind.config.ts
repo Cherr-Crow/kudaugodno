@@ -12,7 +12,9 @@ export default {
   theme: {
     extend: {},
     colors: {
+      transparent: 'transparent',
       white: 'var(--white)',
+      'white-secondary': 'var(--white-secondary)',
       black: 'var(--black)',
       'grey-100': 'var(--grey-100)',
       'grey-primary': 'var(--grey-primary)',
