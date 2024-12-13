@@ -4,10 +4,11 @@ import { TabBar } from '@/shared/ui/tab-bar';
 import { Typography } from '@/shared/typography';
 import { nanoid } from 'nanoid';
 import React from 'react';
+import { Select } from '@/shared/ui/select';
 
 export default function RomanN() {
   return (
-    <div className='h-screen w-screen p-4'>
+    <div className='w-screen bg-white p-32'>
       <div className='relative'>
         <h2 className='w-fit bg-blue-primary'>'элемент PopupWindow'</h2>
         <PopupWindow className='top-15 left-3 px-4 py-5'>
@@ -186,6 +187,15 @@ export default function RomanN() {
         <TabBar tabs={tabsTestList} />
         <TabBar tabs={tabsTestList2} className='mt-4' />
       </div>
+      <div className='mt-4 pb-10'>
+        <h2 className='w-fit bg-blue-primary'>'элемент Select'</h2>
+        <div className='flex'>
+          <Select options={testList} />
+          <Select options={testList} color='blue' />
+          <Select options={tabsTestList} color='green' />
+        </div>
+      </div>
+      <div className='mt-4 h-20 w-full'>dd</div>
     </div>
   );
 }

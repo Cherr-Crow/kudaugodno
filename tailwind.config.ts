@@ -14,6 +14,7 @@ export default {
     colors: {
       transparent: 'transparent',
       white: 'var(--white)',
+      'white-secondary': 'var(--white-secondary)',
       black: 'var(--black)',
       'grey-primary': 'var(--grey-primary)',
       'grey-secondary': 'var(--grey-secondary)',
