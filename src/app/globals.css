@@ -6,7 +6,8 @@
   :root {
     /* light */
     /* оттенки белого */
-    --white: #f7f7f7;
+    --white: #fff;
+    --white-secondary: #f7f7f7;
 
     /* оттенки чёрного */
     --black: #363636;
@@ -37,12 +38,4 @@
     /* оттенки жёлтого */
     --yellow-primary: #ffcc00;
   }
-}
-
-.notactive {
-  background-color: transparent;
-}
-.active {
-  background-color: red;
-  scale: 1.2;
 }
