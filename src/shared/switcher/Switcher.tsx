@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { SwitcherProps } from './Switcher.types';
+import { ISwitcher } from './Switcher.types';
 
-const Switcher: React.FC<SwitcherProps> = ({
+const Switcher: React.FC<ISwitcher> = ({
   label = '',
   isActive = false,
   isDisabled = false,

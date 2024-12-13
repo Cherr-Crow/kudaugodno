@@ -7,5 +7,7 @@ export default function Egor() {
     <Switcher/>
     <label>Switcher disabled</label>
     <Switcher isDisabled={true} />
+    <label>Switcher's active by default</label>
+    <Switcher isActive={true} />
   </div>;
 }
