@@ -6,7 +6,8 @@
   :root {
     /* light */
     /* оттенки белого */
-    --white: #f7f7f7;
+    --white: #fff;
+    --white-secondary: #f7f7f7;
 
     /* оттенки чёрного */
     --black: #363636;
@@ -22,7 +23,7 @@
     --green-bold: #c7f85e33;
 
     /* оттенки синего */
-    --blue-disabled: #EEF5FF;
+    --blue-disabled: #eef5ff;
     --blue-extra-light: #dfecff;
     --blue-light: #c5daff;
     --blue-primary: #7e9cfb;

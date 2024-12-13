@@ -1,14 +1,16 @@
 import { PopupWindow } from '@/shared/popup-window';
 import { SvgSprite } from '@/shared/svg-sprite';
+import { TabBar } from '@/shared/ui/tab-bar';
 import { Typography } from '@/shared/typography';
 import { nanoid } from 'nanoid';
 import React from 'react';
+import { Select } from '@/shared/ui/select';
 
 export default function RomanN() {
   return (
-    <div className='h-screen w-screen p-4'>
+    <div className='w-screen bg-white p-32'>
       <div className='relative'>
-        <h2 className='bg-blue-primary w-fit'>'элемент PopupWindow'</h2>
+        <h2 className='w-fit bg-blue-primary'>'элемент PopupWindow'</h2>
         <PopupWindow className='top-15 left-3 px-4 py-5'>
           <ul className='w-fit'>
             {testList.map((option) => (
@@ -24,7 +26,7 @@ export default function RomanN() {
         </PopupWindow>
       </div>
       <div className='mt-60 flex flex-col items-center justify-center gap-3'>
-        <h2 className='bg-blue-bold text-red-primary w-fit'>'элемент SvgSprite'</h2>
+        <h2 className='w-fit bg-blue-bold text-red-primary'>'элемент SvgSprite'</h2>
         <div className='flex flex-wrap gap-3'>
           <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
             <p className=''>entertainment</p>
@@ -161,7 +163,7 @@ export default function RomanN() {
         </div>
       </div>
       <div className='mt-4 flex flex-col items-center gap-4'>
-        <h2 className='bg-blue-bold w-fit text-white'>'элемент Typography'</h2>
+        <h2 className='w-fit bg-blue-bold text-white'>'элемент Typography'</h2>
         <Typography children='h1 (60px/500)' variant='h1' />
         <Typography children='subtitle1 (60px/400)' variant='subtitle1' />
         <Typography children='h2 (48px/500)' variant='h2' />
@@ -180,6 +182,20 @@ export default function RomanN() {
         <Typography children='xs (11px/400)' variant='xs' />
         <Typography>default (16px/400) = variant='m'</Typography>
       </div>
+      <div className='mt-4 pb-10'>
+        <h2 className='w-fit bg-blue-primary'>'элемент TabBar'</h2>
+        <TabBar tabs={tabsTestList} />
+        <TabBar tabs={tabsTestList2} className='mt-4' />
+      </div>
+      <div className='mt-4 pb-10'>
+        <h2 className='w-fit bg-blue-primary'>'элемент Select'</h2>
+        <div className='flex'>
+          <Select options={testList} />
+          <Select options={testList} color='blue' />
+          <Select options={tabsTestList} color='green' />
+        </div>
+      </div>
+      <div className='mt-4 h-20 w-full'>dd</div>
     </div>
   );
 }
@@ -193,3 +209,5 @@ const testList = [
   'option 6',
   'option 7',
 ];
+const tabsTestList = ['Отель', 'Номера', 'Даты', 'Всё что угодно'];
+const tabsTestList2 = ['разные названия', 'адаптивный'];
