@@ -1,4 +1,4 @@
-import { CalendarBlock } from '@/shared/calendar';
+import { CalendarBlock } from '@/shared/ui/calendar';
 import React from 'react';
 
 export default function RomanZh() {

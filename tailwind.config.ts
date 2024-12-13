@@ -12,6 +12,7 @@ export default {
   theme: {
     extend: {},
     colors: {
+      transparent: 'transparent',
       white: 'var(--white)',
       black: 'var(--black)',
       'grey-primary': 'var(--grey-primary)',
