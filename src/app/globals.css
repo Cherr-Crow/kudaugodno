@@ -10,8 +10,10 @@
 
     /* оттенки чёрного */
     --black: #363636;
+    --grey-100: #EDEDED;
     --grey-primary: #adadad;
     --grey-secondary: #7b7b7b;
+    --grey-600: #888888;
 
     /* оттенки зелёного */
     --green-primary: #dffd99;
@@ -28,6 +30,7 @@
     --blue-tetriary: #c5daff33;
     --blue-300: #A3C0FE;
     --blue-500: #5F79F5;
+    --blue-600: #4757EA;
     --blue-bold: #1a1f4c;
 
     /* оттенки красного */

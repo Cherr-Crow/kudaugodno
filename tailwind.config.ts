@@ -14,8 +14,10 @@ export default {
     colors: {
       white: 'var(--white)',
       black: 'var(--black)',
+      'grey-100': 'var(--grey-100)',
       'grey-primary': 'var(--grey-primary)',
       'grey-secondary': 'var(--grey-secondary)',
+      'grey-600': 'var(--grey-600)',
       'green-primary': 'var(--green-primary)',
       'green-secondary': 'var(--green-secondary)',
       'green-tetriary': 'var(--green-tetriary)',
@@ -28,6 +30,7 @@ export default {
       'blue-tetriary': 'var(--blue-tetriary)',
       'blue-300': 'var(--blue-300)',
       'blue-500': 'var(--blue-500)',
+      'blue-600': 'var(--blue-600)',
       'blue-bold': 'var(--blue-bold)',
       'red-primary': 'var(--red-primary)',
       'red-secondary': 'var(--red-secondary)',
