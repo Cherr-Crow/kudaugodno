@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switcher } from '@/shared/switcher';
+import { Switcher } from '@/shared/ui/switcher';
 import { Checkbox } from '@/shared/checkbox';
 import { RadioButton } from '@/shared/radio-button';
 
