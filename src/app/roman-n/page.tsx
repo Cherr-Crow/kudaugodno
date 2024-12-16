@@ -5,6 +5,7 @@ import { Typography } from '@/shared/typography';
 import { nanoid } from 'nanoid';
 import React from 'react';
 import { Select } from '@/shared/ui/select';
+import { Badge } from '@/shared/ui/badge';
 
 export default function RomanN() {
   return (
@@ -171,7 +172,7 @@ export default function RomanN() {
         <Typography children='h3 (40px/500)' variant='h3' />
         <Typography children='subtitle3 (40px/400)' variant='subtitle3' />
         <Typography children='h4 (32px/500)' variant='h4' />
-        <Typography children='subtitle4 (32px/400)' variant='subtitle4' />
+        <Typography children='subtitle4 (24px/400)' variant='subtitle4' />
         <Typography children='h5 (24px/500)' variant='h5' />
         <Typography children='l (20px/400)' variant='l' />
         <Typography children='l-bold (20px/500)' variant='l-bold' />
@@ -196,6 +197,13 @@ export default function RomanN() {
         </div>
       </div>
       <div className='mt-4 h-20 w-full'>dd</div>
+      <div className=''>
+        <h2 className='w-fit bg-blue-primary'>'элемент Badge'</h2>
+        <div className='flex gap-3'>
+          <Badge name='Макао' price='от 23 342 ₽' />
+          <Badge name='Тайланд' price='от 347 345 ₽' size='small' />
+        </div>
+      </div>
     </div>
   );
 }
