@@ -20,8 +20,8 @@ const Checkbox: React.FC<ICheckbox> = ({
   return (
     <div className="flex items-center space-x-2">
       <button
-        className={`h-6 w-6 flex items-center justify-center rounded-lg transition-colors duration-300
-          ${isDisabled ? 'cursor-not-allowed bg-white' : checked ? 'bg-blue-600' : 'bg-white'}
+        className={`h-6 w-6 flex items-center justify-center rounded-lg border border-1 border-grey-600 transition-colors duration-300
+          ${isDisabled ? 'cursor-not-allowed bg-grey-100' : checked ? 'bg-blue-600 border-0' : 'bg-grey-100'}
           ${!isDisabled && 'focus:outline-2 focus:outline-blue-600 '}
         `}
         onClick={handleToggle}

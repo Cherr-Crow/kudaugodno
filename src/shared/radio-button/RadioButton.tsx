@@ -20,8 +20,8 @@ const RadioButton: React.FC<IRadioButton> = ({
   return (
     <div className="flex items-center space-x-2">
       <button
-        className={`h-6 w-6 flex items-center justify-center rounded-full outline transition-colors duration-300
-          ${isDisabled ? 'cursor-not-allowed bg-gray-200 outline-1 outline-grey-600' : selected ? 'outline-1 outline-blue-600' : 'outline-1 outline-grey-600 '}
+        className={`h-6 w-6 flex items-center justify-center rounded-full bg-gray-100 border border-1 border-grey-600 transition-colors duration-300
+          ${isDisabled ? 'cursor-not-allowed' : selected ? 'border-1 border-blue-600' : 'border-1 border-grey-600'}
           ${!isDisabled && 'focus:outline-2 focus:outline-blue-600 '}
         `}
         onClick={handleToggle}
