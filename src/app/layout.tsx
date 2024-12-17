@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
+import { Header } from '@/widgets/header';
+import { Footer } from '@/widgets/footer';
 
 const futura = localFont({
   src: [
@@ -10,7 +12,7 @@ const futura = localFont({
       style: 'normal',
     },
     {
-      path: './fonts/FuturaPTMedium.otf',
+      path: './fonts/FuturaPT-Medium.woff',
       weight: '500',
       style: 'normal',
     },
@@ -29,7 +31,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ru'>
-      <body className={futura.className}>{children}</body>
+      <body className={`${futura.className} flex min-h-screen flex-col`}>
+        <Header />
+        <main className='grow'> {children}</main>
+        <Footer className='shrink-0' />
+      </body>
     </html>
   );
 }
