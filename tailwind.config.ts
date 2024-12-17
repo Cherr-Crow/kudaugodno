@@ -33,10 +33,14 @@ export default {
       'blue-300': 'var(--blue-300)',
       'blue-500': 'var(--blue-500)',
       'blue-600': 'var(--blue-600)',
+      'blue-900': 'var(--blue-900)',
       'blue-bold': 'var(--blue-bold)',
       'red-primary': 'var(--red-primary)',
       'red-secondary': 'var(--red-secondary)',
       'yellow-primary': 'var(--yellow-primary)',
+    },
+    container: {
+      center: true,
     },
   },
   variants: {
