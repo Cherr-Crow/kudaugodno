@@ -11,7 +11,7 @@ export function Header({ className }: IHeader) {
         <Link href='/'>
           <SvgSprite name='logo' width={65} className='sm:w-[106px]' />
         </Link>
-        <div className='hidden gap-3 sm:flex'>
+        <nav className='hidden gap-3 sm:flex'>
           <Link href='/catalog-tours'>
             <Typography variant='l-bold' children='Туры' />
           </Link>
@@ -21,7 +21,7 @@ export function Header({ className }: IHeader) {
           <Link href='/blog-page'>
             <Typography variant='l-bold' children='Блог' />
           </Link>
-        </div>
+        </nav>
         <div className='flex items-center gap-3'>
           <div className='hidden cursor-pointer items-center gap-2 sm:flex'>
             <SvgSprite name='phone' width={24} color='#4757EA' />
