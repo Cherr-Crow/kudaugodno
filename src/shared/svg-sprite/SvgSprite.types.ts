@@ -33,7 +33,8 @@ export interface ISvgSprite {
     | 'fire'
     | 'image'
     | 'lightning'
-    | 'list';
+    | 'list'
+    | 'logo';
   color?: string;
   width?: number;
   height?: number;
