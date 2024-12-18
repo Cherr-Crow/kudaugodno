@@ -20,7 +20,6 @@ export function ButtonCustom({ variant, size, disabled, children }: IButtonCusto
       className={`${variants[variant]} ${sizes[size]} ${disabled && 'pointer-events-none opacity-20'} h-fit w-fit rounded-full px-7 hover:shadow-lg`}
     >
       {children}
-      <div className='bg-blue-600 hover:bg-blue-500 active:bg-blue-secondary'></div>
     </button>
   );
 }
