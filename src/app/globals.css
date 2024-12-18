@@ -36,7 +36,9 @@
     --blue-bold: #1a1f4c;
 
     /* оттенки красного */
-    --red-primary: #e94c4c;
+    --red-primary-: #e94c4c;
+    --red-primary-400: rgba(233, 76, 76, 0.4);
+    --red-primary-800: rgba(233, 76, 76, 0.8);
     --red-secondary: #e94c4c66;
 
     /* оттенки жёлтого */

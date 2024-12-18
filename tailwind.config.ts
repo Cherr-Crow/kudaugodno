@@ -36,6 +36,8 @@ export default {
       'blue-900': 'var(--blue-900)',
       'blue-bold': 'var(--blue-bold)',
       'red-primary': 'var(--red-primary)',
+      'red-primary-400': 'var(--red-primary-400)',
+      'red-primary-800': 'var(--red-primary-800)',
       'red-secondary': 'var(--red-secondary)',
       'yellow-primary': 'var(--yellow-primary)',
     },
