@@ -39,7 +39,7 @@ export function Select({ className, options, getValue, color }: ISelect) {
   }, []);
 
   return (
-    <div className='relative w-fit cursor-pointer' ref={dropdownRef}>
+    <div className={`relative w-fit cursor-pointer ${className}`} ref={dropdownRef}>
       <div
         className={`flex items-center justify-between rounded-full p-4 ${color ? Background[color] : 'bg-transparent'}`}
         onClick={handleToggle}
