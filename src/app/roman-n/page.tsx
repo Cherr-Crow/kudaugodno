@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid';
 import React from 'react';
 import { Select } from '@/shared/ui/select';
 import { Badge } from '@/shared/ui/badge';
+import { ButtonCustom } from '@/shared/ui/button-custom';
 
 export default function RomanN() {
   return (
@@ -202,6 +203,52 @@ export default function RomanN() {
         <div className='flex gap-3'>
           <Badge name='Макао' price='от 23 342 ₽' />
           <Badge name='Тайланд' price='от 347 345 ₽' size='small' />
+        </div>
+      </div>
+      <div className='mt-4'>
+        <h2 className='mb-3 w-fit bg-blue-primary p-2'>элемент ButtonCustom</h2>
+        <div className='flex gap-4'>
+          <ButtonCustom variant='primary' size='l'>
+            <Typography
+              variant='s-bold'
+              children='Сюда можно вставлять всё что угодно'
+            />
+          </ButtonCustom>
+          <ButtonCustom variant='primary' size='l' disabled>
+            <div className='flex items-center gap-3'>
+              <SvgSprite name='mail' width={30} />
+              <Typography variant='h4' children='Отправить' />
+            </div>
+          </ButtonCustom>
+          <ButtonCustom variant='primary' size='m'>
+            <Typography children='текст' />
+          </ButtonCustom>
+          <ButtonCustom variant='primary' size='s'>
+            <Typography children='текст' />
+          </ButtonCustom>
+        </div>
+        <div className='flex gap-4'>
+          <ButtonCustom variant='secondary' size='l'>
+            <Typography
+              variant='s-bold'
+              children='Сюда можно вставлять всё что угодно'
+            />
+          </ButtonCustom>
+          <ButtonCustom variant='tetriary' size='m'>
+            <div className='flex items-center gap-3'>
+              <SvgSprite name='tennis-racket' width={30} />
+              <Typography variant='m-bold' children='Отправить' />
+            </div>
+          </ButtonCustom>
+          <ButtonCustom variant='danger' size='m'>
+            <Typography children='текст' />
+          </ButtonCustom>
+          <ButtonCustom variant='wzhuh' size='s'>
+            <div className='flex items-center gap-2'>
+              <Typography children='Вжух' className='text-white' />
+              <SvgSprite name='magic-wand' width={20} color='#fff' />
+            </div>
+          </ButtonCustom>
         </div>
       </div>
     </div>

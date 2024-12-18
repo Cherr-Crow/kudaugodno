@@ -1,0 +1,26 @@
+import React from 'react';
+import { IButtonCustom } from './ButtonCustom.types';
+
+export function ButtonCustom({ variant, size, disabled, children }: IButtonCustom) {
+  enum variants {
+    primary = 'bg-green-secondary hover:bg-green-primary active:bg-green-tetriary',
+    secondary = 'border-2 border-green-secondary hover:border-green-primary active:border-green-tetriary',
+    tetriary = 'bg-blue-light hover:bg-blue-extra-light active:bg-blue-primary',
+    danger = 'bg-red-primary-400  active:bg-red-primary-800',
+    wzhuh = 'bg-blue-600 hover:bg-blue-500 active:bg-blue-secondary',
+  }
+
+  enum sizes {
+    l = 'py-5',
+    m = 'py-3',
+    s = 'py-2',
+  }
+  return (
+    <button
+      className={`${variants[variant]} ${sizes[size]} ${disabled && 'pointer-events-none opacity-20'} h-fit w-fit rounded-full px-7 hover:shadow-lg`}
+    >
+      {children}
+      <div className='bg-blue-600 hover:bg-blue-500 active:bg-blue-secondary'></div>
+    </button>
+  );
+}
