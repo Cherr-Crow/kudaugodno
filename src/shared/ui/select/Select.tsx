@@ -38,6 +38,10 @@ export function Select({ className, options, getValue, color }: ISelect) {
     };
   }, []);
 
+  useEffect(() => {
+    getValue && getValue(selectedOption);
+  }, [selectedOption]);
+
   return (
     <div className={`relative w-fit cursor-pointer ${className}`} ref={dropdownRef}>
       <div
@@ -47,7 +51,7 @@ export function Select({ className, options, getValue, color }: ISelect) {
         <input
           type='text'
           value={selectedOption}
-          onChange={() => getValue && getValue(selectedOption)}
+          onChange={() => {}}
           className='pointer-events-none cursor-pointer bg-transparent outline-none'
         />
         <SvgSprite

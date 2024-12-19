@@ -1,6 +1,54 @@
-import React from 'react';
-import { IHotOffer } from './HotOffer.types';
+'use client';
 
-export function HotOffer({ className }: IHotOffer) {
-  return <div className={`${className}`}>HotOffer</div>;
+import React, { useEffect, useState } from 'react';
+import { IHotOffer } from './HotOffer.types';
+import { Typography } from '@/shared/typography';
+import Link from 'next/link';
+import { SvgSprite } from '@/shared/svg-sprite';
+import { Hotel } from '@/types/hotel';
+import { useScreen } from 'usehooks-ts';
+import { HotelCard } from '@/entities/hotel-card';
+import { nanoid } from 'nanoid';
+
+export function HotOffer({ title, link, array, type }: IHotOffer) {
+  const [workArr, setWorkArr] = useState<Hotel[]>(array);
+  const screen = useScreen();
+
+  useEffect(() => {
+    if (screen.width <= 1024 && screen.width > 640) {
+      setWorkArr(array.slice(0, 2));
+    } else {
+      setWorkArr(array);
+    }
+  }, [screen, array]);
+
+  return (
+    <section className=''>
+      <div className='mb-6 flex items-center justify-between'>
+        {title && (
+          <Typography children={title} variant='m-bold' className='md:text-2xl' />
+        )}
+        {link && (
+          <div className='flex items-center gap-2'>
+            <Link href={link}>
+              <Typography
+                children='Смотреть больше'
+                variant='m-bold'
+                className='md:text-2xl'
+              />
+            </Link>
+            <SvgSprite name='arrow' width={24} />
+          </div>
+        )}
+      </div>
+      <ul className='grid gap-5 md:grid-cols-2 lg:grid-cols-3'>
+        {type === 'hotel' &&
+          workArr.map((hotel) => (
+            <li className='' key={nanoid()}>
+              <HotelCard hotel={hotel} />
+            </li>
+          ))}
+      </ul>
+    </section>
+  );
 }
