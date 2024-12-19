@@ -1,6 +1,7 @@
-export interface IBadge {
-  className?: string;
+type DivProps = React.ComponentPropsWithoutRef<'div'>;
+
+export interface IBadge extends DivProps {
   size?: 'base' | 'small';
   name: string;
-  price: string;
+  price?: string;
 }
