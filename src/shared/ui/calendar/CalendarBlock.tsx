@@ -4,10 +4,9 @@ import { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import './calendar_custom.css';
+import { Value } from './Calendar.types';
 
-type ValuePiece = Date | null;
 
-type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 export function CalendarBlock() {
   const [value, onChange] = useState<Value>(new Date());
@@ -15,7 +14,7 @@ export function CalendarBlock() {
   return (
     <div>
       <Calendar
-        className='ml-4 mt-4'
+       
         onChange={onChange}
         value={value}
         next2Label='›'
