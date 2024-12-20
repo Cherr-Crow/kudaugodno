@@ -162,6 +162,10 @@ export default function RomanN() {
             <p className=''>list</p>
             <SvgSprite name='list' width={30} />
           </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>heart-outline</p>
+            <SvgSprite name='heart-outline' width={30} />
+          </div>
         </div>
       </div>
       <div className='mt-4 flex flex-col items-center gap-4'>
