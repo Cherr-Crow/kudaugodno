@@ -10,7 +10,7 @@ import { useScreen } from 'usehooks-ts';
 import { HotelCard } from '@/entities/hotel-card';
 import { nanoid } from 'nanoid';
 
-export function HotOffer({ title, link, array, type }: IHotOffer) {
+export function HotOffer({ className, title, link, array, type }: IHotOffer) {
   const [workArr, setWorkArr] = useState<Hotel[]>(array);
   const screen = useScreen();
 
@@ -23,13 +23,13 @@ export function HotOffer({ title, link, array, type }: IHotOffer) {
   }, [screen, array]);
 
   return (
-    <section className=''>
+    <section className={className}>
       <div className='mb-6 flex items-center justify-between'>
         {title && (
           <Typography children={title} variant='m-bold' className='md:text-2xl' />
         )}
         {link && (
-          <div className='flex items-center gap-2'>
+          <div className='hidden items-center gap-2 md:flex'>
             <Link href={link}>
               <Typography
                 children='Смотреть больше'
@@ -49,6 +49,18 @@ export function HotOffer({ title, link, array, type }: IHotOffer) {
             </li>
           ))}
       </ul>
+      {link && (
+        <div className='mt-4 flex items-center justify-end gap-2 md:hidden'>
+          <Link href={link}>
+            <Typography
+              children='Смотреть больше'
+              variant='m-bold'
+              className='md:text-2xl'
+            />
+          </Link>
+          <SvgSprite name='arrow' width={24} />
+        </div>
+      )}
     </section>
   );
 }
