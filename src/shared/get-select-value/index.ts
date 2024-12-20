@@ -1,1 +1,0 @@
-export { GetSelectValue } from "./GetSelectValue";
