@@ -39,6 +39,7 @@ export function SearchForm() {
     const [wherePopup, setWherePopup] = useState<boolean>(true);
     const [calendar, setCalendar] = useState<boolean>(false);
     const [calendarSecond, setCalendarSecond] = useState<boolean>(false);
+    
 
     const [guests, setGuests] = useState<string>('Количество гостей');
 
@@ -48,14 +49,14 @@ export function SearchForm() {
         handleSubmit,
         setValue
     } = useForm<FormData>({
-        defaultValues: {
-            Guests: 'Количество гостей'
-        }
+
+
     });
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
+     console.log(data)
         try {
-            
+
             const response = await fetch(`https://${process.env.NEXT_PUBLIC_API}/api/`, {
                 method: 'POST',
                 headers: {
@@ -66,7 +67,7 @@ export function SearchForm() {
 
             const dataRes = await response.json(); ////// тут уже разберемся когда API будет готово
         }
-    catch (error) {}
+        catch (error) { }
     };
 
     ///// первые два инпута НАЧАЛО ---------------------------------------------------------------
@@ -78,27 +79,17 @@ export function SearchForm() {
 
         if (inputChangeTimer.current) {
             clearTimeout(inputChangeTimer.current);
-            console.log('Previous timeout cleared');
         }
-
-        console.log(departureCity.length
-        )
 
         if (departureCity.length <= 1) return  // если в инпуте меньше 2 символов, то не отправляю запрос потому как стэйт не изменится при первом вводе
         inputChangeTimer.current = setTimeout(async () => {
-            console.log('New timeout triggered for value:', value);
+
             const dataFetch = await searchData(value);
             setReqData(dataFetch.results);
         }, 1000);
-
-
-
-
     };
 
-
     const handleWhereChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
         const value = e.target.value;
         setWhere(e.target.value);
         setReqDataSecond([])
@@ -116,9 +107,7 @@ export function SearchForm() {
     useEffect(() => {
         if (reqData) {
             setDepartureCity(reqData[0].name);
-
         }
-
         if (reqDataSecond.length === 1) {
             setWhere(reqDataSecond[0].name);
         } else if (where === '' && !wherePopup) {
@@ -135,17 +124,18 @@ export function SearchForm() {
     /// обработка данных из календаря НАЧАЛО ----------------------------------------------------------
 
     const handleDateArrival = (value: Value) => {
+
         if (value instanceof Date) {
-            setSelectedDateArrival(value); // стэйт для инпута даты заеда
-
+            setSelectedDateArrival(value); // стэйт для инпута даты заезда
+            setValue("ArrivalDate", value.toLocaleDateString()); // передаю в форму дату заезда
             setCalendar(false); // закрываю календарь после выбранной даты
-
         }
     };
 
     const handleDateDeparture = (value: Value) => {
         if (value instanceof Date) {
             setSelectedDateDeparture(value);
+            setValue("DepartureDate", value.toLocaleDateString());
             setCalendarSecond(false);
         }
     }
@@ -232,13 +222,11 @@ export function SearchForm() {
                     id="ArrivalDate"
                     type="text"
                     placeholder="Дата заезда"
-                    value={selectedDateArrival ? selectedDateArrival.toLocaleDateString() : ''}
-
+                    value={selectedDateArrival? selectedDateArrival.toLocaleDateString() : ''}
                     {...register("ArrivalDate", {
-                        required: "Поле обязательно для заполнения",
+                        required: "Поле обязательно для заполнения Дата заезда",
                     })}
                     onFocus={() => setCalendar(true)}
-
 
                 />
                 {errors.ArrivalDate && <div className="text-red-secondary">{errors.ArrivalDate.message}</div>}
@@ -252,25 +240,27 @@ export function SearchForm() {
                     id="DepartureDate"
                     type="text"
                     placeholder="Дата выезда"
-                    value={selectedDateDeparture ? selectedDateDeparture.toLocaleDateString() : ''}
+                    value={selectedDateDeparture ? selectedDateDeparture.toLocaleDateString() : ''}  // нужно сделать чтоб приходили чистые данные без тернарки
                     {...register("DepartureDate", {
                         required: "Поле обязательно для заполнения",
                     })}
                     onFocus={() => setCalendarSecond(true)}
+
                 />
                 {errors.DepartureDate && <div className="text-red-secondary">{errors.DepartureDate.message}</div>}
                 <SvgSprite name='calendar' width={20} height={20} color='#ADADAD' className='absolute top-4 left-3/4' />
                 <PopupWindow ref={calendarSecondRef} className={`${calendarSecond ? 'block' : 'hidden'}`} children={<Calendar onChange={handleDateDeparture} />} />
             </label>
+
             <label htmlFor="Guests" className={`pl-5 ${LabelStyle} relative border-none 'text-transparent'`}>
-                <Typography variant='m' className={` ${guests!=='Количество гостей' ? 'text-black' : 'text-transparent'}`} children=' Количество гостей' />
-                <div className={`absolute ${guests!=='Количество гостей' ? 'top-[12px] left-[2px] font-[500]':'top-[-4px] left-[-7px]'} 'text-black' `}>
+                <Typography variant='m' className={` ${guests !== 'Количество гостей' ? 'text-black' : 'text-transparent'}`} children=' Количество гостей' />
+                <div className={`absolute ${guests !== 'Количество гостей' ? 'top-[12px] left-[2px] font-[500]' : 'top-[-4px] left-[-7px]'} 'text-black' `}>
                     <Select
                         options={['Количество гостей', '1 гость', '2 гостя', '3 гостя', '4 гостя', '5 гостей', '6 гостей']}
                         getValue={(value) => {
                             setValue('Guests', value);// Передаю option в Form
-                            setGuests(value);  
-                            
+                            setGuests(value);
+
                         }}
                     />
                 </div>
