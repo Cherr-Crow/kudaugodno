@@ -52,7 +52,9 @@ export function Select({ className, options, getValue, color }: ISelect) {
           type='text'
           value={selectedOption}
           onChange={() => {}}
-          className='pointer-events-none cursor-pointer bg-transparent outline-none'
+
+          className='pointer-events-none cursor-pointer bg-transparent outline-none w-4/5'
+
         />
         <SvgSprite
           name='arrow'
