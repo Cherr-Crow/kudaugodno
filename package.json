@@ -16,7 +16,7 @@
     "generate-react-cli": "^8.4.9",
     "jsdom": "^25.0.1",
     "nanoid": "^5.0.9",
-    "next": "15.0.4",
+    "next": "^15.0.4",
     "react": "^19.0.0",
     "react-calendar": "^5.1.0",
     "react-dom": "^19.0.0",
