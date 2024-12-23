@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import { Header } from '@/widgets/header';
 import { Footer } from '@/widgets/footer';
+import StoreProvider from './rtk/StoreProvider';
 
 const futura = localFont({
   src: [
@@ -30,12 +31,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='ru'>
-      <body className={`${futura.className} flex min-h-screen flex-col`}>
-        <Header />
-        <main className='grow'> {children}</main>
-        <Footer className='shrink-0' />
-      </body>
-    </html>
+    <StoreProvider>
+      <html lang='ru'>
+        <body className={`${futura.className} flex min-h-screen flex-col`}>
+          <Header />
+          <main className='grow'> {children}</main>
+          <Footer className='shrink-0' />
+        </body>
+      </html>
+    </StoreProvider>
   );
 }
