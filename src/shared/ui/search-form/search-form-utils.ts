@@ -11,7 +11,7 @@ export const  searchData = async (textForSearch: string) => {
                 body:JSON.stringify({ text: textForSearch }),
                }
             );*/
-            const response = await fetch('https://pokeapi.co/api/v2/pokemon')
+            const response = await fetch('https://pokeapi.co/api/v2/pokemon/')
             if (!response.ok) {
                 throw new Error(`Server responded with status ${response.status}: ${response.statusText}`);
             }
