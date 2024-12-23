@@ -1,12 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ITabBar } from './TabBar.types';
+import { ITabBar, svgTabType } from './TabBar.types';
 import { Typography } from '@/shared/typography';
 import { nanoid } from 'nanoid';
+import { SvgSprite } from '@/shared/svg-sprite';
 
-export function TabBar({ className, tabs, getTabName }: ITabBar) {
+export function TabBar({ className, tabs, getTabName, svgTab }: ITabBar & { svgTab: svgTabType }) {
   const [active, setActive] = useState(tabs[0]);
+  
+
 
   const handleTabClick = (tab: string) => {
     setActive(tab);
@@ -15,13 +18,15 @@ export function TabBar({ className, tabs, getTabName }: ITabBar) {
 
   return (
     <ul className={`${className} flex w-fit rounded-full bg-green-secondary p-2`}>
-      {tabs.map((tab) => (
+      {tabs.map((tab, index) => (
         <li
+
           key={nanoid()}
-          className={`bg-transparent cursor-pointer rounded-full px-4 py-1 md:px-10 md:py-4 ${active === tab && 'bg-white'}`}
+          className={` bg-transparent flex px-4 cursor-pointer  rounded-full  py-1 md:px-10 md:py-4 ${active === tab && 'bg-white text-black'}`}
           onClick={() => handleTabClick(tab)}
         >
-          <Typography children={tab} variant='m-bold' />
+          {svgTab && <SvgSprite name={svgTab[index]} width={24} color={` ${active === tab ? 'black' : 'white'}`}/>}
+          <Typography children={tab} variant='m-bold' className={svgTab ? 'ml-2 ':''} />
         </li>
       ))}
     </ul>

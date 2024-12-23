@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import Calendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import './calendar_custom.css';
+/*import 'react-calendar/dist/Calendar.css';
+import './calendar_custom.css';*/
 import { Value } from './Calendar.types';
 
 

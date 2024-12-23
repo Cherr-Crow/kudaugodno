@@ -53,7 +53,7 @@ export function Select({ className, options, getValue, color }: ISelect) {
           value={selectedOption}
           onChange={() => {}}
 
-          className='pointer-events-none cursor-pointer bg-transparent outline-none w-4/5'
+          className='pointer-events-none cursor-pointer  bg-transparent outline-none '
 
         />
         <SvgSprite

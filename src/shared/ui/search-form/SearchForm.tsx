@@ -11,15 +11,15 @@ import { Select } from "../select";
 import { ButtonCustom } from '../button-custom';
 import { Typography } from '@/shared/typography';
 import { SvgSprite } from '@/shared/svg-sprite';
-import { FormData } from './SearchForm.types';
+import { FormData, SearchFormProps } from './SearchForm.types';
 
 
-const LabelStyle = "flex flex-col w-[18%] h-[48px]  mb-3 mt-3   pl-2 relative border-r-2 border-solid border-grey-100";
+const LabelStyle = "flex flex-col  h-[48px]  mb-2 mt-2 pl-2 relative border-r-2 border-solid border-grey-100 ";
 const formShadow = "shadow-[0px 7px 7px 0px rgba(44, 54, 131, 0.09),0px 16px 9px 0px rgba(44, 54, 131, 0.05),0px 28px 11px 0px rgba(44, 54, 131, 0.01),44px 44px 12px 0px rgba(44, 54, 131, 0),0px 1px 4px 0px rgba(0, 0, 0, 0.25);]";
-const formStyle = "flex justify-center items-center py-5 bg-white mt-10 rounded-[40px] w-max";
+const formStyle = "flex justify-center items-center pl-6 pr-2 bg-white rounded-[40px] w-max";
 const inputStyle = " border-none outline-none placeholder-black text-black font-[500]"
 
-export function SearchForm() {
+export function SearchForm({ tabClick, className }: SearchFormProps) {
 
     const [departureCity, setDepartureCity] = useState("");
     const [where, setWhere] = useState("");
@@ -39,7 +39,7 @@ export function SearchForm() {
     const [wherePopup, setWherePopup] = useState<boolean>(true);
     const [calendar, setCalendar] = useState<boolean>(false);
     const [calendarSecond, setCalendarSecond] = useState<boolean>(false);
-    
+
 
     const [guests, setGuests] = useState<string>('Количество гостей');
 
@@ -47,14 +47,31 @@ export function SearchForm() {
         register,
         formState: { errors },
         handleSubmit,
-        setValue
-    } = useForm<FormData>({
+        setValue,
+        reset
+    } = useForm<FormData>();
 
-
-    });
+    useEffect(() => {
+        console.log(tabClick)
+        reset({
+            DepartureCity: '',
+            Where: '',
+            ArrivalDate: '',
+            DepartureDate: '',
+            Guests: '',
+            'тип брони': tabClick
+        });
+        setReqData(null);
+        setReqDataSecond([]);
+        setWhere('')
+        setSelectedDateArrival(null);
+        setSelectedDateDeparture(null);
+        setGuests('Количество гостей');
+        setValue('тип брони', tabClick); // передаю в форму тип брони (туры или отели)
+    }, [tabClick]);
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
-     console.log(data)
+        console.log(data)
         try {
 
             const response = await fetch(`https://${process.env.NEXT_PUBLIC_API}/api/`, {
@@ -90,6 +107,7 @@ export function SearchForm() {
     };
 
     const handleWhereChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log('whereChange')
         const value = e.target.value;
         setWhere(e.target.value);
         setReqDataSecond([])
@@ -109,9 +127,10 @@ export function SearchForm() {
             setDepartureCity(reqData[0].name);
         }
         if (reqDataSecond.length === 1) {
+            console.log('length1');
             setWhere(reqDataSecond[0].name);
         } else if (where === '' && !wherePopup) {
-            setReqDataSecond([]);
+            if(reqDataSecond.length!==0)setReqDataSecond([]);
             setWherePopup(false);
         }
     }, [reqData, reqDataSecond, departureCity, where]);
@@ -183,10 +202,10 @@ export function SearchForm() {
 
     return (
 
-        <form onSubmit={handleSubmit(onSubmit)} className={`${formStyle}${formShadow}  mx-auto`} >
-            <label htmlFor="DepartureCity" className={`${LabelStyle} `}>
+        <form onSubmit={handleSubmit(onSubmit)} className={`${formStyle} ${formShadow} ${className} mx-auto`} >
+            <label htmlFor="DepartureCity" className={`${LabelStyle} ${tabClick === 'Отели' ? 'hidden' : 'block'}`}>
                 <Typography variant='m' className={reqData ? 'text-black' : 'text-transparent'} children='Город вылета' />
-                <input className={`${inputStyle} ${reqData ? '' : 'mt-[-12px] font-[500]'}`}
+                <input className={`${inputStyle} ${reqData ? '' : 'mt-[-12px] font-[500]'} `}
                     id="DepartureCity"
                     type="text"
                     placeholder="Город вылета"
@@ -202,7 +221,7 @@ export function SearchForm() {
 
             <label htmlFor="Where" className={`${LabelStyle}`}>
                 <Typography variant='m' className={reqDataSecond.length > 1 ? 'text-black' : 'text-transparent'} children='Куда' />
-                <input className={`${inputStyle} ${reqDataSecond.length > 1 ? '' : 'mt-[-12px] font-[500]'}`}
+                <input className={`${inputStyle} ${reqDataSecond.length > 1 ? '' : 'mt-[-12px] font-[500]'} `}
                     id="Where"
                     type="text"
                     placeholder="Куда"
@@ -210,19 +229,20 @@ export function SearchForm() {
                         required: "Поле обязательно для заполнения",
                     })}
                     value={where}
+
                     onChange={handleWhereChange}
                 />
                 {errors.Where && <div className="text-red-secondary">{errors.Where.message}</div>}
                 <PopupWindow ref={whereRef} children={<ul className={`w-max p-3 ${reqDataSecond.length > 1 ? 'block' : 'hidden'}`}>{items}</ul>} className={`${wherePopup ? 'block' : 'hidden'}`} />
             </label>
 
-            <label htmlFor="ArrivalDate" className={`${LabelStyle}  `}>
+            <label htmlFor="ArrivalDate" className={`${LabelStyle}  w-1/7`}>
                 <Typography variant='m' className={selectedDateArrival ? 'text-black' : 'text-transparent'} children='Дата заезда' />
                 <input className={`${inputStyle} ${selectedDateArrival ? '' : 'mt-[-12px] font-[500]'}`}
                     id="ArrivalDate"
                     type="text"
                     placeholder="Дата заезда"
-                    value={selectedDateArrival? selectedDateArrival.toLocaleDateString() : ''}
+                    value={selectedDateArrival ? selectedDateArrival.toLocaleDateString() : ''}
                     {...register("ArrivalDate", {
                         required: "Поле обязательно для заполнения Дата заезда",
                     })}
@@ -234,7 +254,7 @@ export function SearchForm() {
                 <PopupWindow ref={calendarRef} className={`${calendar ? 'block' : 'hidden'}`} children={<Calendar onChange={handleDateArrival} />} />
             </label>
 
-            <label htmlFor="DepartureDate" className={`${LabelStyle} ${selectedDateDeparture ? 'text-black' : 'text-transparent'}`}>
+            <label htmlFor="DepartureDate" className={`${LabelStyle} w-1/7`}>
                 <Typography variant='m' className={selectedDateDeparture ? 'text-black' : 'text-transparent'} children='Дата выезда' />
                 <input className={`${inputStyle} ${selectedDateDeparture ? '' : 'mt-[-12px] font-[500]'}`}
                     id="DepartureDate"
@@ -252,9 +272,9 @@ export function SearchForm() {
                 <PopupWindow ref={calendarSecondRef} className={`${calendarSecond ? 'block' : 'hidden'}`} children={<Calendar onChange={handleDateDeparture} />} />
             </label>
 
-            <label htmlFor="Guests" className={`pl-5 ${LabelStyle} relative border-none 'text-transparent'`}>
-                <Typography variant='m' className={` ${guests !== 'Количество гостей' ? 'text-black' : 'text-transparent'}`} children=' Количество гостей' />
-                <div className={`absolute ${guests !== 'Количество гостей' ? 'top-[12px] left-[2px] font-[500]' : 'top-[-4px] left-[-7px]'} 'text-black' `}>
+            <label htmlFor="Guests" className={`pl-5 ${LabelStyle}  relative border-none 'text-transparent'`}>
+                <Typography variant='m' className={` mr-20 ${guests !== 'Количество гостей' ? 'text-black' : 'text-transparent'}`} children=' Количество гостей' />
+                <div className={`absolute w-max ${guests !== 'Количество гостей' ? 'top-[12px] left-[2px] font-[500]' : 'top-[-4px] left-[-7px]'} 'text-black' `}>
                     <Select
                         options={['Количество гостей', '1 гость', '2 гостя', '3 гостя', '4 гостя', '5 гостей', '6 гостей']}
                         getValue={(value) => {

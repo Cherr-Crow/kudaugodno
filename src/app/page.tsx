@@ -8,6 +8,7 @@ import { PopularDestinations } from '@/widgets/popular-destinations';
 import { SubscribeToTheNewsletter } from '@/widgets/subscribe-to-the-newsletter';
 import { Wzhuh } from '@/widgets/wzhuh';
 
+
 export default async function Home() {
   const data = await fetch('http://176.108.253.5/hotels/');
   const posts: Hotels = await data.json();
