@@ -48,7 +48,7 @@ export function Hero({ className }: IHero) {
     }}>
 
     <div className='pt-20 flex flex-col items-center'>
-      <Typography variant='h1' children='Легко найти — выгодно забронировать' className={`text-white text-center  ${ windowWidth < 1280 ? 'font-semibold text-3xl' : 'font-bold' } `} />
+      <Typography variant='h1' children='Легко найти — выгодно забронировать' className={`text-white text-center  ${ windowWidth < 1280 ? ' font-semibold' : 'font-bold' } `} />  
       <Typography variant='subtitle3' children='Поиск туров и отелей по всему миру' className={`text-white font-normal ${ windowWidth < 1280 && 'text-base' } m-[0 auto] mb-8`} />
       <TabBar tabs={tabs} svgTab={tabsSvg} getTabName={handelTab} className='bg-transparent border border-solid border-white pt-0 pb-0 pr-0 pl-0 text-white mb-3' />
       <div className='w-full'><SearchForm tabClick={tabClick} className={'mb-[40px] xl:mb-[313px]'} /></div>

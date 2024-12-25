@@ -105,7 +105,7 @@ export function SearchForm({ tabClick, className }: SearchFormProps) {
     };
 
     const handleWhereChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log('whereChange')
+       
         const value = e.target.value;
         setWhere(e.target.value);
         setReqDataSecond([])
