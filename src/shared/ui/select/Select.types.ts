@@ -3,4 +3,5 @@ export interface ISelect {
   options: string[];
   getValue?: (value: string) => void;
   color?: 'blue' | 'green';
+  markerChange?: boolean;
 }

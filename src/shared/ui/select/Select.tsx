@@ -5,10 +5,12 @@ import { ISelect } from './Select.types';
 import { PopupWindow } from '@/shared/popup-window';
 import { nanoid } from 'nanoid';
 import { SvgSprite } from '@/shared/svg-sprite';
+import { useSelector } from 'react-redux';
 
-export function Select({ className, options, getValue, color }: ISelect) {
+export function Select({ className, options, getValue, color, markerChange }: ISelect) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(options[0]);
+  const windowWidth = useSelector((state: { windowWidth: { value: number } }) => state.windowWidth.value);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   enum Background {
@@ -43,23 +45,23 @@ export function Select({ className, options, getValue, color }: ISelect) {
   }, [selectedOption]);
 
   return (
-    <div className={`relative w-fit cursor-pointer ${className}`} ref={dropdownRef}>
+    <div className={`relative w-fit cursor-pointer  ${className}`} ref={dropdownRef}>
       <div
-        className={`flex items-center justify-between rounded-full p-4 ${color ? Background[color] : 'bg-transparent'}`}
+        className={`flex items-center  justify-between  rounded-full p-4 ${color ? Background[color] : 'bg-transparent'} `}
         onClick={handleToggle}
       >
         <input
           type='text'
           value={selectedOption}
-          onChange={() => {}}
+          onChange={() => { }}
 
-          className='pointer-events-none cursor-pointer  bg-transparent outline-none '
+          className={`pointer-events-none cursor-pointer bg-transparent outline-none w-4/5`}
 
         />
         <SvgSprite
           name='arrow'
           width={20}
-          className={`cursor-pointer ${isOpen ? '-rotate-90' : 'rotate-90'}`}
+          className={`cursor-pointer ${isOpen ? '-rotate-90' : 'rotate-90'} ${windowWidth < 1280 && 'hidden'}`}
         />
       </div>
       {isOpen && (
