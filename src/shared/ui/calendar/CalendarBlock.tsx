@@ -1,20 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Calendar from 'react-calendar';
-/*import 'react-calendar/dist/Calendar.css';
-import './calendar_custom.css';*/
 import { Value } from './Calendar.types';
-
-
 
 export function CalendarBlock() {
   const [value, onChange] = useState<Value>(new Date());
+  const [isClient, setIsClient] = useState(false);
 
-  return (
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  return isClient ? (
     <div>
       <Calendar
-       
         onChange={onChange}
         value={value}
         next2Label='›'
@@ -27,5 +27,7 @@ export function CalendarBlock() {
         )}
       />
     </div>
+  ) : (
+    <></>
   );
 }
