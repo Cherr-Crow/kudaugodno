@@ -12,22 +12,24 @@ export function CalendarBlock() {
     setIsClient(true);
   }, []);
 
-  return isClient ? (
-    <div>
-      <Calendar
-        onChange={onChange}
-        value={value}
-        next2Label='›'
-        prev2Label='›'
-        navigationLabel={({ label }) => (
-          <span className='custom-calendar-label'>
-            <span style={{ fontSize: '30px' }}>{label.charAt(0)}</span>
-            {label.slice(1)}
-          </span>
-        )}
-      />
-    </div>
-  ) : (
-    <></>
-  );
+  // return isClient ? (
+  //   <div>
+  //     <Calendar
+  //       onChange={onChange}
+  //       value={value}
+  //       next2Label='›'
+  //       prev2Label='›'
+  //       navigationLabel={({ label }) => (
+  //         <span className='custom-calendar-label'>
+  //           <span style={{ fontSize: '30px' }}>{label.charAt(0)}</span>
+  //           {label.slice(1)}
+  //         </span>
+  //       )}
+  //     />
+  //   </div>
+  // ) : (
+  //   <></>
+  // );
+
+  return <></>;
 }
