@@ -35,7 +35,8 @@ export interface ISvgSprite {
     | 'lightning'
     | 'list'
     | 'logo'
-    | 'heart-outline';
+    | 'heart-outline'
+    | 'search';
   color?: string;
   width?: number;
   height?: number;
