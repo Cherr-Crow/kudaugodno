@@ -1,7 +1,7 @@
 import React from 'react';
 import { IButtonCustom } from './ButtonCustom.types';
 
-export function ButtonCustom({ variant, size, disabled, children }: IButtonCustom) {
+export function ButtonCustom({ variant, size, disabled, children, style, className }: IButtonCustom) {
   enum variants {
     primary = 'bg-green-secondary hover:bg-green-primary active:bg-green-tetriary',
     secondary = 'border-2 border-green-secondary hover:border-green-primary active:border-green-tetriary',
@@ -16,8 +16,8 @@ export function ButtonCustom({ variant, size, disabled, children }: IButtonCusto
     s = 'py-2',
   }
   return (
-    <button
-      className={`${variants[variant]} ${sizes[size]} ${disabled && 'pointer-events-none opacity-20'} h-fit w-fit rounded-full px-7 hover:shadow-lg`}
+    <button style={style}
+      className={`${variants[variant]} ${sizes[size]}  ${disabled && 'pointer-events-none opacity-20'} h-fit w-fit rounded-full px-7 hover:shadow-lg ${className}`}
     >
       {children}
     </button>

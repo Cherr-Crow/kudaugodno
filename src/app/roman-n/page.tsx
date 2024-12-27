@@ -1,16 +1,41 @@
+'use client';
+
 import { PopupWindow } from '@/shared/popup-window';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { TabBar } from '@/shared/ui/tab-bar';
 import { Typography } from '@/shared/typography';
 import { nanoid } from 'nanoid';
-import React from 'react';
+import React, { useState } from 'react';
 import { Select } from '@/shared/ui/select';
 import { Badge } from '@/shared/ui/badge';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { useAppDispatch, useAppSelector } from '../rtk/hooks';
+import { selectTest, test } from '../rtk/slices/testSlice';
 
 export default function RomanN() {
+  const dispatch = useAppDispatch();
+  const testValue = useAppSelector(selectTest);
+  const [testRtk, setTestRtk] = useState<string>('введи значение');
+
   return (
     <div className='w-screen bg-white p-32'>
+      <div className='p-5'>
+        <Typography children='Проверка RTK' variant='h4' />
+        <div className='flex gap-5'>
+          <input
+            value={testRtk}
+            onChange={(e) => setTestRtk(e.target.value)}
+            className='rounded-md bg-blue-disabled p-2'
+          />
+          <button
+            onClick={() => dispatch(test(testRtk))}
+            className='rounded-md bg-green-primary p-2'
+          >
+            назначить значение тестового стейта
+          </button>
+          <Typography children={testValue} className='bg-grey-100 p-2' />
+        </div>
+      </div>
       <div className='relative'>
         <h2 className='w-fit bg-blue-primary'>'элемент PopupWindow'</h2>
         <PopupWindow className='top-15 left-3 px-4 py-5'>
@@ -190,8 +215,8 @@ export default function RomanN() {
       </div>
       <div className='mt-4 pb-10'>
         <h2 className='w-fit bg-blue-primary'>'элемент TabBar'</h2>
-        <TabBar tabs={tabsTestList} />
-        <TabBar tabs={tabsTestList2} className='mt-4' />
+        <TabBar tabs={tabsTestList} svgTab={[]} />
+        <TabBar tabs={tabsTestList2} className='mt-4' svgTab={[]} />
       </div>
       <div className='mt-4 pb-10'>
         <h2 className='w-fit bg-blue-primary'>'элемент Select'</h2>

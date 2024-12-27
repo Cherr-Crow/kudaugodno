@@ -4,7 +4,7 @@ import { ITypography } from './Typography.types';
 export function Typography({ className, children, variant }: ITypography) {
   switch (variant) {
     case 'h1':
-      return <h1 className={`${className} text-6xl font-medium`}>{children}</h1>;
+      return <h1 className={`${className} xl:text-6xl text-3xl font-medium `}>{children}</h1>;
     case 'h2':
       return <h2 className={`${className} text-5xl font-medium`}>{children}</h2>;
     case 'h3':

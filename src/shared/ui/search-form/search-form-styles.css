@@ -1,0 +1,14 @@
+@media (max-width: 1280px) {
+  .search-form {
+    padding: 0 ;
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-areas:
+      "input1 input1"
+      "input2 input2"
+      "input5 input5"
+      "input3 input4"
+      "btnSubmit btnSubmit";
+}
+}
