@@ -1,11 +1,12 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import testReducer from './slices/testSlice';
-import windowWidthReducer from './slices/windowWidthSlice';
+import  tabBarReducer  from './slices/tabBarSearcForm';
+
 
 export const store = configureStore({
   reducer: {
     testVal: testReducer,
-    windowWidth: windowWidthReducer,
+    tabBarSearchForm: tabBarReducer,  
   },
 });
 

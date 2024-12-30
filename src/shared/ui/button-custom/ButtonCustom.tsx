@@ -20,6 +20,7 @@ export function ButtonCustom({
 
   enum sizes {
     l = 'py-5',
+    lm = 'py-4',
     m = 'py-3',
     s = 'py-2',
   }
