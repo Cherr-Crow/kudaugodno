@@ -10,29 +10,17 @@ import { Wzhuh } from '@/widgets/wzhuh';
 
 
 export default async function Home() {
-  const data = await fetch('http://176.108.253.5/hotels/');
+ /* const data = await fetch('http://176.108.253.5/hotels/');
   const posts: Hotels = await data.json();
   const arr: Hotel[] = [];
   arr.length = 3;
   arr.fill(posts.results[0]);
-
+*/
   return (
     <div className='container flex flex-col gap-3'>
       <Hero />
       <Wzhuh />
-      <HotOffer
-        array={arr}
-        type='hotel'
-        title='Ой... А эти туры скоро разберут'
-        link='/catalog-tours'
-      />
-      <HotOffer
-        array={arr}
-        type='hotel'
-        title='Что насчет погреться в Турции?'
-        link='/catalog-hotels'
-        className='mt-10 md:mt-14 lg:mt-20'
-      />
+ 
       <AdvertisingBanner />
       <PopularDestinations />
       <OurAdvantages />

@@ -12,6 +12,7 @@ export function ButtonCustom({ variant, size, disabled, children, style, classNa
 
   enum sizes {
     l = 'py-5',
+    lm = 'py-4',
     m = 'py-3',
     s = 'py-2',
   }

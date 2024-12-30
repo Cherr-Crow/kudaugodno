@@ -5,17 +5,30 @@ import { ISelect } from './Select.types';
 import { PopupWindow } from '@/shared/popup-window';
 import { nanoid } from 'nanoid';
 import { SvgSprite } from '@/shared/svg-sprite';
-import { useSelector } from 'react-redux';
+import { useScreen } from 'usehooks-ts';
 
-export function Select({ className, options, getValue, color, markerChange }: ISelect) {
+export function Select({
+  className,
+  options,
+  getValue,
+  color,
+  arrowHidden,
+  id,
+  size = 'medium',
+}: ISelect) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(options[0]);
-  const windowWidth = useSelector((state: { windowWidth: { value: number } }) => state.windowWidth.value);
+  const screen = useScreen();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   enum Background {
     'blue' = 'border border-blue-primary bg-blue-300',
     'green' = 'border border-green-tetriary bg-green-secondary',
+  }
+
+  enum Size {
+    'small' = 'rounded-md py-2 px-4',
+    'medium' = 'rounded-full p-4',
   }
 
   const handleToggle = () => {
@@ -45,24 +58,24 @@ export function Select({ className, options, getValue, color, markerChange }: IS
   }, [selectedOption]);
 
   return (
-    <div className={`relative w-fit cursor-pointer  ${className}`} ref={dropdownRef}>
-      <div
-        className={`flex items-center  justify-between  rounded-full p-4 ${color ? Background[color] : 'bg-transparent'} `}
+    <div className={`relative w-fit cursor-pointer ${className}`} id={id} ref={dropdownRef}>
+      <div 
+        className={`flex items-center justify-between ${Size[size]} ${color ? Background[color] : 'bg-transparent'} `}
         onClick={handleToggle}
       >
-        <input
+        <input 
+          
           type='text'
           value={selectedOption}
           onChange={() => { }}
-
-          className={`pointer-events-none cursor-pointer bg-transparent outline-none w-4/5`}
-
+          className={`/*pointer-events-none*/ w-4/5 cursor-pointer bg-transparent outline-none`}
         />
         <SvgSprite
           name='arrow'
           width={20}
-          className={`cursor-pointer ${isOpen ? '-rotate-90' : 'rotate-90'} ${windowWidth < 1280 && 'hidden'}`}
-        />
+          className={`cursor-pointer ${isOpen ? '-rotate-90' : 'rotate-90'} ${screen.width < 1280 && arrowHidden && 'hidden'}`}/>
+         
+        
       </div>
       {isOpen && (
         <PopupWindow className='top-[110%] w-full'>
@@ -82,3 +95,4 @@ export function Select({ className, options, getValue, color, markerChange }: IS
     </div>
   );
 }
+
