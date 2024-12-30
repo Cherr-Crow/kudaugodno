@@ -1,14 +1,23 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { IHeader } from './Header.types';
 import { SvgSprite } from '@/shared/svg-sprite';
 import Link from 'next/link';
 import { Typography } from '@/shared/typography';
+import { PopupWindow } from '@/shared/popup-window';
 
 export function Header({ className }: IHeader) {
+  const [openUser, setOpenUser] = useState(false);
+
+  const toggleUserMenu = () => {
+    setOpenUser(!openUser);
+  };
+
   return (
     <header className={`${className} bg-white-secondary py-4`}>
       <div className='container flex items-center justify-between'>
-        <Link href='/'>
+        <Link href='/' as='/'>
           <SvgSprite name='logo' width={65} className='sm:w-[106px]' />
         </Link>
         <nav className='hidden gap-3 sm:flex'>
@@ -33,8 +42,31 @@ export function Header({ className }: IHeader) {
             color='#1a1f4c'
             className='cursor-pointer'
           />
-          <div className='flex w-fit cursor-pointer items-center justify-center rounded-full border border-black p-1'>
-            <SvgSprite name='user' width={24} color='#1a1f4c' />
+          <div className='relative'>
+            <div
+              className='flex w-fit cursor-pointer items-center justify-center rounded-full border border-black p-1'
+              onClick={toggleUserMenu}
+            >
+              <SvgSprite name='user' width={24} color='#1a1f4c' />
+            </div>
+            {openUser && (
+              <PopupWindow className='absolute right-full flex flex-col gap-2 text-nowrap py-2'>
+                <Link
+                  href='/'
+                  onClick={toggleUserMenu}
+                  className='rounded-xl px-4 py-1 hover:bg-grey-100'
+                >
+                  <Typography children='user' />
+                </Link>
+                <Link
+                  href='/admin-panel-tour-operator'
+                  onClick={toggleUserMenu}
+                  className='rounded-xl px-4 py-1 hover:bg-grey-100'
+                >
+                  <Typography children='tour-operator-panel' />
+                </Link>
+              </PopupWindow>
+            )}
           </div>
         </div>
       </div>

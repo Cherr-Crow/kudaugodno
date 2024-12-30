@@ -8,6 +8,7 @@ const Checkbox: React.FC<ICheckbox> = ({
   isChecked = false,
   isDisabled = false,
   onChange = () => {},
+  className,
 }) => {
   const [checked, setChecked] = useState(isChecked);
 
@@ -18,27 +19,24 @@ const Checkbox: React.FC<ICheckbox> = ({
   };
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className={`flex items-center space-x-2 ${className}`}>
       <button
-        className={`h-6 w-6 flex items-center justify-center rounded-lg border border-1 border-grey-600 transition-colors duration-300
-          ${isDisabled ? 'cursor-not-allowed bg-grey-100' : checked ? 'bg-blue-600 border-0' : 'bg-grey-100'}
-          ${!isDisabled && 'focus:outline-2 focus:outline-blue-600 '}
-        `}
+        className={`border-1 flex h-6 w-6 items-center justify-center rounded-lg border border-grey-600 transition-colors duration-300 ${isDisabled ? 'cursor-not-allowed bg-grey-100' : checked ? 'border-0 bg-blue-600' : 'bg-grey-100'} ${!isDisabled && 'focus:outline-2 focus:outline-blue-600'} `}
         onClick={handleToggle}
         disabled={isDisabled}
         aria-checked={checked}
       >
         <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className={`h-6 w-6 text-white transition-opacity duration-300 transform ${
-            checked ? 'opacity-100 scale-100' : 'opacity-0 scale-75'
+          xmlns='http://www.w3.org/2000/svg'
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+          className={`h-6 w-6 transform text-white transition-opacity duration-300 ${
+            checked ? 'scale-100 opacity-100' : 'scale-75 opacity-0'
           }`}
         >
-          <path d="M5 13l4 4L19 7" />
+          <path d='M5 13l4 4L19 7' />
         </svg>
       </button>
       <label

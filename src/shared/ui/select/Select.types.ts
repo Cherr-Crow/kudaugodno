@@ -7,4 +7,5 @@ export interface ISelect {
   arrowHidden?: boolean;
   size?: 'small' | 'medium';
   id?: string;
+
 }

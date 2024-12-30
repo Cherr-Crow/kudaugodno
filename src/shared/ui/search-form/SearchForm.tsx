@@ -86,7 +86,6 @@ export function SearchForm({ className }: SearchFormProps) {
   }, [tabClick]);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log(data);
     try {
       const response = await fetch(`https://${process.env.NEXT_PUBLIC_API}`, {
         method: 'POST',
@@ -138,7 +137,6 @@ export function SearchForm({ className }: SearchFormProps) {
       setDepartureCity(reqData[0].name);
     }
     if (reqDataSecond.length === 1) {
-      console.log('length1');
       setWhere(reqDataSecond[0].name);
     } else if (where === '' && !wherePopup) {
       if (reqDataSecond.length !== 0) setReqDataSecond([]);
