@@ -60,10 +60,8 @@ export function Select({
   }, [selectedOption]);
 
   return (
-
-    <div className={`relative w-fit cursor-pointer ${className}`} id={id} ref={dropdownRef}>
+    <div className={`relative w-fit cursor-pointer ${className}`} ref={dropdownRef}>
       <div
-
         className={`flex items-center justify-between ${Size[size]} ${color ? Background[color] : 'bg-transparent'} `}
         onClick={handleToggle}
       >
