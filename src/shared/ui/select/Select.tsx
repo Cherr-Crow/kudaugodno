@@ -14,8 +14,6 @@ export function Select({
   color,
   markerChange,
   arrowHidden,
-  id,
-
   size = 'medium',
 }: ISelect) {
   const [isOpen, setIsOpen] = useState(false);

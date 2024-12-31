@@ -1,16 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ITabBar } from './TabBar.types';
+import { ITabBar, svgTabType } from './TabBar.types';
 import { Typography } from '@/shared/typography';
 import { nanoid } from 'nanoid';
 import { SvgSprite } from '@/shared/svg-sprite';
-import { useScreen } from 'usehooks-ts';
+import { useSelector } from 'react-redux';
 
 export function TabBar({ className, tabs, getTabName, svgTab }: ITabBar) {
   const [active, setActive] = useState(tabs[0]);
-
-  const screen = useScreen();
+  const windowWidth = useSelector(
+    (state: { windowWidth: { value: number } }) => state.windowWidth.value,
+  );
 
   const handleTabClick = (tab: string) => {
     setActive(tab);
@@ -25,10 +26,18 @@ export function TabBar({ className, tabs, getTabName, svgTab }: ITabBar) {
           className={`flex cursor-pointer rounded-full bg-transparent px-4 py-1 md:px-10 md:py-4 ${active === tab && 'bg-white text-black'}`}
           onClick={() => handleTabClick(tab)}
         >
-
-          {svgTab && <SvgSprite name={svgTab[index]} width={screen?.width < 1280 ? 12 : 24} color={` ${active === tab ? 'black' : 'white'}`} />}
-          <Typography children={tab} variant='m-bold' className={`${svgTab ? 'ml-2 ' : ''} ${screen?.width < 1280 && svgTab ? 'text-sm' : 'text-xl'}`} />
-
+          {svgTab && (
+            <SvgSprite
+              name={svgTab[index]}
+              width={windowWidth < 1280 ? 12 : 24}
+              color={` ${active === tab ? 'black' : 'white'}`}
+            />
+          )}
+          <Typography
+            children={tab}
+            variant='m-bold'
+            className={`${svgTab ? 'ml-2' : ''} ${windowWidth < 1280 && svgTab ? 'text-sm' : 'text-xl'}`}
+          />
         </li>
       ))}
     </ul>

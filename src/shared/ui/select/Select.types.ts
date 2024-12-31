@@ -6,6 +6,4 @@ export interface ISelect {
   markerChange?: boolean;
   arrowHidden?: boolean;
   size?: 'small' | 'medium';
-  id?: string;
-
 }
