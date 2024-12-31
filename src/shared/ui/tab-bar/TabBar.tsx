@@ -9,9 +9,6 @@ import { useSelector } from 'react-redux';
 
 export function TabBar({ className, tabs, getTabName, svgTab }: ITabBar) {
   const [active, setActive] = useState(tabs[0]);
-  const windowWidth = useSelector(
-    (state: { windowWidth: { value: number } }) => state.windowWidth.value,
-  );
 
   const handleTabClick = (tab: string) => {
     setActive(tab);
@@ -29,14 +26,13 @@ export function TabBar({ className, tabs, getTabName, svgTab }: ITabBar) {
           {svgTab && (
             <SvgSprite
               name={svgTab[index]}
-              width={windowWidth < 1280 ? 12 : 24}
               color={` ${active === tab ? 'black' : 'white'}`}
             />
           )}
           <Typography
             children={tab}
             variant='m-bold'
-            className={`${svgTab ? 'ml-2' : ''} ${windowWidth < 1280 && svgTab ? 'text-sm' : 'text-xl'}`}
+            className={`${svgTab ? 'ml-2' : ''}`}
           />
         </li>
       ))}
