@@ -5,7 +5,7 @@ import { ITabBar } from './TabBar.types';
 import { Typography } from '@/shared/typography';
 import { nanoid } from 'nanoid';
 import { SvgSprite } from '@/shared/svg-sprite';
-import { useScreen } from 'usehooks-ts';
+import { useSelector } from 'react-redux';
 
 export function TabBar({ className, tabs, getTabName, svgTab }: ITabBar) {
   const [active, setActive] = useState(tabs[0]);

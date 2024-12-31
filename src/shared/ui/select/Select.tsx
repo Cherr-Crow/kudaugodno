@@ -12,6 +12,7 @@ export function Select({
   options,
   getValue,
   color,
+  markerChange,
   arrowHidden,
   id,
 
@@ -61,24 +62,22 @@ export function Select({
   return (
 
     <div className={`relative w-fit cursor-pointer ${className}`} id={id} ref={dropdownRef}>
-      <div 
+      <div
 
         className={`flex items-center justify-between ${Size[size]} ${color ? Background[color] : 'bg-transparent'} `}
         onClick={handleToggle}
       >
-        <input 
-          
+        <input
           type='text'
           value={selectedOption}
-
-          onChange={() => { }}
-          className={`/*pointer-events-none*/ w-4/5 cursor-pointer bg-transparent outline-none`}
-
+          onChange={() => {}}
+          className={`pointer-events-none w-4/5 cursor-pointer bg-transparent outline-none`}
         />
         <SvgSprite
           name='arrow'
           width={20}
-          className={`cursor-pointer ${isOpen ? '-rotate-90' : 'rotate-90'} ${screen.width < 1280 && arrowHidden && 'hidden'}`}/>
+          className={`cursor-pointer ${isOpen ? '-rotate-90' : 'rotate-90'} ${screen?.width < 1280 && arrowHidden && 'hidden'}`}
+        />
       </div>
       {isOpen && (
         <PopupWindow className='top-[110%] w-full'>
@@ -98,4 +97,3 @@ export function Select({
     </div>
   );
 }
-

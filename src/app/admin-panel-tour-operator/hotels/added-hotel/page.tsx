@@ -34,7 +34,7 @@ export default function AddedHotel() {
   }, []);
 
   return (
-    <section className='flex w-full flex-col gap-10'>
+    <div className='flex w-full flex-col gap-10'>
       <Typography children='Отель' variant='h4' />
       <div className='relative flex flex-col gap-2'>
         <Typography children='Название отеля' variant='l-bold' />
@@ -44,6 +44,7 @@ export default function AddedHotel() {
           placeholder='Введите название отеля'
           value={value}
           onChange={handleChange}
+          name='nameHotel'
         />
         {openDropdown && (
           <PopupWindow className='top-[110%] flex flex-col gap-2 px-5 py-4'>
@@ -53,14 +54,6 @@ export default function AddedHotel() {
         )}
       </div>
       {openField && <AddedHotelField />}
-      <div className='flex justify-end gap-4'>
-        <ButtonCustom variant='secondary' size='m'>
-          <Typography children='Отменить' variant='l-bold' />
-        </ButtonCustom>
-        <ButtonCustom variant='primary' size='m'>
-          <Typography children='Сохранить' variant='l-bold' />
-        </ButtonCustom>
-      </div>
-    </section>
+    </div>
   );
 }
