@@ -33,6 +33,14 @@ export default async function Home() {
         link='/catalog-hotels'
         className='mt-10 md:mt-14 lg:mt-20'
       />
+      <HotOffer
+        array={arr}
+        type='hotel'
+        title='Что насчет погреться в Турции?'
+        link='/catalog-hotels'
+        className='mt-10 md:mt-14 lg:mt-20'
+      />
+
       <AdvertisingBanner />
       <PopularDestinations />
       <OurAdvantages />
