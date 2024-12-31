@@ -14,6 +14,7 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
 
   const [title, setTitle] = useState('Личный кабинет туроператора');
   const [openTabsAddHotel, setOpenTabsAddHotel] = useState(false);
+  const [activeTab, setActiveTab] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (patch.includes('added-flights')) {
@@ -30,6 +31,18 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
       return;
     }
   }, [patch]);
+
+  useEffect(() => {
+    if (patch.includes('food')) {
+      setActiveTab('Питание');
+    } else if (patch.includes('rooms')) {
+      setActiveTab('Номера');
+    } else if (patch.includes('dates')) {
+      setActiveTab('Даты');
+    } else {
+      setActiveTab('Отель');
+    }
+  }, []);
 
   const handleTabName = (tabName: string) => {
     switch (tabName) {
@@ -60,7 +73,11 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
         />
         <div className='mt-10'>
           {openTabsAddHotel && (
-            <TabBar tabs={tabsHotelAdded} getTabName={handleTabName} />
+            <TabBar
+              tabs={tabsHotelAdded}
+              getTabName={handleTabName}
+              setTab={activeTab}
+            />
           )}
         </div>
       </div>

@@ -33,6 +33,12 @@ export default function RootLayout({
   return (
     <StoreProvider>
       <html lang='ru'>
+        <link
+          rel='icon'
+          href='/icon?<generated>'
+          type='image/<generated>'
+          sizes='<generated>'
+        />
         <body className={`${futura.className} flex min-h-screen flex-col`}>
           <Header />
           <main className='grow'> {children}</main>

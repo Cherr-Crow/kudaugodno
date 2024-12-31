@@ -5,6 +5,7 @@ export interface ITabBar {
   svgTab?: svgTabType;
   colorHero?: string;
   tabIndex?: (tab: string) => void;
+  setTab?: string;
 }
 
 export type svgTabType = Array<

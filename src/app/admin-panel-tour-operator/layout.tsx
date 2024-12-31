@@ -3,7 +3,7 @@
 import { AdminPanelDashboard } from '@/widgets/admin-panel-dashboard';
 import { TourOperatorPanelTitle } from '@/widgets/tour-operator-panel-title';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function AdminPanelTourOperatorLayout({
   children,

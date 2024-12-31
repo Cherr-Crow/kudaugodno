@@ -72,7 +72,7 @@ export function Select({
         <SvgSprite
           name='arrow'
           width={20}
-          className={`cursor-pointer ${isOpen ? '-rotate-90' : 'rotate-90'} ${screen.width < 1280 && arrowHidden && 'hidden'}`}
+          className={`cursor-pointer ${isOpen ? '-rotate-90' : 'rotate-90'} ${screen?.width < 1280 && arrowHidden && 'hidden'}`}
         />
       </div>
       {isOpen && (
