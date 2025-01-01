@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3668177f-7051-4ea2-8b02-9165f0af8dc7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/ui/tab-bar/TabBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/ui/tab-bar/TabBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,9 +19,9 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="ProjectErrors" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2qpqIbNIRxaFz99UXt3fEjJQyq4" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -40,7 +40,7 @@
     "nodejs_package_manager_path": "npm",
     "prettierjs.PrettierConfiguration.Package": "/Users/romannaroznov/Documents/gitHub(ssr)/36_kuda_ugodno_frontend/node_modules/prettier",
     "settings.editor.selected.configurable": "reference.idesettings.emmet.jsx",
-    "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "ts.external.directory.path": "/Users/romannaroznov/Documents/gitHub(ssr)/36_kuda_ugodno_frontend/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -59,7 +59,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1735369786214</updated>
-      <workItem from="1735369787912" duration="39177000" />
+      <workItem from="1735369787912" duration="39636000" />
+      <workItem from="1735645088915" duration="991000" />
     </task>
     <servers />
   </component>
