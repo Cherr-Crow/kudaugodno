@@ -19,6 +19,7 @@ export default async function Home() {
     <div className='container flex flex-col gap-3'>
       <Hero />
       <Wzhuh />
+      {/*TODO: блоки "HotOffer" оживить после подключения бэкенда*/}
       {/*<HotOffer*/}
       {/*  array={arr}*/}
       {/*  type='hotel'*/}
