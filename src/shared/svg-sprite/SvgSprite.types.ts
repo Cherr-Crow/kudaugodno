@@ -1,4 +1,6 @@
-export interface ISvgSprite {
+type DivProps = React.ComponentPropsWithoutRef<'svg'>;
+
+export interface ISvgSprite extends DivProps {
   className?: string;
   name:
     | 'entertainment'

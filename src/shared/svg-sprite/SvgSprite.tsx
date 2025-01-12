@@ -3,7 +3,14 @@
 import React from 'react';
 import { ISvgSprite } from './SvgSprite.types';
 
-export function SvgSprite({ className, name, color, width, height }: ISvgSprite) {
+export function SvgSprite({
+  className,
+  name,
+  color,
+  width,
+  height,
+  onClick,
+}: ISvgSprite) {
   switch (name) {
     case 'entertainment':
       return (
@@ -940,6 +947,7 @@ export function SvgSprite({ className, name, color, width, height }: ISvgSprite)
           viewBox='0 0 25 24'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
+          onClick={onClick}
         >
           <path
             d='M9.5 18L15.5 12L9.5 6'

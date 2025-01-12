@@ -5,8 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3668177f-7051-4ea2-8b02-9165f0af8dc7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/rtk/slices/hotelCreate.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/widgets/calendar/Calendar.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/widgets/calendar/Calendar.types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/widgets/calendar/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/hotels/added-hotel/dates/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/hotels/added-hotel/dates/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/hotels/added-hotel/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/hotels/added-hotel/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/svg-sprite/SvgSprite.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/svg-sprite/SvgSprite.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/svg-sprite/SvgSprite.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/svg-sprite/SvgSprite.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/ui/search-form/search-form-utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/ui/search-form/search-form-utils.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,6 +56,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/widgets" />
+    </key>
+  </component>
   <component name="RunManager" selected="npm.dev">
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
@@ -91,7 +106,7 @@
       <updated>1735369786214</updated>
       <workItem from="1735369787912" duration="39636000" />
       <workItem from="1735645088915" duration="3808000" />
-      <workItem from="1735782358182" duration="5127000" />
+      <workItem from="1735782358182" duration="63858000" />
     </task>
     <servers />
   </component>
