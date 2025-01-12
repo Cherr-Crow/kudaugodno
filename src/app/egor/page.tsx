@@ -2,6 +2,13 @@ import React from 'react';
 import { Switcher } from '@/shared/ui/switcher';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { RadioButton } from '@/shared/ui/radio-button';
+import { OurAdvantages } from '@/widgets/our-advantages';
+import { Hero } from '@/widgets/hero';
+import { Wzhuh } from '@/widgets/wzhuh';
+import { AdvertisingBanner } from '@/widgets/advertising-banner';
+import { PopularDestinations } from '@/widgets/popular-destinations';
+import { SubscribeToTheNewsletter } from '@/widgets/subscribe-to-the-newsletter';
+
 
 export default function Egor() {
   return (
@@ -32,6 +39,16 @@ export default function Egor() {
         <label>Switcher's active by default</label>
         <RadioButton label='RadioButton text' isSelected={true} />
       </div>
+
+      <div className='container flex flex-col gap-3'>
+        <Hero />
+        <Wzhuh />
+        <AdvertisingBanner />
+        <PopularDestinations />
+        <OurAdvantages />
+        <SubscribeToTheNewsletter />
+      </div>
+
     </div>
   );
 }

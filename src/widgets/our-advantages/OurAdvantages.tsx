@@ -25,14 +25,14 @@ export function OurAdvantages({ className }: IOurAdvantages) {
   return (
     <section className={`${className}`}>
       <div className="">
-        <Typography variant="h4" className="mb-5 font-semibold text-[21px] lg:text-[32px]">
+        <Typography variant="h4" className="mb-5 font-semibold text-[22px] lg:text-[32px]">
           Зачем ехать в тур с нами?
         </Typography>
         <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:gap-5">
           {advantages.map((advantage, index) => (
             <div
               key={index}
-              className="bg-white h-[190px] md:h-auto xl:h-[290px] p-5 pr-28 lg:pr-40 rounded-3xl shadow-lg relative flex flex-col text-left"
+              className="bg-white min-h-[190px] md:h-auto xl:h-[290px] p-5 pr-28 lg:pr-40 rounded-3xl shadow-lg relative flex flex-col text-left"
               style={{
                 boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
               }}
@@ -44,7 +44,7 @@ export function OurAdvantages({ className }: IOurAdvantages) {
               />
               <Typography
                 variant="h4"
-                className="text-[17px] font-semibold lg:mb-1 lg:leading-loose"
+                className="text-[15px] font-semibold md:text-[17px] lg:mb-1 lg:leading-loose"
               >
                 {advantage.title}
               </Typography>
