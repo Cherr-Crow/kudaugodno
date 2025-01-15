@@ -1,4 +1,4 @@
-export type hotels_create = {
+export type hotelsCreate = {
   name: string;
   star_category: number; //1 | 2 | 3 | 4 | 5;
   place: string; //'Отель' | 'Хостел' | 'Вилла' | 'Апартаменты' | 'Гостевой дом' | 'Гостиница'; // я б переименовал в type_of_accommodation
@@ -15,19 +15,19 @@ export type hotels_create = {
   type_of_rest: string; //'Пляжный' | 'Городской';
   amenities: string[]; //'Бассейн'|'Собственный пляж'|'Семейные номера'|'Детский клуб'|'Аквапарк'|'Теннисный корт'|'Ресторан a la carte'|'Бесплатный интернет' + (надо сначала получить возможные, отдать выбранные, при необходимости добавить)
   photos_hotel: string[];
-  meal: hotels_create_meal[];
-  rooms: hotels_create_rooms[];
-  dates: hotels_create_date[] | null;
+  meal: hotelsCreateMeal[];
+  rooms: hotelsCreateRooms[];
+  dates: hotelsCreateDate[] | null;
   // отзывы
 };
 
-export type hotels_create_meal = {
+export type hotelsCreateMeal = {
   reservation_available_without_meals: boolean; // Доступно бронирование без питания
   type_of_meals: string; // завтрак|обед|ужин + возможность добавить
   cost_day: number; // string? что б была возможность передать с валютой
 };
 
-export type hotels_create_rooms = {
+export type hotelsCreateRooms = {
   room_category: string;
   type_meal: string[];
   number_of_residents: number;
@@ -36,7 +36,7 @@ export type hotels_create_rooms = {
   photos_room: string[];
 };
 
-export type hotels_create_date = {
+export type hotelsCreateDate = {
   date: string;
   available_for_booking: boolean;
   promotions: boolean;
