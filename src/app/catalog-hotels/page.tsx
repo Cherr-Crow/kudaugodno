@@ -1,4 +1,3 @@
-<<<<<<< src/app/catalog-hotels/page.tsx
 'use client';
 import { Hotel } from '@/types/hotel';
 import React, { useState } from 'react';
@@ -108,23 +107,24 @@ export default function CatalogHotels() {
     },
   ];
 
-
   return (
-    <div className="p-4">
+    <div className='p-4'>
       {hotels.map((hotel) => (
-        <div key={hotel.id} className="container mb-6">
-
-          <div className="py-4">
-            <div className="flex flex-row items-center">
-              <Typography variant="h2" className="text-2xl font-bold flex items-center mr-2">
+        <div key={hotel.id} className='container mb-6'>
+          <div className='py-4'>
+            <div className='flex flex-row items-center'>
+              <Typography
+                variant='h2'
+                className='mr-2 flex items-center text-2xl font-bold'
+              >
                 {hotel.name}
               </Typography>
               {Array.from({ length: hotel.star_category }).map((_, index) => (
                 <img
                   key={index}
-                  src="icon-star.svg"
-                  alt="star-icon"
-                  className="w-5 h-5 text-yellow-500"
+                  src='icon-star.svg'
+                  alt='star-icon'
+                  className='text-yellow-500 h-5 w-5'
                 />
               ))}
 
@@ -132,68 +132,73 @@ export default function CatalogHotels() {
               {Array.from({ length: 5 - hotel.star_category }).map((_, index) => (
                 <img
                   key={index + hotel.star_category}
-                  src="icon-star-hollow.svg"
-                  alt="empty-star-icon"
-                  className="w-5 h-5 text-gray-300"
+                  src='icon-star-hollow.svg'
+                  alt='empty-star-icon'
+                  className='text-gray-300 h-5 w-5'
                 />
               ))}
             </div>
 
-            <div className="flex items-center gap-2">
-              <img src={'icon-location.svg'} alt="location-icon" className="w-4 h-4" />
-              <Typography variant="s" className="text-sm text-gray-600">
+            <div className='flex items-center gap-2'>
+              <img
+                src={'icon-location.svg'}
+                alt='location-icon'
+                className='h-4 w-4'
+              />
+              <Typography variant='s' className='text-gray-600 text-sm'>
                 {hotel.place}
               </Typography>
               <Typography
-                variant="s-bold"
-                className="text-sm font-medium p-1 pl-2 pr-2 rounded-lg bg-green-secondary"
+                variant='s-bold'
+                className='rounded-lg bg-green-secondary p-1 pl-2 pr-2 text-sm font-medium'
               >
                 {hotel.user_rating}
               </Typography>
             </div>
           </div>
 
-
-
-          <div className="h-[182px] md:h-auto grid grid-cols-1 lg:grid-cols-2 gap-4 py-4">
+          <div className='grid h-[182px] grid-cols-1 gap-4 py-4 md:h-auto lg:grid-cols-2'>
             <img
               src={hotel.photos[0]?.photo}
               alt={`Hotel ${hotel.name} hotel-photo`}
-              className="hidden lg:block w-full h-full object-cover rounded-lg shadow-md"
+              className='hidden h-full w-full rounded-lg object-cover shadow-md lg:block'
             />
 
-            <div className="flex md:grid md:grid-cols-2 overflow-x-auto gap-4">
+            <div className='flex gap-4 overflow-x-auto md:grid md:grid-cols-2'>
               <img
                 src={hotel.photos[1]?.photo}
                 alt={`Hotel ${hotel.name} hotel-photo`}
-                className="md:w-full object-cover rounded-lg shadow-md flex-shrink-0"
+                className='flex-shrink-0 rounded-lg object-cover shadow-md md:w-full'
               />
               <img
                 src={hotel.photos[2]?.photo}
                 alt={`Hotel ${hotel.name} hotel-photo`}
-                className="md:w-full object-cover rounded-lg shadow-md flex-shrink-0"
+                className='flex-shrink-0 rounded-lg object-cover shadow-md md:w-full'
               />
               <img
                 src={hotel.photos[3]?.photo}
                 alt={`Hotel ${hotel.name} hotel-photo`}
-                className="md:w-full object-cover rounded-lg shadow-md flex-shrink-0"
+                className='flex-shrink-0 rounded-lg object-cover shadow-md md:w-full'
               />
 
-              <div className="w-48 md:w-full p-2 rounded-lg shadow-md relative flex-shrink-0">
+              <div className='relative w-48 flex-shrink-0 rounded-lg p-2 shadow-md md:w-full'>
                 <div
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-cover bg-center w-full h-full"
+                  className='absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transform bg-cover bg-center'
                   style={{
                     backgroundImage: `url(${hotel.photos[4]?.photo})`,
                     opacity: 0.6,
                   }}
                 />
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center gap-1 bg-blue-light rounded-3xl p-3 pl-4 pr-4 z-10 md:min-w-40">
+                <div className='absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform items-center justify-center gap-1 rounded-3xl bg-blue-light p-3 pl-4 pr-4 md:min-w-40'>
                   <img
                     src={'amenity-icon-all-photos.svg'}
-                    alt="check-in-icon"
-                    className="w-6 h-6"
+                    alt='check-in-icon'
+                    className='h-6 w-6'
                   />
-                  <Typography variant="s-bold" className="text-sm font-bold text-black">
+                  <Typography
+                    variant='s-bold'
+                    className='text-sm font-bold text-black'
+                  >
                     Все фотографии
                   </Typography>
                 </div>
@@ -201,11 +206,8 @@ export default function CatalogHotels() {
             </div>
           </div>
 
-
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 py-4">
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className='grid grid-cols-1 gap-4 py-4 lg:grid-cols-2'>
+            <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
               {hotel.amenities.slice(0, 11).map((amenity) => {
                 const getIcon = (name: string) => {
                   switch (name) {
@@ -239,155 +241,139 @@ export default function CatalogHotels() {
                 return (
                   <div
                     key={amenity.id}
-                    className="flex items-center justify-center gap-2 bg-gray-100 rounded-2xl px-4 py-4 shadow-md outline outline-1 outline-blue-bold"
+                    className='bg-gray-100 flex items-center justify-center gap-2 rounded-2xl px-4 py-4 shadow-md outline outline-1 outline-blue-bold'
                   >
                     <img
                       src={getIcon(amenity.name)}
                       alt={amenity.name}
-                      className="w-6 h-6"
+                      className='h-6 w-6'
                     />
-                    <Typography variant="s" className="text-gray-700">{amenity.name}</Typography>
+                    <Typography variant='s' className='text-gray-700'>
+                      {amenity.name}
+                    </Typography>
                   </div>
                 );
               })}
 
               {hotel.amenities.length > 11 && (
-                <div className="flex items-center justify-center gap-0.5 bg-blue-300 rounded-2xl px-4 py-4 group  shadow-md outline outline-1 outline-blue-600">
-                  <Typography variant="s-bold" className="text-sm text-blue-bold">
+                <div className='group flex items-center justify-center gap-0.5 rounded-2xl bg-blue-300 px-4 py-4 shadow-md outline outline-1 outline-blue-600'>
+                  <Typography variant='s-bold' className='text-sm text-blue-bold'>
                     Еще {hotel.amenities.length - 11} удобств
                   </Typography>
                   <img
                     src={'icon-arrow.svg'}
-                    alt="arrow-icon"
-                    className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-1 mt-0.5"
+                    alt='arrow-icon'
+                    className='mt-0.5 h-3 w-3 transition-transform duration-200 group-hover:translate-x-1'
                   />
                 </div>
               )}
             </div>
 
-
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-              <div className="h-44 md:h-56 flex-1 p-6 shadow-md rounded-2xl">
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+              <div className='h-44 flex-1 rounded-2xl p-6 shadow-md md:h-56'>
                 <div className='flex gap-8 md:flex-col md:gap-2'>
                   <img
                     src={'amenity-icon-check-in.svg'}
                     alt={`check-in-icon`}
-                    className="w-8 h-8"
+                    className='h-8 w-8'
                   />
-                  <Typography variant="l" className="font-semibold mb-2">Условия заселения</Typography>
+                  <Typography variant='l' className='mb-2 font-semibold'>
+                    Условия заселения
+                  </Typography>
                 </div>
                 <div className='flex flex-col'>
-                  <Typography variant="m" className="text-gray-600">
+                  <Typography variant='m' className='text-gray-600'>
                     Заселение: {hotel.check_in_time}
                   </Typography>
-                  <Typography variant="m" className="text-gray-600 mb-3">
+                  <Typography variant='m' className='text-gray-600 mb-3'>
                     Выселение: {hotel.check_out_time}
                   </Typography>
                 </div>
-                <div className="flex  items-center gap-0.5 group">
-                  <Typography variant="l" className="text-2xl text-blue-600">
+                <div className='group flex items-center gap-0.5'>
+                  <Typography variant='l' className='text-2xl text-blue-600'>
                     Все условия
                   </Typography>
                   <img
                     src={'icon-arrow.svg'}
-                    alt="check-in-icon"
-                    className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-1 mt-0.5"
+                    alt='check-in-icon'
+                    className='mt-0.5 h-3 w-3 transition-transform duration-200 group-hover:translate-x-1'
                   />
                 </div>
               </div>
 
               <div
-                className="flex p-2 bg-cover bg-center rounded-2xl items-center shadow-md min-h-40"
+                className='flex min-h-40 items-center rounded-2xl bg-cover bg-center p-2 shadow-md'
                 style={{
                   backgroundImage: "url('map.png')",
-                  backgroundPosition: "10% 10%",
+                  backgroundPosition: '10% 10%',
                 }}
               >
-                <div className='flex items-center justify-center m-auto gap-1 bg-blue-light rounded-3xl p-3 pl-6 pr-6'>
+                <div className='m-auto flex items-center justify-center gap-1 rounded-3xl bg-blue-light p-3 pl-6 pr-6'>
                   <img
                     src={'icon-location.svg'}
-                    alt="check-in-icon"
-                    className="w-6 h-6"
+                    alt='check-in-icon'
+                    className='h-6 w-6'
                   />
-                  <Typography variant="s-bold" className="text-black">
+                  <Typography variant='s-bold' className='text-black'>
                     Смотреть на карте
                   </Typography>
                 </div>
               </div>
 
-              <div className="md:col-span-2 flex-1 p-4 shadow-md rounded-2xl">
+              <div className='flex-1 rounded-2xl p-4 shadow-md md:col-span-2'>
                 {hotels[0].reviews.map((review) => (
-                  <div key={review.id} className="mb-4 border-b pb-4">
-                    <div className="flex items-center gap-3 mb-2">
+                  <div key={review.id} className='mb-4 border-b pb-4'>
+                    <div className='mb-2 flex items-center gap-3'>
                       <img
                         src={review.userPhoto}
                         alt={review.username}
-                        className="w-8 h-8 rounded-full"
+                        className='h-8 w-8 rounded-full'
                       />
                       <div>
-                        <Typography variant="s" className="font-semibold">{review.username}</Typography>
+                        <Typography variant='s' className='font-semibold'>
+                          {review.username}
+                        </Typography>
                       </div>
-                      <div className="text-sm font-medium ml-auto py-1 px-2 md:py-2 md:px-3 rounded-lg bg-green-secondary">
+                      <div className='ml-auto rounded-lg bg-green-secondary px-2 py-1 text-sm font-medium md:px-3 md:py-2'>
                         {review.rating}
                       </div>
                     </div>
-                    <Typography variant="xs" className="text-gray-500 mb-2">{review.date}</Typography>
-                    <div className="flex justify-between items-center">
-                      <Typography variant="s" className="text-gray-700 mb-2">{review.text}</Typography>
+                    <Typography variant='xs' className='text-gray-500 mb-2'>
+                      {review.date}
+                    </Typography>
+                    <div className='flex items-center justify-between'>
+                      <Typography variant='s' className='text-gray-700 mb-2'>
+                        {review.text}
+                      </Typography>
                     </div>
                   </div>
                 ))}
-                <div className="flex items-center justify-end gap-0.5 group">
-                  <Typography variant="s" className="text-blue-600">Еще 70 отзывов</Typography>
+                <div className='group flex items-center justify-end gap-0.5'>
+                  <Typography variant='s' className='text-blue-600'>
+                    Еще 70 отзывов
+                  </Typography>
                   <img
-                    src="icon-arrow.svg"
-                    alt="arrow-icon"
-                    className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-1 mt-0.5"
+                    src='icon-arrow.svg'
+                    alt='arrow-icon'
+                    className='mt-0.5 h-3 w-3 transition-transform duration-200 group-hover:translate-x-1'
                   />
                 </div>
               </div>
-
             </div>
-
-
           </div>
-
-
         </div>
       ))}
-
       return (
       <section
         className={`container rounded-bl-[20px] rounded-br-[20px] xl:rounded-bl-[100px] xl:rounded-br-[100px]`}
       >
         <Breadcrumbs></Breadcrumbs>
-        <SearchForm className={'shadow-lg border-solid mb-[40px] xl:mb-[313px]'} tabClick={''} />
+        <SearchForm
+          className={'mb-[40px] border-solid shadow-lg xl:mb-[313px]'}
+          tabClick={''}
+        />
       </section>
       );
-
     </div>
-
-  );
-
-}
-
-=======
-'use client';
-import { Breadcrumbs } from '@/shared/breadcrumbs';
-import { SearchForm } from '@/shared/ui/search-form';
-import { TabBar } from '@/shared/ui/tab-bar';
-import React, { useState } from 'react';
-export default function CatalogHotels({ }) {
-  const [tabClick, setTabClick] = useState<string>('Туры');
-  return (
-    <section
-      className={`container rounded-bl-[20px] rounded-br-[20px] xl:rounded-bl-[100px] xl:rounded-br-[100px]`}
-    >
-      <Breadcrumbs></Breadcrumbs>
-      <SearchForm  className={'shadow-lg border-solid mb-[40px] xl:mb-[313px]'} tabClick={''} />
-    </section>
   );
 }
->>>>>>> src/app/catalog-hotels/page.tsx
