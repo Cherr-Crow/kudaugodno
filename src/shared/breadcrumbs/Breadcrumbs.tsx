@@ -12,12 +12,11 @@ const crumbs: Record<string, string> = {
 };
 export function Breadcrumbs({}: IBreadcrumbs) {
   const pathname = usePathname();
-  //const pathname = '/catalog-hotels/Kenia/Nairobi/Novotel Nairobi Westlands'; для тестового роутинга
   const router = useRouter();
   const route = pathname.split('/');
   route.shift();
   return (
-    <div className={` mt-6 mb-10`}>
+    <div className={`invisible mt-6 mb-10 lg:visible `}>
       <ul className={`flex flex-row gap-1`}>
         {route.map((elem, i) =>
           crumbs[elem] ? (
