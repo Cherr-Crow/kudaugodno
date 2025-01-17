@@ -4,6 +4,7 @@
 
     - Raect (19.0.0);
     - Next.js (15.1.3);
+    - Redux Toolkit;
     - TailWind css;
 
 ## Getting Started

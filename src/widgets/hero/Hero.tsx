@@ -10,6 +10,7 @@ import 'react-calendar/dist/Calendar.css';
 import '../../shared/ui/calendar/calendar_custom.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { setWindowWidth } from '@/app/rtk/slices/windowWidthSlice';
+import { Wzhuh } from '@/widgets/wzhuh';
 
 const tabs = ['Туры', 'Отели'];
 const tabsSvg: (
@@ -54,7 +55,7 @@ export function Hero({ className }: IHero) {
 
   return (
     <section
-      className={`${className} container rounded-bl-[20px] rounded-br-[20px] bg-blue-600 xl:rounded-bl-[100px] xl:rounded-br-[100px]`}
+      className={`${className} container relative rounded-bl-[20px] rounded-br-[20px] bg-blue-600 md:mb-20 xl:rounded-bl-[100px] xl:rounded-br-[100px]`}
       style={{
         backgroundImage: `url('/plain.svg')`,
         backgroundSize: '38%',
@@ -80,9 +81,10 @@ export function Hero({ className }: IHero) {
           className='mb-3 border border-solid border-white bg-transparent pb-0 pl-0 pr-0 pt-0 text-white'
         />
         <div className='w-full'>
-          <SearchForm tabClick={tabClick} className={'mb-[40px] xl:mb-[313px]'} />
+          <SearchForm tabClick={tabClick} className={'mb-[40px] xl:mb-[300px]'} />
         </div>
       </div>
+      <Wzhuh className='absolute left-1/2 top-2/3 hidden w-3/4 -translate-x-1/2 xl:flex' />
     </section>
   );
 }

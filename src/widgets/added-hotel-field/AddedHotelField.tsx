@@ -6,6 +6,7 @@ import { Typography } from '@/shared/typography';
 import { Select } from '@/shared/ui/select';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Checkbox } from '@/shared/ui/checkbox';
+import { AddedButton } from '@/shared/ui/added-button';
 
 const typeOfHoliday = ['Пляжный', 'Городской'];
 const accommodationType = [
@@ -142,6 +143,7 @@ export function AddedHotelField({}: IAddedHotelField) {
           <Checkbox label='Ресторан a la carte' />
           <Checkbox label='Бесплатный интернет' />
         </div>
+        <AddedButton text='Добавить удобства' onClick={() => {}} />
       </div>
       <div className='flex w-full flex-col gap-3'>
         <Typography children='Заселение' variant='l-bold' />
