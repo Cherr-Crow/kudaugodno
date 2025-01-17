@@ -3,16 +3,9 @@ export type Hotel = {
   name: string;
   star_category: number;
   place: string;
-  amenities: [
-    {
-      id: number;
-      name: string;
-    },
-    {
-      id: number;
-      name: string;
-    },
-  ];
+  amenities: { 
+    id: number; name: string 
+  }[];
   country: string;
   city: string;
   address: string;
@@ -31,30 +24,16 @@ export type Hotel = {
       smoking: false;
       pet: false;
       area: number;
-      amenities: [
-        {
-          id: number;
-          name: string;
-        },
-        {
-          id: number;
-          name: string;
-        },
-      ];
+      amenities: { 
+        id: number; name: string 
+      }[];
       capacity: number;
       single_bed: null;
       double_bed: number;
       nightly_price: number;
-      photos: [
-        {
-          id: number;
-          photo: string;
-        },
-        {
-          id: number;
-          photo: string;
-        },
-      ];
+      photos: { 
+        id: number; photo: string 
+      }[];
     },
     {
       id: number;
@@ -67,47 +46,30 @@ export type Hotel = {
       smoking: false;
       pet: false;
       area: number;
-      amenities: [
-        {
-          id: number;
-          name: string;
-        },
-        {
-          id: number;
-          name: string;
-        },
-        {
-          id: number;
-          name: string;
-        },
-      ];
+      amenities: { 
+        id: number; name: string 
+      }[];
       capacity: number;
       single_bed: null;
       double_bed: number;
       nightly_price: number;
-      photos: [
-        {
-          id: number;
-          photo: string;
-        },
-        {
-          id: number;
-          photo: string;
-        },
-      ];
+      photos: { 
+        id: number; photo: string 
+      }[];
     },
   ];
   user_rating: number;
+  reviews: {
+    id: number;
+    username: string;
+    userPhoto: string;
+    date: string;
+    rating: number;
+    text: string;
+  }[];
   check_in_time: string;
   check_out_time: string;
-  photos: [
-    {
-      id: number;
-      photo: string;
-    },
-    {
-      id: number;
-      photo: string;
-    },
-  ];
+  photos: { 
+    id: number; photo: string 
+  }[];
 };
