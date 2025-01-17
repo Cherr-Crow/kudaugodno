@@ -23,6 +23,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.54.1",
     "react-redux": "^9.2.0",
+    "swiper": "^11.2.1",
     "usehooks-ts": "^3.1.0",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest-browser-react": "^0.0.4"
