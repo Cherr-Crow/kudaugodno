@@ -34,8 +34,14 @@ export const Calendar: FC<ICalendar> = React.memo(({ month, year }) => {
       dateArr.push(new Date(year, month, i));
     }
 
-    for (let k = dateArr[0].getDay() - 1, i = 0; k > 0; k--, i--) {
-      dateArr.unshift(new Date(year, month, i));
+    if (dateArr[0].getDay() != 0) {
+      for (let k = dateArr[0].getDay() - 1, i = 0; k > 0; k--, i--) {
+        dateArr.unshift(new Date(year, month, i));
+      }
+    } else {
+      for (let k = 6, i = 0; k > 0; k--, i--) {
+        dateArr.unshift(new Date(year, month, i));
+      }
     }
 
     if (lastDayOfTheMonth.getDay() !== 0) {

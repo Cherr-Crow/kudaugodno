@@ -18,7 +18,7 @@ export default async function Home() {
   return (
     <div className='container flex flex-col gap-3'>
       <Hero />
-      <Wzhuh />
+      <Wzhuh className='xl:hidden' />
       {/*TODO: блоки "HotOffer" оживить после подключения бэкенда*/}
       {/*<HotOffer*/}
       {/*  array={arr}*/}

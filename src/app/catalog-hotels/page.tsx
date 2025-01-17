@@ -1,9 +1,14 @@
+<<<<<<< src/app/catalog-hotels/page.tsx
+'use client';
 import { Hotel } from '@/types/hotel';
-import React from 'react';
+import React, { useState } from 'react';
 import { Typography } from '@/shared/typography';
+import { Breadcrumbs } from '@/shared/breadcrumbs';
+import { SearchForm } from '@/shared/ui/search-form';
+import { TabBar } from '@/shared/ui/tab-bar';
 
 export default function CatalogHotels() {
-
+  const [tabClick, setTabClick] = useState<string>('Туры');
   const hotels: Hotel[] = [
     {
       id: 1,
@@ -111,28 +116,28 @@ export default function CatalogHotels() {
 
           <div className="py-4">
             <div className="flex flex-row items-center">
-            <Typography variant="h2" className="text-2xl font-bold flex items-center mr-2">
-              {hotel.name}
-            </Typography>
-                {Array.from({ length: hotel.star_category }).map((_, index) => (
-                  <img
-                    key={index}
-                    src="icon-star.svg"
-                    alt="star-icon"
-                    className="w-5 h-5 text-yellow-500"
-                  />
-                ))}
+              <Typography variant="h2" className="text-2xl font-bold flex items-center mr-2">
+                {hotel.name}
+              </Typography>
+              {Array.from({ length: hotel.star_category }).map((_, index) => (
+                <img
+                  key={index}
+                  src="icon-star.svg"
+                  alt="star-icon"
+                  className="w-5 h-5 text-yellow-500"
+                />
+              ))}
 
-                {/* Можно убрать пустые звезды в рейтинге отеля */}
-                {Array.from({ length: 5 - hotel.star_category }).map((_, index) => (
-                  <img
-                    key={index + hotel.star_category}
-                    src="icon-star-hollow.svg"
-                    alt="empty-star-icon"
-                    className="w-5 h-5 text-gray-300"
-                  />
-                ))}
-              </div>
+              {/* Можно убрать пустые звезды в рейтинге отеля */}
+              {Array.from({ length: 5 - hotel.star_category }).map((_, index) => (
+                <img
+                  key={index + hotel.star_category}
+                  src="icon-star-hollow.svg"
+                  alt="empty-star-icon"
+                  className="w-5 h-5 text-gray-300"
+                />
+              ))}
+            </div>
 
             <div className="flex items-center gap-2">
               <img src={'icon-location.svg'} alt="location-icon" className="w-4 h-4" />
@@ -352,6 +357,37 @@ export default function CatalogHotels() {
 
         </div>
       ))}
+
+      return (
+      <section
+        className={`container rounded-bl-[20px] rounded-br-[20px] xl:rounded-bl-[100px] xl:rounded-br-[100px]`}
+      >
+        <Breadcrumbs></Breadcrumbs>
+        <SearchForm className={'shadow-lg border-solid mb-[40px] xl:mb-[313px]'} tabClick={''} />
+      </section>
+      );
+
     </div>
+
+  );
+
+}
+
+=======
+'use client';
+import { Breadcrumbs } from '@/shared/breadcrumbs';
+import { SearchForm } from '@/shared/ui/search-form';
+import { TabBar } from '@/shared/ui/tab-bar';
+import React, { useState } from 'react';
+export default function CatalogHotels({ }) {
+  const [tabClick, setTabClick] = useState<string>('Туры');
+  return (
+    <section
+      className={`container rounded-bl-[20px] rounded-br-[20px] xl:rounded-bl-[100px] xl:rounded-br-[100px]`}
+    >
+      <Breadcrumbs></Breadcrumbs>
+      <SearchForm  className={'shadow-lg border-solid mb-[40px] xl:mb-[313px]'} tabClick={''} />
+    </section>
   );
 }
+>>>>>>> src/app/catalog-hotels/page.tsx
