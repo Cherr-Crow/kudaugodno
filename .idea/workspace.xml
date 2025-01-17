@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3668177f-7051-4ea2-8b02-9165f0af8dc7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/app/@modal/default.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/popup-window/PopupWindow.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/popup-window/PopupWindow.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/added-hotel-field/AddedHotelField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/added-hotel-field/AddedHotelField.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/calendar/Calendar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/calendar/Calendar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/hero/Hero.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/hero/Hero.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +99,7 @@
       <workItem from="1736778173681" duration="1471000" />
       <workItem from="1736793449786" duration="3555000" />
       <workItem from="1736953494832" duration="15903000" />
-      <workItem from="1737039007378" duration="2401000" />
+      <workItem from="1737039007378" duration="3374000" />
     </task>
     <servers />
   </component>
