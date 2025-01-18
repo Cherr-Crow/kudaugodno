@@ -38,7 +38,6 @@ export default async function Home() {
       <PopularDestinations />
       <OurAdvantages />
       <SubscribeToTheNewsletter />
-      <section> Это я</section>
       <HotelAmenities />
     </div>
   );

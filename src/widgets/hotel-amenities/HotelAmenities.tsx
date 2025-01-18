@@ -5,24 +5,6 @@ import { SvgSprite } from '@/shared/svg-sprite';
 import { nanoid } from '@reduxjs/toolkit';
 
 export function HotelAmenities({ className }: IHotelAmenities) {
-  // const amenities = [
-  //   {
-  //     title: 'Надёжное хранение всех документов в одном месте',
-  //     description:
-  //       'Больше не нужно искать билеты на разных почтах! Все ваши бронирования окажутся в личном кабинете',
-  //     icon: 'our_advantage_1.svg', 
-  //   },
-  //   {
-  //     title: 'Бонусная программа для постоянных покупателей',
-  //     description: 'Копите бонусы и тратьте их на путешествия',
-  //     icon: 'our_advantage_2.svg', 
-  //   },
-  //   {
-  //     title: 'Скидки, акции и специальные предложения только у нас',
-  //     description: 'Все акции на туры собраны в одном месте',
-  //     icon: 'our_advantage_3.svg', 
-  //   },
-  // ];
 
   const amenities = [
    {
@@ -65,7 +47,6 @@ export function HotelAmenities({ className }: IHotelAmenities) {
     },
   ];
 
-
   return (
     <section className={`${className}`}>
       <div className="hidden sm:block">
@@ -73,25 +54,8 @@ export function HotelAmenities({ className }: IHotelAmenities) {
           Удобства
         </Typography>
         
-        {/* <div className="grid grid-cols-1 gap-3 mb-5 md:grid-cols-4 lg:gap-[25px]"> */}
-        <ul className="flex justify-between mb-5">
+        <ul className="grid grid-cols-2 gap-7 mb-5 lg:flex lg:justify-between">
 
-          {/* {amenities.map((advantage, index) => (
-             <div>{advantage.title}</div>
-             
-           
-
-          ))} */}
-
-
-          {/* {amenities.map((item) => (
-
-              item.comfort.map((comfortitem) => <li>{comfortitem}</li>)
-              //  {<div>{item.title}</div>}
-                )
-          )} */}
-
-          
           {amenities.map((item) => (
             <li className='' key={nanoid()}>
                 <Typography className="block mb-3 font-semibold text-blue-900 md:text-lg md:text-black lg:text-xl">
@@ -109,17 +73,12 @@ export function HotelAmenities({ className }: IHotelAmenities) {
                 </Typography>
                 </div>
                   
-
-                // <div className="mb-2" key={id}>{comfortitem}</div>
                ))}
             
             </li>
-          
             )
           )}
 
-
-             
         </ul>
       </div>
     </section>
