@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IAddedHotelField } from './AddedHotelField.types';
 import { Typography } from '@/shared/typography';
 import { Select } from '@/shared/ui/select';
@@ -8,6 +8,8 @@ import { SvgSprite } from '@/shared/svg-sprite';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { AddedButton } from '@/shared/ui/added-button';
 import { Rating } from '@/shared/rating';
+import { nanoid } from 'nanoid';
+import { NamedInput } from '@/shared/ui/named-input';
 
 const typeOfHoliday = ['Пляжный', 'Городской'];
 const accommodationType = [
@@ -17,6 +19,25 @@ const accommodationType = [
   'Апартаменты',
   'Гостевой дом',
   'Гостиница',
+];
+const distances = [
+  'пляж',
+  'центр',
+  'аэропорт',
+  'вокзал',
+  'ларёк с пивом',
+  'бабушка',
+  'общественный туалет',
+];
+const comfort = [
+  'Бассейн',
+  'Собственный пляж',
+  'Семейные номера',
+  'Детский клуб',
+  'Аквапарк',
+  'Теннисный корт',
+  'Ресторан a la carte',
+  'Бесплатный интернет',
 ];
 
 export function AddedHotelField({}: IAddedHotelField) {
@@ -33,16 +54,16 @@ export function AddedHotelField({}: IAddedHotelField) {
     setCategory(index + 1);
   };
 
-  const handleCountryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCountry(e.target.value);
+  const handleCountryChange = (val: string) => {
+    setCountry(val);
   };
 
-  const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCity(e.target.value);
+  const handleCityChange = (val: string) => {
+    setCity(val);
   };
 
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress(e.target.value);
+  const handleAddressChange = (val: string) => {
+    setAddress(val);
   };
 
   const handleCheckIn = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,59 +111,62 @@ export function AddedHotelField({}: IAddedHotelField) {
           setRating={(index) => handleCategoryChange(index)}
         />
       </div>
-      <div className='flex w-full flex-col gap-3'>
-        <Typography children='Страна' variant='l-bold' />
-        <input
-          type='text'
-          className='w-full rounded-md border border-blue-600 px-4 py-2'
-          placeholder='Введите страну'
-          value={country}
-          onChange={handleCountryChange}
-          name='country'
-          autoComplete='on'
-        />
-      </div>
-      <div className='flex w-full flex-col gap-3'>
-        <Typography children='Город' variant='l-bold' />
-        <input
-          type='text'
-          className='w-full rounded-md border border-blue-600 px-4 py-2'
-          placeholder='Введите город'
-          value={city}
-          onChange={handleCityChange}
-          name='city'
-        />
-      </div>
-      <div className='col-start-1 col-end-3 flex w-full flex-col gap-3'>
-        <Typography children='Адрес' variant='l-bold' />
-        <input
-          type='text'
-          className='w-full rounded-md border border-blue-600 px-4 py-2'
-          placeholder='Введите адрес'
-          value={address}
-          onChange={handleAddressChange}
-          name='address'
-          autoComplete='on'
-        />
+      <NamedInput
+        placeholder='Введите страну'
+        name='country'
+        getValue={handleCountryChange}
+        title='Страна'
+      />
+      <NamedInput
+        placeholder='Введите город'
+        name='city'
+        getValue={handleCityChange}
+        title='Город'
+      />
+      <NamedInput
+        placeholder='Введите адрес'
+        name='address'
+        getValue={handleAddressChange}
+        title='Адрес'
+        className='col-start-1 col-end-3'
+      />
+      <div className='col-start-1 col-end-3 flex flex-col gap-3'>
+        <Typography children='Расстояние от' variant='l-bold' />
+        <div className='flex gap-5'>
+          <Select
+            options={distances}
+            color='blue'
+            size='small'
+            className='w-full'
+            id='select-type-of-holiday'
+          />
+          <input
+            type='text'
+            className='w-full rounded-md border border-blue-600 px-4 py-2'
+            placeholder='Введите расстояние, км'
+            // value={address}
+            // onChange={handleAddressChange}
+            name='distance'
+            autoComplete='on'
+          />
+        </div>
+        <AddedButton text='Добавить расстояние' onClick={() => {}} />
       </div>
       <div className='col-start-1 col-end-3 flex w-full flex-col gap-3'>
         <Typography children='Удобства' variant='l-bold' />
-        <div className='flex gap-3'>
-          <Checkbox label='Бассейн' />
-          <Checkbox label='Собственный пляж' />
-          <Checkbox label='Семейные номера' />
-          <Checkbox label='Детский клуб' />
-          <Checkbox label='Аквапарк' />
-          <Checkbox label='Теннисный корт' />
-          <Checkbox label='Ресторан a la carte' />
-          <Checkbox label='Бесплатный интернет' />
-        </div>
+        <ul className='flex gap-3'>
+          {comfort.map((item, index) => (
+            <li key={nanoid()}>
+              <Checkbox label={item} />
+            </li>
+          ))}
+        </ul>
         <AddedButton text='Добавить удобства' onClick={() => {}} />
       </div>
       <div className='flex w-full flex-col gap-3'>
         <Typography children='Заселение' variant='l-bold' />
         <input
-          type='text'
+          type='time'
           className='w-full rounded-md border border-blue-600 px-4 py-2'
           placeholder='12:00'
           value={checkIn}
@@ -153,7 +177,7 @@ export function AddedHotelField({}: IAddedHotelField) {
       <div className='flex w-full flex-col gap-3'>
         <Typography children='Выезд' variant='l-bold' />
         <input
-          type='text'
+          type='time'
           className='w-full rounded-md border border-blue-600 px-4 py-2'
           placeholder='12:00'
           value={departure}
