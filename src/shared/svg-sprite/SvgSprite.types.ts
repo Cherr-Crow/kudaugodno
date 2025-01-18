@@ -38,7 +38,18 @@ export interface ISvgSprite extends DivProps {
     | 'list'
     | 'logo'
     | 'heart-outline'
-    | 'search';
+    | 'search'
+    //
+    | 'amenity-animals-allowed'
+    | 'amenity-cart-restaurant'
+    | 'amenity-check-in'
+    | 'amenity-family-room'
+    | 'amenity-pool'
+    | 'amenity-spa'
+    | 'amenity-wifi'
+    | 'our_advantage_1'
+    | 'our_advantage_2'
+    | 'our_advantage_3';
   color?: string;
   width?: number;
   height?: number;

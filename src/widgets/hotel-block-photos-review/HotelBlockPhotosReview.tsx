@@ -2,9 +2,11 @@ import React from 'react';
 import { IHotelBlockPhotosReview } from './HotelBlockPhotosReview.types';
 import { hotels } from '@/temp/hotel-mock';
 import { Typography } from '@/shared/typography';
+import { Rating } from '@/shared/rating';
+import { SvgSprite } from '@/shared/svg-sprite';
+import { serviceNames } from './service';
 
-export function HotelBlockPhotosReview({ }: IHotelBlockPhotosReview) {
-
+export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
   return (
     <>
       <div className='p-4'>
@@ -18,32 +20,11 @@ export function HotelBlockPhotosReview({ }: IHotelBlockPhotosReview) {
                 >
                   {hotel.name}
                 </Typography>
-                {Array.from({ length: hotel.star_category }).map((_, index) => (
-                  <img
-                    key={index}
-                    src='icon-star.svg'
-                    alt='star-icon'
-                    className='text-yellow-500 h-5 w-5'
-                  />
-                ))}
-
-                {/* Можно убрать пустые звезды в рейтинге отеля */}
-                {Array.from({ length: 5 - hotel.star_category }).map((_, index) => (
-                  <img
-                    key={index + hotel.star_category}
-                    src='icon-star-hollow.svg'
-                    alt='empty-star-icon'
-                    className='text-gray-300 h-5 w-5'
-                  />
-                ))}
+                <Rating category={hotel.star_category} />
               </div>
 
               <div className='flex items-center gap-2'>
-                <img
-                  src={'icon-location.svg'}
-                  alt='location-icon'
-                  className='h-4 w-4'
-                />
+                <SvgSprite name='location' width={24} height={24} />
                 <Typography variant='s' className='text-gray-600 text-sm'>
                   {hotel.place}
                 </Typography>
@@ -89,11 +70,7 @@ export function HotelBlockPhotosReview({ }: IHotelBlockPhotosReview) {
                     }}
                   />
                   <div className='absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform items-center justify-center gap-1 rounded-3xl bg-blue-light p-3 pl-4 pr-4 md:min-w-40'>
-                    <img
-                      src={'amenity-icon-all-photos.svg'}
-                      alt='check-in-icon'
-                      className='h-6 w-6'
-                    />
+                    <SvgSprite name='image' width={24} />
                     <Typography
                       variant='s-bold'
                       className='text-sm font-bold text-black'
@@ -108,44 +85,15 @@ export function HotelBlockPhotosReview({ }: IHotelBlockPhotosReview) {
             <div className='grid grid-cols-1 gap-4 py-4 lg:grid-cols-2'>
               <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
                 {hotel.amenities.slice(0, 11).map((amenity) => {
-                  const getIcon = (name: string) => {
-                    switch (name) {
-                      case 'Много зелени':
-                        return 'amenity-icon-greenary.svg';
-                      case 'Первая линия':
-                        return 'amenity-icon-first-line.svg';
-                      case 'Семейные номера':
-                        return 'amenity-icon-family-room.svg';
-                      case '2 бассейна':
-                        return 'amenity-icon-pool.svg';
-                      case '3 теннисных корта':
-                        return 'amenity-icon-tennis-court.svg';
-                      case 'Бесплатный Wi-fi':
-                        return 'amenity-icon-wifi.svg';
-                      case 'Развлевения для детей':
-                        return 'amenity-icon-kids-entertainment.svg';
-                      case 'Можно с животными':
-                        return 'amenity-icon-animals-allowed.svg';
-                      case 'Трансфер от аэропорта':
-                        return 'amenity-icon-airport-transfer.svg';
-                      case 'СПА':
-                        return 'amenity-icon-spa.svg';
-                      case 'Ресторан аля-карт':
-                        return 'amenity-icon-cart-restaurant.svg';
-                      default:
-                        return 'amenity-icon-default.svg';
-                    }
-                  };
-
                   return (
                     <div
                       key={amenity.id}
                       className='bg-gray-100 flex items-center justify-center gap-2 rounded-2xl px-4 py-4 shadow-md outline outline-1 outline-blue-bold'
                     >
-                      <img
-                        src={getIcon(amenity.name)}
-                        alt={amenity.name}
-                        className='h-6 w-6'
+                      <SvgSprite
+                        name={serviceNames(amenity.name)}
+                        width={24}
+                        height={24}
                       />
                       <Typography variant='s' className='text-gray-700'>
                         {amenity.name}
@@ -159,10 +107,10 @@ export function HotelBlockPhotosReview({ }: IHotelBlockPhotosReview) {
                     <Typography variant='s-bold' className='text-sm text-blue-bold'>
                       Еще {hotel.amenities.length - 11} удобств
                     </Typography>
-                    <img
-                      src={'icon-arrow.svg'}
-                      alt='arrow-icon'
-                      className='mt-0.5 h-3 w-3 transition-transform duration-200 group-hover:translate-x-1'
+                    <SvgSprite
+                      name='arrow'
+                      width={20}
+                      className='transition-transform duration-200 group-hover:translate-x-1'
                     />
                   </div>
                 )}
@@ -171,11 +119,7 @@ export function HotelBlockPhotosReview({ }: IHotelBlockPhotosReview) {
               <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
                 <div className='h-44 flex-1 rounded-2xl p-6 shadow-md md:h-56'>
                   <div className='flex gap-8 md:flex-col md:gap-2'>
-                    <img
-                      src={'amenity-icon-check-in.svg'}
-                      alt={`check-in-icon`}
-                      className='h-8 w-8'
-                    />
+                    <SvgSprite name='amenity-check-in' width={32} />
                     <Typography variant='l' className='mb-2 font-semibold'>
                       Условия заселения
                     </Typography>
@@ -189,13 +133,14 @@ export function HotelBlockPhotosReview({ }: IHotelBlockPhotosReview) {
                     </Typography>
                   </div>
                   <div className='group flex items-center gap-0.5'>
-                    <Typography variant='l' className='text-2xl text-blue-600'>
+                    <Typography variant='l' className='text-blue-600'>
                       Все условия
                     </Typography>
-                    <img
-                      src={'icon-arrow.svg'}
-                      alt='check-in-icon'
-                      className='mt-0.5 h-3 w-3 transition-transform duration-200 group-hover:translate-x-1'
+                    <SvgSprite
+                      name='arrow'
+                      width={20}
+                      className='transition-transform duration-200 group-hover:translate-x-1'
+                      color='#4757ea'
                     />
                   </div>
                 </div>
@@ -208,11 +153,7 @@ export function HotelBlockPhotosReview({ }: IHotelBlockPhotosReview) {
                   }}
                 >
                   <div className='m-auto flex items-center justify-center gap-1 rounded-3xl bg-blue-light p-3 pl-6 pr-6'>
-                    <img
-                      src={'icon-location.svg'}
-                      alt='check-in-icon'
-                      className='h-6 w-6'
-                    />
+                    <SvgSprite name='location' width={24} />
                     <Typography variant='s-bold' className='text-black'>
                       Смотреть на карте
                     </Typography>
@@ -251,10 +192,11 @@ export function HotelBlockPhotosReview({ }: IHotelBlockPhotosReview) {
                     <Typography variant='s' className='text-blue-600'>
                       Еще 70 отзывов
                     </Typography>
-                    <img
-                      src='icon-arrow.svg'
-                      alt='arrow-icon'
-                      className='mt-0.5 h-3 w-3 transition-transform duration-200 group-hover:translate-x-1'
+                    <SvgSprite
+                      name='arrow'
+                      width={20}
+                      className='transition-transform duration-200 group-hover:translate-x-1'
+                      color='#4757ea'
                     />
                   </div>
                 </div>
@@ -266,4 +208,3 @@ export function HotelBlockPhotosReview({ }: IHotelBlockPhotosReview) {
     </>
   );
 }
-

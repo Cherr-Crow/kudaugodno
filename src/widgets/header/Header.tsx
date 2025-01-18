@@ -30,6 +30,9 @@ export function Header({ className }: IHeader) {
           <Link href='/blog-page'>
             <Typography variant='l-bold' children='Блог' />
           </Link>
+          <Link href='/roman-n'>
+            <Typography variant='l-bold' children='ПЕРЕИСПОЛЬЗУЕМЫЕ КОМПОНЕНТЫ' />
+          </Link>
         </nav>
         <div className='flex items-center gap-3'>
           <div className='hidden cursor-pointer items-center gap-2 sm:flex'>
