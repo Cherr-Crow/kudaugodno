@@ -1,7 +1,8 @@
 import React from 'react';
 import { Typography } from '@/shared/typography';
-import { IHotelAmenities } from './HotelAmenities';
+import { IHotelAmenities } from './HotelAmenities.types';
 import { SvgSprite } from '@/shared/svg-sprite';
+import { nanoid } from '@reduxjs/toolkit';
 
 export function HotelAmenities({ className }: IHotelAmenities) {
   // const amenities = [
@@ -73,7 +74,7 @@ export function HotelAmenities({ className }: IHotelAmenities) {
         </Typography>
         
         {/* <div className="grid grid-cols-1 gap-3 mb-5 md:grid-cols-4 lg:gap-[25px]"> */}
-        <div className="flex justify-between mb-5">
+        <ul className="flex justify-between mb-5">
 
           {/* {amenities.map((advantage, index) => (
              <div>{advantage.title}</div>
@@ -91,14 +92,13 @@ export function HotelAmenities({ className }: IHotelAmenities) {
           )} */}
 
           
-          {amenities.map((item, idtop) => (
-
-            <div className='' key={idtop}>
+          {amenities.map((item) => (
+            <li className='' key={nanoid()}>
                 <Typography className="block mb-3 font-semibold text-blue-900 md:text-lg md:text-black lg:text-xl">
                    {item.title}
                 </Typography>
-               {item.comfort.map((comfortitem, id) => (
-                <div className="flex mb-2">
+               {item.comfort.map((comfortitem) => (
+                <div className="flex mb-2" key={nanoid()}>
                   <SvgSprite
                   name='check-mark'
                   width={16}
@@ -113,14 +113,14 @@ export function HotelAmenities({ className }: IHotelAmenities) {
                 // <div className="mb-2" key={id}>{comfortitem}</div>
                ))}
             
-            </div>
+            </li>
           
             )
           )}
 
 
              
-        </div>
+        </ul>
       </div>
     </section>
   );
