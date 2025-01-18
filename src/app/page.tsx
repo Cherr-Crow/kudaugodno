@@ -3,6 +3,7 @@ import { Hotels } from '@/types/hotels';
 import { AdvertisingBanner } from '@/widgets/advertising-banner';
 import { Hero } from '@/widgets/hero';
 import { HotOffer } from '@/widgets/hot-offer';
+import { HotelAmenities } from '@/widgets/hotel-amenities';
 import { OurAdvantages } from '@/widgets/our-advantages';
 import { PopularDestinations } from '@/widgets/popular-destinations';
 import { SubscribeToTheNewsletter } from '@/widgets/subscribe-to-the-newsletter';
@@ -37,6 +38,8 @@ export default async function Home() {
       <PopularDestinations />
       <OurAdvantages />
       <SubscribeToTheNewsletter />
+      <section> Это я</section>
+      <HotelAmenities />
     </div>
   );
 }

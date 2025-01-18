@@ -38,7 +38,8 @@ export interface ISvgSprite extends DivProps {
     | 'list'
     | 'logo'
     | 'heart-outline'
-    | 'search';
+    | 'search'
+    | 'check-mark';
   color?: string;
   width?: number;
   height?: number;
