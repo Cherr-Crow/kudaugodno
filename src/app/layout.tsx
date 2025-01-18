@@ -43,6 +43,7 @@ export default function RootLayout({
           <Header />
           <main className='grow'> {children}</main>
           <Footer className='shrink-0' />
+          <div id='modal'></div>
         </body>
       </html>
     </StoreProvider>

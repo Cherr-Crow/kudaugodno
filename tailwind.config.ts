@@ -20,6 +20,7 @@ export default {
       'grey-primary': 'var(--grey-primary)',
       'grey-secondary': 'var(--grey-secondary)',
       'grey-600': 'var(--grey-600)',
+      'grey-opacity': 'var(--grey-opacity)',
       'green-primary': 'var(--green-primary)',
       'green-secondary': 'var(--green-secondary)',
       'green-tetriary': 'var(--green-tetriary)',

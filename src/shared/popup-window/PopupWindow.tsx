@@ -2,11 +2,7 @@
 import React from 'react';
 import { IPopupWindow } from './PopupWindow.types';
 
-interface PopupWindowProps extends IPopupWindow {
-  ref?: React.Ref<HTMLDivElement>;
-}
-
-export const PopupWindow: React.FC<PopupWindowProps> = ({
+export const PopupWindow: React.FC<IPopupWindow> = ({
   className,
   children,
   ref,

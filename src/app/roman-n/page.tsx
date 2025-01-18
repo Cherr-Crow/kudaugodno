@@ -11,6 +11,9 @@ import { Badge } from '@/shared/ui/badge';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { useAppDispatch, useAppSelector } from '../rtk/hooks';
 import { selectTest, test } from '../rtk/slices/testSlice';
+import { Switcher } from '@/shared/ui/switcher';
+import { Checkbox } from '@/shared/ui/checkbox';
+import { RadioButton } from '@/shared/ui/radio-button';
 
 export default function RomanN() {
   const dispatch = useAppDispatch();
@@ -53,7 +56,7 @@ export default function RomanN() {
         </PopupWindow>
       </div>
       <div className='mt-60 flex flex-col items-center justify-center gap-3'>
-        <h2 className='w-fit bg-blue-bold text-red-primary'>'элемент SvgSprite'</h2>
+        <h2 className='w-fit'>'элемент SvgSprite'</h2>
         <div className='flex flex-wrap gap-3'>
           <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
             <p className=''>entertainment</p>
@@ -195,6 +198,47 @@ export default function RomanN() {
             <p className=''>search</p>
             <SvgSprite name='search' width={30} />
           </div>
+          {/**/}
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>amenity-animals-allowed</p>
+            <SvgSprite name='amenity-animals-allowed' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>amenity-cart-restaurant</p>
+            <SvgSprite name='amenity-cart-restaurant' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>amenity-check-in</p>
+            <SvgSprite name='amenity-check-in' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>amenity-family-room</p>
+            <SvgSprite name='amenity-family-room' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>amenity-pool</p>
+            <SvgSprite name='amenity-pool' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>amenity-spa</p>
+            <SvgSprite name='amenity-spa' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>amenity-wifi</p>
+            <SvgSprite name='amenity-wifi' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>our_advantage_1</p>
+            <SvgSprite name='our_advantage_1' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>our_advantage_2</p>
+            <SvgSprite name='our_advantage_2' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>our_advantage_3</p>
+            <SvgSprite name='our_advantage_3' width={30} />
+          </div>
         </div>
       </div>
       <div className='mt-4 flex flex-col items-center gap-4'>
@@ -283,6 +327,30 @@ export default function RomanN() {
             </div>
           </ButtonCustom>
         </div>
+      </div>
+      <div className={`mb-5`}>
+        <label>Switcher</label>
+        <Switcher />
+        <label>Switcher disabled</label>
+        <Switcher isDisabled={true} />
+        <label>Switcher's active by default</label>
+        <Switcher isActive={true} />
+      </div>
+      <div className={`mb-5`}>
+        <label>Checkbox</label>
+        <Checkbox label='Checkbox text' />
+        <label>Checkbox disabled</label>
+        <Checkbox label='Checkbox text' isDisabled={true} />
+        <label>Switcher's active by default</label>
+        <Checkbox label='Checkbox text' isChecked={true} />
+      </div>
+      <div>
+        <label>RadioButton</label>
+        <RadioButton label='RadioButton text' />
+        <label>RadioButton disabled</label>
+        <RadioButton label='RadioButton text' isDisabled={true} />
+        <label>Switcher's active by default</label>
+        <RadioButton label='RadioButton text' isSelected={true} />
       </div>
     </div>
   );

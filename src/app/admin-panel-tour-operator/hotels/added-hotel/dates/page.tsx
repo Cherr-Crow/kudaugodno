@@ -6,6 +6,9 @@ import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { nanoid } from 'nanoid';
+import { useRouter } from 'next/navigation';
+import { Modal } from '@/shared/modal';
+import { AddDatesModal } from '@/widgets/add-dates-modal';
 
 const years = [2025, 2024, 2023];
 
@@ -26,7 +29,7 @@ export default function Dates() {
     10: 'Ноябрь',
     11: 'Декабрь',
   };
-
+  const route = useRouter();
   const handleYearChange = (year: number) => {
     setYear(year);
   };
@@ -38,6 +41,8 @@ export default function Dates() {
   const handlePrevMonthChange = () => {
     month === 0 ? setMonth(11) : setMonth(month - 1);
   };
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   return (
     <div className=''>
@@ -69,12 +74,21 @@ export default function Dates() {
             onClick={handleNextMonthChange}
           />
         </div>
-        <ButtonCustom variant='secondary' size='m'>
+        <ButtonCustom
+          variant='secondary'
+          size='m'
+          onClick={() => setIsOpenModal(!isOpenModal)}
+        >
           <Typography children='Добавить даты' variant='l-bold' />
         </ButtonCustom>
       </div>
 
       <Calendar year={year} month={month} />
+      {isOpenModal && (
+        <Modal close={(e) => setIsOpenModal(e)}>
+          <AddDatesModal />
+        </Modal>
+      )}
     </div>
   );
 }

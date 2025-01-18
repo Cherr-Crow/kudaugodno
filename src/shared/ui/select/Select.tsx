@@ -15,6 +15,7 @@ export function Select({
   markerChange,
   arrowHidden,
   size = 'medium',
+  id,
 }: ISelect) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(options[0]);
@@ -68,6 +69,7 @@ export function Select({
           value={selectedOption}
           onChange={() => {}}
           className={`pointer-events-none w-4/5 cursor-pointer bg-transparent outline-none`}
+          id={id}
         />
         <SvgSprite
           name='arrow'
