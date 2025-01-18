@@ -29,8 +29,6 @@ export function Typography({ className, children, variant }: ITypography) {
       return <span className={`${className} text-2xl`}>{children}</span>;
     case 'l':
       return <span className={`${className} text-xl`}>{children}</span>;
-    // case 'm':
-    //   return <span className={`${className} text-base`}>{children}</span>;
     case 's':
       return <span className={`${className} text-[13px]`}>{children}</span>;
     case 'xs':

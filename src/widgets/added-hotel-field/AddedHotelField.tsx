@@ -7,6 +7,7 @@ import { Select } from '@/shared/ui/select';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { AddedButton } from '@/shared/ui/added-button';
+import { Rating } from '@/shared/rating';
 
 const typeOfHoliday = ['Пляжный', 'Городской'];
 const accommodationType = [
@@ -29,7 +30,7 @@ export function AddedHotelField({}: IAddedHotelField) {
   const [photo, setPhoto] = useState<string>('');
 
   const handleCategoryChange = (index: number) => {
-    setCategory(index);
+    setCategory(index + 1);
   };
 
   const handleCountryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,6 +70,7 @@ export function AddedHotelField({}: IAddedHotelField) {
           color='blue'
           size='small'
           className='w-full'
+          id='select-type-of-holiday'
         />
       </div>
       <div className='w-full'>
@@ -78,25 +80,15 @@ export function AddedHotelField({}: IAddedHotelField) {
           color='blue'
           size='small'
           className='w-full'
+          id='select-type-of-placements'
         />
       </div>
       <div className='col-start-1 col-end-3 w-full'>
         <Typography children='Категория' variant='l-bold' />
-        <ul className='flex gap-2'>
-          {new Array(5).fill(1).map((_, index) => (
-            <li
-              className='cursor-pointer'
-              key={index}
-              onClick={() => handleCategoryChange(index)}
-            >
-              {index <= category ? (
-                <SvgSprite name='star-full' width={24} />
-              ) : (
-                <SvgSprite name='star' width={24} />
-              )}
-            </li>
-          ))}
-        </ul>
+        <Rating
+          category={category}
+          setRating={(index) => handleCategoryChange(index)}
+        />
       </div>
       <div className='flex w-full flex-col gap-3'>
         <Typography children='Страна' variant='l-bold' />
@@ -107,6 +99,7 @@ export function AddedHotelField({}: IAddedHotelField) {
           value={country}
           onChange={handleCountryChange}
           name='country'
+          autoComplete='on'
         />
       </div>
       <div className='flex w-full flex-col gap-3'>
@@ -129,6 +122,7 @@ export function AddedHotelField({}: IAddedHotelField) {
           value={address}
           onChange={handleAddressChange}
           name='address'
+          autoComplete='on'
         />
       </div>
       <div className='col-start-1 col-end-3 flex w-full flex-col gap-3'>

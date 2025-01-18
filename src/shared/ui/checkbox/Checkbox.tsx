@@ -39,12 +39,12 @@ const Checkbox: React.FC<ICheckbox> = ({
           <path d='M5 13l4 4L19 7' />
         </svg>
       </button>
-      <label
-        className={`text-sm font-medium ${isDisabled ? 'text-gray-400' : 'text-gray-900'}`}
+      <div
+        className={`cursor-pointer text-sm font-medium ${isDisabled ? 'text-gray-400' : 'text-gray-900'}`}
         onClick={handleToggle}
       >
         {label}
-      </label>
+      </div>
     </div>
   );
 };
