@@ -1666,6 +1666,25 @@ export function SvgSprite({
           </g>
         </svg>
       );
+      case 'check-mark':
+      return (
+        <svg
+          className={className ?? ''}
+          width={width}
+          height={height}
+          viewBox='0 0 16 11'
+          fill='none'
+          xmlns='http://www.w3.org/2000/svg'
+        >
+         <path
+            d="M14.334 1L5.39648 10L1.33398 5.90909"
+            stroke={color ? color : '#000'}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
     // case '':
     //   return;
     // case '':
