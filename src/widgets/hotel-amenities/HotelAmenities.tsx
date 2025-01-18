@@ -4,7 +4,7 @@ import { IHotelAmenities } from './HotelAmenities.types';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { nanoid } from '@reduxjs/toolkit';
 
-export function HotelAmenities({ className }: IHotelAmenities) {
+export function HotelAmenities({}: IHotelAmenities) {
 
   const amenities = [
    {
@@ -48,7 +48,7 @@ export function HotelAmenities({ className }: IHotelAmenities) {
   ];
 
   return (
-    <section className={`${className}`}>
+    <section>
       <div className="hidden sm:block">
         <Typography variant="l" className="block mb-7 font-black text-blue-900 md:font-normal md:text-[24px] md:text-black lg:text-[32px]">
           Удобства
