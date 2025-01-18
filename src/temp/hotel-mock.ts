@@ -5,7 +5,7 @@ export const hotels: Hotel[] = [
     id: 1,
     name: 'Novotel Nairobi Westlands',
     star_category: 4,
-    place: 'Кения, Найроби',
+    place: 'Отель',
     amenities: [
       { id: 1, name: 'Много зелени' },
       { id: 2, name: 'Развлевения для детей' },
@@ -24,16 +24,30 @@ export const hotels: Hotel[] = [
     country: 'Кения',
     city: 'Найроби',
     address: 'Westlands Road, Найроби',
-    distance_to_sea: 0,
-    distance_to_airport: 20,
+    distances: [{ location: 'sea', distance: 100 }],
     description:
       'Отель с просторными номерами, бассейном и утренними завтраками. Удобно расположен в центре города.',
+    type_of_rest: 'Семейный',
+    user_rating: 8.6,
+    dates: null,
+    check_in_time: '14:00',
+    check_out_time: '12:00',
+    photos: [
+      { id: 1, photo: 'Novotel-Nairobi-Westlands-photo-1.png' },
+      { id: 2, photo: 'Novotel-Nairobi-Westlands-photo-2.png' },
+      { id: 3, photo: 'Novotel-Nairobi-Westlands-photo-3.png' },
+      { id: 4, photo: 'Novotel-Nairobi-Westlands-photo-4.png' },
+      { id: 5, photo: 'Novotel-Nairobi-Westlands-photo-5.png' },
+    ],
     rooms: [
       {
         id: 1,
         category: { id: 1, name: 'Стандартный номер' },
-        food: 'Завтрак включен',
-        type_of_holiday: 'Семейный',
+        food: {
+          reservation_available_without_meals: true,
+          type_of_meals: 'Завтрак включен',
+          cost_day: 1000,
+        },
         smoking: false,
         pet: false,
         area: 25,
@@ -53,8 +67,11 @@ export const hotels: Hotel[] = [
       {
         id: 2,
         category: { id: 2, name: 'Люкс' },
-        food: 'Полупансион',
-        type_of_holiday: 'Романтический',
+        food: {
+          reservation_available_without_meals: true,
+          type_of_meals: 'Завтрак включен',
+          cost_day: 1000,
+        },
         smoking: false,
         pet: false,
         area: 50,
@@ -73,7 +90,6 @@ export const hotels: Hotel[] = [
         ],
       },
     ],
-    user_rating: 8.6,
     reviews: [
       {
         id: 1,
@@ -86,15 +102,6 @@ export const hotels: Hotel[] = [
             Первая линия. Лежаки и полотенца предоставлялись от отеля. СПА чудесный, есть много возможностей для спорта. 
             Очень зеленая территория.`,
       },
-    ],
-    check_in_time: '14:00',
-    check_out_time: '12:00',
-    photos: [
-      { id: 1, photo: 'Novotel-Nairobi-Westlands-photo-1.png' },
-      { id: 2, photo: 'Novotel-Nairobi-Westlands-photo-2.png' },
-      { id: 3, photo: 'Novotel-Nairobi-Westlands-photo-3.png' },
-      { id: 4, photo: 'Novotel-Nairobi-Westlands-photo-4.png' },
-      { id: 5, photo: 'Novotel-Nairobi-Westlands-photo-5.png' },
     ],
   },
 ];

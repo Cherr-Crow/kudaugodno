@@ -26,7 +26,7 @@ export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
               <div className='flex items-center gap-2'>
                 <SvgSprite name='location' width={24} height={24} />
                 <Typography variant='s' className='text-gray-600 text-sm'>
-                  {hotel.place}
+                  {hotel.country + ', ' + hotel.city}
                 </Typography>
                 <Typography
                   variant='s-bold'
