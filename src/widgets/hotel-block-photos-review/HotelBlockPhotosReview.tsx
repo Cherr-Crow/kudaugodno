@@ -113,10 +113,10 @@ export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
                   );
                 })}
 
-                {hotel.amenities.length > 11 && (
+                {amenities.length > 11 && (
                   <div className='group flex items-center justify-center gap-0.5 rounded-2xl bg-blue-300 px-4 py-4 shadow-md outline outline-1 outline-blue-600'>
                     <Typography variant='s-bold' className='text-sm text-blue-bold'>
-                      Еще {hotel.amenities.length - 11} удобств
+                      Еще {amenities.length - 11} удобств
                     </Typography>
                     <SvgSprite
                       name='arrow'

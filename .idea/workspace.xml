@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3668177f-7051-4ea2-8b02-9165f0af8dc7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/types/amenity.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/widgets/distance-input/DistanceInput.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/widgets/distance-input/DistanceInput.types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/widgets/distance-input/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/ui/named-input/NamedInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/ui/named-input/NamedInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/ui/named-input/NamedInput.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/ui/named-input/NamedInput.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/temp/hotel-mock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/temp/hotel-mock.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/types/hotel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/types/hotel.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/added-hotel-field/AddedHotelField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/added-hotel-field/AddedHotelField.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/widgets/hotel-block-photos-review/HotelBlockPhotosReview.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/hotel-block-photos-review/HotelBlockPhotosReview.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -119,7 +110,7 @@
       <workItem from="1736778173681" duration="1471000" />
       <workItem from="1736793449786" duration="3555000" />
       <workItem from="1736953494832" duration="15903000" />
-      <workItem from="1737039007378" duration="77232000" />
+      <workItem from="1737039007378" duration="77716000" />
     </task>
     <servers />
   </component>
