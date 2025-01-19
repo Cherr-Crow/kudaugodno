@@ -39,6 +39,7 @@ export interface ISvgSprite extends DivProps {
     | 'logo'
     | 'heart-outline'
     | 'search'
+    //
     | 'amenity-animals-allowed'
     | 'amenity-cart-restaurant'
     | 'amenity-check-in'
@@ -49,6 +50,8 @@ export interface ISvgSprite extends DivProps {
     | 'our_advantage_1'
     | 'our_advantage_2'
     | 'our_advantage_3'
+    | 'paw'
+    | 'face'
     | 'check-mark';
   color?: string;
   width?: number;
