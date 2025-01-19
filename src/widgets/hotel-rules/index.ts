@@ -1,0 +1,1 @@
+export { HotelRules } from "./HotelRules";
