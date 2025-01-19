@@ -4,6 +4,7 @@ import { Breadcrumbs } from '@/shared/breadcrumbs';
 import { SearchForm } from '@/shared/ui/search-form';
 import { HotelBlockPhotosReview } from '@/widgets/hotel-block-photos-review';
 import { HotelAmenities } from '@/widgets/hotel-amenities';
+import { HotelRules } from '@/widgets/hotel-rules';
 
 export default function CatalogHotels() {
   const [tabClick, setTabClick] = useState<string>('Туры');
@@ -18,6 +19,7 @@ export default function CatalogHotels() {
         />
         <HotelBlockPhotosReview /> 
         <HotelAmenities />
+        <HotelRules />
       </section>
     </>
   );
