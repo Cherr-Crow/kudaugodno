@@ -10,6 +10,8 @@ import { AddedButton } from '@/shared/ui/added-button';
 import { Rating } from '@/shared/rating';
 import { nanoid } from 'nanoid';
 import { NamedInput } from '@/shared/ui/named-input';
+import { DistanceInput } from '@/widgets/distance-input';
+import { ButtonCustom } from '@/shared/ui/button-custom';
 
 const typeOfHoliday = ['Пляжный', 'Городской'];
 const accommodationType = [
@@ -20,7 +22,7 @@ const accommodationType = [
   'Гостевой дом',
   'Гостиница',
 ];
-const distances = [
+const distancesName = [
   'пляж',
   'центр',
   'аэропорт',
@@ -30,14 +32,22 @@ const distances = [
   'общественный туалет',
 ];
 const comfort = [
-  'Бассейн',
-  'Собственный пляж',
-  'Семейные номера',
-  'Детский клуб',
-  'Аквапарк',
-  'Теннисный корт',
-  'Ресторан a la carte',
-  'Бесплатный интернет',
+  {
+    category_name: 'В номере',
+    amenity: ['Бесплатный интернет'],
+  },
+  {
+    category_name: 'Общие',
+    amenity: ['Семейные номера', 'Ресторан a la carte', 'Собственный пляж'],
+  },
+  {
+    category_name: 'Спорт и отдых',
+    amenity: ['Бассейн', 'Теннисный корт'],
+  },
+  {
+    category_name: 'Для детей',
+    amenity: ['Детский клуб', 'Аквапарк'],
+  },
 ];
 
 export function AddedHotelField({}: IAddedHotelField) {
@@ -49,6 +59,14 @@ export function AddedHotelField({}: IAddedHotelField) {
   const [departure, setDeparture] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [photo, setPhoto] = useState<string>('');
+  const [distance, setDistance] = useState<{
+    location: string;
+    distance: number;
+  } | null>(null);
+  const [distances, setDistances] = useState<
+    { location: string; distance: number }[]
+  >([]);
+  const [distanceInputReset, setDistanceInputReset] = useState(false);
 
   const handleCategoryChange = (index: number) => {
     setCategory(index + 1);
@@ -66,12 +84,12 @@ export function AddedHotelField({}: IAddedHotelField) {
     setAddress(val);
   };
 
-  const handleCheckIn = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCheckIn(e.target.value);
+  const handleCheckIn = (val: string) => {
+    setCheckIn(val);
   };
 
-  const handleDeparture = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDeparture(e.target.value);
+  const handleDeparture = (val: string) => {
+    setDeparture(val);
   };
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -80,6 +98,23 @@ export function AddedHotelField({}: IAddedHotelField) {
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPhoto(e.target.value);
+  };
+
+  const handleDistanceChange = (e: { location: string; distance: number }) => {
+    setDistance(e);
+  };
+
+  const handleAddDistance = () => {
+    if (distances.some((el) => el.location === distance?.location) || !distance) {
+      return;
+    }
+
+    setDistances((prev) => [...prev, distance]);
+    setDistanceInputReset(!distanceInputReset);
+  };
+
+  const handleDeleteDistance = (arg: string) => {
+    setDistances((prev) => prev.filter((el) => el.location !== arg));
   };
 
   return (
@@ -132,59 +167,70 @@ export function AddedHotelField({}: IAddedHotelField) {
       />
       <div className='col-start-1 col-end-3 flex flex-col gap-3'>
         <Typography children='Расстояние от' variant='l-bold' />
-        <div className='flex gap-5'>
-          <Select
-            options={distances}
-            color='blue'
-            size='small'
-            className='w-full'
-            id='select-type-of-holiday'
-          />
-          <input
-            type='text'
-            className='w-full rounded-md border border-blue-600 px-4 py-2'
-            placeholder='Введите расстояние, км'
-            // value={address}
-            // onChange={handleAddressChange}
-            name='distance'
-            autoComplete='on'
-          />
-        </div>
-        <AddedButton text='Добавить расстояние' onClick={() => {}} />
+        <ul className='flex flex-col gap-1'>
+          {distances.length !== 0 &&
+            distances.map((item, index) => (
+              <li
+                key={nanoid()}
+                className={`flex items-center justify-between rounded p-1 ${index % 2 === 0 && 'bg-grey-opacity'}`}
+              >
+                <Typography
+                  children={
+                    'Расстояние от ' + item.location + ' - ' + item.distance + ' км'
+                  }
+                />
+                <ButtonCustom
+                  variant='primary'
+                  size='s'
+                  onClick={() => handleDeleteDistance(item.location)}
+                >
+                  <Typography children='Удалить' />
+                </ButtonCustom>
+              </li>
+            ))}
+          <li>
+            <DistanceInput
+              options={distancesName}
+              getDistance={handleDistanceChange}
+              reset={distanceInputReset}
+            />
+          </li>
+        </ul>
+        <AddedButton text='Добавить расстояние' onClick={handleAddDistance} />
       </div>
       <div className='col-start-1 col-end-3 flex w-full flex-col gap-3'>
         <Typography children='Удобства' variant='l-bold' />
-        <ul className='flex gap-3'>
-          {comfort.map((item, index) => (
-            <li key={nanoid()}>
-              <Checkbox label={item} />
+        <ul className='flex flex-col gap-2'>
+          {comfort.map((category, index) => (
+            <li
+              key={nanoid()}
+              className={`flex flex-col gap-2 rounded p-2 ${index % 2 === 0 && 'bg-grey-opacity'}`}
+            >
+              <Typography children={category.category_name} variant='l' />
+              <ul className='flex gap-3'>
+                {category.amenity.map((item, index) => (
+                  <li key={nanoid()}>
+                    <Checkbox label={item} />
+                  </li>
+                ))}
+              </ul>
+              <AddedButton text='Добавить удобства' onClick={() => {}} />
             </li>
           ))}
         </ul>
-        <AddedButton text='Добавить удобства' onClick={() => {}} />
       </div>
-      <div className='flex w-full flex-col gap-3'>
-        <Typography children='Заселение' variant='l-bold' />
-        <input
-          type='time'
-          className='w-full rounded-md border border-blue-600 px-4 py-2'
-          placeholder='12:00'
-          value={checkIn}
-          onChange={handleCheckIn}
-          name='checkIn'
-        />
-      </div>
-      <div className='flex w-full flex-col gap-3'>
-        <Typography children='Выезд' variant='l-bold' />
-        <input
-          type='time'
-          className='w-full rounded-md border border-blue-600 px-4 py-2'
-          placeholder='12:00'
-          value={departure}
-          onChange={handleDeparture}
-          name='departure'
-        />
-      </div>
+      <NamedInput
+        name='checkIn'
+        getValue={handleCheckIn}
+        title='Заселение'
+        type='time'
+      />
+      <NamedInput
+        name='departure'
+        getValue={handleDeparture}
+        title='Выезд'
+        type='time'
+      />
       <div className='col-start-1 col-end-3 flex w-full flex-col gap-3'>
         <Typography children='Описание' variant='l-bold' />
         <textarea

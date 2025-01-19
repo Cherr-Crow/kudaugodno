@@ -1,5 +1,6 @@
 import { room } from '@/types/room';
 import { date } from '@/types/date';
+import { Amenity } from '@/types/amenity';
 
 export type Hotel = {
   id: number;
@@ -13,10 +14,7 @@ export type Hotel = {
   description: string;
   check_in_time: string;
   check_out_time: string;
-  amenities: {
-    id: number;
-    name: string;
-  }[];
+  amenities: Amenity[];
   user_rating: number;
   reviews: {
     id: number;
