@@ -49,12 +49,9 @@ export interface ISvgSprite extends DivProps {
     | 'our_advantage_1'
     | 'our_advantage_2'
     | 'our_advantage_3'
-<<<<<<< HEAD
+    | 'check-mark'
     | 'paw'
     | 'face';
-=======
-    | 'check-mark';
->>>>>>> development
   color?: string;
   width?: number;
   height?: number;
