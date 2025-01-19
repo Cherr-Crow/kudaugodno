@@ -1666,12 +1666,17 @@ export function SvgSprite({
           </g>
         </svg>
       );
+<<<<<<< HEAD
       case 'paw':
+=======
+      case 'check-mark':
+>>>>>>> development
       return (
         <svg
           className={className ?? ''}
           width={width}
           height={height}
+<<<<<<< HEAD
           viewBox='0 0 33 32'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
@@ -1743,6 +1748,18 @@ export function SvgSprite({
             strokeWidth='2'
             strokeLinecap='round'
             strokeLinejoin='round'
+=======
+          viewBox='0 0 16 11'
+          fill='none'
+          xmlns='http://www.w3.org/2000/svg'
+        >
+         <path
+            d="M14.334 1L5.39648 10L1.33398 5.90909"
+            stroke={color ? color : '#000'}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+>>>>>>> development
           />
         </svg>
       );
