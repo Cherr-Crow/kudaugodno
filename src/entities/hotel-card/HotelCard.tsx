@@ -7,16 +7,8 @@ import { Typography } from '@/shared/typography';
 import { nanoid } from 'nanoid';
 
 export function HotelCard({ hotel }: IHotelCard) {
-  const {
-    name,
-    photos,
-    city,
-    country,
-    user_rating,
-    star_category,
-    amenities,
-    distance_to_sea,
-  } = hotel;
+  const { name, photos, city, country, user_rating, star_category, amenities } =
+    hotel;
 
   const stars = Array.from({ length: star_category }, (_, index) => index + 1);
 
@@ -51,7 +43,7 @@ export function HotelCard({ hotel }: IHotelCard) {
           <Typography children={name} variant='m-bold' className='md:text-2xl' />
         </div>
         <Typography
-          children={distance_to_sea + ' ' + 'км' + ' ' + 'от моря'}
+          children={'distance_to_sea' + ' ' + 'км' + ' ' + 'от моря'}
           className='text-grey-600'
         />
         <div className='flex gap-1'>
@@ -75,7 +67,7 @@ export function HotelCard({ hotel }: IHotelCard) {
         <ul className='flex gap-2'>
           {amenities.map((el) => (
             <li className='rounded-2xl bg-blue-light px-3 py-1' key={nanoid()}>
-              <Typography children={el.name} />
+              <Typography children={el.amenity[0]} />
             </li>
           ))}
         </ul>
