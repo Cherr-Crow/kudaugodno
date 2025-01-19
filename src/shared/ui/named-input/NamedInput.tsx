@@ -8,6 +8,7 @@ export function NamedInput({
   name,
   getValue,
   className,
+  type = 'text',
 }: INamedInput) {
   const [value, setValue] = useState('');
 
@@ -20,9 +21,9 @@ export function NamedInput({
     <div className={`flex w-full flex-col gap-3 ${className ?? className}`}>
       {title && <Typography children={title} variant='l-bold' />}
       <input
-        type='text'
+        type={type}
         className='w-full rounded-md border border-blue-600 px-4 py-2'
-        placeholder={placeholder}
+        placeholder={placeholder ? placeholder : ''}
         value={value}
         onChange={handleChange}
         name={name}

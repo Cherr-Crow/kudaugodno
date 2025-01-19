@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IHotelBlockPhotosReview } from './HotelBlockPhotosReview.types';
 import { hotels } from '@/temp/hotel-mock';
 import { Typography } from '@/shared/typography';
 import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { serviceNames } from './service';
+import { Amenity } from '@/types/amenity';
+import { nanoid } from 'nanoid';
 
 export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
+  const [amenities, setAmenities] = useState<string[]>([]);
+
+  useEffect(() => {
+    const _arr = hotels[0].amenities.reduce((akk: string[], prev: Amenity) => {
+      return [...akk, ...prev.amenity];
+    }, []);
+    setAmenities(_arr);
+  }, [hotels]);
+
   return (
     <>
       <div className='p-4'>
@@ -84,19 +95,19 @@ export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
 
             <div className='grid grid-cols-1 gap-4 py-4 lg:grid-cols-2'>
               <div className='grid grid-cols-1 gap-4 lg:grid-cols-2'>
-                {hotel.amenities.slice(0, 11).map((amenity) => {
+                {amenities.slice(0, 11).map((amenity) => {
                   return (
                     <div
-                      key={amenity.id}
+                      key={nanoid()}
                       className='bg-gray-100 flex items-center justify-center gap-2 rounded-2xl px-4 py-4 shadow-md outline outline-1 outline-blue-bold'
                     >
                       <SvgSprite
-                        name={serviceNames(amenity.name)}
+                        name={serviceNames(amenity)}
                         width={24}
                         height={24}
                       />
                       <Typography variant='s' className='text-gray-700'>
-                        {amenity.name}
+                        {amenity}
                       </Typography>
                     </div>
                   );
