@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Breadcrumbs } from '@/shared/breadcrumbs';
 import { SearchForm } from '@/shared/ui/search-form';
 import { HotelBlockPhotosReview } from '@/widgets/hotel-block-photos-review';
+import { HotelRules } from '@/widgets/hotel-rules';
 
 export default function CatalogHotels() {
   const [tabClick, setTabClick] = useState<string>('Туры');
@@ -16,6 +17,7 @@ export default function CatalogHotels() {
           tabClick={tabClick}
         />
         <HotelBlockPhotosReview /> 
+        <HotelRules />
       </section>
     </>
   );
