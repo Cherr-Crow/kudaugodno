@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Breadcrumbs } from '@/shared/breadcrumbs';
 import { SearchForm } from '@/shared/ui/search-form';
 import { HotelBlockPhotosReview } from '@/widgets/hotel-block-photos-review';
+import { HotelAmenities } from '@/widgets/hotel-amenities';
 import { HotelRules } from '@/widgets/hotel-rules';
 
 export default function CatalogHotels() {
@@ -17,6 +18,7 @@ export default function CatalogHotels() {
           tabClick={tabClick}
         />
         <HotelBlockPhotosReview /> 
+        <HotelAmenities />
         <HotelRules />
       </section>
     </>
