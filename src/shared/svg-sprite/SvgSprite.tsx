@@ -1765,6 +1765,20 @@ export function SvgSprite({
           />
         </svg>
       );
+      case 'marker':
+      return (
+        <svg
+          className={className ?? ''}
+          width={width}
+          height={height}
+          viewBox='0 0 32 32'
+          fill='none'
+          xmlns='http://www.w3.org/2000/svg'
+        >
+          <circle r="5" cx="17" cy="12" fill={color ? color : '#1A1F4C'} />
+          {/* <circle cx="2.5" cy="9" r="2.5" fill="#202122"/> */}
+        </svg>
+      );
     // case '':
     //   return;
     // case '':

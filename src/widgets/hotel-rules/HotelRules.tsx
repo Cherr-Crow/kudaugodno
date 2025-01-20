@@ -15,11 +15,11 @@ export function HotelRules({}: IHotelRules) {
   const reles: Array<IRules> = [
     {
       rule: 'Можно с животными. Гулять с собаками разрешается в специально отведённых местах',
-      imgname: 'paw'
+      imgname: 'marker'
     },
     {
       rule: 'Детская кроватка при необходимости оплачивается отдельно - 500р/ночь. Детский стульчик предоставляется по запросу',
-      imgname: 'face'
+      imgname: 'marker'
     }
   ];
 
@@ -33,12 +33,16 @@ export function HotelRules({}: IHotelRules) {
         <ul className="">
          {reles.map((item) => (
 
-            <li className='flex items-start lg:items-center mb-3' key={nanoid()}>
-                <SvgSprite
+            <li className='flex items-start gap-3 lg:items-center mb-3' key={nanoid()}>
+                {/* <SvgSprite
                   name={item.imgname}
-                  width={30}
-                  className='cursor-pointer m-0 mr-2'
-                />
+                  width={32}
+                  className='m-0 mr-2'
+                /> */}
+                <div className="h-1 w-1 pt-[10px] lg:pt-[0px]">
+                  <div className="h-1 w-1  rounded-full bg-black"></div>
+                </div>
+                
                 <Typography className="block font-normal text-blue-900">
                   {item.rule}
                 </Typography>
