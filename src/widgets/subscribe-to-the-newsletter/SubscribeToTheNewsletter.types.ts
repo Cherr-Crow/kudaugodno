@@ -1,3 +1,3 @@
-export interface ISubscribeToTheNewsletter {
-  className?: string;
-}
+type DivProps = React.ComponentPropsWithoutRef<'div'>;
+
+export interface ISubscribeToTheNewsletter extends DivProps {}
