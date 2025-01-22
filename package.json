@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "next build && npm run start",
+    "start": "npx serve@latest build",
     "lint": "next lint",
     "component": "generate-react component",
     "page": "generate-react component --type=page",

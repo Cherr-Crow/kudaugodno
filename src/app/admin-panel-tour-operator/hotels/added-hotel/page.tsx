@@ -4,7 +4,7 @@ import { PopupWindow } from '@/shared/popup-window';
 import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
 import { ButtonCustom } from '@/shared/ui/button-custom';
-import { AddedHotelField } from '@/widgets/added-hotel-field';
+import { AddedHotelField } from '../../../../widgets/admin-panel/added-hotel-field';
 import React, { useEffect, useState } from 'react';
 
 export default function AddedHotel() {

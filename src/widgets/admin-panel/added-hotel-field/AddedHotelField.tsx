@@ -12,6 +12,7 @@ import { nanoid } from 'nanoid';
 import { NamedInput } from '@/shared/ui/named-input';
 import { DistanceInput } from '@/widgets/distance-input';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { RulesAdd } from '@/widgets/admin-panel/rules-add';
 
 const typeOfHoliday = ['Пляжный', 'Городской'];
 const accommodationType = [
@@ -34,21 +35,27 @@ const distancesName = [
 const comfort = [
   {
     category_name: 'В номере',
-    amenity: ['Бесплатный интернет'],
+    amenity: ['Бесплатный интернет', 'Вид на море', 'Кондиционеры'],
   },
   {
     category_name: 'Общие',
-    amenity: ['Семейные номера', 'Ресторан a la carte', 'Собственный пляж'],
+    amenity: [
+      'Семейные номера',
+      'Ресторан a la carte',
+      'Собственный пляж',
+      'Шоу-программа',
+    ],
   },
   {
     category_name: 'Спорт и отдых',
-    amenity: ['Бассейн', 'Теннисный корт'],
+    amenity: ['Бассейн', 'Теннисный корт', 'Спортзал', 'Спа-центр'],
   },
   {
     category_name: 'Для детей',
-    amenity: ['Детский клуб', 'Аквапарк'],
+    amenity: ['Детский клуб', 'Аквапарк', 'Вечерняя анимация'],
   },
 ];
+const rules = [];
 
 export function AddedHotelField({}: IAddedHotelField) {
   const [category, setCategory] = useState<number>(0);
@@ -172,7 +179,7 @@ export function AddedHotelField({}: IAddedHotelField) {
             distances.map((item, index) => (
               <li
                 key={nanoid()}
-                className={`flex items-center justify-between rounded p-1 ${index % 2 === 0 && 'bg-grey-opacity'}`}
+                className={`flex items-center justify-between rounded p-1 ${index % 2 === 0 && 'bg-blue-disabled'}`}
               >
                 <Typography
                   children={
@@ -204,7 +211,7 @@ export function AddedHotelField({}: IAddedHotelField) {
           {comfort.map((category, index) => (
             <li
               key={nanoid()}
-              className={`flex flex-col gap-2 rounded p-2 ${index % 2 === 0 && 'bg-grey-opacity'}`}
+              className={`flex flex-col gap-2 rounded p-2 ${index % 2 === 0 && 'bg-blue-disabled'}`}
             >
               <Typography children={category.category_name} variant='l' />
               <ul className='flex gap-3'>
@@ -231,6 +238,13 @@ export function AddedHotelField({}: IAddedHotelField) {
         title='Выезд'
         type='time'
       />
+      {/*<div className='col-start-1 col-end-3 flex flex-col gap-3'>*/}
+      {/*  <Typography children='Правила' variant='l-bold' />*/}
+
+      {/*  <AddedButton text='Добавить правило' onClick={() => {}} />*/}
+      {/*</div>*/}
+      <RulesAdd className='col-start-1 col-end-3' />
+
       <div className='col-start-1 col-end-3 flex w-full flex-col gap-3'>
         <Typography children='Описание' variant='l-bold' />
         <textarea

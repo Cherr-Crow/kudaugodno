@@ -5,7 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3668177f-7051-4ea2-8b02-9165f0af8dc7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/app/alexsandr/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/alexsandr/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/ui/rule-add/RuleAdd.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/ui/rule-add/RuleAdd.types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/shared/ui/rule-add/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/widgets/admin-panel/rules-add/RulesAdd.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/widgets/admin-panel/rules-add/RulesAdd.types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/widgets/admin-panel/rules-add/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/hotels/added-hotel/dates/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/hotels/added-hotel/dates/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/hotels/added-hotel/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/hotels/added-hotel/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/typography/Typography.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/typography/Typography.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/typography/Typography.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/typography/Typography.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/ui/checkbox/Checkbox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/ui/checkbox/Checkbox.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/ui/named-input/NamedInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/ui/named-input/NamedInput.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/ui/select/Select.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/ui/select/Select.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/add-dates-modal/AddDatesModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/add-dates-modal/AddDatesModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/add-dates-modal/AddDatesModal.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/add-dates-modal/AddDatesModal.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/add-dates-modal/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/add-dates-modal/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/added-hotel-field/AddedHotelField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/added-hotel-field/AddedHotelField.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/added-hotel-field/AddedHotelField.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/added-hotel-field/AddedHotelField.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/added-hotel-field/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/added-hotel-field/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/admin-panel-dashboard/AdminPanelDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/admin-panel-dashboard/AdminPanelDashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/admin-panel-dashboard/AdminPanelDashboard.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/admin-panel-dashboard/AdminPanelDashboard.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/admin-panel-dashboard/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/admin-panel-dashboard/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/hotel-rules/HotelRules.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/hotel-rules/HotelRules.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/tour-operator-panel-title/TourOperatorPanelTitle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/tour-operator-panel-title/TourOperatorPanelTitle.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/tour-operator-panel-title/TourOperatorPanelTitle.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/tour-operator-panel-title/TourOperatorPanelTitle.types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/widgets/tour-operator-panel-title/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/tour-operator-panel-title/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,14 +64,16 @@
     "RunOnceActivity.git.unshallow": "true",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "refactoring",
-    "last_opened_file_path": "/Users/romannaroznov/Documents/gitHub(ssr)/36_kuda_ugodno_frontend/src/app/admin-panel-tour-operator/hotels/added-hotel/dates",
+    "last_opened_file_path": "/Users/romannaroznov/Documents/gitHub(ssr)/36_kuda_ugodno_frontend/src/app",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "npm.build.executor": "Run",
+    "npm.component.executor": "Run",
     "npm.dev.executor": "Run",
+    "npm.export.executor": "Run",
     "npm.start.executor": "Run",
     "prettierjs.PrettierConfiguration.Package": "/Users/romannaroznov/Documents/gitHub(ssr)/36_kuda_ugodno_frontend/node_modules/prettier",
     "settings.editor.selected.configurable": "preferences.keymap",
@@ -55,6 +86,7 @@
       <recent name="$PROJECT_DIR$/src/app/admin-panel-tour-operator/hotels/added-hotel/dates" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/widgets/admin-panel" />
       <recent name="$PROJECT_DIR$/src/widgets" />
       <recent name="$PROJECT_DIR$/src/shared/ui" />
       <recent name="$PROJECT_DIR$/src/app/admin-panel-tour-operator/hotels/added-hotel/dates/@modal" />
@@ -72,11 +104,31 @@
       <envs />
       <method v="2" />
     </configuration>
+    <configuration name="component" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="component" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
         <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="export" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="export" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -96,7 +148,9 @@
       <list>
         <item itemvalue="npm.build" />
         <item itemvalue="npm.start" />
+        <item itemvalue="npm.export" />
         <item itemvalue="npm.dev" />
+        <item itemvalue="npm.component" />
       </list>
     </recent_temporary>
   </component>
@@ -122,6 +176,8 @@
       <workItem from="1736793449786" duration="3555000" />
       <workItem from="1736953494832" duration="15903000" />
       <workItem from="1737039007378" duration="82357000" />
+      <workItem from="1737443424446" duration="28722000" />
+      <workItem from="1737555669401" duration="8509000" />
     </task>
     <servers />
   </component>
@@ -139,7 +195,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="admin-panel-tour-operator" />
+                        <option value="refactoring" />
                       </list>
                     </value>
                   </entry>

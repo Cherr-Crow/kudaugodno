@@ -8,7 +8,7 @@ import { SvgSprite } from '@/shared/svg-sprite';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/navigation';
 import { Modal } from '@/shared/modal';
-import { AddDatesModal } from '@/widgets/add-dates-modal';
+import { AddDatesModal } from '../../../../../widgets/admin-panel/add-dates-modal';
 
 const years = [2025, 2024, 2023];
 
