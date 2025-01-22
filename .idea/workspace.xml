@@ -4,37 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3668177f-7051-4ea2-8b02-9165f0af8dc7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/shared/ui/rule-add/RuleAdd.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/shared/ui/rule-add/RuleAdd.types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/shared/ui/rule-add/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/widgets/admin-panel/rules-add/RulesAdd.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/widgets/admin-panel/rules-add/RulesAdd.types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/widgets/admin-panel/rules-add/index.ts" afterDir="false" />
+    <list default="true" id="3668177f-7051-4ea2-8b02-9165f0af8dc7" name="Changes" comment="change render app &amp; change commands an package">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/hotels/added-hotel/dates/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/hotels/added-hotel/dates/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/hotels/added-hotel/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/hotels/added-hotel/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/admin-panel-tour-operator/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/typography/Typography.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/typography/Typography.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/typography/Typography.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/typography/Typography.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/ui/checkbox/Checkbox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/ui/checkbox/Checkbox.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/ui/named-input/NamedInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/ui/named-input/NamedInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/ui/select/Select.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/ui/select/Select.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/add-dates-modal/AddDatesModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/add-dates-modal/AddDatesModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/add-dates-modal/AddDatesModal.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/add-dates-modal/AddDatesModal.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/add-dates-modal/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/add-dates-modal/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/added-hotel-field/AddedHotelField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/added-hotel-field/AddedHotelField.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/added-hotel-field/AddedHotelField.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/added-hotel-field/AddedHotelField.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/added-hotel-field/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/added-hotel-field/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/admin-panel-dashboard/AdminPanelDashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/admin-panel-dashboard/AdminPanelDashboard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/admin-panel-dashboard/AdminPanelDashboard.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/admin-panel-dashboard/AdminPanelDashboard.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/admin-panel-dashboard/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/admin-panel-dashboard/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/hotel-rules/HotelRules.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/hotel-rules/HotelRules.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/tour-operator-panel-title/TourOperatorPanelTitle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/tour-operator-panel-title/TourOperatorPanelTitle.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/tour-operator-panel-title/TourOperatorPanelTitle.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/tour-operator-panel-title/TourOperatorPanelTitle.types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/widgets/tour-operator-panel-title/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/widgets/admin-panel/tour-operator-panel-title/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,8 +149,17 @@
       <workItem from="1736953494832" duration="15903000" />
       <workItem from="1737039007378" duration="82357000" />
       <workItem from="1737443424446" duration="28722000" />
-      <workItem from="1737555669401" duration="8509000" />
+      <workItem from="1737555669401" duration="9285000" />
     </task>
+    <task id="LOCAL-00001" summary="change render app &amp; change commands an package">
+      <option name="closed" value="true" />
+      <created>1737569839310</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1737569839310</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,5 +187,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="change render app &amp; change commands an package" />
+    <option name="LAST_COMMIT_MESSAGE" value="change render app &amp; change commands an package" />
   </component>
 </project>
