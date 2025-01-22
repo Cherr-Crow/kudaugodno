@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && npm run start",
+    "build": "next build",
     "start": "npx serve@latest build",
     "lint": "next lint",
     "component": "generate-react component",
