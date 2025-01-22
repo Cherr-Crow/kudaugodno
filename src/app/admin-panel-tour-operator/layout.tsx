@@ -1,7 +1,7 @@
 'use client';
 
-import { AdminPanelDashboard } from '@/widgets/admin-panel-dashboard';
-import { TourOperatorPanelTitle } from '@/widgets/tour-operator-panel-title';
+import { AdminPanelDashboard } from '../../widgets/admin-panel/admin-panel-dashboard';
+import { TourOperatorPanelTitle } from '../../widgets/admin-panel/tour-operator-panel-title';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
