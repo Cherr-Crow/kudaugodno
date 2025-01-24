@@ -52,6 +52,8 @@ export interface ISvgSprite extends DivProps {
     | 'check-mark'
     | 'paw'
     | 'face'
+    | 'ruler'
+    | 'parentsChld'
   color?: string;
   width?: number;
   height?: number;
