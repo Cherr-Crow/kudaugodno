@@ -18,12 +18,12 @@ export function NamedInput({
   };
 
   return (
-    <div className={`flex w-full flex-col gap-3 ${className ?? className}`}>
+    <div className={`flex w-full flex-col gap-3 ${className ?? ''}`}>
       {title && <Typography children={title} variant='l-bold' />}
       <input
         type={type}
         className='w-full rounded-md border border-blue-600 px-4 py-2'
-        placeholder={placeholder ? placeholder : ''}
+        placeholder={placeholder ?? ''}
         value={value}
         onChange={handleChange}
         name={name}
