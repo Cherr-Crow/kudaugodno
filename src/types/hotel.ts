@@ -31,4 +31,9 @@ export type Hotel = {
   type_of_rest: string;
   rooms: room[];
   dates: date[] | null;
+  rules: {
+    name: string;
+    description: string;
+    checked: boolean;
+  }[];
 };

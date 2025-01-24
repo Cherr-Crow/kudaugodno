@@ -12,6 +12,7 @@ export function Modal({ children, close }: IModal) {
 
   const closed = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (e.target === window.current) setIsOpen(false);
+    console.log(e.target == window.current);
   };
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export function Modal({ children, close }: IModal) {
   return modalRef
     ? createPortal(
         <div
-          className='bg-grey-opacity fixed left-0 top-0 h-full w-full'
+          className='fixed left-0 top-0 h-full w-full bg-grey-opacity'
           onClick={(e) => closed(e)}
           ref={window}
         >
