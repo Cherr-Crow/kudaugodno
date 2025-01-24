@@ -8,11 +8,18 @@ import { Wzhuh } from '@/widgets/wzhuh';
 import { AdvertisingBanner } from '@/widgets/advertising-banner';
 import { PopularDestinations } from '@/widgets/popular-destinations';
 import { SubscribeToTheNewsletter } from '@/widgets/subscribe-to-the-newsletter';
+import { HotelCatalog } from '@/widgets/hotel-catalog';
 
 
 export default function Egor() {
   return (
     <div className={`ml-5 mt-5 flex-col`}>
+
+      <div className='container'>
+        <Hero />
+        <HotelCatalog />
+      </div>
+      
       <div className={`mb-5`}>
         <label>Switcher</label>
         <Switcher />
@@ -40,7 +47,7 @@ export default function Egor() {
         <RadioButton label='RadioButton text' isSelected={true} />
       </div>
 
-      <div className='container flex flex-col gap-3'>
+      <div className='container flex flex-col gap-3 mb-5'>
         <Hero />
         <Wzhuh />
         <AdvertisingBanner />
@@ -48,6 +55,8 @@ export default function Egor() {
         <OurAdvantages />
         <SubscribeToTheNewsletter />
       </div>
+
+
 
     </div>
   );
