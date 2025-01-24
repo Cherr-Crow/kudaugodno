@@ -4,35 +4,18 @@ import { Checkbox } from '@/shared/ui/checkbox';
 
 export function RuleAdd({ name, className, getValue }: IRuleAdd) {
   const [ruleDescription, setRuleDescription] = useState('');
-  const [value, setValue] = useState<{
-    name: string;
-    description: string;
-    checked: boolean;
-  }>();
-  const [as, setAs] = useState(false);
 
   const handleChangeCheckbox = (e: boolean) => {
-    setValue({ name: name, description: `${name}: ${ruleDescription}`, checked: e });
+    getValue({ name: name, description: `${name}: ${ruleDescription}`, checked: e });
   };
 
   const handleChangeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRuleDescription(e.target.value);
   };
 
-  useEffect(() => {
-    console.log(value);
-    if (!value) return;
-    // getValue(value);
-  }, [value]);
-
   return (
-    <div className={`flex justify-between${className ?? ''}`}>
-      <Checkbox
-        label={name}
-        className='w-1/3'
-        onChange={handleChangeCheckbox}
-        // isChecked={checked}
-      />
+    <div className={`flex justify-between ${className ?? ''}`}>
+      <Checkbox label={name} className='w-1/3' onChange={handleChangeCheckbox} />
       <input
         type='text'
         name={name}
