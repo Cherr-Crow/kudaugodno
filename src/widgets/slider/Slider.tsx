@@ -1,7 +1,9 @@
+"use client"
+
 import React from 'react';
 import { ISlider } from './Slider.types';
 
-// import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 export function Slider({}: ISlider) {
   return (
