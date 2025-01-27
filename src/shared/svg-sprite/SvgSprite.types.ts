@@ -3,6 +3,10 @@ type DivProps = React.ComponentPropsWithoutRef<'svg'>;
 export interface ISvgSprite extends DivProps {
   className?: string;
   name:
+    | 'icutlery_items'
+    | 'square_room'
+    | 'bed'
+    | 'room-guests'
     | 'entertainment'
     | 'bus'
     | 'icon_document'

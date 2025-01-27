@@ -30,7 +30,7 @@ export function Select({
   enum Size {
     'small' = 'rounded-md py-2 px-4',
     'medium' = 'rounded-full p-4',
-    'своё название' = 'свои размеры',
+    'mobile' = 'rounded-full  w-20 h-7',
   }
 
   const handleToggle = () => {

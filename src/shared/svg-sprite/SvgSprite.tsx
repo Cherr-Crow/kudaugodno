@@ -1933,6 +1933,135 @@ export function SvgSprite({
             />
           </svg>
         );
+        case 'room-guests':
+      return (
+        <svg 
+        className={className ?? ''}
+        width="36" 
+        height="24" 
+        viewBox="0 0 36 24" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg">
+        <path 
+          d="M15.752 7H11.252C10.0145 7 9.00195 7.9 9.00195 9V14C9.00195 14.55 9.5082 15 10.127 15H11.252V21C11.252 21.55 11.7582 22 12.377 22H14.627C15.2457 22 15.752 21.55 15.752 21V15H16.877C17.4957 15 18.002 14.55 18.002 14V9C18.002 7.9 16.9895 7 15.752 7Z" 
+          fill="#1A1F4C"
+        />
+        <path 
+          d="M13.498 6C14.7407 6 15.748 5.10457 15.748 4C15.748 2.89543 14.7407 2 13.498 2C12.2554 2 11.248 2.89543 11.248 4C11.248 5.10457 12.2554 6 13.498 6Z" 
+          fill="#1A1F4C"/>
+        <path
+          d="M25.584 7H21.4173C20.2715 7 19.334 7.9 19.334 9V14C19.334 14.55 19.8027 15 20.3757 15H21.4173V21C21.4173 21.55 21.8861 22 22.459 22H24.5423C25.1152 22 25.584 21.55 25.584 21V15H26.6257C27.1986 15 27.6673 14.55 27.6673 14V9C27.6673 7.9 26.7298 7 25.584 7Z" 
+          fill="#1A1F4C"
+        />
+        <path 
+          d="M23.4993 6C24.6499 6 25.5827 5.10457 25.5827 4C25.5827 2.89543 24.6499 2 23.4993 2C22.3488 2 21.416 2.89543 21.416 4C21.416 5.10457 22.3488 6 23.4993 6Z" 
+          fill="#1A1F4C"
+          />
+        </svg>
+
+      );
+    case 'bed':
+      return (
+        <svg 
+        width="24" 
+        height="24" 
+        viewBox="0 0 24 24" 
+        fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path 
+          d="M2 20V12C2 11.4696 2.21071 10.9609 2.58579 10.5858C2.96086 10.2107 3.46957 10 4 10H20C20.5304 10 21.0391 10.2107 21.4142 10.5858C21.7893 10.9609 22 11.4696 22 12V20" 
+          stroke="#1A1F4C" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"/>
+        <path 
+          d="M4 10V6C4 5.46957 4.21071 4.96086 4.58579 4.58579C4.96086 4.21071 5.46957 4 6 4H18C18.5304 4 19.0391 4.21071 19.4142 4.58579C19.7893 4.96086 20 5.46957 20 6V10" 
+          stroke="#1A1F4C" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"/>
+        <path 
+          d="M12 4V10" 
+          stroke="#1A1F4C" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"/>
+        <path 
+          d="M2 18H22" 
+          stroke="#1A1F4C" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"/>
+        </svg>
+
+      );
+    case 'square_room':
+      return (
+        <svg 
+        width="24" 
+        height="24" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg">
+        <path 
+          d="M21.2944 15.2947C21.518 15.5176 21.6955 15.7824 21.8166 16.0741C21.9377 16.3657 22 16.6783 22 16.9941C22 17.3098 21.9377 17.6225 21.8166 17.9141C21.6955 18.2057 21.518 18.4705 21.2944 18.6934L18.6954 21.2924C18.4725 21.5161 18.2076 21.6935 17.916 21.8146C17.6244 21.9357 17.3118 21.998 16.996 21.998C16.6803 21.998 16.3676 21.9357 16.076 21.8146C15.7844 21.6935 15.5196 21.5161 15.2967 21.2924L2.70149 8.69724C2.25222 8.24579 2 7.6348 2 6.99789C2 6.36098 2.25222 5.74999 2.70149 5.29854L5.30049 2.69953C5.75194 2.25026 6.36294 1.99805 6.99984 1.99805C7.63675 1.99805 8.24774 2.25026 8.69919 2.69953L21.2944 15.2947Z" 
+          stroke="#1A1F4C" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"/>
+        <path 
+          d="M14.5 12.5L16.5 10.5" 
+          stroke="#1A1F4C" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"/>
+        <path 
+          d="M11.5 9.5L13.5 7.5" 
+          stroke="#1A1F4C" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"/>
+        <path 
+          d="M8.5 6.5L10.5 4.5" 
+          stroke="#1A1F4C" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"/>
+        <path 
+          d="M17.5 15.5L19.5 13.5" 
+          stroke="#1A1F4C" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"/>
+        </svg> 
+      );
+      case 'icutlery_items':
+      return (
+        <svg width="20" 
+        height="20" 
+        viewBox="0 0 20 20" 
+        fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path 
+              d="M2.5 1.66602V7.49935C2.5 8.41602 3.25 9.16602 4.16667 9.16602H7.5C7.94203 9.16602 8.36595 8.99042 8.67851 8.67786C8.99107 8.3653 9.16667 7.94138 9.16667 7.49935V1.66602" 
+              stroke="#1A1F4C" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"/>
+        <path 
+              d="M5.83398 1.66602V18.3327" 
+              stroke="#1A1F4C" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"/>
+        <path 
+              d="M17.5007 12.4993V1.66602C16.3956 1.66602 15.3358 2.105 14.5544 2.8864C13.773 3.66781 13.334 4.72761 13.334 5.83268V10.8327C13.334 11.7493 14.084 12.4993 15.0007 12.4993H17.5007ZM17.5007 12.4993V18.3327" 
+              stroke="#1A1F4C" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"/>
+        </svg>
+        
+      );
+
     // case '':
     //   return;
     // case '':

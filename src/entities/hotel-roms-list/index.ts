@@ -1,0 +1,1 @@
+export { HotelRomsList } from "./HotelRomsList";
