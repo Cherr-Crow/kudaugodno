@@ -12,7 +12,7 @@ import { ButtonCustom } from '../button-custom';
 import { Typography } from '@/shared/typography';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { FormData, SearchFormProps } from './SearchForm.types';
-import { useSelector } from 'react-redux';
+import { useScreen } from 'usehooks-ts';
 
 const LabelStyle =
   'flex flex-col  xl:h-[48px] h-[60px] mb-2 mt-2 pl-2 relative xl:border-r-2 xl:bg-transparent bg-white border-r-0 xl:rounded-none rounded-lg border-solid border-grey-100 ';
@@ -24,9 +24,7 @@ const inputStyle =
   'border-none outline-none placeholder-black text-black font-[500]';
 
 export function SearchForm({ tabClick, className }: SearchFormProps) {
-  const windowWidth = useSelector(
-    (state: { windowWidth: { value: number } }) => state.windowWidth.value,
-  );
+  const windowWidth = useScreen();
   const [departureCity, setDepartureCity] = useState('');
   const [where, setWhere] = useState('');
   const [selectedDateArrival, setSelectedDateArrival] = useState<Date | null>(null); //стэйт выбранной даты из календаря
@@ -229,7 +227,7 @@ export function SearchForm({ tabClick, className }: SearchFormProps) {
           children='Город вылета'
         />
         <input
-          className={`${inputStyle} ${reqData ? '' : 'mt-[-12px] font-[500]'} ${windowWidth < 1280 && 'text-sm'}`}
+          className={`${inputStyle} ${reqData ? '' : 'mt-[-12px] font-[500]'} ${windowWidth && windowWidth.width < 1280 && 'text-sm'}`}
           style={{ gridArea: 'input1' }}
           id='DepartureCity'
           type='text'
@@ -256,7 +254,7 @@ export function SearchForm({ tabClick, className }: SearchFormProps) {
           children='Куда'
         />
         <input
-          className={`${inputStyle} ${reqDataSecond.length > 1 ? '' : 'mt-[-12px] font-[500]'} ${windowWidth < 1280 && 'text-sm'}`}
+          className={`${inputStyle} ${reqDataSecond.length > 1 ? '' : 'mt-[-12px] font-[500]'} ${windowWidth && windowWidth.width < 1280 && 'text-sm'}`}
           id='Where'
           type='text'
           placeholder='Куда'
@@ -293,7 +291,7 @@ export function SearchForm({ tabClick, className }: SearchFormProps) {
           children='Дата заезда'
         />
         <input
-          className={`${inputStyle} ${selectedDateArrival ? '' : 'mt-[-12px] font-[500]'} ${windowWidth < 1280 && 'text-sm'}`}
+          className={`${inputStyle} ${selectedDateArrival ? '' : 'mt-[-12px] font-[500]'} ${windowWidth && windowWidth.width < 1280 && 'text-sm'}`}
           style={{ gridArea: 'input3' }}
           id='ArrivalDate'
           type='text'
@@ -332,7 +330,7 @@ export function SearchForm({ tabClick, className }: SearchFormProps) {
           children='Дата выезда'
         />
         <input
-          className={`${inputStyle} ${selectedDateDeparture ? '' : 'mt-[-12px] font-[500]'} ${windowWidth < 1280 && 'text-sm'}`}
+          className={`${inputStyle} ${selectedDateDeparture ? '' : 'mt-[-12px] font-[500]'} ${windowWidth && windowWidth.width < 1280 && 'text-sm'}`}
           id='DepartureDate'
           type='text'
           placeholder='Дата выезда'
@@ -372,7 +370,7 @@ export function SearchForm({ tabClick, className }: SearchFormProps) {
           children=' Количество гостей'
         />
         <div
-          className={`absolute ${guests !== 'Количество гостей' ? 'left-[2px] top-[12px] font-[500]' : 'left-[-7px] top-[-4px]'} text-black ${windowWidth < 1280 && 'text-sm'}`}
+          className={`absolute ${guests !== 'Количество гостей' ? 'left-[2px] top-[12px] font-[500]' : 'left-[-7px] top-[-4px]'} text-black ${windowWidth && windowWidth.width < 1280 && 'text-sm'}`}
         >
           <Select
             options={[

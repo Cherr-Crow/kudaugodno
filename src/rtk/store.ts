@@ -1,11 +1,11 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import testReducer from './slices/testSlice';
-import windowWidthReducer from './slices/windowWidthSlice';
+import hotelCreateReducer from './slices/hotelCreate';
 
 export const store = configureStore({
   reducer: {
+    hotelCreate: hotelCreateReducer,
     testVal: testReducer,
-    windowWidth: windowWidthReducer,
   },
 });
 

@@ -8,9 +8,8 @@ import { SearchForm } from '@/shared/ui/search-form';
 
 import 'react-calendar/dist/Calendar.css';
 import '../../shared/ui/calendar/calendar_custom.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { setWindowWidth } from '@/app/rtk/slices/windowWidthSlice';
 import { Wzhuh } from '@/widgets/wzhuh';
+import { useScreen } from 'usehooks-ts';
 
 const tabs = ['Туры', 'Отели'];
 const tabsSvg: (
@@ -33,29 +32,22 @@ const tabsSvg: (
 
 export function Hero({ className }: IHero) {
   const [tabClick, setTabClick] = useState<string>('Туры');
-  const dispatch = useDispatch();
-  const windowWidth = useSelector(
-    (state: { windowWidth: { value: number } }) => state.windowWidth.value,
-  );
+  const windowWidth = useScreen();
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    dispatch(setWindowWidth(window.innerWidth));
-    const handleResize = () => {
-      dispatch(setWindowWidth(window.innerWidth));
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    setIsClient(true);
   }, []);
 
   function handelTab(tab: string): void {
     setTabClick(tab);
   }
 
+  if (!isClient) return null;
+
   return (
     <section
-      className={`${className} container relative rounded-bl-[20px] rounded-br-[20px] bg-blue-600 md:mb-20 xl:rounded-bl-[100px] xl:rounded-br-[100px]`}
+      className={`${className ?? ''} container relative rounded-bl-[20px] rounded-br-[20px] bg-blue-600 md:mb-20 xl:rounded-bl-[100px] xl:rounded-br-[100px]`}
       style={{
         backgroundImage: `url('/plain.svg')`,
         backgroundSize: '38%',
@@ -67,12 +59,12 @@ export function Hero({ className }: IHero) {
         <Typography
           variant='h1'
           children='Легко найти — выгодно забронировать'
-          className={`text-center text-white ${windowWidth < 1280 ? 'font-semibold' : 'font-bold'} `}
+          className={`text-center text-white ${windowWidth && windowWidth.width < 1280 ? 'font-semibold' : 'font-bold'} `}
         />
         <Typography
           variant='subtitle3'
           children='Поиск туров и отелей по всему миру'
-          className={`font-normal text-white ${windowWidth < 1280 && 'text-base'} m-[0 auto] mb-8`}
+          className={`font-normal text-white ${windowWidth && windowWidth.width < 1280 && 'text-base'} m-[0 auto] mb-8`}
         />
         <TabBar
           tabs={tabs}

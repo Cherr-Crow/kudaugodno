@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import { Header } from '@/widgets/header';
 import { Footer } from '@/widgets/footer';
-import StoreProvider from './rtk/StoreProvider';
+import StoreProvider from '@/rtk/StoreProvider';
 
 const futura = localFont({
   src: [
