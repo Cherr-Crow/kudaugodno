@@ -1,0 +1,1 @@
+export { HotelComponentPhotoSlider } from "./HotelComponentPhotoSlider";
