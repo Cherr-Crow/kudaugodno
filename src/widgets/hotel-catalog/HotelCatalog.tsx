@@ -1,9 +1,18 @@
-"use client"
+"use client";
 import React, { useRef, useState } from 'react';
 import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { hotels } from '@/temp/hotel-mock';
+import { FilterPrice } from '@/shared/filter-price';
+import { FilterCity } from '@/shared/filter-city';
+import { FilterPlaceType } from '@/shared/filter-place-type';
+import { FilterRecreationType } from '@/shared/filter-recreation-type';
+import { FilterRating } from '@/shared/filter-rating';
+import { FilterStarCategory } from '@/shared/filter-star-category';
+import { FilterTypeOfMeals } from '@/shared/filter-type-of-meals';
+import { FilterAmenities } from '@/shared/filter-amenities';
+import { HotelComponentPhotoSlider } from '@/shared/hotel-component-photo-slider';
 
 export function HotelCatalog() {
   const [reviewStates, setReviewStates] = useState<{ [hotelId: number]: { showAllReviews: boolean } }>(
@@ -24,7 +33,6 @@ export function HotelCatalog() {
     });
   };
 
-
   return (
     <div className="hotel-catalog-page bg-gray-50">
       <header className="flex justify-between items-center p-4 bg-white shadow-md">
@@ -35,28 +43,21 @@ export function HotelCatalog() {
       </header>
 
       <div className="flex flex-col md:flex-row">
-        {/*Фильтры*/}
+        {/* Фильтры */}
         <aside className="w-full md:w-1/4 p-4 border-b md:border-b-0 md:border-r border-gray-200">
           <div className="filter-section mb-6">
-            <Typography variant="h4" className="mb-2">Город назначения</Typography>
-            <ul>
-              {['Москва', 'Санкт-Петербург', 'Нижний Новгород', 'Казань'].map(
-                (city, index) => (
-                  <li key={index} className="mb-2">
-                    <label className="flex items-center">
-                      <input
-                        type="checkbox"
-                        className="mr-2 rounded border-gray-300 text-primary focus:ring-primary"
-                      />
-                      <Typography variant="l">{city}</Typography>
-                    </label>
-                  </li>
-                )
-              )}
-            </ul>
+            <FilterCity />
+            <FilterRecreationType />
+            <FilterPlaceType />
+            <FilterPrice />
+            <FilterRating />
+            <FilterStarCategory />
+            <FilterTypeOfMeals />
+            <FilterAmenities />
           </div>
         </aside>
 
+        {/* Основной контент */}
         <main className="w-full md:w-3/4 p-4">
           <div className="view-options flex justify-between items-center mb-4">
             <div className="flex">
@@ -66,24 +67,19 @@ export function HotelCatalog() {
             <button className="text-primary font-medium">По популярности</button>
           </div>
 
-          {/* Список отелей */}
           <div className="hotels-list grid gap-6 md:grid-cols-1">
             {hotels.map((hotel) => (
               <div
                 key={hotel.id}
                 className="hotel-card flex flex-col md:flex-row rounded-lg shadow-xl bg-white relative"
               >
-                <div className="hotel-image w-full md:w-2/5 mb-4 md:mb-0 md:mr-4 z-0">
-                  <img
-                    src={hotel.photos[0]?.photo || '/placeholder-image.png'}
-                    alt={hotel.name}
-                    className="rounded-l-lg w-full h-full object-cover"
-                  />
+                <div className="hotel-image w-full md:w-2/5 mb-4 md:mb-0 md:mr-4 z-0 relative overflow-hidden">
+                  <HotelComponentPhotoSlider hotel={hotel} />
                 </div>
 
                 <div className="hotel-info p-4 w-full md:w-3/5 md:ml-[-16px] rounded-lg z-10 relative">
-                  {/* Рейтинг */}
-                  <div className='flex flex-wrap flex-col mb-2 gap-2 relative'>
+                  {/* Рейтинг и информация */}
+                  <div className="flex flex-wrap flex-col mb-2 gap-2 relative">
                     <Rating category={hotel.star_category} />
                     <Typography variant="h4" className="mb-2">
                       {hotel.name}
@@ -91,8 +87,7 @@ export function HotelCatalog() {
                     <Typography variant="l" className="mb-2 text-secondary">
                       {hotel.city}
                     </Typography>
-                    <div className='flex gap-2 absolute top-0 right-0'>
-
+                    <div className="flex gap-2 absolute top-0 right-0">
                       {/* Кнопка "Показать отзывы" */}
                       {hotel.reviews && hotel.reviews.length > 0 && (
                         <div className="group flex items-center justify-end gap-0.5">
@@ -116,7 +111,9 @@ export function HotelCatalog() {
                         {hotel.user_rating}
                       </Typography>
 
-                      <SvgSprite name='heart-outline' width={30} />
+                      <button className="bg-blue-50 p-3 rounded-full">
+                        <SvgSprite name="heart-outline" width={30} />
+                      </button>
                     </div>
                   </div>
 
@@ -138,17 +135,8 @@ export function HotelCatalog() {
                     <Typography variant="l" className="mb-2">
                       Питание: {hotel.rooms[0]?.food.type_of_meals}
                     </Typography>
-                    <Typography variant="l" className="mb-2">
-                      Удобства на этаже
-                    </Typography>
                     <Typography variant="h3" className="text-primary">
                       {hotel.rooms[0].nightly_price} ₽
-                    </Typography>
-                    <Typography variant="l" className="mb-2">
-                      3 ночи
-                    </Typography>
-                    <Typography variant="l" className="mb-2">
-                      2 гостя
                     </Typography>
                   </div>
 
@@ -189,15 +177,15 @@ export function HotelCatalog() {
                     </div>
 
                   </div>
-                </div>
 
+                </div>
               </div>
             ))}
           </div>
-
-
         </main>
       </div>
     </div>
   );
 }
+
+
