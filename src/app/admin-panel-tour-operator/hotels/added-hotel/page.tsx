@@ -1,16 +1,22 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
+
+import { useAppDispatch, useAppSelector } from '@/rtk/hooks';
+import { createHotelTemp, selectorHotelCreate } from '@/rtk/slices/hotelCreate';
 import { PopupWindow } from '@/shared/popup-window';
 import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
-import { ButtonCustom } from '@/shared/ui/button-custom';
-import { AddedHotelField } from '../../../../widgets/admin-panel/added-hotel-field';
-import React, { useEffect, useState } from 'react';
+import { hotelNewMock } from '@/temp/hotel-new-mock';
+import { AddedHotelField } from '@/widgets/admin-panel/added-hotel-field';
 
 export default function AddedHotel() {
   const [value, setValue] = useState('');
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openField, setOpenField] = useState(false);
+
+  const dispatch = useAppDispatch();
+  const { data } = useAppSelector(selectorHotelCreate);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -22,6 +28,8 @@ export default function AddedHotel() {
   };
 
   const handleFieldClick = () => {
+    // TODO: тут должен быть запрос к серверу, на который вернётся новый отель с присвоенным id
+    dispatch(createHotelTemp(hotelNewMock));
     setOpenField(true);
   };
 

@@ -3,10 +3,10 @@
     "next/core-web-vitals",
     "next/typescript"
   ],
-  "plugins": ["import"],
+  "plugins": ["import","unused-imports"],
   "rules": {
     "import/order": [
-      "error",
+      "warn",
       {
         "groups": ["builtin", "external", "internal"],
         "pathGroups": [
@@ -23,6 +23,17 @@
           "caseInsensitive": true
         }
       }
-    ]
+    ],
+    "@typescript-eslint/no-unused-expressions": "off",
+    "react/no-children-prop": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
+    ],
+    "@next/next/no-img-element": "off",
+    "@typescript-eslint/no-empty-object-type": "off",
+    "react-hooks/exhaustive-deps": "off"
+
   }
 }

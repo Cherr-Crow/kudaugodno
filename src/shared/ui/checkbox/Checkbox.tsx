@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+
 import { ICheckbox } from './Checkbox.types';
 
 const Checkbox: React.FC<ICheckbox> = ({
@@ -24,6 +25,7 @@ const Checkbox: React.FC<ICheckbox> = ({
       onClick={handleToggle}
     >
       <button
+        role='switch'
         className={`border-1 flex h-6 w-6 items-center justify-center rounded-lg border border-grey-600 transition-colors duration-300 ${isDisabled ? 'cursor-not-allowed bg-grey-100' : checked ? 'border-0 bg-blue-600' : 'bg-grey-100'} ${!isDisabled && 'focus:outline-2 focus:outline-blue-600'} `}
         disabled={isDisabled}
         aria-checked={checked}

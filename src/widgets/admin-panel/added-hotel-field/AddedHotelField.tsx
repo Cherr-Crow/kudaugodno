@@ -1,18 +1,22 @@
 'use client';
+// eslint-disable @typescript-eslint/no-unused-vars
 
-import React, { useEffect, useState } from 'react';
-import { IAddedHotelField } from './AddedHotelField.types';
-import { Typography } from '@/shared/typography';
-import { Select } from '@/shared/ui/select';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Checkbox } from '@/shared/ui/checkbox';
-import { AddedButton } from '@/shared/ui/added-button';
-import { Rating } from '@/shared/rating';
+import React, { useState } from 'react';
+
 import { nanoid } from 'nanoid';
-import { NamedInput } from '@/shared/ui/named-input';
-import { DistanceInput } from '@/widgets/distance-input';
+
+import { Rating } from '@/shared/rating';
+import { SvgSprite } from '@/shared/svg-sprite';
+import { Typography } from '@/shared/typography';
+import { AddedButton } from '@/shared/ui/added-button';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { Checkbox } from '@/shared/ui/checkbox';
+import { NamedInput } from '@/shared/ui/named-input';
+import { Select } from '@/shared/ui/select';
 import { RulesAdd } from '@/widgets/admin-panel/rules-add';
+import { DistanceInput } from '@/widgets/distance-input';
+
+import { IAddedHotelField } from './AddedHotelField.types';
 
 const typeOfHoliday = ['Пляжный', 'Городской'];
 const accommodationType = [
@@ -55,7 +59,6 @@ const comfort = [
     amenity: ['Детский клуб', 'Аквапарк', 'Вечерняя анимация'],
   },
 ];
-const rules = [];
 
 export function AddedHotelField({}: IAddedHotelField) {
   const [category, setCategory] = useState<number>(0);
@@ -137,7 +140,7 @@ export function AddedHotelField({}: IAddedHotelField) {
         />
       </div>
       <div className='w-full'>
-        <Typography children='Тип размещения' variant='l-bold' />
+        <Typography variant='l-bold'>Тип размещения</Typography>
         <Select
           options={accommodationType}
           color='blue'
@@ -147,7 +150,7 @@ export function AddedHotelField({}: IAddedHotelField) {
         />
       </div>
       <div className='col-start-1 col-end-3 w-full'>
-        <Typography children='Категория' variant='l-bold' />
+        <Typography variant='l-bold'>Категория</Typography>
         <Rating
           category={category}
           setRating={(index) => handleCategoryChange(index)}
@@ -215,7 +218,7 @@ export function AddedHotelField({}: IAddedHotelField) {
             >
               <Typography children={category.category_name} variant='l' />
               <ul className='flex gap-3'>
-                {category.amenity.map((item, index) => (
+                {category.amenity.map((item) => (
                   <li key={nanoid()}>
                     <Checkbox label={item} />
                   </li>

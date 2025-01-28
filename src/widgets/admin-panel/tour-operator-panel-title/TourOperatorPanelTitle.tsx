@@ -1,10 +1,13 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { ITourOperatorPanelTitle } from './TourOperatorPanelTitle.types';
+
 import { usePathname, useRouter } from 'next/navigation';
+
 import { Typography } from '@/shared/typography';
 import { TabBar } from '@/shared/ui/tab-bar';
+
+import { ITourOperatorPanelTitle } from './TourOperatorPanelTitle.types';
 
 const tabsHotelAdded = ['Отель', 'Питание', 'Номера', 'Даты'];
 

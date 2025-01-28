@@ -1,6 +1,7 @@
 'use client';
 
 import axios from 'axios';
+
 import { Hotel } from '@/types/hotel';
 
 const hotel = axios.create({

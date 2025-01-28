@@ -19,7 +19,7 @@ export const searchData = async (textForSearch: string) => {
         `Server responded with status ${response.status}: ${response.statusText}`,
       );
     }
-    const dataReq: any = await response.json();
+    const dataReq = await response.json();
     return dataReq;
   } catch (er) {
     console.error('Error searchData:', er);

@@ -1,5 +1,6 @@
 "use client";
 import React, { useRef, useState } from 'react';
+
 import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';

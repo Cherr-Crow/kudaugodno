@@ -1,15 +1,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { IHero } from './Hero.types';
-import { Typography } from '@/shared/typography';
-import { TabBar } from '@/shared/ui/tab-bar';
-import { SearchForm } from '@/shared/ui/search-form';
 
+import { useScreen } from 'usehooks-ts';
+
+import { Typography } from '@/shared/typography';
+import { SearchForm } from '@/shared/ui/search-form';
+import { TabBar } from '@/shared/ui/tab-bar';
+import { Wzhuh } from '@/widgets/wzhuh';
+
+import { IHero } from './Hero.types';
 import 'react-calendar/dist/Calendar.css';
 import '../../shared/ui/calendar/calendar_custom.css';
-import { Wzhuh } from '@/widgets/wzhuh';
-import { useScreen } from 'usehooks-ts';
 
 const tabs = ['Туры', 'Отели'];
 const tabsSvg: (

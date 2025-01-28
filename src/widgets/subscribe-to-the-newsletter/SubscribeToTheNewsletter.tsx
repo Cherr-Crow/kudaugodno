@@ -1,7 +1,9 @@
 import React from 'react';
-import { ISubscribeToTheNewsletter } from './SubscribeToTheNewsletter.types';
+
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom/ButtonCustom';
+
+import { ISubscribeToTheNewsletter } from './SubscribeToTheNewsletter.types';
 
 export function SubscribeToTheNewsletter({}: ISubscribeToTheNewsletter) {
   return (

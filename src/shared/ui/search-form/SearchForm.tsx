@@ -1,18 +1,20 @@
 'use client';
-import { Value } from '../calendar/Calendar.types';
-import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import './search-form-styles.css';
-import { searchData } from './search-form-utils';
 
-import Calendar from 'react-calendar';
-import { PopupWindow } from '@/shared/popup-window';
-import { Select } from '../select';
-import { ButtonCustom } from '../button-custom';
-import { Typography } from '@/shared/typography';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { FormData, SearchFormProps } from './SearchForm.types';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+
+import { SubmitHandler, useForm } from 'react-hook-form';
+
+import './search-form-styles.css';
 import { useScreen } from 'usehooks-ts';
+
+import { PopupWindow } from '@/shared/popup-window';
+import { SvgSprite } from '@/shared/svg-sprite';
+import { Typography } from '@/shared/typography';
+
+import { FormData, SearchFormProps } from './SearchForm.types';
+import { ButtonCustom } from '../button-custom';
+import { searchData } from './search-form-utils';
+import { Select } from '../select';
 
 const LabelStyle =
   'flex flex-col  xl:h-[48px] h-[60px] mb-2 mt-2 pl-2 relative xl:border-r-2 xl:bg-transparent bg-white border-r-0 xl:rounded-none rounded-lg border-solid border-grey-100 ';
@@ -91,6 +93,7 @@ export function SearchForm({ tabClick, className }: SearchFormProps) {
       });
 
       const dataRes = await response.json(); ////// тут уже разберемся когда API будет готово
+      // eslint-disable-next-line unused-imports/no-unused-vars,@typescript-eslint/no-unused-vars
     } catch (error) {}
   };
 
@@ -145,7 +148,7 @@ export function SearchForm({ tabClick, className }: SearchFormProps) {
 
   /// обработка данных из календаря НАЧАЛО ----------------------------------------------------------
 
-  const handleDateArrival = (value: Value) => {
+  const handleDateArrival = (value: Date | null) => {
     if (value instanceof Date) {
       setSelectedDateArrival(value); // стэйт для инпута даты заезда
       setValue('ArrivalDate', value.toLocaleDateString()); // передаю в форму дату заезда
@@ -153,7 +156,7 @@ export function SearchForm({ tabClick, className }: SearchFormProps) {
     }
   };
 
-  const handleDateDeparture = (value: Value) => {
+  const handleDateDeparture = (value: Date | null) => {
     if (value instanceof Date) {
       setSelectedDateDeparture(value);
       setValue('DepartureDate', value.toLocaleDateString());
@@ -315,7 +318,7 @@ export function SearchForm({ tabClick, className }: SearchFormProps) {
         <PopupWindow
           ref={calendarRef}
           className={`${calendar ? 'block' : 'hidden'}`}
-          children={<Calendar onChange={handleDateArrival} />}
+          children={undefined} // children={<Calendar onChange={handleDateArrival} />}
         />
       </label>
 
@@ -355,7 +358,7 @@ export function SearchForm({ tabClick, className }: SearchFormProps) {
         <PopupWindow
           ref={calendarSecondRef}
           className={`${calendarSecond ? 'block' : 'hidden'}`}
-          children={<Calendar onChange={handleDateDeparture} />}
+          children={undefined} // children={<Calendar onChange={handleDateDeparture} />}
         />
       </label>
 

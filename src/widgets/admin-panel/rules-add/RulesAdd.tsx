@@ -1,15 +1,18 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import { IRulesAdd } from './RulesAdd.types';
+import React, { useRef, useState } from 'react';
+
+import { nanoid } from 'nanoid';
+
+import { Modal } from '@/shared/modal';
 import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
-import { RuleAdd } from '@/shared/ui/rule-add';
-import { nanoid } from 'nanoid';
-import { Rule } from '@/shared/ui/rule-add/RuleAdd.types';
-import { Modal } from '@/shared/modal';
-import { NamedInput } from '@/shared/ui/named-input';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { NamedInput } from '@/shared/ui/named-input';
+import { RuleAdd } from '@/shared/ui/rule-add';
+import { Rule } from '@/shared/ui/rule-add/RuleAdd.types';
+
+import { IRulesAdd } from './RulesAdd.types';
 
 const typeRules = [
   'Размещение животных',

@@ -1,12 +1,11 @@
 'use client';
 
-import { Typography } from '@/shared/typography';
 import Link from 'next/link';
-import { useEffect } from 'react';
+
+import { Typography } from '@/shared/typography';
 
 export default function Error({
   error,
-  reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;

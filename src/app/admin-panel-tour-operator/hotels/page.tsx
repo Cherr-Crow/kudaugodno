@@ -1,11 +1,13 @@
 'use client';
 
+import React from 'react';
+
+import { useRouter } from 'next/navigation';
+
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
-import { useRouter } from 'next/navigation';
-import React from 'react';
 
 export default function Hotels() {
   const route = useRouter();

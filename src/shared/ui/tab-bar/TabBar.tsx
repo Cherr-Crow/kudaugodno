@@ -1,10 +1,13 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ITabBar } from './TabBar.types';
-import { Typography } from '@/shared/typography';
+
 import { nanoid } from 'nanoid';
+
 import { SvgSprite } from '@/shared/svg-sprite';
+import { Typography } from '@/shared/typography';
+
+import { ITabBar } from './TabBar.types';
 
 export function TabBar({ className, tabs, getTabName, svgTab,setTab }: ITabBar) {
   const [active, setActive] = useState(setTab?setTab:tabs[0]);

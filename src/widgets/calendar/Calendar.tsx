@@ -1,11 +1,15 @@
 'use client';
 
 import React, { FC, useEffect, useState } from 'react';
-import { ICalendar } from './Calendar.types';
+
 import { nanoid } from 'nanoid';
+
 import { Typography } from '@/shared/typography';
 
+import { ICalendar } from './Calendar.types';
+
 export const Calendar: FC<ICalendar> = React.memo(({ month, year }) => {
+  Calendar.displayName = 'Calendar';
   const dayOfThWeek: { [key: number]: string } = {
     0: 'ПН',
     1: 'ВТ',

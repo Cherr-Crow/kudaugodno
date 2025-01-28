@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+
 import { ISvgSprite } from './SvgSprite.types';
 
 export function SvgSprite({

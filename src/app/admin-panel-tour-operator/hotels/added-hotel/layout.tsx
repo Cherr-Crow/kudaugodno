@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { ButtonCustom } from '@/shared/ui/button-custom';
-import { Typography } from '@/shared/typography';
+import React from 'react';
+
 import { usePathname } from 'next/navigation';
+
+import { Typography } from '@/shared/typography';
+import { ButtonCustom } from '@/shared/ui/button-custom';
 
 export default function AddHotelLayout({
   children,

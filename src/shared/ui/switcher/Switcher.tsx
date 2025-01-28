@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+
 import { ISwitcher } from './Switcher.types';
 
 const Switcher: React.FC<ISwitcher> = ({

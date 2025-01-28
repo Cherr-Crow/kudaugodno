@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "lint": "next lint",
+    "lint": "next lint --format=unix --fix",
     "component": "generate-react component",
     "page": "generate-react component --type=page",
     "test": "vitest",
@@ -39,6 +39,8 @@
     "eslint": "^8",
     "eslint-config-next": "15.0.4",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-unused-imports": "^4.1.4",
     "postcss": "^8",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",

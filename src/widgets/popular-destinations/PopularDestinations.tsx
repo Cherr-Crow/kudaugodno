@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Typography } from '@/shared/typography';
+
 import { IPopularDestinations } from './PopularDestinations.types';
 
 export function PopularDestinations({ className }: IPopularDestinations) {

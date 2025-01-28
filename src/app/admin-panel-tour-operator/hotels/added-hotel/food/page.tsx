@@ -1,9 +1,10 @@
 import React from 'react';
+
+import { PopupWindow } from '@/shared/popup-window';
 import { Typography } from '@/shared/typography';
+import { AddedButton } from '@/shared/ui/added-button';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { Select } from '@/shared/ui/select';
-import { PopupWindow } from '@/shared/popup-window';
-import { AddedButton } from '@/shared/ui/added-button';
 
 const typeOfFood = ['Завтрак', 'Обед', 'Ужин'];
 

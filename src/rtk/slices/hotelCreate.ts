@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-import { Hotel } from '@/types/hotel';
+
 import { CreatHotel } from '@/axios/hotels_axios_instances';
+import { Hotel } from '@/types/hotel';
+
+import { RootState } from '../store';
 
 const initialState = {
   data: {} as Hotel,
@@ -17,6 +19,10 @@ export const hotelCreateSlice = createSlice({
   name: 'hotelCreateSlice',
   initialState,
   reducers: {
+    // TODO: временный метод для создания нового отеля, убрать после интеграции с бэкендом
+    createHotelTemp: (state, action: PayloadAction<Hotel>) => {
+      state.data = action.payload;
+    },
     updateHotel: (state, action: PayloadAction<Hotel>) => {
       state.data = action.payload;
     },
@@ -37,6 +43,6 @@ export const hotelCreateSlice = createSlice({
   },
 });
 
-export const { updateHotel } = hotelCreateSlice.actions;
-export const selectTest = (state: RootState) => state.hotelCreate;
+export const { createHotelTemp, updateHotel } = hotelCreateSlice.actions;
+export const selectorHotelCreate = (state: RootState) => state.hotelCreate;
 export default hotelCreateSlice.reducer;

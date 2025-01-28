@@ -1,10 +1,15 @@
 import React from 'react';
-import { IRoomModal } from './RoomModal.types';
-import { Typography } from '@/shared/typography';
-import { serviceNames } from '../hotel-block-photos-review/service';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { hotels } from '@/temp/hotel-mock';
+
 import { nanoid } from 'nanoid';
+
+import { SvgSprite } from '@/shared/svg-sprite';
+import { Typography } from '@/shared/typography';
+import { hotels } from '@/temp/hotel-mock';
+
+import { IRoomModal } from './RoomModal.types';
+import { serviceNames } from '../hotel-block-photos-review/service';
+
+
 
 export function RoomModal({}: IRoomModal) {
   return (

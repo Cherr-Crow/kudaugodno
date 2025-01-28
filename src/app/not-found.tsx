@@ -1,5 +1,6 @@
-import { Typography } from '@/shared/typography';
 import Link from 'next/link';
+
+import { Typography } from '@/shared/typography';
 
 export default function NotFound() {
   return (
