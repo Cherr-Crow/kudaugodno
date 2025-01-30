@@ -1,0 +1,1 @@
+export { HotelComponentFilters } from "./HotelComponentFilters";

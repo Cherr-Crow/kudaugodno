@@ -1,3 +1,5 @@
-type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
-export interface IFilterAmenities extends DivProps {}
+export interface IFilterAmenities {
+    selectedAmenities: string[];
+    onAmenitiesChange: (selectedAmenities: string[]) => void;
+}

@@ -3,10 +3,10 @@ import { IFilterCity } from './FilterCity.types';
 import { Typography } from '../typography';
 import { SvgSprite } from '../svg-sprite';
 
-export const FilterCity = ({}: IFilterCity) => {
+export const FilterCity = ({ selectedCities, onCityChange }: IFilterCity) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [search, setSearch] = useState('');
-  const cities = ['Москва', 'Санкт-Петербург', 'Нижний Новгород', 'Казань'];
+  const cities = ['Москва', 'Санкт-Петербург', 'Нижний Новгород', 'Казань', 'Найроби'];
 
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
@@ -15,6 +15,14 @@ export const FilterCity = ({}: IFilterCity) => {
   const filteredCities = cities.filter((city) =>
     city.toLowerCase().includes(search.toLowerCase())
   );
+
+
+  const handleCityChange = (city: string) => {
+    const newSelectedCities = selectedCities.includes(city)
+      ? selectedCities.filter((item) => item !== city)
+      : [...selectedCities, city];
+    onCityChange(newSelectedCities); 
+  };
 
   return (
     <div className="filter-city bg-white p-4 rounded-lg shadow-md">
@@ -61,6 +69,8 @@ export const FilterCity = ({}: IFilterCity) => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
+                  checked={selectedCities.includes(city)}
+                  onChange={() => handleCityChange(city)}
                   className="mr-2 rounded border-gray-300 text-primary focus:ring-primary"
                 />
                 <Typography variant="m">{city}</Typography>
@@ -72,3 +82,6 @@ export const FilterCity = ({}: IFilterCity) => {
     </div>
   );
 };
+
+
+

@@ -2,10 +2,9 @@
 
 import React, { useState } from "react";
 import { Typography } from "../typography";
-import { IFilterAmenities } from './FilterAmenities.types';
+import { IFilterAmenities } from "./FilterAmenities.types";
 
-export function FilterAmenities({}: IFilterAmenities) {
-  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+export function FilterAmenities({ selectedAmenities, onAmenitiesChange }: IFilterAmenities) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const amenities = [
@@ -20,11 +19,11 @@ export function FilterAmenities({}: IFilterAmenities) {
   ];
 
   const toggleAmenity = (amenity: string) => {
-    setSelectedAmenities((prev) =>
-      prev.includes(amenity)
-        ? prev.filter((item) => item !== amenity)
-        : [...prev, amenity]
-    );
+    const updatedAmenities = selectedAmenities.includes(amenity)
+      ? selectedAmenities.filter((item) => item !== amenity)
+      : [...selectedAmenities, amenity];
+
+    onAmenitiesChange(updatedAmenities);
   };
 
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
@@ -36,7 +35,7 @@ export function FilterAmenities({}: IFilterAmenities) {
         <Typography variant="l">Удобства</Typography>
         <button
           onClick={toggleCollapse}
-          className={isCollapsed ? 'text-gray-500 mt-1' : 'text-gray-500'}
+          className="text-gray-500"
           aria-label={isCollapsed ? "Развернуть" : "Свернуть"}
         >
           {isCollapsed ? "+" : "–"}
@@ -70,3 +69,4 @@ export function FilterAmenities({}: IFilterAmenities) {
     </div>
   );
 }
+

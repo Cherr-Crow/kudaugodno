@@ -4,18 +4,20 @@ import React, { useState } from "react";
 import { Typography } from "../typography";
 import { IFilterRecreationType } from "./FilterRecreationType.types";
 
-export function FilterRecreationType({}: IFilterRecreationType) {
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+export function FilterRecreationType({
+  selectedTypes,
+  onTypeChange,
+}: IFilterRecreationType) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const recreationTypes = ["Пляжный", "Городской"];
 
+
   const toggleSelection = (type: string) => {
-    setSelectedTypes((prev) =>
-      prev.includes(type)
-        ? prev.filter((item) => item !== type) 
-        : [...prev, type]
-    );
+    const updatedTypes = selectedTypes.includes(type)
+      ? selectedTypes.filter((item) => item !== type)
+      : [...selectedTypes, type];
+    onTypeChange(updatedTypes);
   };
 
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
@@ -41,12 +43,12 @@ export function FilterRecreationType({}: IFilterRecreationType) {
         }`}
       >
         {/* Блоки с типами отдыха */}
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-4">
           {recreationTypes.map((type) => (
             <button
               key={type}
               onClick={() => toggleSelection(type)}
-              className={`p-4 w-full text-center rounded-lg border transition-all ${
+              className={`p-4 text-center rounded-lg border transition-all ${
                 selectedTypes.includes(type)
                   ? "bg-blue-500 text-white border-blue-500"
                   : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
@@ -57,6 +59,7 @@ export function FilterRecreationType({}: IFilterRecreationType) {
           ))}
         </div>
       </div>
+
     </div>
   );
 }

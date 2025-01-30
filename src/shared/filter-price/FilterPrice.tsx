@@ -4,12 +4,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { Typography } from "../typography";
 import { IFilterPrice } from "./FilterPrice.types";
 
-export function FilterPrice({}: IFilterPrice) {
-  const [priceRange, setPriceRange] = useState<[number, number]>([1500, 15500]);
+export function FilterPrice({ price, onPriceChange }: IFilterPrice) {
+  const [priceRange, setPriceRange] = useState<[number, number]>(price);
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const minPrice = 500;
+  const minPrice = 1000;
   const maxPrice = 20000;
-
 
   const priceData = [
     2000, 5000, 8000, 10000, 15000, 12000, 18000, 14000, 10000, 5000,
@@ -51,14 +50,12 @@ export function FilterPrice({}: IFilterPrice) {
     isDraggingRef.current = null;
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
+    onPriceChange(priceRange);
   };
 
   useEffect(() => {
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, []);
+    setPriceRange(price); 
+  }, [price]);
 
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
@@ -80,7 +77,7 @@ export function FilterPrice({}: IFilterPrice) {
   const histogramData = calculateHistogramData();
 
   return (
-    <div className="filter-price bg-white p-4 rounded-lg shadow-md">
+    <div className="filter-price bg-white p-2 rounded-lg shadow-md">
       {/* Заголовок */}
       <div className="flex justify-between items-center mb-4">
         <Typography variant="l">Цена за ночь</Typography>
@@ -95,7 +92,7 @@ export function FilterPrice({}: IFilterPrice) {
 
       {/* Контент с анимацией */}
       <div
-        className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
+        className={`transition-max-height duration-500 p-4 ease-in-out overflow-hidden ${
           isCollapsed ? "max-h-0" : "max-h-[1000px]"
         }`}
       >
@@ -160,6 +157,8 @@ export function FilterPrice({}: IFilterPrice) {
     </div>
   );
 }
+
+
 
 
 

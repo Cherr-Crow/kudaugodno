@@ -1,3 +1,5 @@
-type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
-export interface IFilterRating extends DivProps {}
+export interface IFilterRating {
+    rating: [number, number];
+    onRatingChange: (rating: [number, number]) => void;
+}

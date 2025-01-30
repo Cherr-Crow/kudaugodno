@@ -1,3 +1,6 @@
-type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
-export interface IFilterPrice extends DivProps {}
+
+export interface IFilterPrice {
+    price: [number, number];
+    onPriceChange: (price: [number, number]) => void;
+}

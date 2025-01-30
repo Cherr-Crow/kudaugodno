@@ -1,3 +1,5 @@
-type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
-export interface IFilterRecreationType extends DivProps {}
+export interface IFilterRecreationType {
+    selectedTypes: string[];
+    onTypeChange: (selectedTypes: string[]) => void;
+}
