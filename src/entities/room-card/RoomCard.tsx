@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import { ImageSlider } from '@/shared/hotel-page/image-slider';
 import { RoomAmenities } from '@/shared/hotel-page/room-amenities';
 import { RoomDescription } from '@/shared/hotel-page/room-description';
@@ -26,6 +27,7 @@ interface IRoomCardProps {
     price: number;
     images: string[]; 
 }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RoomCard: React.FC<IRoomCardProps> = ({ id, name, description, amenities, price, images }) => {
     return (
         <div className="w-full bg-white md:shadow-lg rounded-xl md:flex mb-3"> 
@@ -73,7 +75,7 @@ const RoomCard: React.FC<IRoomCardProps> = ({ id, name, description, amenities, 
                                         </div>
                                         <div className='w-full flex'>
                                             <SvgSprite name='square_room'  />
-                                            <Typography variant='m' children={name} className='ml-2 ' />
+                                            <Typography variant='m' children={amenities} className='ml-2 ' />
                                         </div>  
                                     </div>
                                     <div className="flex items-center justify-center h-16 w-16 xl:ml-10">
@@ -86,8 +88,8 @@ const RoomCard: React.FC<IRoomCardProps> = ({ id, name, description, amenities, 
                                             <SvgSprite name='icutlery_items' className='ml-2 '/>
                                         </div>
                                         <div className='flex flex-col  '>
-                                            <Typography variant='xs' children='Завтрак включен' className='ml-2 block lg:hidden ' />
-                                            <Typography variant='m' children='Завтрак включен' className='ml-2 hidden lg:block ' />
+                                            <Typography variant='xs' children={amenities} className='ml-2 block lg:hidden ' />
+                                            <Typography variant='m' children={amenities} className='ml-2 hidden lg:block ' />
                                         </div>
                                     </div>
                                     <div className='flex flex-col xl:ml-10 ' >

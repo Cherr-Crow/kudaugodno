@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { RoomCard } from '../../entities/room-card';

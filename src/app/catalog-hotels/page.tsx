@@ -9,6 +9,7 @@ import { RoomModal } from '@/widgets/room-modal';
 import { HotelRomsList } from '@/widgets/hotel-roms-list';
 
 export default function CatalogHotels() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [tabClick, setTabClick] = useState<string>('Туры');
 
   const hotelsData = [
@@ -27,17 +28,42 @@ export default function CatalogHotels() {
     {
       id: 2,
       name: 'Номер Double',
-      description: '1 ',
-      amenities: ['24 м2', 'Завтрак включен'],
-      price: 65000,
+      description: '2 ',
+      amenities: ['24 м2', 'Завтрак и ужин включены'],
+      price: 85000,
       images: [ // Исправлено на 'images'
         'Novotel-Nairobi-Westlands-photo-4.png',
         'Novotel-Nairobi-Westlands-photo-2.png',
         'Novotel-Nairobi-Westlands-photo-3.png',
       ],
     },
+    {
+      id: 3,
+      name: 'Номер Comfort',
+      description: '1 ',
+      amenities: ['30 м2', 'Завтрак включен'],
+      price: 70000,
+      images: [ // Исправлено на 'images'
+        'Novotel-Nairobi-Westlands-photo-5.png',
+        'Novotel-Nairobi-Westlands-photo-1.png',
+        'Novotel-Nairobi-Westlands-photo-4.png',
+      ],
+    },
+    {
+      id: 4,
+      name: 'Номер Comfort',
+      description: '1 ',
+      amenities: ['30 м2', 'Завтрак включен'],
+      price: 70000,
+      images: [ // Исправлено на 'images'
+        'Novotel-Nairobi-Westlands-photo-3.png',
+        'Novotel-Nairobi-Westlands-photo-1.png',
+        'Novotel-Nairobi-Westlands-photo-4.png',
+      ],
+    },
     // Добавьте больше отелей по необходимости
   ];
+  
 
   return (
     <>
