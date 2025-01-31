@@ -1,5 +1,4 @@
-
 export interface IFilterAmenities {
-    selectedAmenities: string[];
-    onAmenitiesChange: (selectedAmenities: string[]) => void;
+  selectedAmenities: string[];
+  onAmenitiesChange(selectedAmenities: string[]): void;
 }

@@ -1,6 +1,8 @@
 import React from 'react';
-import { ISelectForSearchBlock } from './SelectForSearchBlock.types';
+
 import { Select } from '@/shared/ui/select';
+
+import { ISelectForSearchBlock } from './SelectForSearchBlock.types';
 
 const numberOfGuests: string[] = [
   'Гостей',
@@ -16,10 +18,10 @@ const numberOfGuests: string[] = [
   '10 гостей',
 ];
 
-export function SelectForSearchBlock({}: ISelectForSearchBlock) {
+export function SelectForSearchBlock({ className }: ISelectForSearchBlock) {
   return (
-    <div className='w-full'>
-      <Select options={numberOfGuests} className='' />
+    <div className={`w-full ${className ?? ''}`}>
+      <Select options={numberOfGuests} className='w-full' />
     </div>
   );
 }

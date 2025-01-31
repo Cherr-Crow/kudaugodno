@@ -1,5 +1,4 @@
-
 export interface IFilterStarCategory {
-    starCategory: number[];
-    onStarCategoryChange: (selectedStars: number[]) => void;
+  starCategory: number[];
+  onStarCategoryChange(selectedStars: number[]): void;
 }

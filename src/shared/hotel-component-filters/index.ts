@@ -1,1 +1,1 @@
-export { HotelComponentFilters } from "./HotelComponentFilters";
+export { FilterComponentFilters } from './HotelComponentFilters';

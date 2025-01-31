@@ -1,6 +1,4 @@
-
-
 export interface IFilterPlaceType {
-    selectedPlaceTypes: string[];
-    onPlaceTypeChange: (types: string[]) => void;
+  selectedPlaceTypes: string[];
+  onPlaceTypeChange(types: string[]): void;
 }

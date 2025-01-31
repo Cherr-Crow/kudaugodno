@@ -1,5 +1,4 @@
-
 export interface IFilterRecreationType {
-    selectedTypes: string[];
-    onTypeChange: (selectedTypes: string[]) => void;
+  selectedTypes: string[];
+  onTypeChange(selectedTypes: string[]): void;
 }

@@ -1,6 +1,4 @@
-
-
 export interface IFilterPrice {
-    price: [number, number];
-    onPriceChange: (price: [number, number]) => void;
+  price: [number, number];
+  onPriceChange(price: [number, number]): void;
 }

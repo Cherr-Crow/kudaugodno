@@ -17,7 +17,7 @@ export default function CatalogHotels() {
         {/*  className={'mb-[40px] border-solid shadow-lg xl:mb-[313px]'}*/}
         {/*  tabClick='Туры'*/}
         {/*/>*/}
-        <SearchTour />
+        <SearchTour type={'Туры'} />
         <HotelBlockPhotosReview />
         <HotelAmenities />
         <HotelRules />
