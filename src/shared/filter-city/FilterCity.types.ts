@@ -1,3 +1,5 @@
-type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
-export interface IFilterCity extends DivProps {}
+export interface IFilterCity {
+    selectedCities: string[];
+    onCityChange: (cities: string[]) => void;
+}

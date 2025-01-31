@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
 import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
@@ -34,154 +34,276 @@ export function HotelCatalog() {
     });
   };
 
+  const [selectedCities, setSelectedCities] = useState<string[]>([]);
+  const [recreationType, setRecreationType] = useState<string[]>([]);
+  const [placeType, setPlaceType] = useState<string[]>([]);
+  const [price, setPrice] = useState<[number, number]>([500, 20000]);
+  const [rating, setRating] = useState<[number, number]>([1, 10]);
+  const [starCategory, setStarCategory] = useState<number[]>([]);
+  const [mealType, setMealType] = useState<string[]>([]);
+  const [amenities, setAmenities] = useState<string[]>([]);
+
+  const handleFiltersReset = () => {
+    setSelectedCities([]);
+    setRecreationType([]);
+    setPlaceType([]);
+    setPrice([500, 20000]);
+    setRating([1, 10]);
+    setStarCategory([]);
+    setMealType([]);
+    setAmenities([]);
+  };
+
+  const [filtersVisible, setFiltersVisible] = useState(false);
+
+  const handleToggleFilters = () => {
+    setFiltersVisible((prevState) => !prevState);
+  };
+
+  const filterHotels = () => {
+    return hotels.filter((hotel) => {
+      return (
+        (selectedCities.length === 0 || selectedCities.includes(hotel.city)) &&
+        (recreationType.length === 0 || recreationType.includes(hotel.type_of_rest)) &&
+        (placeType.length === 0 || placeType.includes(hotel.place)) &&
+        (price[0] === 0 && price[1] === 0 || hotel.rooms.some((room) => room.nightly_price >= price[0] && room.nightly_price <= price[1])) &&
+        (rating[0] === 0 && rating[1] === 0 || hotel.user_rating >= rating[0] && hotel.user_rating <= rating[1]) &&
+        (starCategory.length === 0 || starCategory.includes(hotel.star_category)) &&
+        (mealType.length === 0 || hotel.rooms.some((room) => mealType.includes(room.food.type_of_meals))) &&
+        (amenities.length === 0 || amenities.every((amenity) =>
+          hotel.amenities.some((cat) => cat.amenity.includes(amenity))
+        ))
+      );
+    });
+  };
+
+  const filteredHotels = useMemo(filterHotels, [
+    selectedCities,
+    recreationType,
+    placeType,
+    price,
+    rating,
+    starCategory,
+    mealType,
+    amenities,
+  ]);
+
   return (
     <div className="hotel-catalog-page bg-gray-50">
-      <header className="flex justify-between items-center p-4 bg-white shadow-md">
-        <Typography variant="h1" className="text-primary">
-          Фильтр
-        </Typography>
-        <button className="text-secondary underline">Сбросить все (3)</button>
-      </header>
 
       <div className="flex flex-col md:flex-row">
-        {/* Фильтры */}
-        <aside className="w-full md:w-1/4 p-4 border-b md:border-b-0 md:border-r border-gray-200">
+        {/* Фильтры на экранах md и выше */}
+        <div className="flex md:hidden flex-wrap justify-between items-center p-4 bg-white shadow-md">
+          <Typography variant="h1" className="text-primary">
+            Фильтр
+          </Typography>
+          <button
+            className="text-secondary underline"
+            onClick={handleToggleFilters}
+          >
+            {filtersVisible ? 'Закрыть фильтры' : 'Открыть фильтры'}
+          </button>
+        </div>
+        <aside
+          className={`w-full md:w-1/4 p-4 border-gray-200 ${filtersVisible ? 'block' : 'hidden'} md:block`}
+        >
+
+          <div className="hidden md:block flex-wrap justify-between items-center p-4 bg-white shadow-md">
+            <Typography variant="h1" className="text-primary">
+              Фильтр
+            </Typography>
+            <button
+              className="text-secondary underline"
+              onClick={handleFiltersReset}
+            >
+              Сбросить все
+            </button>
+          </div>
+
           <div className="filter-section mb-6">
-            <FilterCity />
-            <FilterRecreationType />
-            <FilterPlaceType />
-            <FilterPrice />
-            <FilterRating />
-            <FilterStarCategory />
-            <FilterTypeOfMeals />
-            <FilterAmenities />
+            <FilterCity selectedCities={selectedCities} onCityChange={setSelectedCities} />
+            <FilterRecreationType selectedTypes={recreationType} onTypeChange={setRecreationType} />
+            <FilterPlaceType selectedPlaceTypes={placeType} onPlaceTypeChange={setPlaceType} />
+            <FilterPrice price={price} onPriceChange={setPrice} />
+            <FilterRating rating={rating} onRatingChange={setRating} />
+            <FilterStarCategory starCategory={starCategory} onStarCategoryChange={setStarCategory} />
+            <FilterTypeOfMeals selectedMeals={mealType} onMealChange={setMealType} />
+            <FilterAmenities selectedAmenities={amenities} onAmenitiesChange={setAmenities} />
           </div>
         </aside>
 
-        {/* Основной контент */}
+        {/* Мобильная версия фильтров*/}
+        <div
+          className={`fixed top-0 left-0 right-0 bottom-0 bg-white p-4 shadow-lg md:hidden ${filtersVisible ? 'block' : 'hidden'} overflow-y-auto`}
+        >
+          <div className="filter-section mb-6">
+            <button className="text-secondary underline" onClick={handleFiltersReset}>
+              Сбросить все
+            </button>
+            <FilterCity selectedCities={selectedCities} onCityChange={setSelectedCities} />
+            <FilterRecreationType selectedTypes={recreationType} onTypeChange={setRecreationType} />
+            <FilterPlaceType selectedPlaceTypes={placeType} onPlaceTypeChange={setPlaceType} />
+            <FilterPrice price={price} onPriceChange={setPrice} />
+            <FilterRating rating={rating} onRatingChange={setRating} />
+            <FilterStarCategory starCategory={starCategory} onStarCategoryChange={setStarCategory} />
+            <FilterTypeOfMeals selectedMeals={mealType} onMealChange={setMealType} />
+            <FilterAmenities selectedAmenities={amenities} onAmenitiesChange={setAmenities} />
+          </div>
+          <button className="text-secondary underline" onClick={handleFiltersReset}>
+            Сбросить все
+          </button>
+          <button
+            className="absolute top-4 right-4 text-secondary"
+            onClick={handleToggleFilters}
+          >
+            Закрыть
+          </button>
+        </div>
+
         <main className="w-full md:w-3/4 p-4">
           <div className="view-options flex justify-between items-center mb-4">
-            <div className="flex">
-              <button className="mr-4 text-primary font-medium">Список</button>
-              <button className="text-gray-500">Карта</button>
+            <div className="flex gap-4">
+              <button className="flex gap-1 text-primary font-medium">
+                <SvgSprite name="list" width={20} color='blue' />
+                <Typography variant="s">
+                  Список
+                </Typography>
+              </button>
+              <button className="flex gap-1 text-primary font-medium">
+                <SvgSprite name="map" width={20} />
+                <Typography variant="s">
+                  Карта
+                </Typography>
+              </button>
             </div>
-            <button className="text-primary font-medium">По популярности</button>
+            <button className="flex gap-1 text-primary font-medium">
+              <Typography variant="s">
+                По популярности
+              </Typography>
+              <SvgSprite name="sort" width={20} />
+            </button>
           </div>
 
           <div className="hotels-list grid gap-6 md:grid-cols-1">
-            {hotels.map((hotel) => (
-              <div
-                key={hotel.id}
-                className="hotel-card flex flex-col md:flex-row rounded-lg shadow-xl bg-white relative"
-              >
-                <div className="hotel-image w-full md:w-2/5 mb-4 md:mb-0 md:mr-4 z-0 relative overflow-hidden">
-                  <HotelComponentPhotoSlider hotel={hotel} />
-                </div>
+            {filteredHotels.length > 0 ? (
+              filteredHotels.map((hotel) => (
+                <div
+                  key={hotel.id}
+                  className="hotel-card flex flex-col md:flex-row rounded-lg shadow-xl bg-white relative"
+                >
+                  <div className="hotel-image w-full md:w-2/5 mb-4 md:mb-0 md:mr-4 z-0 relative overflow-hidden">
+                    <HotelComponentPhotoSlider hotel={hotel} />
+                  </div>
 
-                <div className="hotel-info p-4 w-full md:w-3/5 md:ml-[-16px] rounded-lg z-10 relative">
-                  {/* Рейтинг и информация */}
-                  <div className="flex flex-wrap flex-col mb-2 gap-2 relative">
-                    <Rating category={hotel.star_category} />
-                    <Typography variant="h4" className="mb-2">
-                      {hotel.name}
-                    </Typography>
-                    <Typography variant="l" className="mb-2 text-secondary">
-                      {hotel.city}
-                    </Typography>
-                    <div className="flex gap-2 absolute top-0 right-0">
-                      {/* Кнопка "Показать отзывы" */}
-                      {hotel.reviews && hotel.reviews.length > 0 && (
-                        <div className="group flex items-center justify-end gap-0.5">
-                          <button
-                            className="text-blue-600 hover:underline flex items-center gap-1"
-                            onClick={() => toggleReviews(hotel.id)}
-                          >
-                            <Typography variant="m">
-                              {reviewStates[hotel.id]?.showAllReviews
-                                ? "Скрыть отзывы"
-                                : `Еще ${hotel.reviews.length} отзывов`}
-                            </Typography>
-                          </button>
-                        </div>
-                      )}
-
-                      <Typography
-                        variant="l"
-                        className="text-secondary rounded-lg bg-green-secondary px-2 py-1 text-sm font-medium md:px-3 md:py-2"
-                      >
-                        {hotel.user_rating}
+                  <div className="hotel-info p-4 w-full md:w-3/5 md:ml-[-16px] rounded-lg z-10 relative">
+                    {/* Рейтинг и информация */}
+                    <div className="flex flex-wrap flex-col mb-2 gap-2 relative">
+                      <Rating category={hotel.star_category} />
+                      <Typography variant="h4" className="mb-2">
+                        {hotel.name}
                       </Typography>
-
-                      <button className="bg-blue-50 p-3 rounded-full">
-                        <SvgSprite name="heart-outline" width={30} />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Удобства */}
-                  <div className="hotel-amenities flex flex-wrap mb-2 gap-2">
-                    {hotel.amenities[0]?.amenity.slice(0, 3).map((amenity, index) => (
-                      <Typography
-                        key={index}
-                        variant="l-bold"
-                        className="bg-gray-100 px-2 py-1 rounded-xl bg-blue-disabled"
-                      >
-                        {amenity}
+                      <Typography variant="l" className="mb-2 text-secondary">
+                        {hotel.city}
                       </Typography>
-                    ))}
-                  </div>
-
-                  {/* Цена */}
-                  <div className="hotel-price flex justify-between items-center mt-4 rounded-xl bg-blue-disabled">
-                    <Typography variant="l" className="mb-2">
-                      Питание: {hotel.rooms[0]?.food.type_of_meals}
-                    </Typography>
-                    <Typography variant="h3" className="text-primary">
-                      {hotel.rooms[0].nightly_price} ₽
-                    </Typography>
-                  </div>
-
-                  {/* Отзывы */}
-                  <div className="flex flex-col mt-4">
-                    <div
-                      ref={(el) => {
-                        reviewsContainerRefs.current[hotel.id] = el;
-                      }}
-                      className={`overflow-hidden transition-max-height duration-300 ${reviewStates[hotel.id]?.showAllReviews ? "max-h-[220px] overflow-y-scroll" : "max-h-0"}`}
-                    >
-
-                      {hotel.reviews.map((review) => (
-                        <div key={review.id} className="mb-4 border-b pb-4">
-                          <div className="mb-2 flex items-center gap-3">
-                            <img
-                              src={review.userPhoto}
-                              alt={review.username}
-                              className="h-8 w-8 rounded-full"
-                            />
-                            <div>
-                              <Typography variant="s" className="font-semibold">
-                                {review.username}
+                      <div className="flex gap-2 absolute top-0 right-0">
+                        {/* Кнопка "Показать отзывы" */}
+                        {hotel.reviews && hotel.reviews.length > 0 && (
+                          <div className="group flex items-center justify-end gap-0.5">
+                            <button
+                              className="text-blue-600 hover:underline flex items-center gap-1"
+                              onClick={() => toggleReviews(hotel.id)}
+                            >
+                              <Typography variant="m">
+                                {reviewStates[hotel.id]?.showAllReviews
+                                  ? "Скрыть отзывы"
+                                  : `Еще ${hotel.reviews.length} отзывов`}
                               </Typography>
-                            </div>
-                            <div className="ml-auto rounded-lg bg-green-secondary px-2 py-1 text-sm font-medium md:px-3 md:py-2">
-                              {review.rating}
-                            </div>
+                            </button>
                           </div>
-                          <Typography variant="xs" className="text-gray-500 mb-2">
-                            {review.date}
-                          </Typography>
-                          <Typography variant="s" className="text-gray-700 mb-2">
-                            {review.text}
-                          </Typography>
-                        </div>
+                        )}
+
+                        <Typography
+                          variant="l"
+                          className="text-secondary rounded-lg bg-green-secondary px-2 py-1 text-sm font-medium md:px-3 md:py-2"
+                        >
+                          {hotel.user_rating}
+                        </Typography>
+
+                        <button className="bg-blue-50 p-3 rounded-full">
+                          <SvgSprite name="heart-outline" width={30} />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Удобства */}
+                    <div className="hotel-amenities flex flex-wrap mb-2 gap-2">
+                      {hotel.amenities[0]?.amenity.slice(0, 3).map((amenity, index) => (
+                        <Typography
+                          key={index}
+                          variant="l-bold"
+                          className="bg-gray-100 px-2 py-1 rounded-xl bg-blue-disabled"
+                        >
+                          {amenity}
+                        </Typography>
                       ))}
                     </div>
 
-                  </div>
+                    {/* Цена */}
+                    <div className="hotel-price flex justify-between items-center mt-4 rounded-xl bg-blue-disabled">
+                      <Typography variant="l" className="mb-2">
+                        Питание: {hotel.rooms[0]?.food.type_of_meals}
+                      </Typography>
+                      <Typography variant="h3" className="text-primary">
+                        {hotel.rooms[0].nightly_price} ₽
+                      </Typography>
+                    </div>
 
+                    {/* Отзывы */}
+                    <div className="flex flex-col mt-4">
+                      <div
+                        ref={(el) => {
+                          reviewsContainerRefs.current[hotel.id] = el;
+                        }}
+                        className={`overflow-hidden transition-max-height duration-300 ${reviewStates[hotel.id]?.showAllReviews ? "max-h-[220px] overflow-y-scroll" : "max-h-0"}`}
+                      >
+
+                        {hotel.reviews.map((review) => (
+                          <div key={review.id} className="mb-4 border-b pb-4">
+                            <div className="mb-2 flex items-center gap-3">
+                              <img
+                                src={review.userPhoto}
+                                alt={review.username}
+                                className="h-8 w-8 rounded-full"
+                              />
+                              <div>
+                                <Typography variant="s" className="font-semibold">
+                                  {review.username}
+                                </Typography>
+                              </div>
+                              <div className="ml-auto rounded-lg bg-green-secondary px-2 py-1 text-sm font-medium md:px-3 md:py-2">
+                                {review.rating}
+                              </div>
+                            </div>
+                            <Typography variant="xs" className="text-gray-500 mb-2">
+                              {review.date}
+                            </Typography>
+                            <Typography variant="s" className="text-gray-700 mb-2">
+                              {review.text}
+                            </Typography>
+                          </div>
+                        ))}
+                      </div>
+
+                    </div>
+
+                  </div>
                 </div>
-              </div>
-            ))}
+
+              ))
+            ) : (
+              <p>Отелей по выбранным критериям не найдено.</p>
+            )}
+
           </div>
         </main>
       </div>

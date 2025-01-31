@@ -1,3 +1,6 @@
-type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
-export interface IFilterPlaceType extends DivProps {}
+
+export interface IFilterPlaceType {
+    selectedPlaceTypes: string[];
+    onPlaceTypeChange: (types: string[]) => void;
+}

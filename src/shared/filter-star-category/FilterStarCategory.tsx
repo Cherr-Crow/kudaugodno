@@ -5,16 +5,18 @@ import { Typography } from "../typography";
 import { IFilterStarCategory } from "./FilterStarCategory.types";
 import { SvgSprite } from "../svg-sprite";
 
-export function FilterStarCategory({}: IFilterStarCategory) {
-  const [selectedStars, setSelectedStars] = useState<number[]>([]);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+export function FilterStarCategory({
+  starCategory,
+  onStarCategoryChange,
+}: IFilterStarCategory) {
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(false); 
+
 
   const toggleStarSelection = (stars: number) => {
-    setSelectedStars((prev) =>
-      prev.includes(stars)
-        ? prev.filter((item) => item !== stars) 
-        : [...prev, stars]
-    );
+    const updatedStars = starCategory.includes(stars)
+      ? starCategory.filter((item) => item !== stars)
+      : [...starCategory, stars];
+    onStarCategoryChange(updatedStars); 
   };
 
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
@@ -46,7 +48,7 @@ export function FilterStarCategory({}: IFilterStarCategory) {
             <div
               key={stars}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition ${
-                selectedStars.includes(stars)
+                starCategory.includes(stars)
                   ? "bg-blue-500 text-white border-blue-500"
                   : "bg-white text-gray-700 border-gray-300"
               }`}
@@ -55,7 +57,7 @@ export function FilterStarCategory({}: IFilterStarCategory) {
               <SvgSprite
                 name="star"
                 width={24}
-                className={selectedStars.includes(stars) ? "fill-white" : "fill-blue-700"}
+                className={starCategory.includes(stars) ? "fill-white" : "fill-blue-700"}
               />
               <span>{stars}</span>
             </div>
@@ -64,7 +66,7 @@ export function FilterStarCategory({}: IFilterStarCategory) {
           {/* Блок "Без звезд" */}
           <div
             className={`px-4 py-2 rounded-lg border cursor-pointer transition ${
-              selectedStars.includes(0)
+              starCategory.includes(0)
                 ? "bg-blue-500 text-white border-blue-500"
                 : "bg-white text-gray-700 border-gray-300"
             }`}
@@ -77,6 +79,7 @@ export function FilterStarCategory({}: IFilterStarCategory) {
     </div>
   );
 }
+
 
 
 

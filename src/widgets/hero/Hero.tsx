@@ -11,7 +11,6 @@ import { Wzhuh } from '@/widgets/wzhuh';
 
 import { IHero } from './Hero.types';
 import 'react-calendar/dist/Calendar.css';
-import '../../shared/ui/calendar/calendar_custom.css';
 
 const tabs = ['Туры', 'Отели'];
 const tabsSvg: (

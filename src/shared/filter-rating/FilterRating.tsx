@@ -4,19 +4,20 @@ import React, { useState, useRef, useEffect } from "react";
 import { Typography } from "../typography";
 import { IFilterRating } from "./FilterRating.types";
 
-export function FilterRating({}: IFilterRating) {
-  const [ratingRange, setRatingRange] = useState<[number, number]>([2.5, 8.5]);
+export function FilterRating({
+  rating, 
+  onRatingChange 
+}: IFilterRating) {
+  const [ratingRange, setRatingRange] = useState<[number, number]>(rating);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const minRating = 1;
   const maxRating = 10;
 
-  // Исходные данные
   const histogramData = [
     6.74, 2.15, 1.15, 9.59, 5.71, 1.75, 6.46, 6.68, 5.18, 8.33, 4.55, 7.87,
     3.21, 8.02, 5.91, 2.45, 7.13, 6.02, 3.88, 7.75, 9.11, 8.11, 3.45, 6.99,
     4.93, 6.21,
   ];
-
 
   const frequencyData = Array(10).fill(0);
 
@@ -62,6 +63,7 @@ export function FilterRating({}: IFilterRating) {
     isDraggingRef.current = null;
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
+    onRatingChange(ratingRange);
   };
 
   useEffect(() => {
@@ -74,7 +76,7 @@ export function FilterRating({}: IFilterRating) {
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
   return (
-    <div className="filter-rating bg-white p-4 rounded-lg shadow-md">
+    <div className="filter-rating bg-white p-2 rounded-lg shadow-md">
       {/* Заголовок */}
       <div className="flex justify-between items-center mb-4">
         <Typography variant="l">Рейтинг</Typography>
@@ -89,7 +91,7 @@ export function FilterRating({}: IFilterRating) {
 
       {/* Контент с анимацией */}
       <div
-        className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
+        className={`transition-max-height duration-500 p-4 ease-in-out overflow-hidden ${
           isCollapsed ? "max-h-0" : "max-h-[1000px]"
         }`}
       >
@@ -162,6 +164,4 @@ export function FilterRating({}: IFilterRating) {
     </div>
   );
 }
-
-
 

@@ -2,10 +2,9 @@
 
 import React, { useState } from "react";
 import { Typography } from "../typography";
-import { IFilterTypeOfMeals } from './FilterTypeOfMeals.types';
+import { IFilterTypeOfMeals } from "./FilterTypeOfMeals.types";
 
-export function FilterTypeOfMeals({}: IFilterTypeOfMeals) {
-  const [selectedMeals, setSelectedMeals] = useState<string[]>([]);
+export function FilterTypeOfMeals({ selectedMeals, onMealChange }: IFilterTypeOfMeals) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const mealOptions = [
@@ -18,11 +17,11 @@ export function FilterTypeOfMeals({}: IFilterTypeOfMeals) {
   ];
 
   const toggleMealSelection = (meal: string) => {
-    setSelectedMeals((prev) =>
-      prev.includes(meal)
-        ? prev.filter((item) => item !== meal)
-        : [...prev, meal]
-    );
+    const updatedMeals = selectedMeals.includes(meal)
+      ? selectedMeals.filter((item) => item !== meal)
+      : [...selectedMeals, meal];
+
+    onMealChange(updatedMeals);
   };
 
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
@@ -34,7 +33,7 @@ export function FilterTypeOfMeals({}: IFilterTypeOfMeals) {
         <Typography variant="l">Тип питания</Typography>
         <button
           onClick={toggleCollapse}
-          className={isCollapsed ? 'text-gray-500 mt-1' : 'text-gray-500'}
+          className="text-gray-500"
           aria-label={isCollapsed ? "Развернуть" : "Свернуть"}
         >
           {isCollapsed ? "+" : "–"}
@@ -43,7 +42,9 @@ export function FilterTypeOfMeals({}: IFilterTypeOfMeals) {
 
       {/* Контент с анимацией */}
       <div
-        className={`transition-max-height duration-500 ease-in-out overflow-hidden ${isCollapsed ? "max-h-0" : "max-h-[1000px]"}`}
+        className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
+          isCollapsed ? "max-h-0" : "max-h-[1000px]"
+        }`}
       >
         {/* Опции питания с чекбоксами */}
         <div className="grid grid-cols-1 gap-2">
@@ -66,4 +67,5 @@ export function FilterTypeOfMeals({}: IFilterTypeOfMeals) {
     </div>
   );
 }
+
 

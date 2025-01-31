@@ -4,9 +4,10 @@ import React, { useState } from "react";
 import { Typography } from "../typography";
 import { IFilterPlaceType } from "./FilterPlaceType.types";
 
-export function FilterPlaceType({}: IFilterPlaceType) {
-  // Изменяем тип состояния на массив строк
-  const [selectedType, setSelectedTypes] = useState<string[]>([]);
+export function FilterPlaceType({
+  selectedPlaceTypes,
+  onPlaceTypeChange,
+}: IFilterPlaceType) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const placeTypes = [
@@ -19,10 +20,10 @@ export function FilterPlaceType({}: IFilterPlaceType) {
   ];
 
   const toggleSelection = (type: string) => {
-    setSelectedTypes((prev) =>
-      prev.includes(type)
-        ? prev.filter((item) => item !== type)
-        : [...prev, type] 
+    onPlaceTypeChange(
+      selectedPlaceTypes.includes(type)
+        ? selectedPlaceTypes.filter((item) => item !== type)
+        : [...selectedPlaceTypes, type] 
     );
   };
 
@@ -49,13 +50,13 @@ export function FilterPlaceType({}: IFilterPlaceType) {
         }`}
       >
         {/* Блоки с типами размещения */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="flex flex-wrap gap-4">
           {placeTypes.map((type) => (
             <button
               key={type}
               onClick={() => toggleSelection(type)}
               className={`p-4 text-center rounded-lg border transition-all ${
-                selectedType.includes(type) // Проверяем наличие элемента
+                selectedPlaceTypes.includes(type)
                   ? "bg-blue-500 text-white border-blue-500"
                   : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
               }`}
@@ -68,4 +69,5 @@ export function FilterPlaceType({}: IFilterPlaceType) {
     </div>
   );
 }
+
 

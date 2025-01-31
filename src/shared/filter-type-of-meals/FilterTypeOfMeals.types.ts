@@ -1,3 +1,5 @@
-type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
-export interface IFilterTypeOfMeals extends DivProps {}
+export interface IFilterTypeOfMeals {
+    selectedMeals: string[];
+    onMealChange: (selectedMeals: string[]) => void;
+}

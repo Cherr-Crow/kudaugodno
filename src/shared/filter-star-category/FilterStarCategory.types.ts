@@ -1,3 +1,5 @@
-type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
-export interface IFilterStarCategory extends DivProps {}
+export interface IFilterStarCategory {
+    starCategory: number[];
+    onStarCategoryChange: (selectedStars: number[]) => void;
+}
