@@ -77,7 +77,7 @@ export const hotels: Hotel[] = [
     rooms: [
       {
         id: 1,
-        category: { id: 1, name: 'Стандартный номер' },
+        category: { name: 'Стандартный номер' },
         food: {
           reservation_available_without_meals: true,
           type_of_meals: 'Завтрак включен',
@@ -86,10 +86,7 @@ export const hotels: Hotel[] = [
         smoking: false,
         pet: false,
         area: 25,
-        amenities: [
-          { id: 1, name: 'Wi-Fi' },
-          { id: 2, name: 'Телевизор' },
-        ],
+        amenities: [{ name: 'Wi-Fi' }, { name: 'Телевизор' }],
         capacity: 2,
         single_bed: null,
         double_bed: 1,
@@ -101,7 +98,7 @@ export const hotels: Hotel[] = [
       },
       {
         id: 2,
-        category: { id: 2, name: 'Люкс' },
+        category: { name: 'Люкс' },
         food: {
           reservation_available_without_meals: true,
           type_of_meals: 'Завтрак включен',
@@ -110,11 +107,7 @@ export const hotels: Hotel[] = [
         smoking: false,
         pet: false,
         area: 50,
-        amenities: [
-          { id: 1, name: 'Wi-Fi' },
-          { id: 2, name: 'Мини-бар' },
-          { id: 3, name: 'Джакузи' },
-        ],
+        amenities: [{ name: 'Wi-Fi' }, { name: 'Мини-бар' }, { name: 'Джакузи' }],
         capacity: 4,
         single_bed: null,
         double_bed: 2,
@@ -255,7 +248,7 @@ export const hotels: Hotel[] = [
     rooms: [
       {
         id: 1,
-        category: { id: 1, name: 'Стандартный номер' },
+        category: { name: 'Стандартный номер' },
         food: {
           reservation_available_without_meals: true,
           type_of_meals: 'Завтрак включен',
@@ -264,10 +257,7 @@ export const hotels: Hotel[] = [
         smoking: false,
         pet: false,
         area: 25,
-        amenities: [
-          { id: 1, name: 'Wi-Fi' },
-          { id: 2, name: 'Телевизор' },
-        ],
+        amenities: [{ name: 'Wi-Fi' }, { name: 'Телевизор' }],
         capacity: 2,
         single_bed: null,
         double_bed: 1,
@@ -279,7 +269,7 @@ export const hotels: Hotel[] = [
       },
       {
         id: 2,
-        category: { id: 2, name: 'Люкс' },
+        category: { name: 'Люкс' },
         food: {
           reservation_available_without_meals: true,
           type_of_meals: 'Завтрак включен',
@@ -288,11 +278,7 @@ export const hotels: Hotel[] = [
         smoking: false,
         pet: false,
         area: 50,
-        amenities: [
-          { id: 1, name: 'Wi-Fi' },
-          { id: 2, name: 'Мини-бар' },
-          { id: 3, name: 'Джакузи' },
-        ],
+        amenities: [{ name: 'Wi-Fi' }, { name: 'Мини-бар' }, { name: 'Джакузи' }],
         capacity: 4,
         single_bed: null,
         double_bed: 2,
@@ -422,7 +408,7 @@ export const hotels: Hotel[] = [
     rooms: [
       {
         id: 1,
-        category: { id: 1, name: 'Стандартный номер' },
+        category: { name: 'Стандартный номер' },
         food: {
           reservation_available_without_meals: true,
           type_of_meals: 'Завтрак включен',
@@ -431,10 +417,7 @@ export const hotels: Hotel[] = [
         smoking: false,
         pet: false,
         area: 25,
-        amenities: [
-          { id: 1, name: 'Wi-Fi' },
-          { id: 2, name: 'Телевизор' },
-        ],
+        amenities: [{ name: 'Wi-Fi' }, { name: 'Телевизор' }],
         capacity: 2,
         single_bed: null,
         double_bed: 1,
@@ -446,7 +429,7 @@ export const hotels: Hotel[] = [
       },
       {
         id: 2,
-        category: { id: 2, name: 'Люкс' },
+        category: { name: 'Люкс' },
         food: {
           reservation_available_without_meals: true,
           type_of_meals: 'Завтрак включен',
@@ -455,11 +438,7 @@ export const hotels: Hotel[] = [
         smoking: false,
         pet: false,
         area: 50,
-        amenities: [
-          { id: 1, name: 'Wi-Fi' },
-          { id: 2, name: 'Мини-бар' },
-          { id: 3, name: 'Джакузи' },
-        ],
+        amenities: [{ name: 'Wi-Fi' }, { name: 'Мини-бар' }, { name: 'Джакузи' }],
         capacity: 4,
         single_bed: null,
         double_bed: 2,
