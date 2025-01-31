@@ -1,16 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
+
+import { SearchTour } from '@/shared/ui/search-block/search-tour';
 import { TabBar } from '@/shared/ui/tab-bar';
 
 import { ISearchBlock } from './SearchBlock.types';
-import { SearchTour } from '@/shared/ui/search-block/search-tour';
-import { SearchHotel } from './search-hotel';
 
 export function SearchBlock({}: ISearchBlock) {
-  const [tab, setTab] = useState<string>('Туры');
+  const [tab, setTab] = useState<'Туры' | 'Отели'>('Туры');
 
-  function handelTab(tab: string): void {
+  function handelTab(tab: 'Туры' | 'Отели'): void {
     setTab(tab);
   }
 
@@ -22,7 +22,7 @@ export function SearchBlock({}: ISearchBlock) {
         getActiveTab={handelTab}
         variant='secondary'
       />
-      {tab === 'Туры' ? <SearchTour /> : <SearchHotel />}
+      <SearchTour type={tab} />
     </div>
   );
 }
