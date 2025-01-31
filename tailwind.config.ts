@@ -11,6 +11,15 @@ export default {
   ],
   theme: {
     extend: {},
+    screens: {
+      xs: '360px',
+      sm: '620px',
+      md: '840px',
+      lg: '1280px',
+      xl: '1446px',
+      '2xl': '160px',
+      // lg: '1446px',
+    },
     colors: {
       transparent: 'transparent',
       white: 'var(--white)',
@@ -71,11 +80,12 @@ export default {
     },
     container: {
       padding: {
-        DEFAULT: '1rem',
-        sm: '2rem',
-        lg: '4rem',
-        xl: '5rem',
-        '2xl': '6rem',
+        DEFAULT: '8px',
+        sm: '16px',
+        md: '20px',
+        lg: '100px',
+        xl: '131px',
+        '2xl': '160px',
       },
       center: true,
     },

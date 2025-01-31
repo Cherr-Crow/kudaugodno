@@ -15,7 +15,6 @@ export function Select({
   options,
   getValue,
   color,
-  markerChange,
   arrowHidden,
   size = 'medium',
   id,

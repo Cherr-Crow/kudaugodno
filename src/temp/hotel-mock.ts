@@ -6,6 +6,8 @@ export const hotels: Hotel[] = [
     name: 'Novotel Nairobi Westlands',
     star_category: 4,
     place: 'Отель',
+    // TODO: удобства разбить на отдельные поля и отправить сразу Никите
+    // amenities_общие:[],
     amenities: [
       {
         id: 1,

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+
 import { Typography } from "../typography";
 import { IFilterAmenities } from "./FilterAmenities.types";
 

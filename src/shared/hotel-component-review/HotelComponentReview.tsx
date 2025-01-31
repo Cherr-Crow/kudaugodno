@@ -1,6 +1,8 @@
 import React from 'react';
-import { Typography } from '../typography';
+
 import { Hotel } from '@/types/hotel';
+
+import { Typography } from '../typography';
 
 interface HotelComponentReviewProps {
   hotel: Hotel;

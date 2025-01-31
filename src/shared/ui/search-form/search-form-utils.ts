@@ -1,6 +1,6 @@
 'use client';
 
-export const searchData = async (textForSearch: string) => {
+export const searchData = async () => {
   try {
     /*
              const response = await fetch('https://pokeapi.co/api/v2/pokemon',{
@@ -13,14 +13,13 @@ export const searchData = async (textForSearch: string) => {
             );*/
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_SEARCH_FORM}`);
-
-    if (!response.ok) {
-      throw new Error(
-        `Server responded with status ${response.status}: ${response.statusText}`,
-      );
-    }
-    const dataReq = await response.json();
-    return dataReq;
+    //
+    // if (!response.ok) {
+    //   throw new Error(
+    //     `Server responded with status ${response.status}: ${response.statusText}`,
+    //   );
+    // }
+    return await response.json();
   } catch (er) {
     console.error('Error searchData:', er);
     throw new Error('Failed to fetch.');

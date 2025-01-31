@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+
 import { Typography } from "../typography";
 import { IFilterPlaceType } from "./FilterPlaceType.types";
 

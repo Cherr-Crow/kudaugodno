@@ -12,9 +12,9 @@ export default async function Home() {
   console.log(hotOffers);
 
   return (
-    <div className='container flex flex-col gap-3'>
+    <div className='flex flex-col gap-3'>
       <Hero />
-      <Wzhuh className='xl:hidden' />
+      <Wzhuh className='container xl:hidden' />
       {/*TODO: блоки "HotOffer" оживить после подключения бэкенда*/}
       {/*<HotOffer*/}
       {/*  array={arr}*/}

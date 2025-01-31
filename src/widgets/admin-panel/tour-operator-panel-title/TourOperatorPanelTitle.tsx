@@ -78,7 +78,7 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
           {openTabsAddHotel && (
             <TabBar
               tabs={tabsHotelAdded}
-              getTabName={handleTabName}
+              getActiveTab={handleTabName}
               setTab={activeTab}
             />
           )}

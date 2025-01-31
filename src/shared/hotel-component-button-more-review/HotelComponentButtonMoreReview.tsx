@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Typography } from '../typography';
-import { HotelComponentReview } from '../hotel-component-review';
+
 import { Hotel } from '@/types/hotel';
+
+import { HotelComponentReview } from '../hotel-component-review';
+import { Typography } from '../typography';
 
 interface HotelComponentButtonMoreReviewProps {
   hotel: Hotel;

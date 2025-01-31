@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+
 import { Typography } from "../typography";
 import { IFilterPrice } from "./FilterPrice.types";
 

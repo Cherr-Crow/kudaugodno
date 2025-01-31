@@ -16,9 +16,12 @@ const hotel = axios.create({
 // Функция для обновления токена
 const refreshToken = async () => {
   try {
-    const response = await axios.post('https://api.example.com/auth/refresh', {
-      refreshToken: localStorage.getItem('refreshToken'),
-    });
+    const response: Axios.AxiosXHR<{ accessToken: string }> = await axios.post(
+      'https://api.example.com/auth/refresh',
+      {
+        refreshToken: localStorage.getItem('refreshToken'),
+      },
+    );
     const { accessToken } = response.data;
     localStorage.setItem('accessToken', accessToken); // Сохраняем новый access token
     return accessToken;
@@ -31,18 +34,18 @@ const refreshToken = async () => {
 };
 
 // Перехватчик для добавления access token в заголовки запросов
-hotel.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
+// hotel.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem('accessToken');
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     return Promise.reject(error);
+//   },
+// );
 
 // Перехватчик для обработки ошибок и обновления токена
 hotel.interceptors.response.use(
@@ -76,10 +79,10 @@ hotel.interceptors.response.use(
 // };
 
 // работа с ручками hotels
-export async function getHotel(): Promise<Hotel[]> {
-  return await hotel.request({}).then((response) => response.data);
-}
+// export async function getHotel(): Promise<Hotel[]> {
+//   return await hotel.request({}).then((response) => response.data);
+// }
 
 export async function CreatHotel(payload: Hotel): Promise<Hotel> {
-  return await hotel.post('', payload).then((response) => response.data);
+  return (await hotel.post('', payload).then((response) => response.data)) as Hotel;
 }

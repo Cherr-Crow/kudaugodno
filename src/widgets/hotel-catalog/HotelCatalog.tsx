@@ -1,19 +1,19 @@
 "use client";
 import React, { useMemo, useRef, useState } from 'react';
 
+import { FilterAmenities } from '@/shared/filter-amenities';
+import { FilterCity } from '@/shared/filter-city';
+import { FilterPlaceType } from '@/shared/filter-place-type';
+import { FilterPrice } from '@/shared/filter-price';
+import { FilterRating } from '@/shared/filter-rating';
+import { FilterRecreationType } from '@/shared/filter-recreation-type';
+import { FilterStarCategory } from '@/shared/filter-star-category';
+import { FilterTypeOfMeals } from '@/shared/filter-type-of-meals';
+import { HotelComponentPhotoSlider } from '@/shared/hotel-component-photo-slider';
 import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { hotels } from '@/temp/hotel-mock';
-import { FilterPrice } from '@/shared/filter-price';
-import { FilterCity } from '@/shared/filter-city';
-import { FilterPlaceType } from '@/shared/filter-place-type';
-import { FilterRecreationType } from '@/shared/filter-recreation-type';
-import { FilterRating } from '@/shared/filter-rating';
-import { FilterStarCategory } from '@/shared/filter-star-category';
-import { FilterTypeOfMeals } from '@/shared/filter-type-of-meals';
-import { FilterAmenities } from '@/shared/filter-amenities';
-import { HotelComponentPhotoSlider } from '@/shared/hotel-component-photo-slider';
 
 export function HotelCatalog() {
   const [reviewStates, setReviewStates] = useState<{ [hotelId: number]: { showAllReviews: boolean } }>(

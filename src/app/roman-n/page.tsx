@@ -265,8 +265,13 @@ export default function RomanN() {
       </div>
       <div className='mt-4 pb-10'>
         <h2 className='w-fit bg-blue-primary'>элемент TabBar</h2>
-        <TabBar tabs={tabsTestList} svgTab={[]} />
-        <TabBar tabs={tabsTestList2} className='mt-4' svgTab={[]} />
+        <TabBar tabs={tabsTestList} svgTab={[]} getActiveTab={() => {}} />
+        <TabBar
+          tabs={tabsTestList2}
+          className='mt-4'
+          svgTab={[]}
+          getActiveTab={() => {}}
+        />
       </div>
       <div className='mt-4 pb-10'>
         <h2 className='w-fit bg-blue-primary'>элемент Select</h2>

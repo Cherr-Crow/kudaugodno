@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+
 import { Typography } from "../typography";
 import { IFilterStarCategory } from "./FilterStarCategory.types";
 import { SvgSprite } from "../svg-sprite";
