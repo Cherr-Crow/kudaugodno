@@ -3,12 +3,19 @@
     "next/core-web-vitals",
     "next/typescript"
   ],
-  "plugins": ["import","unused-imports"],
+  "plugins": [
+    "import",
+    "unused-imports"
+  ],
   "rules": {
     "import/order": [
       "warn",
       {
-        "groups": ["builtin", "external", "internal"],
+        "groups": [
+          "builtin",
+          "external",
+          "internal"
+        ],
         "pathGroups": [
           {
             "pattern": "{react,react-dom/**}",
@@ -16,7 +23,9 @@
             "position": "before"
           }
         ],
-        "pathGroupsExcludedImportTypes": ["react"],
+        "pathGroupsExcludedImportTypes": [
+          "react"
+        ],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
@@ -29,12 +38,16 @@
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [
       "warn",
-      { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": false
+      }
     ],
     "@next/next/no-img-element": "off",
     "@typescript-eslint/no-empty-object-type": "off",
     "react-hooks/exhaustive-deps": "off",
-    "@typescript-eslint/no-unused-vars": "off"
-
+    "@typescript-eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-vars": "off"
   }
 }

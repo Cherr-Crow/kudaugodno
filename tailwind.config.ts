@@ -12,13 +12,13 @@ export default {
   theme: {
     extend: {},
     screens: {
-      xs: '360px',
+      xs: '330px',
+      xxs: '500px',
       sm: '620px',
       md: '840px',
       lg: '1280px',
       xl: '1446px',
-      '2xl': '160px',
-      // lg: '1446px',
+      '2xl': '1600px',
     },
     colors: {
       transparent: 'transparent',
@@ -81,6 +81,8 @@ export default {
     container: {
       padding: {
         DEFAULT: '8px',
+        xs: '8px',
+        xxs: '12px',
         sm: '16px',
         md: '20px',
         lg: '100px',

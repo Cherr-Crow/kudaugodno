@@ -27,7 +27,7 @@ export function ButtonCustom({
   return (
     <button
       style={style}
-      className={`${variants[variant]} ${sizes[size]} ${disabled && 'pointer-events-none opacity-20'} h-fit w-fit rounded-full px-7 hover:shadow-lg ${className}`}
+      className={`${variants[variant]} ${sizes[size]} ${disabled && 'pointer-events-none opacity-20'} h-fit w-fit rounded-full px-7 hover:shadow-lg ${className ?? ''}`}
       onClick={onClick}
     >
       {children}

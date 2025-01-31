@@ -8,6 +8,7 @@ import { Typography } from '@/shared/typography';
 import { SearchBlock } from '@/shared/ui/search-block';
 
 import { IHero } from './Hero.types';
+import { Wzhuh } from '../wzhuh';
 
 export function Hero({ className }: IHero) {
   const windowWidth = useScreen();
@@ -20,15 +21,10 @@ export function Hero({ className }: IHero) {
   if (!isClient) return null;
 
   return (
-    <section
-      className={`${className ?? ''} rounded-bl-[20px] rounded-br-[20px] bg-blue-600 pb-5 md:mb-20 xl:rounded-bl-[100px] xl:rounded-br-[100px]`}
-      style={{
-        backgroundImage: `url('/plain.svg')`,
-        backgroundSize: '38%',
-        backgroundPosition: '1% 50% ',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
+    <section className={`${className ?? ''} relative pb-5 md:mb-20`}>
+      <div
+        className={`absolute left-0 top-0 h-full w-full rounded-bl-[20px] rounded-br-[20px] bg-blue-600 bg-[url("/plain.svg")] bg-no-repeat md:h-[90%] md:rounded-bl-[100px] md:rounded-br-[100px]`}
+      ></div>
       <div className='container relative'>
         <div className='flex flex-col items-center pt-20'>
           <Typography
@@ -44,7 +40,7 @@ export function Hero({ className }: IHero) {
 
           <SearchBlock />
         </div>
-        {/*<Wzhuh className='absolute left-1/2 top-2/3 hidden w-3/4 -translate-x-1/2 xl:flex' />*/}
+        <Wzhuh className='mt-20 hidden md:flex' />
       </div>
     </section>
   );

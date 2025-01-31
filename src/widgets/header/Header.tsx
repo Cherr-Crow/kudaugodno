@@ -23,7 +23,7 @@ export function Header({ className }: IHeader) {
         <Link href='/' as='/'>
           <SvgSprite name='logo' width={65} className='sm:w-[106px]' />
         </Link>
-        <nav className='hidden gap-3 sm:flex'>
+        <nav className='hidden gap-3 md:flex'>
           <Link href='/catalog-tours'>
             <Typography variant='l-bold' children='Туры' />
           </Link>
@@ -34,11 +34,15 @@ export function Header({ className }: IHeader) {
             <Typography variant='l-bold' children='Блог' />
           </Link>
           <Link href='/roman-n'>
-            <Typography variant='l-bold' children='ПЕРЕИСПОЛЬЗУЕМЫЕ КОМПОНЕНТЫ' />
+            <Typography
+              variant='l-bold'
+              children='ПЕРЕИСПОЛЬЗУЕМЫЕ КОМПОНЕНТЫ'
+              className='hidden md:flex'
+            />
           </Link>
         </nav>
         <div className='flex items-center gap-3'>
-          <div className='hidden cursor-pointer items-center gap-2 sm:flex'>
+          <div className='hidden cursor-pointer items-center gap-2 md:flex'>
             <SvgSprite name='phone' width={24} color='#4757EA' />
             <Typography variant='l' className='text-blue-600' children='Поддержка' />
           </div>

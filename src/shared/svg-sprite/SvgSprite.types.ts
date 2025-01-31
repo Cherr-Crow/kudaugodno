@@ -9,6 +9,7 @@ export interface ISvgSprite extends DivProps {
 }
 
 export type NameSvg =
+  | 'map'
   | 'entertainment'
   | 'bus'
   | 'icon_document'
