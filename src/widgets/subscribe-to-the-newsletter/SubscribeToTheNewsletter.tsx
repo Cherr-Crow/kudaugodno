@@ -1,45 +1,57 @@
 import React from 'react';
-import { ISubscribeToTheNewsletter } from './SubscribeToTheNewsletter.types';
+
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom/ButtonCustom';
+
+import { ISubscribeToTheNewsletter } from './SubscribeToTheNewsletter.types';
 
 export function SubscribeToTheNewsletter({}: ISubscribeToTheNewsletter) {
   return (
     <section className=''>
-      <div className='mb-5 p-5 rounded-t-3xl min-h-[315px] bg-auto bg-no-repeat bg-cover md:p-[55px] lg:px-[10%] lg:pt-[93px]'
-      style={{
-        backgroundImage: `url('./subsimg.jpg')`,
-      }}
+      <div
+        className='min-h-[315px] rounded-t-3xl bg-auto bg-cover bg-no-repeat p-5 md:p-[55px] lg:px-[10%] lg:pt-[93px]'
+        style={{
+          backgroundImage: `url('./subsimg.jpg')`,
+        }}
       >
-        <Typography variant="l" className='tracking-wider mb-2 block font-black text-white md:font-medium md:text-[26px] md:mb-4 lg:text-[40px] lg:mb-8 lg:tracking-wide'>
-          Новостная рассылка
-        </Typography>
-        <Typography className='mb-6 block font-normal text-white md:font-thin md:text-blue-light md:text-[18px] md:pr-[140px] lg:text-[32px] lg:pr-[0px] lg:mb-10 '>
-          Подпишитесь, чтобы первыми узнавать о новых турах, скидках и промокодах
-        </Typography>
-        
-        <form
-          action=''
-          className='mb-2 flex flex-col order-1 md:block'
-        >
+        <div className='container'>
+          <Typography
+            variant='l'
+            className='mb-2 block font-black tracking-wider text-white md:mb-4 md:text-[26px] md:font-medium lg:mb-8 lg:text-[40px] lg:tracking-wide'
+          >
+            Новостная рассылка
+          </Typography>
+          <Typography className='mb-6 block font-normal text-white md:pr-[140px] md:text-[18px] md:font-thin md:text-blue-light lg:mb-10 lg:pr-[0px] lg:text-[32px]'>
+            Подпишитесь, чтобы первыми узнавать о новых турах, скидках и промокодах
+          </Typography>
 
-          <label className='mr-1 mb-1 order-2'>
-             <input
+          <form action='' className='order-1 mb-2 flex flex-col md:block'>
+            <label className='order-2 mb-1 mr-1'>
+              <input
                 type='text'
-                className='text-base font-normal w-[100%]  outline-none h-[55px] rounded-[7px] pl-[15px] md:text-[18px] md:rounded-[25px] md:w-[78%] md:mb-3 lg:text-[20px] md:h-[45px] lg:h-[70px] lg:rounded-[35px] lg:w-[81%] lg:pl-[30px]'
+                className='h-[55px] w-[100%] rounded-[7px] pl-[15px] text-base font-normal outline-none md:mb-3 md:h-[45px] md:w-[78%] md:rounded-[25px] md:text-[18px] lg:h-[70px] lg:w-[81%] lg:rounded-[35px] lg:pl-[30px] lg:text-[20px]'
                 placeholder='Введите вашу почту'
               />
-          </label>
+            </label>
 
-         <ButtonCustom variant='primary' size='m' type='button' className='order-4  h-[70px] px-[35px] py-[7px] w-full md:order-4 md:w-[21%] md:px-[3px] lg:py-[20px] lg:px-[8px] lg:w-[18%]'>
-           <Typography children='Подписаться' className='text-base font-semibold text-nowrap md:text-[16px] lg:text-[20px] md:font-normal' />
-         </ButtonCustom>
-         <Typography className='order-3 mb-5 block font-normal text-white md:text-blue-light md:order-4'>
-          Нажимая на кнопку, вы соглашаетесь с политикой обработки персональных данных
-        </Typography>
-        </form>
-
+            <ButtonCustom
+              variant='primary'
+              size='m'
+              type='button'
+              className='order-4 h-[70px] w-full px-[35px] py-[7px] md:order-4 md:w-[21%] md:px-[3px] lg:w-[18%] lg:px-[8px] lg:py-[20px]'
+            >
+              <Typography
+                children='Подписаться'
+                className='text-nowrap text-base font-semibold md:text-[16px] md:font-normal lg:text-[20px]'
+              />
+            </ButtonCustom>
+            <Typography className='order-3 mb-5 block font-normal text-white md:order-4 md:text-blue-light'>
+              Нажимая на кнопку, вы соглашаетесь с политикой обработки персональных
+              данных
+            </Typography>
+          </form>
+        </div>
       </div>
     </section>
-  )
+  );
 }

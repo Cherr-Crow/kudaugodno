@@ -1,9 +1,12 @@
 'use client';
 import React from 'react';
-import { IBreadcrumbs } from './Breadcrumbs.types';
-import { usePathname, useRouter } from 'next/navigation';
-import { SvgSprite } from '../svg-sprite';
+
 import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+
+import { IBreadcrumbs } from './Breadcrumbs.types';
+import { SvgSprite } from '../svg-sprite';
+
 
 const crumbs: Record<string, string> = {
   'catalog-hotels': 'Отели',

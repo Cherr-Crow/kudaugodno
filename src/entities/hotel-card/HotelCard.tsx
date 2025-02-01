@@ -1,10 +1,14 @@
 'use client';
 
 import React from 'react';
-import { IHotelCard } from './HotelCard.types';
+
+import { nanoid } from 'nanoid';
+
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
-import { nanoid } from 'nanoid';
+
+import { IHotelCard } from './HotelCard.types';
+
 
 export function HotelCard({ hotel }: IHotelCard) {
   const { name, photos, city, country, user_rating, star_category, amenities } =

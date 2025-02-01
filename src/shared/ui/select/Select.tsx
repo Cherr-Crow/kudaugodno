@@ -1,18 +1,20 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { ISelect } from './Select.types';
-import { PopupWindow } from '@/shared/popup-window';
+
 import { nanoid } from 'nanoid';
-import { SvgSprite } from '@/shared/svg-sprite';
 import { useScreen } from 'usehooks-ts';
+
+import { PopupWindow } from '@/shared/popup-window';
+import { SvgSprite } from '@/shared/svg-sprite';
+
+import { ISelect } from './Select.types';
 
 export function Select({
   className,
   options,
   getValue,
   color,
-  markerChange,
   arrowHidden,
   size = 'medium',
   id,
@@ -30,7 +32,6 @@ export function Select({
   enum Size {
     'small' = 'rounded-md py-2 px-4',
     'medium' = 'rounded-full p-4',
-    'своё название' = 'свои размеры',
   }
 
   const handleToggle = () => {
@@ -42,8 +43,8 @@ export function Select({
     setIsOpen(false);
   };
 
-  const handleOutsideClick = (event: any) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  const handleOutsideClick = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setIsOpen(false);
     }
   };

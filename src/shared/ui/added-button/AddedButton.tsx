@@ -1,6 +1,8 @@
 import React from 'react';
-import { IAddedButton } from './AddedButton.types';
+
 import { Typography } from '@/shared/typography';
+
+import { IAddedButton } from './AddedButton.types';
 
 export function AddedButton({ text, onClick }: IAddedButton) {
   return (

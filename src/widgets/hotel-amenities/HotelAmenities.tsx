@@ -1,9 +1,13 @@
 import React from 'react';
-import { Typography } from '@/shared/typography';
-import { IHotelAmenities } from './HotelAmenities.types';
-import { SvgSprite } from '@/shared/svg-sprite';
+
 import { nanoid } from '@reduxjs/toolkit';
+
+import { SvgSprite } from '@/shared/svg-sprite';
+import { Typography } from '@/shared/typography';
 import { hotels } from '@/temp/hotel-mock';
+
+import { IHotelAmenities } from './HotelAmenities.types';
+
 
 export function HotelAmenities({}: IHotelAmenities) {
 

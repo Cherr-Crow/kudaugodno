@@ -1,6 +1,8 @@
 import React from 'react';
-import { IBadge } from './Badge.types';
+
 import { Typography } from '@/shared/typography';
+
+import { IBadge } from './Badge.types';
 
 export function Badge({ size = 'base', name, price }: IBadge) {
   return (

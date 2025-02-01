@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+
 import './globals.css';
-import { Header } from '@/widgets/header';
+import StoreProvider from '@/rtk/StoreProvider';
 import { Footer } from '@/widgets/footer';
-import StoreProvider from './rtk/StoreProvider';
+import { Header } from '@/widgets/header';
 
 const futura = localFont({
   src: [

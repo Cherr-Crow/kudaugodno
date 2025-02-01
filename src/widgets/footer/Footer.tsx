@@ -1,8 +1,11 @@
 import React from 'react';
-import { IFooter } from './Footer.types';
+
 import Link from 'next/link';
+
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
+
+import { IFooter } from './Footer.types';
 
 export function Footer({ className }: IFooter) {
   return (
