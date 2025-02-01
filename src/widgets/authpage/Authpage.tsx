@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { IAuthpage } from './Authpage.types';
+
+import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
-import { SvgSprite } from '@/shared/svg-sprite';
+
+import { IAuthpage } from './Authpage.types';
 
 export function Authpage({}: IAuthpage) {
     const [showCodePanel, setShowCodePanel] = useState<boolean>(false);
@@ -69,20 +71,20 @@ export function Authpage({}: IAuthpage) {
 
   // Ф-я показа времени в нужном формате
 
-  let timeForComponent=(time: number)=>{
+  const timeForComponent=(time: number)=>{
     if(!time) return;
-    let hours = Math.floor(time / 60 / 60);
-    let minutes = Math.floor(time / 60) - (hours * 60);
-    let seconds = time % 60;
+    const hours = Math.floor(time / 60 / 60);
+    const minutes = Math.floor(time / 60) - (hours * 60);
+    const seconds = time % 60;
 
-    let formattedWithHours = [
+    const formattedWithHours = [
         hours.toString().padStart(2, '0'),
         minutes.toString().padStart(2, '0'),
         seconds.toString().padStart(2, '0')
       ].join(':');
 
 
-    let  formattedWithouthHours = [        
+    const  formattedWithouthHours = [        
         minutes.toString().padStart(2, '0'),
         seconds.toString().padStart(2, '0')
       ].join(':');     

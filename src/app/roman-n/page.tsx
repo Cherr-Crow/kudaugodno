@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid';
 
 import { useAppDispatch, useAppSelector } from '@/rtk/hooks';
 import { selectTest, test } from '@/rtk/slices/testSlice';
+import { Accordeon } from '@/shared/accordeon';
 import { PopupWindow } from '@/shared/popup-window';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
@@ -358,6 +359,12 @@ export default function RomanN() {
         <RadioButton label='RadioButton text' isDisabled={true} />
         <label>Switchers active by default</label>
         <RadioButton label='RadioButton text' isSelected={true} />
+      </div>
+      <div className='mt-4'>
+        <h2 className='mb-3 w-fit bg-blue-primary p-2'>элемент Accordeon</h2>
+        <Accordeon title='test'>
+          <p>This is the content of section 1.</p>
+        </Accordeon>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
-import { Authpage } from '@/widgets/authpage';
 import React from 'react';
+
+import { Authpage } from '@/widgets/authpage';
 
 export default function Authorization() {
   return (
