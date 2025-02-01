@@ -60,4 +60,10 @@ export type NameSvg =
   | 'paw'
   | 'face'
   | 'ruler'
-  | 'parentsChld';
+  | 'parentsChld'
+  | 'map'
+  | 'filter'
+  | 'back-arrow'
+  | 'google'
+  | 'vkontakte'
+  | 'yandex';

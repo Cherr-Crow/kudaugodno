@@ -234,7 +234,7 @@ export const hotels: Hotel[] = [
     description:
       'Отель с просторными номерами, бассейном и утренними завтраками. Удобно расположен в центре города.',
     type_of_rest: 'Семейный',
-    user_rating: 8.6,
+    user_rating: 7.6,
     dates: null,
     check_in_time: '14:00',
     check_out_time: '12:00',
@@ -394,7 +394,7 @@ export const hotels: Hotel[] = [
     description:
       'Отель с просторными номерами, бассейном и утренними завтраками. Удобно расположен в центре города.',
     type_of_rest: 'Семейный',
-    user_rating: 8.6,
+    user_rating: 7.9,
     dates: null,
     check_in_time: '14:00',
     check_out_time: '12:00',

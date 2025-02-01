@@ -6,15 +6,15 @@ import { SubscribeToTheNewsletter } from '@/widgets/subscribe-to-the-newsletter'
 import { Wzhuh } from '@/widgets/wzhuh';
 
 export default async function Home() {
-  const data = await fetch('http://82.202.137.38/hotels/');
-  const hotOffers = data.json();
+  // const data = await fetch('http://82.202.137.38/hotels/');
+  // const hotOffers = data.json();
 
-  console.log(hotOffers);
+  // console.log(hotOffers);
 
   return (
     <div className='flex flex-col gap-3'>
       <Hero />
-      <Wzhuh className='container md:hidden' />
+      <Wzhuh className='p3 container md:hidden' />
       {/*TODO: блоки "HotOffer" оживить после подключения бэкенда*/}
       {/*<HotOffer*/}
       {/*  array={arr}*/}
