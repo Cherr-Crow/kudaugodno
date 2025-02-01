@@ -37,7 +37,7 @@
     "react/no-children-prop": "off",
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [
-      "warn",
+      "off",
       {
         "vars": "all",
         "args": "after-used",
@@ -48,6 +48,6 @@
     "@typescript-eslint/no-empty-object-type": "off",
     "react-hooks/exhaustive-deps": "off",
     "@typescript-eslint/no-unused-vars": "off",
-    "unused-imports/no-unused-vars": "off"
+//    "unused-imports/no-unused-vars": "off"
   }
 }
