@@ -62,4 +62,8 @@ export type NameSvg =
   | 'ruler'
   | 'parentsChld'
   | 'map'
-  | 'filter';
+  | 'filter'
+  | 'back-arrow'
+  | 'google'
+  | 'vkontakte'
+  | 'yandex';
