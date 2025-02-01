@@ -24,7 +24,7 @@ export function ButtonCustom({
     s = 'py-2',
   }
   return (
-    <button
+    <button type='button'
       style={style}
       className={`${variants[variant]} ${sizes[size]} ${disabled && 'pointer-events-none opacity-20'} h-fit w-fit rounded-full px-7 hover:shadow-lg ${className}`}
       onClick={onClick}

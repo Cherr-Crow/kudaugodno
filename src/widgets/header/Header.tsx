@@ -55,7 +55,7 @@ export function Header({ className }: IHeader) {
             {openUser && (
               <PopupWindow className='absolute right-full flex flex-col gap-2 text-nowrap py-2'>
                 <Link
-                  href='/'
+                  href='/auth-page'
                   onClick={toggleUserMenu}
                   className='rounded-xl px-4 py-1 hover:bg-grey-100'
                 >

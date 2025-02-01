@@ -25,6 +25,7 @@ export default {
       'green-secondary': 'var(--green-secondary)',
       'green-tetriary': 'var(--green-tetriary)',
       'green-bold': 'var(--green-bold)',
+      'green-950': 'var(--colors-green-950)',
       'blue-disabled': 'var(--blue-disabled)',
       'blue-extra-light': 'var(--blue-extra-light)',
       'blue-light': 'var(--blue-light)',

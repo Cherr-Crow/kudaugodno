@@ -54,6 +54,10 @@ export interface ISvgSprite extends DivProps {
     | 'face'
     | 'ruler'
     | 'parentsChld'
+    | 'back-arrow'
+    | 'google'
+    | 'vkontakte'
+    | 'yandex'
   color?: string;
   width?: number;
   height?: number;
