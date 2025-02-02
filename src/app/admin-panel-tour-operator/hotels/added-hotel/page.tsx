@@ -8,8 +8,8 @@ import { PopupWindow } from '@/shared/popup-window';
 import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
 import { hotelNewMock } from '@/temp/hotel-new-mock';
-import { AddedHotelField } from '@/widgets/admin-panel/added-hotel-field';
 import { Hotel } from '@/types/hotel';
+import { AddedHotelField } from '@/widgets/admin-panel/added-hotel-field';
 
 export default function AddedHotel() {
   const [value, setValue] = useState('');

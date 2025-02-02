@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { IAdvertisingBanner } from './AdvertisingBanner.types';
+import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
-import { SvgSprite } from '@/shared/svg-sprite';
+
+import { IAdvertisingBanner } from './AdvertisingBanner.types';
 
 export function AdvertisingBanner({ className }: IAdvertisingBanner) {
   return (
