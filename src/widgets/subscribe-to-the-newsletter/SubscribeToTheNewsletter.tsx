@@ -31,6 +31,7 @@ export function SubscribeToTheNewsletter({}: ISubscribeToTheNewsletter) {
                 type='text'
                 className='h-[55px] w-[100%] rounded-[7px] pl-[15px] text-base font-normal outline-none md:mb-3 md:h-[45px] md:w-[78%] md:rounded-[25px] md:text-[18px] lg:h-[70px] lg:w-[81%] lg:rounded-[35px] lg:pl-[30px] lg:text-[20px]'
                 placeholder='Введите вашу почту'
+                name='почта'
               />
             </label>
 

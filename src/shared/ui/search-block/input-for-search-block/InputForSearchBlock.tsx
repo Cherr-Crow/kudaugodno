@@ -33,6 +33,7 @@ export function InputForSearchBlock({
           placeholder={placeholder}
           value={value}
           onChange={handleChangeInput}
+          name={placeholder}
         />
       </div>
       {!!value && (

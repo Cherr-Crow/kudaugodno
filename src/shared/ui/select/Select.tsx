@@ -72,6 +72,7 @@ export function Select({
           onChange={() => {}}
           className={`pointer-events-none w-4/5 cursor-pointer bg-transparent outline-none`}
           id={id}
+          name='select'
         />
         <SvgSprite
           name='arrow'
