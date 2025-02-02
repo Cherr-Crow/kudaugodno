@@ -13,7 +13,7 @@ export default function AddHotelLayout({
   children: React.ReactNode;
 }>) {
   const patch = usePathname();
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<{ results: [] } | null>(null);
 
   const handleSetData = () => {
     fetch('http://176.109.109.78/api/v1/hotels/?limit=10')
