@@ -64,10 +64,6 @@ export function AddedHotelField({}: IAddedHotelField) {
     location: string;
     distance: number;
   } | null>(null);
-  const [distances, setDistances] = useState<
-    { location: string; distance: number }[]
-  >([]);
-  const [distanceInputReset, setDistanceInputReset] = useState(false);
 
   const handleCategoryChange = (index: number) => {
     setCategory(index + 1);
@@ -103,19 +99,6 @@ export function AddedHotelField({}: IAddedHotelField) {
 
   const handleDistanceChange = (e: { location: string; distance: number }) => {
     setDistance(e);
-  };
-
-  const handleAddDistance = () => {
-    if (distances.some((el) => el.location === distance?.location) || !distance) {
-      return;
-    }
-
-    setDistances((prev) => [...prev, distance]);
-    setDistanceInputReset(!distanceInputReset);
-  };
-
-  const handleDeleteDistance = (arg: string) => {
-    setDistances((prev) => prev.filter((el) => el.location !== arg));
   };
 
   return (

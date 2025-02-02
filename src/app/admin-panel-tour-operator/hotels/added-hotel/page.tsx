@@ -10,7 +10,6 @@ import { AddedButton } from '@/shared/ui/added-button';
 import { hotelNewMock } from '@/temp/hotel-new-mock';
 import { AddedHotelField } from '@/widgets/admin-panel/added-hotel-field';
 import { Hotel } from '@/types/hotel';
-import axios from 'axios';
 
 export default function AddedHotel() {
   const [value, setValue] = useState('');
@@ -33,62 +32,62 @@ export default function AddedHotel() {
 
   const handleFieldClick = async () => {
     // TODO: тут должен быть запрос к серверу, на который вернётся новый отель с присвоенным id
-    await axios
-      .post('https://anywhere-test.god-it.ru/api/v1/hotels/', {
-        name: 'test',
-        star_category: 5,
-        place: 'Test Name',
-        country: 'string',
-        city: 'string',
-        address: 'string',
-        distance_to_the_station: 200000,
-        distance_to_the_sea: 200000,
-        distance_to_the_center: 200000,
-        distance_to_the_metro: 200000,
-        distance_to_the_airport: 200000,
-        description: 'string',
-        check_in_time: '14:00:00',
-        check_out_time: '12:00:00',
-        amenities_common: [
-          {
-            name: 'string',
-          },
-        ],
-        amenities_in_the_room: [
-          {
-            name: 'string',
-          },
-        ],
-        amenities_sports_and_recreation: [
-          {
-            name: 'string',
-          },
-        ],
-        amenities_for_children: [
-          {
-            name: 'string',
-          },
-        ],
-        type_of_meals_ultra_all_inclusive: 10000,
-        type_of_meals_all_inclusive: 10000,
-        type_of_meals_full_board: 10000,
-        type_of_meals_half_board: 10000,
-        type_of_meals_only_breakfast: 10000,
-        user_rating: 0,
-        type_of_rest: 'Пляжный',
-        rules: [
-          {
-            name: 'string',
-            description: 'string',
-          },
-        ],
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    // await axios
+    //   .post('https://anywhere-test.god-it.ru/api/v1/hotels/', {
+    //     name: 'test',
+    //     star_category: 5,
+    //     place: 'Test Name',
+    //     country: 'string',
+    //     city: 'string',
+    //     address: 'string',
+    //     distance_to_the_station: 200000,
+    //     distance_to_the_sea: 200000,
+    //     distance_to_the_center: 200000,
+    //     distance_to_the_metro: 200000,
+    //     distance_to_the_airport: 200000,
+    //     description: 'string',
+    //     check_in_time: '14:00:00',
+    //     check_out_time: '12:00:00',
+    //     amenities_common: [
+    //       {
+    //         name: 'string',
+    //       },
+    //     ],
+    //     amenities_in_the_room: [
+    //       {
+    //         name: 'string',
+    //       },
+    //     ],
+    //     amenities_sports_and_recreation: [
+    //       {
+    //         name: 'string',
+    //       },
+    //     ],
+    //     amenities_for_children: [
+    //       {
+    //         name: 'string',
+    //       },
+    //     ],
+    //     type_of_meals_ultra_all_inclusive: 10000,
+    //     type_of_meals_all_inclusive: 10000,
+    //     type_of_meals_full_board: 10000,
+    //     type_of_meals_half_board: 10000,
+    //     type_of_meals_only_breakfast: 10000,
+    //     user_rating: 0,
+    //     type_of_rest: 'Пляжный',
+    //     rules: [
+    //       {
+    //         name: 'string',
+    //         description: 'string',
+    //       },
+    //     ],
+    //   })
+    //   .then(function (response) {
+    //     console.log(response);
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
 
     dispatch(createHotelTemp(hotelNewMock));
     setOpenField(true);
@@ -115,7 +114,7 @@ export default function AddedHotel() {
           onChange={handleChange}
           name='nameHotel'
         />
-        {openDropdown && (
+        {openDropdown && !openField && (
           <PopupWindow className='top-[110%] flex flex-col gap-2 px-5 py-4'>
             <Typography children='Этого отеля нет в нашей базе' />
             <AddedButton text='Добавить отель' onClick={handleFieldClick} />
