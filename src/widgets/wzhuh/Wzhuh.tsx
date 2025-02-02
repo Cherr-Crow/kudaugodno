@@ -9,7 +9,7 @@ import { IWzhuh } from './Wzhuh.types';
 export function Wzhuh({ className }: IWzhuh) {
   return (
     <div className={`${className}`}>
-      <div className='mx-auto flex flex-col items-center justify-center gap-8 rounded-3xl bg-blue-disabled p-5 md:flex-row md:justify-start md:gap-28 md:pt-0'>
+      <div className='mx-auto flex flex-col items-center justify-center gap-8 rounded-3xl bg-blue-50 p-5 md:flex-row md:justify-start md:gap-28 md:pt-0'>
         <div className='flex flex-col items-center text-center md:items-start md:text-start xl:ml-[170px]'>
           <Typography
             variant='h5'
@@ -35,7 +35,7 @@ export function Wzhuh({ className }: IWzhuh) {
 
         <div className='-mt-10 hidden md:order-2 md:block'>
           <img
-            src='frog_main_page.svg'
+            src='frog_main.png'
             alt='Лягушка с чемоданом'
             className='md:h-100 h-auto w-auto object-contain'
           />

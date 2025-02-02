@@ -67,12 +67,12 @@ export const Calendar: FC<ICalendar> = React.memo(({ month, year }) => {
               className={`border border-grey-600 p-3 ${i % 7 !== 0 && 'border-l-0'}`}
               key={nanoid()}
             >
-              <Typography className='text-grey-primary'>{dayOfThWeek[i]}</Typography>
+              <Typography className='text-grey-400'>{dayOfThWeek[i]}</Typography>
             </div>
           ))}
         {calendar.map((date, num) => (
           <div
-            className={`border border-t-0 border-grey-600 bg-blue-extra-light p-3 ${num % 7 !== 0 && 'border-l-0'}`}
+            className={`border border-t-0 border-grey-600 bg-blue-100 p-3 ${num % 7 !== 0 && 'border-l-0'}`}
             key={nanoid()}
           >
             <div className='mb-10 flex justify-between md:mb-20'>

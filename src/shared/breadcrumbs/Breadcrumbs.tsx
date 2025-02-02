@@ -7,7 +7,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { IBreadcrumbs } from './Breadcrumbs.types';
 import { SvgSprite } from '../svg-sprite';
 
-
 const crumbs: Record<string, string> = {
   'catalog-hotels': 'Отели',
   Kenia: 'Кения',
@@ -19,13 +18,13 @@ export function Breadcrumbs({}: IBreadcrumbs) {
   const route = pathname.split('/');
   route.shift();
   return (
-    <div className={`invisible mt-6 mb-10 lg:visible `}>
+    <div className={`invisible mb-10 mt-6 lg:visible`}>
       <ul className={`flex flex-row gap-1`}>
         {route.map((elem, i) =>
           crumbs[elem] ? (
-            <li key={i} className={`flex flex-row gap-1 text-grey-primary`}>
+            <li key={i} className={`flex flex-row gap-1 text-grey-400`}>
               <Link
-                href="#"
+                href='#'
                 onClick={(e) => {
                   e.preventDefault();
                   router.push(route.slice(0, i + 1).join('/'));
@@ -33,10 +32,10 @@ export function Breadcrumbs({}: IBreadcrumbs) {
               >
                 {crumbs[elem]}
               </Link>
-              {route.length > 1 &&<SvgSprite name={'arrow'} width={16}></SvgSprite>}
+              {route.length > 1 && <SvgSprite name={'arrow'} width={16}></SvgSprite>}
             </li>
           ) : (
-            <li key={i} className={`font-medium text-black`}>
+            <li key={i} className={`font-medium text-grey-950`}>
               {elem}
             </li>
           ),

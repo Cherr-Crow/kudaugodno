@@ -90,7 +90,7 @@ export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
                 </Typography>
                 <Typography
                   variant='s-bold'
-                  className='rounded-lg bg-green-secondary p-1 pl-2 pr-2 text-sm font-medium'
+                  className='rounded-lg bg-green-300 p-1 pl-2 pr-2 text-sm font-medium'
                 >
                   {hotel.user_rating}
                 </Typography>
@@ -129,11 +129,11 @@ export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
                       opacity: 0.6,
                     }}
                   />
-                  <div className='absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform items-center justify-center gap-1 rounded-3xl bg-blue-light p-3 pl-4 pr-4 md:min-w-40'>
+                  <div className='absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform items-center justify-center gap-1 rounded-3xl bg-blue-200 p-3 pl-4 pr-4 md:min-w-40'>
                     <SvgSprite name='image' width={24} />
                     <Typography
                       variant='s-bold'
-                      className='text-sm font-bold text-black'
+                      className='text-sm font-bold text-grey-950'
                     >
                       Все фотографии
                     </Typography>
@@ -227,9 +227,9 @@ export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
                     backgroundPosition: '10% 10%',
                   }}
                 >
-                  <div className='m-auto flex items-center justify-center gap-1 rounded-3xl bg-blue-light p-3 pl-6 pr-6'>
+                  <div className='m-auto flex items-center justify-center gap-1 rounded-3xl bg-blue-200 p-3 pl-6 pr-6'>
                     <SvgSprite name='location' width={24} />
-                    <Typography variant='s-bold' className='text-black'>
+                    <Typography variant='s-bold' className='text-grey-950'>
                       Смотреть на карте
                     </Typography>
                   </div>
@@ -260,7 +260,7 @@ export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
                               {review.username}
                             </Typography>
                           </div>
-                          <div className='ml-auto rounded-lg bg-green-secondary px-2 py-1 text-sm font-medium md:px-3 md:py-2'>
+                          <div className='ml-auto rounded-lg bg-green-300 px-2 py-1 text-sm font-medium md:px-3 md:py-2'>
                             {review.rating}
                           </div>
                         </div>

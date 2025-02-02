@@ -7,10 +7,8 @@
     /* light */
     /* оттенки белого */
     --white: #fff;
-    --white-secondary: #f7f7f7;
 
     /* оттенки чёрного */
-    --black: #363636;
     --grey-50: #f7f7f7;
     --grey-100: #ededed;
     --grey-200: #dfdfdf;
@@ -22,16 +20,9 @@
     --grey-800: #676767;
     --grey-900: #545454;
     --grey-950: #363636;
-
-    --grey-primary: #adadad;
-    --grey-secondary: #7b7b7b;
-    --grey-600: #888888;
     --grey-opacity: rgba(136, 136, 136, 0.5);
 
     /* оттенки зелёного */
-    --green-primary: #dffd99;
-    --green-secondary: #c7f85e;
-    --green-tetriary: #9be60f;
     --green-bold: #c7f85e33;
     --green-50: #f8ffe6;
     --green-100: #effec9;
@@ -46,11 +37,6 @@
     --green-950: #1c3003;
 
     /* оттенки синего */
-    --blue-disabled: #eef5ff;
-    --blue-extra-light: #dfecff;
-    --blue-light: #c5daff;
-    --blue-primary: #7e9cfb;
-    --blue-secondary: #3440ce;
     --blue-tetriary: #c5daff33;
     --blue-50: #eef5ff;
     --blue-100: #dfecff;

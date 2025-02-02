@@ -5,16 +5,15 @@ import React, { useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
+import { Accordeon } from '@/shared/accordeon';
 import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
-import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { NamedInput } from '@/shared/ui/named-input';
 import { Select } from '@/shared/ui/select';
 import { RulesAdd } from '@/widgets/admin-panel/rules-add';
-import { DistanceInput } from '@/widgets/distance-input';
 
 import { IAddedHotelField } from './AddedHotelField.types';
 
@@ -27,15 +26,7 @@ const accommodationType = [
   'Гостевой дом',
   'Гостиница',
 ];
-const distancesName = [
-  'пляж',
-  'центр',
-  'аэропорт',
-  'вокзал',
-  'ларёк с пивом',
-  'бабушка',
-  'общественный туалет',
-];
+const distancesName = ['моря', 'центра', 'вокзала', 'аэропорта', 'метро'];
 const comfort = [
   {
     category_name: 'В номере',
@@ -128,181 +119,209 @@ export function AddedHotelField({}: IAddedHotelField) {
   };
 
   return (
-    <section className='grid grid-cols-2 gap-3'>
-      <div className='w-full'>
-        <Typography children='Тип отдыха' variant='l-bold' />
-        <Select
-          options={typeOfHoliday}
-          color='blue'
-          size='small'
-          className='w-full'
-          id='select-type-of-holiday'
-        />
-      </div>
-      <div className='w-full'>
-        <Typography variant='l-bold'>Тип размещения</Typography>
-        <Select
-          options={accommodationType}
-          color='blue'
-          size='small'
-          className='w-full'
-          id='select-type-of-placements'
-        />
-      </div>
-      <div className='col-start-1 col-end-3 w-full'>
-        <Typography variant='l-bold'>Категория</Typography>
-        <Rating
-          category={category}
-          setRating={(index) => handleCategoryChange(index)}
-        />
-      </div>
-      <NamedInput
-        placeholder='Введите страну'
-        name='country'
-        getValue={handleCountryChange}
-        title='Страна'
-      />
-      <NamedInput
-        placeholder='Введите город'
-        name='city'
-        getValue={handleCityChange}
-        title='Город'
-      />
-      <NamedInput
-        placeholder='Введите адрес'
-        name='address'
-        getValue={handleAddressChange}
-        title='Адрес'
-        className='col-start-1 col-end-3'
-      />
-      <div className='col-start-1 col-end-3 flex flex-col gap-3'>
-        <Typography children='Расстояние от' variant='l-bold' />
-        <ul className='flex flex-col gap-1'>
-          {distances.length !== 0 &&
-            distances.map((item, index) => (
+    <section className='flex flex-col gap-4'>
+      <Accordeon title='Общие'>
+        <div className='flex flex-col gap-4 p-5'>
+          <div className='w-full'>
+            <Typography children='Тип отдыха' variant='l-bold' />
+            <Select
+              options={typeOfHoliday}
+              color='blue'
+              size='small'
+              className='w-full'
+              id='select-type-of-holiday'
+            />
+          </div>
+          <div className='w-full'>
+            <Typography variant='l-bold'>Тип размещения</Typography>
+            <Select
+              options={accommodationType}
+              color='blue'
+              size='small'
+              className='w-full'
+              id='select-type-of-placements'
+            />
+          </div>
+          <div className='w-full'>
+            <Typography variant='l-bold'>Категория</Typography>
+            <Rating
+              category={category}
+              setRating={(index) => handleCategoryChange(index)}
+            />
+          </div>
+          <div className='flex w-full flex-col gap-3'>
+            <Typography children='Описание' variant='l-bold' />
+            <textarea
+              className='w-full resize-none rounded-md border border-blue-600 px-4 py-2'
+              placeholder='Введите описание отеля'
+              value={description}
+              onChange={handleDescriptionChange}
+              name='description'
+            />
+          </div>
+          <div className='flex w-full flex-col gap-3'>
+            <Typography children='Фотографии' variant='l-bold' />
+            <div className='flex gap-2'>
+              <ul className='flex gap-2'>
+                <li className='relative h-24 w-24 overflow-hidden rounded-2xl border md:h-32 md:w-32'>
+                  <img src='/mob_picture_404.png' alt='' className='h-full w-full' />
+                  <div className='absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-grey-700 opacity-0 hover:opacity-70'>
+                    <SvgSprite
+                      name='trash-light'
+                      width={24}
+                      color='white'
+                      className='relative left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+                    />
+                  </div>
+                </li>
+                <li className='relative h-24 w-24 overflow-hidden rounded-2xl border md:h-32 md:w-32'>
+                  <img src='/mob_picture_404.png' alt='' className='h-full w-full' />
+                  <div className='absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-grey-700 opacity-0 hover:opacity-70'>
+                    <SvgSprite
+                      name='trash-light'
+                      width={24}
+                      color='white'
+                      className='relative left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
+                    />
+                  </div>
+                </li>
+              </ul>
+              <label
+                htmlFor='file'
+                className='relative block h-24 w-24 cursor-pointer rounded-2xl border border-blue-600 md:h-32 md:w-32'
+              >
+                <input
+                  type='file'
+                  accept='image/*,.jpg,.png,.jpeg'
+                  id='file'
+                  // value={photo}
+                  onChange={handlePhotoChange}
+                  className='h-20 w-20 cursor-pointer opacity-0'
+                />
+                <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl text-blue-600'>
+                  +
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </Accordeon>
+      <Accordeon title='Локация'>
+        <div className='flex flex-col gap-2 p-5'>
+          <NamedInput
+            placeholder='Введите страну'
+            name='country'
+            getValue={handleCountryChange}
+            title='Страна'
+          />
+          <NamedInput
+            placeholder='Введите город'
+            name='city'
+            getValue={handleCityChange}
+            title='Город'
+          />
+          <NamedInput
+            placeholder='Введите адрес'
+            name='address'
+            getValue={handleAddressChange}
+            title='Адрес'
+          />
+          <div className='flex flex-col'>
+            <Typography
+              children='Расстояния от отеля до основных точек'
+              variant='l-bold'
+            />
+            <ul className='flex gap-2'>
+              {distancesName.map((item) => (
+                <li key={nanoid()} className='w-full'>
+                  <NamedInput
+                    placeholder='расстояние в метрах'
+                    name='address'
+                    getValue={handleAddressChange}
+                    title={item}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Accordeon>
+      <Accordeon title='Питание'>
+        <div className='flex gap-2 p-5'>
+          <NamedInput
+            placeholder='цена за одного гостя'
+            name='address'
+            getValue={handleAddressChange}
+            title='только завтрак'
+          />
+          <NamedInput
+            placeholder='цена за одного гостя'
+            name='address'
+            getValue={handleAddressChange}
+            title='полупансион'
+          />
+          <NamedInput
+            placeholder='цена за одного гостя'
+            name='address'
+            getValue={handleAddressChange}
+            title='полный пансион'
+          />
+          <NamedInput
+            placeholder='цена за одного гостя'
+            name='address'
+            getValue={handleAddressChange}
+            title='все включено'
+          />
+          <NamedInput
+            placeholder='цена за одного гостя'
+            name='address'
+            getValue={handleAddressChange}
+            title='ультра все включено'
+          />
+        </div>
+      </Accordeon>
+      <Accordeon title='Регламент'>
+        <div className='flex flex-col gap-2 p-5'>
+          <div className='flex gap-2'>
+            <NamedInput
+              name='checkIn'
+              getValue={handleCheckIn}
+              title='Заселение'
+              type='time'
+            />
+            <NamedInput
+              name='departure'
+              getValue={handleDeparture}
+              title='Выезд'
+              type='time'
+            />
+          </div>
+          <RulesAdd />
+        </div>
+      </Accordeon>
+      <Accordeon title='Дополнительно'>
+        <div className='flex w-full flex-col gap-3 p-5'>
+          <Typography children='Удобства' variant='l-bold' />
+          <ul className='flex flex-col gap-2'>
+            {comfort.map((category, index) => (
               <li
                 key={nanoid()}
-                className={`flex items-center justify-between rounded p-1 ${index % 2 === 0 && 'bg-blue-disabled'}`}
+                className={`flex flex-col gap-2 rounded p-2 ${index % 2 === 0 && 'bg-blue-50'}`}
               >
-                <Typography
-                  children={
-                    'Расстояние от ' + item.location + ' - ' + item.distance + ' км'
-                  }
-                />
-                <ButtonCustom
-                  variant='primary'
-                  size='s'
-                  onClick={() => handleDeleteDistance(item.location)}
-                >
-                  <Typography children='Удалить' />
-                </ButtonCustom>
+                <Typography children={category.category_name} variant='l' />
+                <ul className='flex gap-3'>
+                  {category.amenity.map((item) => (
+                    <li key={nanoid()}>
+                      <Checkbox label={item} />
+                    </li>
+                  ))}
+                </ul>
+                <AddedButton text='Добавить удобства' onClick={() => {}} />
               </li>
             ))}
-          <li>
-            <DistanceInput
-              options={distancesName}
-              getDistance={handleDistanceChange}
-              reset={distanceInputReset}
-            />
-          </li>
-        </ul>
-        <AddedButton text='Добавить расстояние' onClick={handleAddDistance} />
-      </div>
-      <div className='col-start-1 col-end-3 flex w-full flex-col gap-3'>
-        <Typography children='Удобства' variant='l-bold' />
-        <ul className='flex flex-col gap-2'>
-          {comfort.map((category, index) => (
-            <li
-              key={nanoid()}
-              className={`flex flex-col gap-2 rounded p-2 ${index % 2 === 0 && 'bg-blue-disabled'}`}
-            >
-              <Typography children={category.category_name} variant='l' />
-              <ul className='flex gap-3'>
-                {category.amenity.map((item) => (
-                  <li key={nanoid()}>
-                    <Checkbox label={item} />
-                  </li>
-                ))}
-              </ul>
-              <AddedButton text='Добавить удобства' onClick={() => {}} />
-            </li>
-          ))}
-        </ul>
-      </div>
-      <NamedInput
-        name='checkIn'
-        getValue={handleCheckIn}
-        title='Заселение'
-        type='time'
-      />
-      <NamedInput
-        name='departure'
-        getValue={handleDeparture}
-        title='Выезд'
-        type='time'
-      />
-      {/*<div className='col-start-1 col-end-3 flex flex-col gap-3'>*/}
-      {/*  <Typography children='Правила' variant='l-bold' />*/}
-
-      {/*  <AddedButton text='Добавить правило' onClick={() => {}} />*/}
-      {/*</div>*/}
-      <RulesAdd className='col-start-1 col-end-3' />
-
-      <div className='col-start-1 col-end-3 flex w-full flex-col gap-3'>
-        <Typography children='Описание' variant='l-bold' />
-        <textarea
-          className='w-full resize-none rounded-md border border-blue-600 px-4 py-2'
-          placeholder='Введите описание отеля'
-          value={description}
-          onChange={handleDescriptionChange}
-          name='description'
-        />
-      </div>
-      <div className='col-start-1 col-end-3 flex w-full flex-col gap-3'>
-        <Typography children='Фотографии' variant='l-bold' />
-        <div className='flex gap-2'>
-          <ul className='flex gap-2'>
-            <li className='relative h-24 w-24 overflow-hidden rounded-2xl border md:h-32 md:w-32'>
-              <img src='/mob_picture_404.png' alt='' className='h-full w-full' />
-              <div className='absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-grey-secondary opacity-0 hover:opacity-70'>
-                <SvgSprite
-                  name='trash-light'
-                  width={24}
-                  color='white'
-                  className='relative left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-                />
-              </div>
-            </li>
-            <li className='relative h-24 w-24 overflow-hidden rounded-2xl border md:h-32 md:w-32'>
-              <img src='/mob_picture_404.png' alt='' className='h-full w-full' />
-              <div className='absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-grey-secondary opacity-0 hover:opacity-70'>
-                <SvgSprite
-                  name='trash-light'
-                  width={24}
-                  color='white'
-                  className='relative left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-                />
-              </div>
-            </li>
           </ul>
-          <label
-            htmlFor='file'
-            className='relative block h-24 w-24 cursor-pointer rounded-2xl border border-blue-600 md:h-32 md:w-32'
-          >
-            <input
-              type='file'
-              accept='image/*,.jpg,.png,.jpeg'
-              id='file'
-              // value={photo}
-              onChange={handlePhotoChange}
-              className='h-20 w-20 cursor-pointer opacity-0'
-            />
-            <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl text-blue-600'>
-              +
-            </span>
-          </label>
         </div>
-      </div>
+      </Accordeon>
     </section>
   );
 }

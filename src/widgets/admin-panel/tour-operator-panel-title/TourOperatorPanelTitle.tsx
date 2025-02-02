@@ -9,7 +9,7 @@ import { TabBar } from '@/shared/ui/tab-bar';
 
 import { ITourOperatorPanelTitle } from './TourOperatorPanelTitle.types';
 
-const tabsHotelAdded = ['Отель', 'Питание', 'Номера', 'Даты'];
+const tabsHotelAdded = ['Отель', 'Номера', 'Даты'];
 
 export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
   const patch = usePathname();
@@ -51,9 +51,6 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
     switch (tabName) {
       case 'Отель':
         router.push('/admin-panel-tour-operator/hotels/added-hotel');
-        break;
-      case 'Питание':
-        router.push('/admin-panel-tour-operator/hotels/added-hotel/food');
         break;
       case 'Номера':
         router.push('/admin-panel-tour-operator/hotels/added-hotel/rooms');
