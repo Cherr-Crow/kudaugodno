@@ -16,7 +16,7 @@ export function Accordeon({ title, children, className }: IAccordeon) {
   return (
     <div className={`w-full ${className ?? ''}`}>
       <div
-        className='flex justify-between rounded-xl bg-blue-disabled p-3'
+        className='flex justify-between rounded-xl bg-blue-50 p-3'
         onClick={toggleAccordion}
       >
         <Typography variant='h5'> {title}</Typography>
@@ -28,7 +28,7 @@ export function Accordeon({ title, children, className }: IAccordeon) {
         />
       </div>
       <div
-        className='overflow-hidden transition-all'
+        className='transition-d overflow-hidden duration-500'
         ref={contentRef}
         style={{
           maxHeight: isOpen

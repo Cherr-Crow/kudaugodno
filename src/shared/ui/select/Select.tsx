@@ -25,8 +25,8 @@ export function Select({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   enum Background {
-    'blue' = 'border border-blue-primary bg-blue-300',
-    'green' = 'border border-green-tetriary bg-green-secondary',
+    'blue' = 'border border-blue-400 bg-blue-300',
+    'green' = 'border border-green-500 bg-green-300',
   }
 
   enum Size {
@@ -85,7 +85,7 @@ export function Select({
             {options.map((option) => (
               <li
                 key={nanoid()}
-                className='px-4 py-2 hover:bg-blue-extra-light'
+                className='px-4 py-2 hover:bg-blue-100'
                 onClick={() => handleOptionClick(option)}
               >
                 {option}

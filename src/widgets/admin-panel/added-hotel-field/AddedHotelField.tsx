@@ -119,9 +119,9 @@ export function AddedHotelField({}: IAddedHotelField) {
   };
 
   return (
-    <section className='flex flex-col gap-3'>
-      <Accordeon title='Общие' className=''>
-        <div className='flex flex-col gap-2 py-2'>
+    <section className='flex flex-col gap-4'>
+      <Accordeon title='Общие'>
+        <div className='flex flex-col gap-4 p-5'>
           <div className='w-full'>
             <Typography children='Тип отдыха' variant='l-bold' />
             <Select
@@ -142,14 +142,14 @@ export function AddedHotelField({}: IAddedHotelField) {
               id='select-type-of-placements'
             />
           </div>
-          <div className='col-span-2 w-full'>
+          <div className='w-full'>
             <Typography variant='l-bold'>Категория</Typography>
             <Rating
               category={category}
               setRating={(index) => handleCategoryChange(index)}
             />
           </div>
-          <div className='col-span-2 flex w-full flex-col gap-3'>
+          <div className='flex w-full flex-col gap-3'>
             <Typography children='Описание' variant='l-bold' />
             <textarea
               className='w-full resize-none rounded-md border border-blue-600 px-4 py-2'
@@ -159,13 +159,13 @@ export function AddedHotelField({}: IAddedHotelField) {
               name='description'
             />
           </div>
-          <div className='col-span-2 flex w-full flex-col gap-3'>
+          <div className='flex w-full flex-col gap-3'>
             <Typography children='Фотографии' variant='l-bold' />
             <div className='flex gap-2'>
               <ul className='flex gap-2'>
                 <li className='relative h-24 w-24 overflow-hidden rounded-2xl border md:h-32 md:w-32'>
                   <img src='/mob_picture_404.png' alt='' className='h-full w-full' />
-                  <div className='absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-grey-secondary opacity-0 hover:opacity-70'>
+                  <div className='absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-grey-700 opacity-0 hover:opacity-70'>
                     <SvgSprite
                       name='trash-light'
                       width={24}
@@ -176,7 +176,7 @@ export function AddedHotelField({}: IAddedHotelField) {
                 </li>
                 <li className='relative h-24 w-24 overflow-hidden rounded-2xl border md:h-32 md:w-32'>
                   <img src='/mob_picture_404.png' alt='' className='h-full w-full' />
-                  <div className='absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-grey-secondary opacity-0 hover:opacity-70'>
+                  <div className='absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-grey-700 opacity-0 hover:opacity-70'>
                     <SvgSprite
                       name='trash-light'
                       width={24}
@@ -207,7 +207,7 @@ export function AddedHotelField({}: IAddedHotelField) {
         </div>
       </Accordeon>
       <Accordeon title='Локация'>
-        <div className='flex flex-col gap-2 py-2'>
+        <div className='flex flex-col gap-2 p-5'>
           <NamedInput
             placeholder='Введите страну'
             name='country'
@@ -225,9 +225,8 @@ export function AddedHotelField({}: IAddedHotelField) {
             name='address'
             getValue={handleAddressChange}
             title='Адрес'
-            className='col-span-2'
           />
-          <div className='col-span-2 flex flex-col'>
+          <div className='flex flex-col'>
             <Typography
               children='Расстояния от отеля до основных точек'
               variant='l-bold'
@@ -248,7 +247,7 @@ export function AddedHotelField({}: IAddedHotelField) {
         </div>
       </Accordeon>
       <Accordeon title='Питание'>
-        <div className='flex gap-2 py-2'>
+        <div className='flex gap-2 p-5'>
           <NamedInput
             placeholder='цена за одного гостя'
             name='address'
@@ -282,7 +281,7 @@ export function AddedHotelField({}: IAddedHotelField) {
         </div>
       </Accordeon>
       <Accordeon title='Регламент'>
-        <div className='flex flex-col gap-2 py-2'>
+        <div className='flex flex-col gap-2 p-5'>
           <div className='flex gap-2'>
             <NamedInput
               name='checkIn'
@@ -297,17 +296,17 @@ export function AddedHotelField({}: IAddedHotelField) {
               type='time'
             />
           </div>
-          <RulesAdd className='col-span-2' />
+          <RulesAdd />
         </div>
       </Accordeon>
       <Accordeon title='Дополнительно'>
-        <div className='col-span-2 flex w-full flex-col gap-3 py-2'>
+        <div className='flex w-full flex-col gap-3 p-5'>
           <Typography children='Удобства' variant='l-bold' />
           <ul className='flex flex-col gap-2'>
             {comfort.map((category, index) => (
               <li
                 key={nanoid()}
-                className={`flex flex-col gap-2 rounded p-2 ${index % 2 === 0 && 'bg-blue-disabled'}`}
+                className={`flex flex-col gap-2 rounded p-2 ${index % 2 === 0 && 'bg-blue-50'}`}
               >
                 <Typography children={category.category_name} variant='l' />
                 <ul className='flex gap-3'>

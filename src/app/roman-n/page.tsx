@@ -31,11 +31,11 @@ export default function RomanN() {
           <input
             value={testRtk}
             onChange={(e) => setTestRtk(e.target.value)}
-            className='rounded-md bg-blue-disabled p-2'
+            className='rounded-md bg-blue-50 p-2'
           />
           <button
             onClick={() => dispatch(test(testRtk))}
-            className='rounded-md bg-green-primary p-2'
+            className='rounded-md bg-green-200 p-2'
           >
             назначить значение тестового стейта
           </button>
@@ -43,7 +43,7 @@ export default function RomanN() {
         </div>
       </div>
       <div className='relative'>
-        <h2 className='w-fit bg-blue-primary'>элемент PopupWindow</h2>
+        <h2 className='w-fit bg-blue-400'>элемент PopupWindow</h2>
         <PopupWindow className='top-15 left-3 px-4 py-5'>
           <ul className='w-fit'>
             {testList.map((option) => (
@@ -265,7 +265,7 @@ export default function RomanN() {
         <Typography>default (16px/400) = variant=m</Typography>
       </div>
       <div className='mt-4 pb-10'>
-        <h2 className='w-fit bg-blue-primary'>элемент TabBar</h2>
+        <h2 className='w-fit bg-blue-400'>элемент TabBar</h2>
         <TabBar tabs={tabsTestList} svgTab={[]} getActiveTab={() => {}} />
         <TabBar
           tabs={tabsTestList2}
@@ -275,7 +275,7 @@ export default function RomanN() {
         />
       </div>
       <div className='mt-4 pb-10'>
-        <h2 className='w-fit bg-blue-primary'>элемент Select</h2>
+        <h2 className='w-fit bg-blue-400'>элемент Select</h2>
         <div className='flex'>
           <Select options={testList} />
           <Select options={testList} color='blue' />
@@ -284,14 +284,14 @@ export default function RomanN() {
       </div>
       <div className='mt-4 h-20 w-full'>dd</div>
       <div className=''>
-        <h2 className='w-fit bg-blue-primary'>элемент Badge</h2>
+        <h2 className='w-fit bg-blue-400'>элемент Badge</h2>
         <div className='flex gap-3'>
           <Badge name='Макао' price='от 23 342 ₽' />
           <Badge name='Тайланд' price='от 347 345 ₽' size='small' />
         </div>
       </div>
       <div className='mt-4'>
-        <h2 className='mb-3 w-fit bg-blue-primary p-2'>элемент ButtonCustom</h2>
+        <h2 className='mb-3 w-fit bg-blue-400 p-2'>элемент ButtonCustom</h2>
         <div className='flex gap-4'>
           <ButtonCustom variant='primary' size='l'>
             <Typography
@@ -361,7 +361,7 @@ export default function RomanN() {
         <RadioButton label='RadioButton text' isSelected={true} />
       </div>
       <div className='mt-4'>
-        <h2 className='mb-3 w-fit bg-blue-primary p-2'>элемент Accordeon</h2>
+        <h2 className='mb-3 w-fit bg-blue-400 p-2'>элемент Accordeon</h2>
         <Accordeon title='test'>
           <p>This is the content of section 1.</p>
         </Accordeon>

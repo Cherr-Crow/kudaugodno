@@ -18,7 +18,7 @@ export function Header({ className }: IHeader) {
   };
 
   return (
-    <header className={`${className} bg-white-secondary py-4`}>
+    <header className={`${className} bg-grey-50 py-4`}>
       <div className='container flex items-center justify-between'>
         <Link href='/' as='/'>
           <SvgSprite name='logo' width={65} className='sm:w-[106px]' />
@@ -54,7 +54,7 @@ export function Header({ className }: IHeader) {
           />
           <div className='relative'>
             <div
-              className='flex w-fit cursor-pointer items-center justify-center rounded-full border border-black p-1'
+              className='flex w-fit cursor-pointer items-center justify-center rounded-full border border-grey-950 p-1'
               onClick={toggleUserMenu}
             >
               <SvgSprite name='user' width={24} color='#1a1f4c' />

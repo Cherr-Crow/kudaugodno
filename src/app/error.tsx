@@ -24,7 +24,7 @@ export default function Error({
         />
         <Link
           href='/'
-          className='flex w-full items-center justify-center rounded-full bg-green-secondary py-3'
+          className='flex w-full items-center justify-center rounded-full bg-green-300 py-3'
         >
           <Typography children='На главную' variant='m-bold' />
         </Link>

@@ -24,13 +24,13 @@ export function AdvertisingBanner({ className }: IAdvertisingBanner) {
           <div className="pointer-events-auto absolute inset-0 m-0 flex flex-col items-center justify-center rounded-[40px] bg-center bg-no-repeat p-0 md:ml-32 md:mt-10 md:h-[240px] md:w-[430px] md:bg-[url('/Content.svg')] lg:ml-14 lg:mt-24 lg:h-[284px] lg:w-[430px]">
             <Typography
               variant='h4'
-              className='mt-0 p-0 text-white md:mb-3 md:mr-64 md:mt-8 md:text-[32px] md:text-black lg:mr-60 lg:text-[40px]'
+              className='mt-0 p-0 text-white md:mb-3 md:mr-64 md:mt-8 md:text-[32px] md:text-grey-950 lg:mr-60 lg:text-[40px]'
             >
               ТУРЦИЯ
             </Typography>
             <Typography
               variant='m'
-              className='mb-4 mt-0 p-0 text-white md:mb-5 md:ml-8 md:mr-52 md:mt-0 md:text-[16px] md:text-black lg:mr-24 lg:text-[24px]'
+              className='mb-4 mt-0 p-0 text-white md:mb-5 md:ml-8 md:mr-52 md:mt-0 md:text-[16px] md:text-grey-950 lg:mr-24 lg:text-[24px]'
             >
               Скидка до 50% при покупке тура сегодня
             </Typography>
@@ -38,10 +38,10 @@ export function AdvertisingBanner({ className }: IAdvertisingBanner) {
               <ButtonCustom
                 variant='secondary'
                 size='m'
-                className='flex w-full items-center justify-center bg-white text-black'
+                className='flex w-full items-center justify-center bg-white text-grey-950'
               >
                 <div className='flex items-center justify-center gap-6'>
-                  <Typography variant='m-bold' className='text-black'>
+                  <Typography variant='m-bold' className='text-grey-950'>
                     Подробнее
                   </Typography>
                   <SvgSprite name='arrow-pointer' width={10} />
