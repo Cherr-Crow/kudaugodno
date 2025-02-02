@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Typography } from '@/shared/typography';
+
 import { IPopularDestinations } from './PopularDestinations.types';
 
 export function PopularDestinations({ className }: IPopularDestinations) {
@@ -43,25 +45,28 @@ export function PopularDestinations({ className }: IPopularDestinations) {
   ];
 
   return (
-    <section className={`${className}`}>
-      <div className="mx-auto">
-
+    <section className={`${className} container`}>
+      <div className='mx-auto'>
         <div className='mb-12 lg:mb-6'>
-          <Typography variant="l-bold" className="text-start font-medium lg:text-3xl">
+          <Typography
+            variant='l-bold'
+            className='text-start font-medium lg:text-3xl'
+          >
             Популярные направления
-
-            <Typography variant="l-bold" className='ml-2 text-blue-600 font-medium lg:text-3xl'>
+            <Typography
+              variant='l-bold'
+              className='ml-2 font-medium text-blue-600 lg:text-3xl'
+            >
               России и СНГ, Европы, Азии, Африки, Австралии
             </Typography>
-
           </Typography>
         </div>
 
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 lg:gap-4">
+        <div className='grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 lg:gap-4'>
           {destinations.map((destination, index) => (
             <div
               key={index}
-              className="relative h-[230px] bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-lg transition-shadow duration-300"
+              className='relative h-[230px] overflow-hidden rounded-3xl bg-white shadow-lg transition-shadow duration-300 hover:shadow-lg'
               style={{
                 boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
               }}
@@ -69,25 +74,20 @@ export function PopularDestinations({ className }: IPopularDestinations) {
               <img
                 src={destination.image}
                 alt={destination.name}
-                className="w-full h-48 object-cover"
+                className='h-48 w-full object-cover'
               />
-              <div className="absolute h-[72px] p-5 font-medium bottom-0 left-0 right-0 rounded-3xl bg-white flex items-center">
-                <Typography variant="l-bold">
+              <div className='absolute bottom-0 left-0 right-0 flex h-[72px] items-center rounded-3xl bg-white p-5 font-medium'>
+                <Typography variant='l-bold'>
                   {destination.name}
-                  <Typography
-                    variant="l-bold"
-                    className="text-blue-600 ml-4"
-                  >
+                  <Typography variant='l-bold' className='ml-4 text-blue-600'>
                     от {destination.price}
                   </Typography>
                 </Typography>
-
               </div>
 
-              <div className="absolute h-[50px] top-4 right-4 bg-white text-center text-gray-700 px-3 py-1 rounded-3xl shadow-sm flex items-center justify-center">
+              <div className='text-gray-700 absolute right-4 top-4 flex h-[50px] items-center justify-center rounded-3xl bg-white px-3 py-1 text-center shadow-sm'>
                 {destination.tours} туров
               </div>
-
             </div>
           ))}
         </div>

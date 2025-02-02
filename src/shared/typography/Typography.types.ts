@@ -1,6 +1,6 @@
-export interface ITypography {
-  className?: string;
-  children: React.ReactNode;
+type SpanProps = React.ComponentPropsWithoutRef<'span'>;
+
+export interface ITypography extends SpanProps {
   variant?:
     | 'h1'
     | 'h2'

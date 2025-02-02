@@ -1,11 +1,13 @@
 'use client';
 
+import React from 'react';
+
+import { useRouter } from 'next/navigation';
+
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
-import { useRouter } from 'next/navigation';
-import React from 'react';
 
 export default function Hotels() {
   const route = useRouter();
@@ -35,13 +37,13 @@ export default function Hotels() {
       <Checkbox label='Показать архивные отели' className='my-5' />
       <table className='w-full'>
         <thead>
-          <tr className='bg-blue-disabled'>
-            <th className='p-3 text-start text-blue-primary'>№</th>
-            <th className='p-3 text-start text-blue-primary'>Страна</th>
-            <th className='p-3 text-start text-blue-primary'>Город</th>
-            <th className='p-3 text-start text-blue-primary'>Отель</th>
-            <th className='p-3 text-start text-blue-primary'>Ближайшая дата</th>
-            <th className='p-3 text-start text-blue-primary'>Цена</th>
+          <tr className='bg-blue-50'>
+            <th className='p-3 text-start text-blue-400'>№</th>
+            <th className='p-3 text-start text-blue-400'>Страна</th>
+            <th className='p-3 text-start text-blue-400'>Город</th>
+            <th className='p-3 text-start text-blue-400'>Отель</th>
+            <th className='p-3 text-start text-blue-400'>Ближайшая дата</th>
+            <th className='p-3 text-start text-blue-400'>Цена</th>
           </tr>
         </thead>
         <tbody>

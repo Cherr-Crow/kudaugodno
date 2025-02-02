@@ -1,12 +1,9 @@
-"use client"
+'use client';
 import React from 'react';
+
 import { IPopupWindow } from './PopupWindow.types';
 
-interface PopupWindowProps extends IPopupWindow {
-  ref?: React.Ref<HTMLDivElement>;
-}
-
-export const PopupWindow: React.FC<PopupWindowProps> = ({
+export const PopupWindow: React.FC<IPopupWindow> = ({
   className,
   children,
   ref,
@@ -14,7 +11,7 @@ export const PopupWindow: React.FC<PopupWindowProps> = ({
   return (
     <div
       ref={ref}
-      className={`${className} absolute w-fit rounded-2xl bg-white shadow-xl`}
+      className={`${className} absolute z-10 w-fit rounded-2xl bg-white shadow-xl`}
       data-testid='pop-up-window'
     >
       {children}

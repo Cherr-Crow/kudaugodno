@@ -1,16 +1,22 @@
 'use client';
 
+import React, { useState } from 'react';
+
+import { nanoid } from 'nanoid';
+
+import { useAppDispatch, useAppSelector } from '@/rtk/hooks';
+import { selectTest, test } from '@/rtk/slices/testSlice';
+import { Accordeon } from '@/shared/accordeon';
 import { PopupWindow } from '@/shared/popup-window';
 import { SvgSprite } from '@/shared/svg-sprite';
-import { TabBar } from '@/shared/ui/tab-bar';
 import { Typography } from '@/shared/typography';
-import { nanoid } from 'nanoid';
-import React, { useState } from 'react';
-import { Select } from '@/shared/ui/select';
 import { Badge } from '@/shared/ui/badge';
 import { ButtonCustom } from '@/shared/ui/button-custom';
-import { useAppDispatch, useAppSelector } from '../rtk/hooks';
-import { selectTest, test } from '../rtk/slices/testSlice';
+import { Checkbox } from '@/shared/ui/checkbox';
+import { RadioButton } from '@/shared/ui/radio-button';
+import { Select } from '@/shared/ui/select';
+import { Switcher } from '@/shared/ui/switcher';
+import { TabBar } from '@/shared/ui/tab-bar';
 
 export default function RomanN() {
   const dispatch = useAppDispatch();
@@ -25,11 +31,11 @@ export default function RomanN() {
           <input
             value={testRtk}
             onChange={(e) => setTestRtk(e.target.value)}
-            className='rounded-md bg-blue-disabled p-2'
+            className='rounded-md bg-blue-50 p-2'
           />
           <button
             onClick={() => dispatch(test(testRtk))}
-            className='rounded-md bg-green-primary p-2'
+            className='rounded-md bg-green-200 p-2'
           >
             назначить значение тестового стейта
           </button>
@@ -37,7 +43,7 @@ export default function RomanN() {
         </div>
       </div>
       <div className='relative'>
-        <h2 className='w-fit bg-blue-primary'>'элемент PopupWindow'</h2>
+        <h2 className='w-fit bg-blue-400'>элемент PopupWindow</h2>
         <PopupWindow className='top-15 left-3 px-4 py-5'>
           <ul className='w-fit'>
             {testList.map((option) => (
@@ -53,7 +59,7 @@ export default function RomanN() {
         </PopupWindow>
       </div>
       <div className='mt-60 flex flex-col items-center justify-center gap-3'>
-        <h2 className='w-fit bg-blue-bold text-red-primary'>'элемент SvgSprite'</h2>
+        <h2 className='w-fit'>элемент SvgSprite</h2>
         <div className='flex flex-wrap gap-3'>
           <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
             <p className=''>entertainment</p>
@@ -195,10 +201,51 @@ export default function RomanN() {
             <p className=''>search</p>
             <SvgSprite name='search' width={30} />
           </div>
+          {/**/}
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>amenity-animals-allowed</p>
+            <SvgSprite name='amenity-animals-allowed' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>amenity-cart-restaurant</p>
+            <SvgSprite name='amenity-cart-restaurant' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>amenity-check-in</p>
+            <SvgSprite name='amenity-check-in' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>amenity-family-room</p>
+            <SvgSprite name='amenity-family-room' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>amenity-pool</p>
+            <SvgSprite name='amenity-pool' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>amenity-spa</p>
+            <SvgSprite name='amenity-spa' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>amenity-wifi</p>
+            <SvgSprite name='amenity-wifi' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>our_advantage_1</p>
+            <SvgSprite name='our_advantage_1' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>our_advantage_2</p>
+            <SvgSprite name='our_advantage_2' width={30} />
+          </div>
+          <div className='flex flex-col items-center justify-center gap-2 rounded-lg border p-2'>
+            <p className=''>our_advantage_3</p>
+            <SvgSprite name='our_advantage_3' width={30} />
+          </div>
         </div>
       </div>
       <div className='mt-4 flex flex-col items-center gap-4'>
-        <h2 className='w-fit bg-blue-bold text-white'>'элемент Typography'</h2>
+        <h2 className='w-fit bg-blue-bold text-white'>элемент Typography</h2>
         <Typography children='h1 (60px/500)' variant='h1' />
         <Typography children='subtitle1 (60px/400)' variant='subtitle1' />
         <Typography children='h2 (48px/500)' variant='h2' />
@@ -215,15 +262,20 @@ export default function RomanN() {
         <Typography children='s (13px/400)' variant='s' />
         <Typography children='s-bold (13px/500)' variant='s-bold' />
         <Typography children='xs (11px/400)' variant='xs' />
-        <Typography>default (16px/400) = variant='m'</Typography>
+        <Typography>default (16px/400) = variant=m</Typography>
       </div>
       <div className='mt-4 pb-10'>
-        <h2 className='w-fit bg-blue-primary'>'элемент TabBar'</h2>
-        <TabBar tabs={tabsTestList} svgTab={[]} />
-        <TabBar tabs={tabsTestList2} className='mt-4' svgTab={[]} />
+        <h2 className='w-fit bg-blue-400'>элемент TabBar</h2>
+        <TabBar tabs={tabsTestList} svgTab={[]} getActiveTab={() => {}} />
+        <TabBar
+          tabs={tabsTestList2}
+          className='mt-4'
+          svgTab={[]}
+          getActiveTab={() => {}}
+        />
       </div>
       <div className='mt-4 pb-10'>
-        <h2 className='w-fit bg-blue-primary'>'элемент Select'</h2>
+        <h2 className='w-fit bg-blue-400'>элемент Select</h2>
         <div className='flex'>
           <Select options={testList} />
           <Select options={testList} color='blue' />
@@ -232,14 +284,14 @@ export default function RomanN() {
       </div>
       <div className='mt-4 h-20 w-full'>dd</div>
       <div className=''>
-        <h2 className='w-fit bg-blue-primary'>'элемент Badge'</h2>
+        <h2 className='w-fit bg-blue-400'>элемент Badge</h2>
         <div className='flex gap-3'>
           <Badge name='Макао' price='от 23 342 ₽' />
           <Badge name='Тайланд' price='от 347 345 ₽' size='small' />
         </div>
       </div>
       <div className='mt-4'>
-        <h2 className='mb-3 w-fit bg-blue-primary p-2'>элемент ButtonCustom</h2>
+        <h2 className='mb-3 w-fit bg-blue-400 p-2'>элемент ButtonCustom</h2>
         <div className='flex gap-4'>
           <ButtonCustom variant='primary' size='l'>
             <Typography
@@ -283,6 +335,36 @@ export default function RomanN() {
             </div>
           </ButtonCustom>
         </div>
+      </div>
+      <div className={`mb-5`}>
+        <label>Switcher</label>
+        <Switcher />
+        <label>Switcher disabled</label>
+        <Switcher isDisabled={true} />
+        <label>Switchers active by default</label>
+        <Switcher isActive={true} />
+      </div>
+      <div className={`mb-5`}>
+        <label>Checkbox</label>
+        <Checkbox label='Checkbox text' />
+        <label>Checkbox disabled</label>
+        <Checkbox label='Checkbox text' isDisabled={true} />
+        <label>Switchers active by default</label>
+        <Checkbox label='Checkbox text' isChecked={true} />
+      </div>
+      <div>
+        <label>RadioButton</label>
+        <RadioButton label='RadioButton text' />
+        <label>RadioButton disabled</label>
+        <RadioButton label='RadioButton text' isDisabled={true} />
+        <label>Switchers active by default</label>
+        <RadioButton label='RadioButton text' isSelected={true} />
+      </div>
+      <div className='mt-4'>
+        <h2 className='mb-3 w-fit bg-blue-400 p-2'>элемент Accordeon</h2>
+        <Accordeon title='test'>
+          <p>This is the content of section 1.</p>
+        </Accordeon>
       </div>
     </div>
   );

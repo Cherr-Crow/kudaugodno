@@ -1,12 +1,11 @@
 'use client';
 
-import { Typography } from '@/shared/typography';
 import Link from 'next/link';
-import { useEffect } from 'react';
+
+import { Typography } from '@/shared/typography';
 
 export default function Error({
   error,
-  reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
@@ -25,7 +24,7 @@ export default function Error({
         />
         <Link
           href='/'
-          className='flex w-full items-center justify-center rounded-full bg-green-secondary py-3'
+          className='flex w-full items-center justify-center rounded-full bg-green-300 py-3'
         >
           <Typography children='На главную' variant='m-bold' />
         </Link>
