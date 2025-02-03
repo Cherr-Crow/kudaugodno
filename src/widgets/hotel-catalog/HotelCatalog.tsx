@@ -410,7 +410,7 @@ export function HotelCatalog() {
                         className='announcement-block relative mt-6 flex flex-row items-center justify-between px-6 py-6 md:pr-0'
                         key='announcement'
                       >
-                        <div className='absolute inset-0 z-0 rounded-xl bg-blue-50 md:bottom-6 md:top-6 lg:top-12'></div>
+                        <div className='announcement-block-backgorund absolute inset-0 z-0 rounded-xl bg-blue-50 md:bottom-6 md:top-6 lg:top-12'></div>
 
                         <div className='z-10 flex flex-col items-center justify-center gap-2 rounded-xl text-center md:items-start md:text-left'>
                           <Typography variant='h4' className='text-lg text-blue-950'>
