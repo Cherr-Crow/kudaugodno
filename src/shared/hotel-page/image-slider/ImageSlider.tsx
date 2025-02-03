@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -11,11 +12,12 @@ interface ImageSliderProps {
 }
 
 const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const swiperRef = useRef<any>(null); // Убедитесь, что тип рефа правильный
 
     const settings = {
         modules: [Navigation, Pagination],
-        navigation: false, // Отключаем автоматическую навигацию
+        navigation: false, 
         loop: true,
         speed: 500,
         breakpoints: {

@@ -21,5 +21,5 @@ const RoomAmenities: React.FC<RoomAmenitiesProps> = ({ amenities }) => {
 
 export default RoomAmenities;
 
-// const RoomDescription: React.FC<RoomDescriptionProps> = ({ description }) => {
+
 

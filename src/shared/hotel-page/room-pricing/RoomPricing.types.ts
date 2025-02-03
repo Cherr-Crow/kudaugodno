@@ -1,5 +1,6 @@
 type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface IRoomPricing extends DivProps {}
 
 export interface RoomPricingProps {
