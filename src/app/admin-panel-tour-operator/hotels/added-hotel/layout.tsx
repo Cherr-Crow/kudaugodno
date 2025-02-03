@@ -16,7 +16,7 @@ export default function AddHotelLayout({
   const [data, setData] = useState<{ results: [] } | null>(null);
 
   const handleSetData = () => {
-    fetch('http://176.109.109.78/api/v1/hotels/?limit=10')
+    fetch('https://ku.mer1d1an.ru/api/v1/hotels/?limit=10')
       .then((res) => res.json())
       .then((data: { results: [] }) => setData(data));
   };

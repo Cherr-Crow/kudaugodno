@@ -147,7 +147,12 @@ export function AddedHotelField({}: IAddedHotelField) {
             <div className='flex gap-2'>
               <ul className='flex gap-2'>
                 <li className='relative h-24 w-24 overflow-hidden rounded-2xl border md:h-32 md:w-32'>
-                  <img src='/mob_picture_404.png' alt='' className='h-full w-full' />
+                  <img
+                    src='/mob_picture_404.png'
+                    alt=''
+                    className='h-full w-full'
+                    rel='prefetch'
+                  />
                   <div className='absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-grey-700 opacity-0 hover:opacity-70'>
                     <SvgSprite
                       name='trash-light'
@@ -158,7 +163,12 @@ export function AddedHotelField({}: IAddedHotelField) {
                   </div>
                 </li>
                 <li className='relative h-24 w-24 overflow-hidden rounded-2xl border md:h-32 md:w-32'>
-                  <img src='/mob_picture_404.png' alt='' className='h-full w-full' />
+                  <img
+                    src='/mob_picture_404.png'
+                    alt=''
+                    className='h-full w-full'
+                    rel='prefetch'
+                  />
                   <div className='absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-grey-700 opacity-0 hover:opacity-70'>
                     <SvgSprite
                       name='trash-light'

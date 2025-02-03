@@ -36,7 +36,7 @@ export function InputDateForSearchBlock({
           type='date'
           className={`absolute top-1/2 w-full -translate-y-1/2 bg-transparent outline-none`}
           placeholder={placeholder}
-          value={value ?? ''}
+          value={''}
           onChange={handleChangeInput}
         />
       </div>
