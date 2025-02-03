@@ -17,7 +17,8 @@ export default function CatalogHotels() {
       id: 1,
       name: 'Номер Double',
       description: '1 ',
-      amenities: ['24 м2', 'Завтрак включен'],
+      quadrature: '24',
+      amenities: 'Завтрак включен',
       price: 65000,
       images: [ // Исправлено на 'images' для соответствия комоненту RoomCard
         'Novotel-Nairobi-Westlands-photo-4.png',
@@ -29,7 +30,8 @@ export default function CatalogHotels() {
       id: 2,
       name: 'Номер Double',
       description: '2 ',
-      amenities: ['24 м2', 'Завтрак и ужин включены'],
+      quadrature: '44',
+      amenities: 'Завтрак и ужин включены',
       price: 85000,
       images: [ // Исправлено на 'images'
         'Novotel-Nairobi-Westlands-photo-4.png',
@@ -40,8 +42,9 @@ export default function CatalogHotels() {
     {
       id: 3,
       name: 'Номер Comfort',
-      description: '1 ',
-      amenities: ['30 м2', 'Завтрак включен'],
+      description: '1',
+      quadrature: '30',
+      amenities: 'Завтрак включен',
       price: 70000,
       images: [ // Исправлено на 'images'
         'Novotel-Nairobi-Westlands-photo-5.png',
@@ -53,7 +56,8 @@ export default function CatalogHotels() {
       id: 4,
       name: 'Номер Comfort',
       description: '1 ',
-      amenities: ['30 м2', 'Завтрак включен'],
+      quadrature: '24',
+      amenities: 'Завтрак и ужин включены',
       price: 70000,
       images: [ // Исправлено на 'images'
         'Novotel-Nairobi-Westlands-photo-3.png',
@@ -61,7 +65,33 @@ export default function CatalogHotels() {
         'Novotel-Nairobi-Westlands-photo-4.png',
       ],
     },
-    // Добавьте больше отелей по необходимости
+    {
+      id: 5,
+      name: 'Номер Comfort',
+      description: '1 ',
+      quadrature: '24',
+      amenities: 'Завтрак и ужин включены',
+      price: 70000,
+      images: [ 
+        'Novotel-Nairobi-Westlands-photo-3.png',
+        'Novotel-Nairobi-Westlands-photo-1.png',
+        'Novotel-Nairobi-Westlands-photo-4.png',
+      ],
+    },
+    {
+      id: 6,
+      name: 'Номер Comfort',
+      description: '1 ',
+      quadrature: '24',
+      amenities: 'Завтрак и ужин включены',
+      price: 70000,
+      images: [ // Исправлено на 'images'
+        'Novotel-Nairobi-Westlands-photo-3.png',
+        'Novotel-Nairobi-Westlands-photo-1.png',
+        'Novotel-Nairobi-Westlands-photo-4.png',
+      ],
+    },
+    
   ];
   
 

@@ -1,10 +1,11 @@
 export interface HotelRomsListProps {
-    id: any;
+    id: unknown;
     hotels: {
         id: number; // или string, в зависимости от вашего ID
         name: string;
         description: string;
-        amenities: string[];
+        quadrature: string;
+        amenities: string;
         price: number; // или string, если цена может быть строкой
         images: string[];
     }[];

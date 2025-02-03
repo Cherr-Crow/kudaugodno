@@ -10,7 +10,8 @@ interface HotelRomsListProps {
         id: number;
         name: string;
         description: string;
-        amenities: string[];
+        quadrature: string;
+        amenities: string;
         price: number;
         images: string[];
     }[];
@@ -18,7 +19,7 @@ interface HotelRomsListProps {
 
 const HotelRomsList: React.FC<HotelRomsListProps> = ({ hotels }) => {
     return (
-        <div className="hotel-rooms-list">
+        <div className="hotel-rooms-list ">
             {hotels.map((hotel) => (
                 
                 <RoomCard 
@@ -26,6 +27,7 @@ const HotelRomsList: React.FC<HotelRomsListProps> = ({ hotels }) => {
                     id={hotel.id} 
                     name={hotel.name}
                     description={hotel.description}
+                    quadrature={hotel.quadrature}
                     amenities={hotel.amenities}
                     price={hotel.price}
                     images={hotel.images}
