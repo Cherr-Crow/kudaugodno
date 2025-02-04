@@ -1,27 +1,12 @@
-export interface ITabBar {
-  className?: string;
-  tabs: string[];
-  getTabName?: (tab: string) => void;
-  svgTab?: svgTabType;
-  colorHero?: string;
-  tabIndex?: (tab: string) => void;
-  setTab?: string;
-}
+import { NameSvg } from '@/shared/svg-sprite/SvgSprite.types';
 
-export type svgTabType = Array<
-  | 'airplane'
-  | 'sofa'
-  | 'image'
-  | 'entertainment'
-  | 'bus'
-  | 'icon_document'
-  | 'icon_video'
-  | 'trash-light'
-  | 'plant'
-  | 'tennis-racket'
-  | 'sort'
-  | 'arrow-pointer'
-  | 'bell'
-  | 'calendar'
-  | 'heart-outline'
->;
+type UlProps = Omit<React.ComponentPropsWithoutRef<'ul'>, 'tabIndex'>;
+
+export interface ITabBar extends UlProps {
+  tabs: string[];
+  svgTab?: NameSvg[];
+  setTab?: string;
+  tabIndex?: (tab: string) => void;
+  getActiveTab(tab: string): void;
+  variant?: 'primary' | 'secondary';
+}

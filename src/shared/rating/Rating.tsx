@@ -1,12 +1,14 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { IRating } from './Rating.types';
+import React from 'react';
+
 import { SvgSprite } from '@/shared/svg-sprite';
+
+import { IRating } from './Rating.types';
 
 export function Rating({ setRating, category }: IRating) {
   return (
-    <ul className='flex gap-2'>
+    <ul className='flex gap-2 items-center'>
       {new Array(5).fill(1).map((_, index) => {
         return (
           <li

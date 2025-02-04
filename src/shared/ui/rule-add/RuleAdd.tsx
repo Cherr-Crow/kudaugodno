@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { IRuleAdd } from './RuleAdd.types';
+import React, { useState } from 'react';
+
 import { Checkbox } from '@/shared/ui/checkbox';
+
+import { IRuleAdd } from './RuleAdd.types';
 
 export function RuleAdd({ name, className, getValue }: IRuleAdd) {
   const [ruleDescription, setRuleDescription] = useState('');

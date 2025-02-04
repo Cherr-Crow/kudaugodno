@@ -1,10 +1,13 @@
 'use client';
 
 import React from 'react';
-import { IHotelCard } from './HotelCard.types';
+
+import { nanoid } from 'nanoid';
+
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
-import { nanoid } from 'nanoid';
+
+import { IHotelCard } from './HotelCard.types';
 
 export function HotelCard({ hotel }: IHotelCard) {
   const { name, photos, city, country, user_rating, star_category, amenities } =
@@ -15,10 +18,10 @@ export function HotelCard({ hotel }: IHotelCard) {
   return (
     <article className='relative overflow-hidden rounded-3xl bg-white shadow-lg'>
       <div className='absolute left-0 top-4 flex w-full justify-between px-4'>
-        <div className='rounded-2xl bg-blue-disabled p-3'>
+        <div className='rounded-2xl bg-blue-50 p-3'>
           <Typography children='Цена с перелетом' />
         </div>
-        <div className='flex h-12 w-12 items-center justify-center rounded-full bg-blue-disabled'>
+        <div className='flex h-12 w-12 items-center justify-center rounded-full bg-blue-50'>
           <SvgSprite name='heart-outline' width={24} />
         </div>
       </div>
@@ -30,7 +33,7 @@ export function HotelCard({ hotel }: IHotelCard) {
             <Typography children={city + ','} variant='m-bold' />
             <Typography children={country} variant='m-bold' />
           </div>
-          <div className='flex h-9 w-9 items-center justify-center rounded-lg bg-green-secondary p-2'>
+          <div className='flex h-9 w-9 items-center justify-center rounded-lg bg-green-300 p-2'>
             <Typography children={user_rating} variant='m-bold' />
           </div>
         </div>
@@ -66,7 +69,7 @@ export function HotelCard({ hotel }: IHotelCard) {
         </div>
         <ul className='flex gap-2'>
           {amenities.map((el) => (
-            <li className='rounded-2xl bg-blue-light px-3 py-1' key={nanoid()}>
+            <li className='rounded-2xl bg-blue-200 px-3 py-1' key={nanoid()}>
               <Typography children={el.amenity[0]} />
             </li>
           ))}

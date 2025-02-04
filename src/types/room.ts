@@ -1,7 +1,7 @@
 export type room = {
   id: number;
   category: {
-    id: number;
+    // id: number;   удалил id категории номера
     name: string;
   };
   food: {
@@ -13,7 +13,7 @@ export type room = {
   pet: boolean;
   area: number;
   amenities: {
-    id: number;
+    // id: number;
     name: string;
   }[];
   capacity: number;

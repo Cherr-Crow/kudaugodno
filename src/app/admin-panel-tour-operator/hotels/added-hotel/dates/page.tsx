@@ -1,14 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Calendar } from '@/widgets/calendar';
+
+import { nanoid } from 'nanoid';
+
+import { Modal } from '@/shared/modal';
+import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { nanoid } from 'nanoid';
-import { useRouter } from 'next/navigation';
-import { Modal } from '@/shared/modal';
-import { AddDatesModal } from '../../../../../widgets/admin-panel/add-dates-modal';
+import { AddDatesModal } from '@/widgets/admin-panel/add-dates-modal';
+import { Calendar } from '@/widgets/calendar';
 
 const years = [2025, 2024, 2023];
 
@@ -29,7 +30,6 @@ export default function Dates() {
     10: 'Ноябрь',
     11: 'Декабрь',
   };
-  const route = useRouter();
   const handleYearChange = (year: number) => {
     setYear(year);
   };

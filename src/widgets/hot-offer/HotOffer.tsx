@@ -1,14 +1,21 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { IHotOffer } from './HotOffer.types';
-import { Typography } from '@/shared/typography';
-import Link from 'next/link';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Hotel } from '@/types/hotel';
-import { useScreen } from 'usehooks-ts';
-import { HotelCard } from '@/entities/hotel-card';
+
 import { nanoid } from 'nanoid';
+import Link from 'next/link';
+import { useScreen } from 'usehooks-ts';
+
+import { HotelCard } from '@/entities/hotel-card';
+import { SvgSprite } from '@/shared/svg-sprite';
+import { Typography } from '@/shared/typography';
+import { Hotel } from '@/types/hotel';
+
+import { IHotOffer } from './HotOffer.types';
+
+
+
+
 
 export function HotOffer({ className, title, link, array, type }: IHotOffer) {
   const [workArr, setWorkArr] = useState<Hotel[]>(array);
