@@ -1,5 +1,5 @@
-
-import React, { useState } from 'react';
+'use client';
+import React from 'react';
 import { Breadcrumbs } from '@/shared/breadcrumbs';
 import { SearchTour } from '@/shared/ui/search-block/search-tour';
 import { HotelAmenities } from '@/widgets/hotel-amenities';
@@ -9,10 +9,7 @@ import { RoomModal } from '@/widgets/room-modal';
 import { HotelRomsList } from '@/widgets/hotel-roms-list';
 
 export default function CatalogHotels() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [tabClick, setTabClick] = useState<string>('Туры');
-
-  const hotelsData = [
+    const hotelsData = [
     {
       id: 1,
       name: 'Номер Double',
@@ -93,20 +90,23 @@ export default function CatalogHotels() {
     },
     
   ];
-  
-
   return (
     <>
       <section className='container rounded-bl-[20px] rounded-br-[20px] xl:rounded-bl-[100px] xl:rounded-br-[100px]'>
         <Breadcrumbs />
-        
+        {/*<SearchForm*/}
+        {/*  className={'mb-[40px] border-solid shadow-lg xl:mb-[313px]'}*/}
+        {/*  tabClick='Туры'*/}
+        {/*/>*/}
+        <SearchTour type={'Туры'} />
         <HotelBlockPhotosReview />
-        <HotelRomsList hotels={hotelsData} /> 
         <HotelAmenities />
         <HotelRules />
-
-        <RoomModal/>
+        <HotelRomsList hotels={hotelsData}/>
+        <RoomModal />
       </section>
     </>
   );
 }
+
+

@@ -49,8 +49,8 @@ const refreshToken = async () => {
 
 // Перехватчик для обработки ошибок и обновления токена
 hotel.interceptors.response.use(
-  (response) => response,
-  async (error) => {
+  (response: any) => response,
+  async (error: { config: any; response: { status: number; }; }) => {
     const originalRequest = error.config;
 
     // Если ошибка 401 (Unauthorized) и это не запрос на обновление токена
@@ -84,5 +84,5 @@ hotel.interceptors.response.use(
 // }
 
 export async function CreatHotel(payload: Hotel): Promise<Hotel> {
-  return (await hotel.post('', payload).then((response) => response.data)) as Hotel;
+  return (await hotel.post('', payload).then((response: { data: any; }) => response.data)) as Hotel;
 }
