@@ -85,7 +85,7 @@ export default function CatalogHotels() {
       quadrature: '24',
       amenities: 'Завтрак и ужин включены',
       price: 70000,
-      images: [ // Исправлено на 'images'
+      images: [ 
         'Novotel-Nairobi-Westlands-photo-3.png',
         'Novotel-Nairobi-Westlands-photo-1.png',
         'Novotel-Nairobi-Westlands-photo-4.png',
@@ -99,10 +99,7 @@ export default function CatalogHotels() {
     <>
       <section className='container rounded-bl-[20px] rounded-br-[20px] xl:rounded-bl-[100px] xl:rounded-br-[100px]'>
         <Breadcrumbs />
-        <SearchForm
-          className={'mb-[40px] border-solid shadow-lg xl:mb-[313px]'}
-          tabClick={tabClick}
-        />
+        
         <HotelBlockPhotosReview />
         <HotelRomsList hotels={hotelsData} /> 
         <HotelAmenities />
