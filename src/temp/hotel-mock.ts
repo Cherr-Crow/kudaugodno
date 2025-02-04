@@ -59,7 +59,10 @@ export const hotels: Hotel[] = [
     country: 'Кения',
     city: 'Найроби',
     address: 'Westlands Road, Найроби',
-    distances: [{ location: 'sea', distance: 100 }],
+    distances: [
+      { location: 'sea', distance: 100 },
+      { location: 'airport', distance: 100 },
+    ],
     description:
       'Отель с просторными номерами, бассейном и утренними завтраками. Удобно расположен в центре города.',
     type_of_rest: 'Семейный',
@@ -230,7 +233,10 @@ export const hotels: Hotel[] = [
     country: 'Кения',
     city: 'Найроби',
     address: 'Westlands Road, Найроби',
-    distances: [{ location: 'sea', distance: 100 }],
+    distances: [
+      { location: 'sea', distance: 100 },
+      { location: 'airport', distance: 10 },
+    ],
     description:
       'Отель с просторными номерами, бассейном и утренними завтраками. Удобно расположен в центре города.',
     type_of_rest: 'Семейный',
@@ -390,7 +396,10 @@ export const hotels: Hotel[] = [
     country: 'Кения',
     city: 'Найроби',
     address: 'Westlands Road, Найроби',
-    distances: [{ location: 'sea', distance: 100 }],
+    distances: [
+      { location: 'sea', distance: 100 },
+      { location: 'airport', distance: 50 },
+    ],
     description:
       'Отель с просторными номерами, бассейном и утренними завтраками. Удобно расположен в центре города.',
     type_of_rest: 'Семейный',

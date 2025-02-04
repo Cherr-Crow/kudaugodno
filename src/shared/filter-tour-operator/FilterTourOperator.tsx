@@ -1,0 +1,59 @@
+'use client';
+
+import React, { useState } from 'react';
+
+import { Typography } from '../typography';
+import { Checkbox } from '../ui/checkbox';
+
+const tourOperators = ['Тез тур', 'Санмар', 'Библио Глобус', 'Интурист', 'Пегас'];
+
+export function FilterTourOperator() {
+  const [selectedOperators, setSelectedOperators] = useState<string[]>([]);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleOperator = (operator: string) => {
+    setSelectedOperators((prev) =>
+      prev.includes(operator)
+        ? prev.filter((item) => item !== operator)
+        : [...prev, operator],
+    );
+  };
+
+  const toggleCollapse = () => setIsCollapsed(!isCollapsed);
+
+  return (
+    <div className='rounded-lg bg-white p-4 shadow-md'>
+      <div className='mb-4 flex items-center justify-between'>
+        <Typography variant='l' className='text-blue-950'>
+          Туроператор
+        </Typography>
+        <button
+          onClick={toggleCollapse}
+          className='text-blue-950'
+          aria-label={isCollapsed ? 'Развернуть' : 'Свернуть'}
+        >
+          {isCollapsed ? '+' : '–'}
+        </button>
+      </div>
+
+      <div
+        className={`transition-max-height overflow-hidden duration-500 ease-in-out ${
+          isCollapsed ? 'max-h-0' : 'max-h-[1000px]'
+        }`}
+      >
+        <ul className='grid grid-cols-1 gap-2'>
+          {tourOperators.map((operator) => (
+            <li key={operator} className='mb-2 flex items-center gap-2'>
+              <Checkbox
+                label={operator}
+                isChecked={selectedOperators.includes(operator)}
+                onChange={() => toggleOperator(operator)}
+                className='text-blue-950'
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}

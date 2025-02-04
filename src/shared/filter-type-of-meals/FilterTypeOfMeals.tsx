@@ -35,10 +35,12 @@ export function FilterTypeOfMeals({
     <div className='filter-type-of-meals rounded-lg bg-white p-4 shadow-md'>
       {/* Заголовок */}
       <div className='mb-4 flex items-center justify-between'>
-        <Typography variant='l'>Тип питания</Typography>
+        <Typography variant='l' className='text-blue-950'>
+          Тип питания
+        </Typography>
         <button
           onClick={toggleCollapse}
-          className='text-gray-500'
+          className='text-blue-950'
           aria-label={isCollapsed ? 'Развернуть' : 'Свернуть'}
         >
           {isCollapsed ? '+' : '–'}
@@ -60,7 +62,7 @@ export function FilterTypeOfMeals({
                   label={meal}
                   isChecked={selectedMeals.includes(meal)}
                   onChange={() => toggleMealSelection(meal)}
-                  className='mr-2'
+                  className='mr-2 text-blue-950'
                 />
               </li>
             ))}
