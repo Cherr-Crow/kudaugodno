@@ -66,4 +66,5 @@ export type NameSvg =
   | 'back-arrow'
   | 'google'
   | 'vkontakte'
-  | 'yandex';
+  | 'yandex'
+  | 'arrow-check';

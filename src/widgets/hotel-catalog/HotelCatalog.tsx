@@ -13,6 +13,7 @@ import { HotelComponentPhotoSlider } from '@/shared/hotel-component-photo-slider
 import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
+import { ButtonCustom } from '@/shared/ui/button-custom';
 import { hotels } from '@/temp/hotel-mock';
 
 export function HotelCatalog() {
@@ -260,131 +261,189 @@ export function HotelCatalog() {
 
           <div className='hotels-list grid gap-6 md:grid-cols-1'>
             {filteredHotels.length > 0 ? (
-              sortedHotels.map((hotel) => (
-                <div
-                  key={hotel.id}
-                  className='hotel-card relative flex flex-col rounded-lg bg-white shadow-xl md:flex-row'
-                >
-                  <div className='hotel-image relative z-0 mb-4 w-full overflow-hidden md:mb-0 md:mr-4 md:w-2/5'>
-                    <button className='absolute right-2 top-2 z-10 rounded-full bg-blue-50 p-3 lg:hidden'>
-                      <SvgSprite name='heart-outline' width={15} />
-                    </button>
-                    <HotelComponentPhotoSlider hotel={hotel} />
-                  </div>
-
-                  <div className='hotel-info relative z-10 w-full rounded-lg p-4 md:ml-[-16px] md:w-3/5'>
-                    {/* Рейтинг и информация */}
-                    <div className='mb-2 flex gap-2'>
-                      <Rating category={hotel.star_category} />
-                      {/* Кнопка "Показать отзывы" */}
-                      {hotel.reviews && hotel.reviews.length > 0 && (
-                        <div className='group ml-auto flex items-center justify-end gap-0.5'>
-                          <button
-                            className='flex items-center gap-1 text-blue-600 hover:underline'
-                            onClick={() => toggleReviews(hotel.id)}
-                          >
-                            <Typography variant='m' className='text-xs md:text-base'>
-                              {reviewStates[hotel.id]?.showAllReviews
-                                ? 'Скрыть отзывы'
-                                : `Еще ${hotel.reviews.length} отзывов`}
-                            </Typography>
-                          </button>
-                        </div>
-                      )}
-
-                      <div className='flex items-center gap-2'>
-                        <Typography
-                          variant='l'
-                          className='rounded-lg bg-green-300 px-2 py-1 text-xs font-medium text-grey-950 md:px-3 md:py-2 md:text-sm'
-                        >
-                          {hotel.user_rating}
-                        </Typography>
-                        <button className='hidden rounded-full bg-blue-50 p-3 lg:flex'>
-                          <SvgSprite name='heart-outline' width={30} />
+              <>
+                {sortedHotels.map((hotel, index) => (
+                  <div key={hotel.id}>
+                    <div
+                      key={`hotel-${hotel.id}`}
+                      className='hotel-card relative flex flex-col rounded-lg bg-white shadow-xl md:flex-row'
+                    >
+                      <div className='hotel-image relative z-0 mb-4 w-full overflow-hidden md:mb-0 md:mr-4 md:w-2/5'>
+                        <button className='absolute right-2 top-2 z-10 rounded-full bg-blue-50 p-3 lg:hidden'>
+                          <SvgSprite name='heart-outline' width={15} />
                         </button>
+                        <HotelComponentPhotoSlider hotel={hotel} />
                       </div>
-                    </div>
 
-                    <div className='relative mb-2 flex flex-col flex-wrap gap-2'>
-                      <Typography variant='h4' className='mb-2 text-xs md:text-lg'>
-                        {hotel.name}
-                      </Typography>
-                      <Typography variant='l' className='mb-2 text-xs'>
-                        {hotel.city}
-                      </Typography>
-                    </div>
+                      <div className='hotel-info relative z-10 w-full rounded-lg p-4 md:ml-[-16px] md:w-3/5'>
+                        {/* Рейтинг и информация */}
+                        <div className='mb-2 flex gap-2'>
+                          <Rating category={hotel.star_category} />
+                          {/* Кнопка "Показать отзывы" */}
+                          {hotel.reviews && hotel.reviews.length > 0 && (
+                            <div className='group ml-auto flex items-center justify-end gap-0.5'>
+                              <button
+                                className='flex items-center gap-1 text-blue-600 hover:underline'
+                                onClick={() => toggleReviews(hotel.id)}
+                              >
+                                <Typography
+                                  variant='m'
+                                  className='text-xs md:text-base'
+                                >
+                                  {reviewStates[hotel.id]?.showAllReviews
+                                    ? 'Скрыть отзывы'
+                                    : `Еще ${hotel.reviews.length} отзывов`}
+                                </Typography>
+                              </button>
+                            </div>
+                          )}
 
-                    {/* Удобства */}
-                    <div className='hotel-amenities mb-2 flex flex-nowrap gap-2'>
-                      {hotel.amenities[0]?.amenity
-                        .slice(0, 3)
-                        .map((amenity, index) => (
+                          <div className='flex items-center gap-2'>
+                            <Typography
+                              variant='l'
+                              className='rounded-lg bg-green-300 px-2 py-1 text-xs font-medium text-grey-950 md:px-3 md:py-2 md:text-sm'
+                            >
+                              {hotel.user_rating}
+                            </Typography>
+                            <button className='hidden rounded-full bg-blue-50 p-3 lg:flex'>
+                              <SvgSprite name='heart-outline' width={30} />
+                            </button>
+                          </div>
+                        </div>
+
+                        <div className='relative mb-2 flex flex-col flex-wrap gap-2'>
                           <Typography
-                            key={index}
-                            variant='l-bold'
-                            className='rounded-xl bg-blue-50 px-2 py-1 text-xs md:text-lg'
+                            variant='h4'
+                            className='mb-2 text-xs md:text-lg'
                           >
-                            {amenity}
+                            {hotel.name}
                           </Typography>
-                        ))}
-                    </div>
+                          <Typography variant='l' className='mb-2 text-xs'>
+                            {hotel.city}
+                          </Typography>
+                        </div>
 
-                    {/* Цена */}
-                    <div className='hotel-price mt-4 flex items-center justify-between rounded-xl bg-blue-50'>
-                      <Typography
-                        variant='l-bold'
-                        className='mb-2 text-xs md:text-lg'
-                      >
-                        Питание: {hotel.rooms[0]?.food.type_of_meals}
-                      </Typography>
-                      <Typography
-                        variant='h4'
-                        className='text-xs text-blue-600 md:text-lg'
-                      >
-                        {hotel.rooms[0].nightly_price} ₽
-                      </Typography>
-                    </div>
+                        {/* Удобства */}
+                        <div className='hotel-amenities mb-2 flex flex-nowrap gap-2'>
+                          {hotel.amenities[0]?.amenity
+                            .slice(0, 3)
+                            .map((amenity, amenityIndex) => (
+                              <Typography
+                                key={`amenity-${amenityIndex}`}
+                                variant='l-bold'
+                                className='rounded-xl bg-blue-50 px-2 py-1 text-xs md:text-lg'
+                              >
+                                {amenity}
+                              </Typography>
+                            ))}
+                        </div>
 
-                    {/* Отзывы */}
-                    <div className='mt-4 flex flex-col'>
-                      <div
-                        ref={(el) => {
-                          reviewsContainerRefs.current[hotel.id] = el;
-                        }}
-                        className={`transition-max-height overflow-hidden duration-300 ${reviewStates[hotel.id]?.showAllReviews ? 'max-h-[220px] overflow-y-scroll' : 'max-h-0'}`}
-                      >
-                        {hotel.reviews.map((review) => (
-                          <div key={review.id} className='mb-4 border-b pb-4'>
-                            <div className='mb-2 flex items-center gap-3'>
-                              <img
-                                src={review.userPhoto}
-                                alt={review.username}
-                                className='h-8 w-8 rounded-full'
-                              />
-                              <div>
-                                <Typography variant='s' className='font-semibold'>
-                                  {review.username}
+                        {/* Цена */}
+                        <div className='hotel-price mt-4 flex items-center justify-between rounded-xl bg-blue-50'>
+                          <Typography
+                            variant='l-bold'
+                            className='mb-2 text-xs md:text-lg'
+                          >
+                            Питание: {hotel.rooms[0]?.food.type_of_meals}
+                          </Typography>
+                          <Typography
+                            variant='h4'
+                            className='text-xs text-blue-600 md:text-lg'
+                          >
+                            {hotel.rooms[0].nightly_price} ₽
+                          </Typography>
+                        </div>
+
+                        {/* Отзывы */}
+                        <div className='mt-4 flex flex-col'>
+                          <div
+                            ref={(el) => {
+                              reviewsContainerRefs.current[hotel.id] = el;
+                            }}
+                            className={`transition-max-height overflow-hidden duration-300 ${reviewStates[hotel.id]?.showAllReviews ? 'max-h-[220px] overflow-y-scroll' : 'max-h-0'}`}
+                          >
+                            {hotel.reviews.map((review) => (
+                              <div
+                                key={`review-${review.id}`}
+                                className='mb-4 border-b pb-4'
+                              >
+                                <div className='mb-2 flex items-center gap-3'>
+                                  <img
+                                    src={review.userPhoto}
+                                    alt={review.username}
+                                    className='h-8 w-8 rounded-full'
+                                  />
+                                  <div>
+                                    <Typography
+                                      variant='s'
+                                      className='font-semibold'
+                                    >
+                                      {review.username}
+                                    </Typography>
+                                  </div>
+                                  <div className='ml-auto rounded-lg bg-green-300 px-2 py-1 text-sm font-medium md:px-3 md:py-2'>
+                                    {review.rating}
+                                  </div>
+                                </div>
+                                <Typography
+                                  variant='xs'
+                                  className='text-gray-500 mb-2'
+                                >
+                                  {review.date}
+                                </Typography>
+                                <Typography
+                                  variant='s'
+                                  className='text-gray-700 mb-2'
+                                >
+                                  {review.text}
                                 </Typography>
                               </div>
-                              <div className='ml-auto rounded-lg bg-green-300 px-2 py-1 text-sm font-medium md:px-3 md:py-2'>
-                                {review.rating}
-                              </div>
-                            </div>
-                            <Typography variant='xs' className='text-gray-500 mb-2'>
-                              {review.date}
-                            </Typography>
-                            <Typography variant='s' className='text-gray-700 mb-2'>
-                              {review.text}
-                            </Typography>
+                            ))}
                           </div>
-                        ))}
+                        </div>
                       </div>
                     </div>
+
+                    {/* Блок с объявлениями */}
+                    {index === Math.floor(sortedHotels.length / 2) && (
+                      <div
+                        className='announcement-block relative mt-6 flex flex-row items-center justify-between px-6 py-6 md:pr-0'
+                        key='announcement'
+                      >
+                        <div className='announcement-block-backgorund absolute inset-0 z-0 rounded-xl bg-blue-50 md:bottom-6 md:top-6 lg:top-12'></div>
+
+                        <div className='z-10 flex flex-col items-center justify-center gap-2 rounded-xl text-center md:items-start md:text-left'>
+                          <Typography variant='h4' className='text-lg text-blue-950'>
+                            Скидка на 10% на первую поездку
+                          </Typography>
+                          <ButtonCustom
+                            type='button'
+                            variant='primary'
+                            size='s'
+                            className='w-full text-sm font-bold text-green-950 md:w-auto md:border-blue-600 md:bg-blue-600 md:text-white md:hover:border-blue-200 md:hover:bg-blue-200 md:active:border-blue-500 md:active:bg-blue-500'
+                          >
+                            Узнать подробнее
+                          </ButtonCustom>
+                        </div>
+
+                        <div className='z-10 hidden w-1/2 justify-end md:flex'>
+                          <img
+                            src='famous-tourists-sights.png'
+                            alt='famous-tourists-sights'
+                            className='h-auto max-w-full object-contain'
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))
+                ))}
+              </>
             ) : (
-              <p>Отелей по выбранным критериям не найдено.</p>
+              <div className='flex w-auto items-center justify-center'>
+                <Typography variant='h4'>
+                  Отелей по выбранным критериям не найдено.
+                </Typography>
+              </div>
             )}
           </div>
         </main>
