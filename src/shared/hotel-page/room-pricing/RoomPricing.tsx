@@ -1,7 +1,9 @@
 /* eslint-disable react/no-children-prop */
 import React from 'react';
-import { RoomPricingProps } from './RoomPricing.types';
+
 import { Typography } from '@/shared/typography';
+
+import { RoomPricingProps } from './RoomPricing.types';
 
 const RoomPricing: React.FC<RoomPricingProps> = ({ price }) => {
     return (

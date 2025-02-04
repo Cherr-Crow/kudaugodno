@@ -1,7 +1,9 @@
 import React from 'react';
-import { RoomDescriptionProps } from './RoomDescription.types';
+
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
+
+import { RoomDescriptionProps } from './RoomDescription.types';
 
 const RoomDescription: React.FC<RoomDescriptionProps> = ({description }) => {
     return (

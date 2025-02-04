@@ -1,12 +1,13 @@
 'use client';
 import React from 'react';
+
 import { Breadcrumbs } from '@/shared/breadcrumbs';
 import { SearchTour } from '@/shared/ui/search-block/search-tour';
 import { HotelAmenities } from '@/widgets/hotel-amenities';
 import { HotelBlockPhotosReview } from '@/widgets/hotel-block-photos-review';
+import { HotelRomsList } from '@/widgets/hotel-roms-list';
 import { HotelRules } from '@/widgets/hotel-rules';
 import { RoomModal } from '@/widgets/room-modal';
-import { HotelRomsList } from '@/widgets/hotel-roms-list';
 
 export default function CatalogHotels() {
     const hotelsData = [
