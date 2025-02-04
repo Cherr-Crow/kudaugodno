@@ -37,10 +37,12 @@ export function FilterAmenities({
     <div className='filter-amenities rounded-lg bg-white p-4 shadow-md'>
       {/* Заголовок */}
       <div className='mb-4 flex items-center justify-between'>
-        <Typography variant='l'>Удобства</Typography>
+        <Typography variant='l' className='text-blue-950'>
+          Удобства
+        </Typography>
         <button
           onClick={toggleCollapse}
-          className='text-gray-500'
+          className='text-blue-950'
           aria-label={isCollapsed ? 'Развернуть' : 'Свернуть'}
         >
           {isCollapsed ? '+' : '–'}
@@ -62,7 +64,7 @@ export function FilterAmenities({
                   label={amenity}
                   isChecked={selectedAmenities.includes(amenity)}
                   onChange={() => toggleAmenity(amenity)}
-                  className='mr-2'
+                  className='mr-2 text-blue-950'
                 />
               </li>
             ))}
