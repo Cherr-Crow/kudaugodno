@@ -85,7 +85,7 @@ export default function CatalogHotels() {
       quadrature: '24',
       amenities: 'Завтрак и ужин включены',
       price: 70000,
-      images: [ // Исправлено на 'images'
+      images: [ 
         'Novotel-Nairobi-Westlands-photo-3.png',
         'Novotel-Nairobi-Westlands-photo-1.png',
         'Novotel-Nairobi-Westlands-photo-4.png',
