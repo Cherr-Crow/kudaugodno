@@ -1,4 +1,4 @@
-'use client';
+
 import React, { useState } from 'react';
 import { Breadcrumbs } from '@/shared/breadcrumbs';
 import { SearchForm } from '@/shared/ui/search-form';
@@ -20,7 +20,7 @@ export default function CatalogHotels() {
       quadrature: '24',
       amenities: 'Завтрак включен',
       price: 65000,
-      images: [ // Исправлено на 'images' для соответствия комоненту RoomCard
+      images: [ 
         'Novotel-Nairobi-Westlands-photo-4.png',
         'Novotel-Nairobi-Westlands-photo-2.png',
         'Novotel-Nairobi-Westlands-photo-3.png',
@@ -33,7 +33,7 @@ export default function CatalogHotels() {
       quadrature: '44',
       amenities: 'Завтрак и ужин включены',
       price: 85000,
-      images: [ // Исправлено на 'images'
+      images: [ 
         'Novotel-Nairobi-Westlands-photo-4.png',
         'Novotel-Nairobi-Westlands-photo-2.png',
         'Novotel-Nairobi-Westlands-photo-3.png',
@@ -46,7 +46,7 @@ export default function CatalogHotels() {
       quadrature: '30',
       amenities: 'Завтрак включен',
       price: 70000,
-      images: [ // Исправлено на 'images'
+      images: [ 
         'Novotel-Nairobi-Westlands-photo-5.png',
         'Novotel-Nairobi-Westlands-photo-1.png',
         'Novotel-Nairobi-Westlands-photo-4.png',
@@ -59,7 +59,7 @@ export default function CatalogHotels() {
       quadrature: '24',
       amenities: 'Завтрак и ужин включены',
       price: 70000,
-      images: [ // Исправлено на 'images'
+      images: [
         'Novotel-Nairobi-Westlands-photo-3.png',
         'Novotel-Nairobi-Westlands-photo-1.png',
         'Novotel-Nairobi-Westlands-photo-4.png',
