@@ -1,6 +1,8 @@
 import React from 'react';
-import { RoomSquareProps } from './RoomSquare.types';
+
 import { SvgSprite } from '@/shared/svg-sprite';
+
+import { RoomSquareProps } from './RoomSquare.types';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RoomSquare: React.FC<RoomSquareProps> = ({quadrature }) => {

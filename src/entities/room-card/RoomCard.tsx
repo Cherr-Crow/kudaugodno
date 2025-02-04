@@ -1,4 +1,6 @@
 /* eslint-disable react/no-children-prop */
+import React from 'react';
+
 import { ImageSlider } from '@/shared/hotel-page/image-slider';
 import { RoomAmenities } from '@/shared/hotel-page/room-amenities';
 import { RoomDescription } from '@/shared/hotel-page/room-description';
@@ -8,7 +10,6 @@ import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Select } from '@/shared/ui/select';
-import React from 'react';
 
 const testList = [
     '   1',
