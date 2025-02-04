@@ -1,12 +1,15 @@
 import React from 'react';
-import { IFooter } from './Footer.types';
+
 import Link from 'next/link';
+
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 
+import { IFooter } from './Footer.types';
+
 export function Footer({ className }: IFooter) {
   return (
-    <footer className={`${className} bg-white-secondary py-4 lg:py-12`}>
+    <footer className={`${className} bg-grey-50 py-4 lg:py-12`}>
       <div className='container'>
         <div className='flex justify-between gap-24'>
           <Link href='/'>

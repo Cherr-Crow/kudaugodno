@@ -1,9 +1,12 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { IModal } from './Modal.types';
-import { PopupWindow } from '@/shared/popup-window';
+
 import { createPortal } from 'react-dom';
+
+import { PopupWindow } from '@/shared/popup-window';
+
+import { IModal } from './Modal.types';
 
 export function Modal({ children, close }: IModal) {
   const modalRef = document.querySelector('#modal');

@@ -1,18 +1,20 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { ISelect } from './Select.types';
-import { PopupWindow } from '@/shared/popup-window';
+
 import { nanoid } from 'nanoid';
-import { SvgSprite } from '@/shared/svg-sprite';
 import { useScreen } from 'usehooks-ts';
+
+import { PopupWindow } from '@/shared/popup-window';
+import { SvgSprite } from '@/shared/svg-sprite';
+
+import { ISelect } from './Select.types';
 
 export function Select({
   className,
   options,
   getValue,
   color,
-  markerChange,
   arrowHidden,
   size = 'medium',
   id,
@@ -23,8 +25,8 @@ export function Select({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   enum Background {
-    'blue' = 'border border-blue-primary bg-blue-300',
-    'green' = 'border border-green-tetriary bg-green-secondary',
+    'blue' = 'border border-blue-400 bg-blue-300',
+    'green' = 'border border-green-500 bg-green-300',
   }
 
   enum Size {
@@ -42,8 +44,8 @@ export function Select({
     setIsOpen(false);
   };
 
-  const handleOutsideClick = (event: any) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  const handleOutsideClick = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setIsOpen(false);
     }
   };
@@ -71,6 +73,7 @@ export function Select({
           onChange={() => {}}
           className={`pointer-events-none w-4/5 cursor-pointer bg-transparent outline-none`}
           id={id}
+          name='select'
         />
         <SvgSprite
           name='arrow'
@@ -84,7 +87,7 @@ export function Select({
             {options.map((option) => (
               <li
                 key={nanoid()}
-                className='px-4 py-2 hover:bg-blue-extra-light'
+                className='px-4 py-2 hover:bg-blue-100'
                 onClick={() => handleOptionClick(option)}
               >
                 {option}

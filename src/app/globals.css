@@ -3,55 +3,85 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    /* light */
-    /* оттенки белого */
-    --white: #fff;
-    --white-secondary: #f7f7f7;
+    :root {
+        /* light */
+        /* оттенки белого */
+        --white: #fff;
 
-    /* оттенки чёрного */
-    --black: #363636;
-    --grey-100: #ededed;
-    --grey-primary: #adadad;
-    --grey-secondary: #7b7b7b;
-    --grey-600: #888888;
-    --grey-opacity: rgba(136, 136, 136, 0.5);
+        /* оттенки чёрного */
+        --grey-50: #f7f7f7;
+        --grey-100: #ededed;
+        --grey-200: #dfdfdf;
+        --grey-300: #c8c8c8;
+        --grey-400: #adadad;
+        --grey-500: #9e9e9e;
+        --grey-600: #888888;
+        --grey-700: #7b7b7b;
+        --grey-800: #676767;
+        --grey-900: #545454;
+        --grey-950: #363636;
+        --grey-opacity: rgba(136, 136, 136, 0.5);
 
-    /* оттенки зелёного */
-    --green-primary: #dffd99;
-    --green-secondary: #c7f85e;
-    --green-tetriary: #9be60f;
-    --green-bold: #c7f85e33;
+        /* оттенки зелёного */
+        --green-bold: #c7f85e33;
+        --green-50: #f8ffe6;
+        --green-100: #effec9;
+        --green-200: #dffd99;
+        --green-300: #c7f85e;
+        --green-400: #aeee2d;
+        --green-500: #9be60f;
+        --green-600: #6eaa06;
+        --green-700: #54810a;
+        --green-800: #43660e;
+        --green-900: #395611;
+        --green-950: #1c3003;
 
-    /* оттенки синего */
-    --blue-disabled: #eef5ff;
-    --blue-extra-light: #dfecff;
-    --blue-light: #c5daff;
-    --blue-primary: #7e9cfb;
-    --blue-secondary: #3440ce;
-    --blue-tetriary: #c5daff33;
-    --blue-300: #a3c0fe;
-    --blue-500: #5f79f5;
-    --blue-600: #4757ea;
-    --blue-900: #2c3683;
-    --blue-bold: #1a1f4c;
+        /* оттенки синего */
+        --blue-tetriary: #c5daff33;
+        --blue-50: #eef5ff;
+        --blue-100: #dfecff;
+        --blue-200: #c5daff;
+        --blue-300: #a3c0fe;
+        --blue-400: #7e9cfb;
+        --blue-500: #5f79f5;
+        --blue-600: #4757ea;
+        --blue-700: #3440ce;
+        --blue-800: #2d39a6;
+        --blue-900: #2c3683;
+        --blue-950: #1a1f4c;
+        --blue-bold: #1a1f4c;
 
-    /* оттенки красного */
-    --red-primary-: #e94c4c;
-    --red-primary-400: rgba(233, 76, 76, 0.4);
-    --red-primary-800: rgba(233, 76, 76, 0.8);
-    --red-secondary: #e94c4c66;
+        /* оттенки красного */
+        --red-primary-: #e94c4c;
+        --red-primary-400: rgba(233, 76, 76, 0.4);
+        --red-primary-800: rgba(233, 76, 76, 0.8);
+        --red-secondary: #e94c4c66;
 
-    /* оттенки жёлтого */
-    --yellow-primary: #ffcc00;
-    /*  */
-  }
+        /* оттенки жёлтого */
+        --yellow-primary: #ffcc00;
+        /*  */
+    }
 }
 
-.badge-type-room{
-  @apply h-fit rounded-2xl px-3 py-1 text-center text-sm
+.badge-type-room {
+    @apply h-fit rounded-2xl px-3 py-1 text-center text-sm
 }
 
-.badge-year{
-  @apply h-fit w-fit rounded-full px-10 py-2 cursor-pointer
+.badge-year {
+    @apply h-fit w-fit rounded-full px-10 py-2 cursor-pointer
 }
+
+input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0.3;
+}
+
+input[type="date"]::-webkit-datetime-edit {
+    color: transparent;
+    opacity: 0;
+}
+

@@ -1,6 +1,6 @@
-import { room } from '@/types/room';
-import { date } from '@/types/date';
 import { Amenity } from '@/types/amenity';
+import { date } from '@/types/date';
+import { room } from '@/types/room';
 
 export type Hotel = {
   id: number;
