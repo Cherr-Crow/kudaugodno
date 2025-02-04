@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-
 import { Breadcrumbs } from '@/shared/breadcrumbs';
 import { SearchTour } from '@/shared/ui/search-block/search-tour';
 import { HotelAmenities } from '@/widgets/hotel-amenities';
