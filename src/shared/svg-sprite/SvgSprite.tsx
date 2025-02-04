@@ -1962,6 +1962,7 @@ export function SvgSprite({
             fill='#1C3003'
           />
         </svg>
+
       );
     case 'google':
       return (
@@ -2012,7 +2013,9 @@ export function SvgSprite({
             fill={color ? color : '#FEFEFE'}
           />
         </svg>
+        
       );
+
     // case '':
     //   return;
     // case '':
