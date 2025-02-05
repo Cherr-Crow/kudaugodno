@@ -6,8 +6,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-
-
 import { SvgSprite } from '@/shared/svg-sprite';
 
 interface ImageSliderProps {
@@ -16,7 +14,7 @@ interface ImageSliderProps {
 
 const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const swiperRef = useRef<any>(null); // Убедитесь, что тип рефа правильный
+    const swiperRef = useRef<any>(null);
 
     const settings = {
         modules: [Navigation, Pagination],
@@ -31,8 +29,9 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
             },
             640: {
                 slidesPerView: 1,
-               
+                spaceBetween: 10,
             },
+            
         },
     };
 
@@ -57,7 +56,6 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
                                 <button
                                     className="p-2 bg-white rounded-full shadow-md hover:bg-opacity-100 opacity-70 mr-2"
                                     onClick={() => {
-                                        // Проверяем, что реф существует
                                         if (swiperRef.current) {
                                             swiperRef.current.swiper.slideNext();
                                         }

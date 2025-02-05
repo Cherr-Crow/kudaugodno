@@ -1,6 +1,8 @@
 /* eslint-disable react/no-children-prop */
 import React from 'react';
 
+
+
 import { ImageSlider } from '@/shared/hotel-page/image-slider';
 import { RoomAmenities } from '@/shared/hotel-page/room-amenities';
 import { RoomDescription } from '@/shared/hotel-page/room-description';
@@ -35,15 +37,15 @@ const RoomCard: React.FC<IRoomCardProps> = ({ id, name, description, quadrature,
     return (
         <div className="w-full bg-white md:shadow-lg rounded-xl md:flex mb-3 "> 
         <h3 className="text-lg font-bold mt-4 block md:hidden lg:mb-4">{name}</h3>
-            <div className="md:w-1/3 p-0 "> 
-                <div className=" rounded-xl overflow-hidden "> 
+            <div className="md:w-1/3  "> 
+                <div className=" rounded-xl overflow-hidden"> 
                     <ImageSlider images={images} />
                 </div>
             </div>
             <div className="room-details md:w-2/3"> 
                 <div className="shadow-lg rounded-xl p-5 md:shadow-none "> 
                     <h3 className="text-lg font-bold hidden md:block">{name}</h3>
-                    <div className=' w-full md:hidden'>
+                    <div className=' w-full  md:hidden'>
                         <div className='flex-col'>
                             <RoomDescription  description={description} />
                             <RoomSquare quadrature={quadrature} />
