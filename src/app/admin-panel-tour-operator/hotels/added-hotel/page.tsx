@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 
+import axios from 'axios';
+
 import { useAppDispatch, useAppSelector } from '@/rtk/hooks';
 import { createHotelTemp, selectorHotelCreate } from '@/rtk/slices/hotelCreate';
 import { PopupWindow } from '@/shared/popup-window';
@@ -9,7 +11,6 @@ import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
 import { hotelNewMock } from '@/temp/hotel-new-mock';
 import { AddedHotelField } from '@/widgets/admin-panel/added-hotel-field';
-import axios from 'axios';
 
 export default function AddedHotel() {
   const [value, setValue] = useState('');
