@@ -97,9 +97,9 @@ export function AddedHotelField({}: IAddedHotelField) {
     setPhoto(e.target.value);
   };
 
-  const handleDistanceChange = (e: { location: string; distance: number }) => {
-    setDistance(e);
-  };
+  // const handleDistanceChange = (e: { location: string; distance: number }) => {
+  //   setDistance(e);
+  // };
 
   return (
     <section className='flex flex-col gap-4'>
