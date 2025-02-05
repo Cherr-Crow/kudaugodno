@@ -58,9 +58,10 @@ export function FilterAmenities({
         {/* Блоки с удобствами */}
         <div className='transition-max-height overflow-hidden duration-300 ease-in-out'>
           <ul className='grid grid-cols-1 gap-2'>
-            {amenities.map((amenity) => (
+            {amenities.map((amenity, index) => (
               <li key={amenity} className='mb-2 flex items-center gap-2'>
                 <Checkbox
+                  id={`checkbox-${index}`}
                   label={amenity}
                   isChecked={selectedAmenities.includes(amenity)}
                   onChange={() => toggleAmenity(amenity)}
