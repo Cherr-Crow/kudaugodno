@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import { Typography } from "../typography";
-import { IFilterRecreationType } from "./FilterRecreationType.types";
+import { Typography } from '../typography';
+import { IFilterRecreationType } from './FilterRecreationType.types';
 
 export function FilterRecreationType({
   selectedTypes,
@@ -11,8 +11,7 @@ export function FilterRecreationType({
 }: IFilterRecreationType) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  const recreationTypes = ["Пляжный", "Городской"];
-
+  const recreationTypes = ['Пляжный', 'Городской'];
 
   const toggleSelection = (type: string) => {
     const updatedTypes = selectedTypes.includes(type)
@@ -24,35 +23,37 @@ export function FilterRecreationType({
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
   return (
-    <div className="filter-recreation-type bg-white p-4 rounded-lg shadow-md">
+    <div className='filter-recreation-type rounded-lg bg-white p-4 shadow-md'>
       {/* Заголовок */}
-      <div className="flex justify-between items-center mb-4">
-        <Typography variant="l">Тип отдыха</Typography>
+      <div className='mb-4 flex items-center justify-between'>
+        <Typography variant='l' className='text-blue-950'>
+          Тип отдыха
+        </Typography>
         <button
           onClick={toggleCollapse}
-          className={isCollapsed ? "text-gray-500 mt-1" : "text-gray-500"}
-          aria-label={isCollapsed ? "Развернуть" : "Свернуть"}
+          className={isCollapsed ? 'mt-1 text-blue-950' : 'text-blue-950'}
+          aria-label={isCollapsed ? 'Развернуть' : 'Свернуть'}
         >
-          {isCollapsed ? "+" : "–"}
+          {isCollapsed ? '+' : '–'}
         </button>
       </div>
 
       {/* Контент с анимацией */}
       <div
-        className={`transition-max-height duration-500 ease-in-out overflow-hidden ${
-          isCollapsed ? "max-h-0" : "max-h-[1000px]"
+        className={`transition-max-height overflow-hidden duration-500 ease-in-out ${
+          isCollapsed ? 'max-h-0' : 'max-h-[1000px]'
         }`}
       >
         {/* Блоки с типами отдыха */}
-        <div className="flex flex-wrap gap-4">
+        <div className='flex flex-wrap gap-4'>
           {recreationTypes.map((type) => (
             <button
               key={type}
               onClick={() => toggleSelection(type)}
-              className={`p-4 text-center rounded-lg border transition-all ${
+              className={`rounded-lg border p-4 text-center transition-all ${
                 selectedTypes.includes(type)
-                  ? "bg-blue-500 text-white border-blue-500"
-                  : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
+                  ? 'border-blue-600 bg-blue-600 text-white'
+                  : 'border-grey-300 bg-grey-50 text-blue-950 hover:bg-blue-200'
               }`}
             >
               {type}
@@ -60,7 +61,6 @@ export function FilterRecreationType({
           ))}
         </div>
       </div>
-
     </div>
   );
 }

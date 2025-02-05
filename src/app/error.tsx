@@ -24,13 +24,13 @@ export default function Error({
         />
         <Link
           href='/'
-          className='flex w-full items-center justify-center rounded-full bg-green-secondary py-3'
+          className='flex w-full items-center justify-center rounded-full bg-green-300 py-3'
         >
           <Typography children='На главную' variant='m-bold' />
         </Link>
       </div>
       <div className='flex h-full w-full items-center py-5 md:order-2 md:py-0 lg:items-end'>
-        <img src={'/mob_picture_404.png'} alt='' className='w-full' />
+        <img src={'/mob_picture_404.png'} alt='' className='w-full' rel='prefetch' />
       </div>
     </div>
   );

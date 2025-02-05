@@ -7,7 +7,7 @@ import { IBadge } from './Badge.types';
 export function Badge({ size = 'base', name, price }: IBadge) {
   return (
     <div
-      className={`flex items-center justify-between rounded-xl bg-blue-disabled ${size === 'base' ? 'px-5 py-3' : 'px-3 py-2'} `}
+      className={`flex items-center justify-between rounded-xl bg-blue-50 ${size === 'base' ? 'px-5 py-3' : 'px-3 py-2'} `}
     >
       <Typography children={name} variant={size === 'base' ? 'subtitle4' : 'm'} />
       {price && (

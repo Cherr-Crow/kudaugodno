@@ -20,7 +20,7 @@ export function TabBar({
   const [active, setActive] = useState(setTab ? setTab : tabs[0]);
 
   enum Style {
-    primary = 'bg-green-secondary p-2',
+    primary = 'bg-green-300 p-2',
     secondary = 'border border-white',
   }
 

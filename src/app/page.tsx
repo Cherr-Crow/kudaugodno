@@ -6,15 +6,17 @@ import { SubscribeToTheNewsletter } from '@/widgets/subscribe-to-the-newsletter'
 import { Wzhuh } from '@/widgets/wzhuh';
 
 export default async function Home() {
-  const data = await fetch('http://82.202.137.38/hotels/');
-  const hotOffers = data.json();
-
-  console.log(hotOffers);
+  // const data = await fetch('http://176.109.109.78/api/v1/hotels/?limit=10')
+  //   .then((res) => res.json())
+  //   .then((data) => console.log(data));
+  // const hotOffers = data.json();
+  //
+  // console.log(data);
 
   return (
     <div className='flex flex-col gap-3'>
       <Hero />
-      <Wzhuh className='container md:hidden' />
+      <Wzhuh className='p3 container md:hidden' />
       {/*TODO: блоки "HotOffer" оживить после подключения бэкенда*/}
       {/*<HotOffer*/}
       {/*  array={arr}*/}

@@ -17,11 +17,11 @@ export function SubscribeToTheNewsletter({}: ISubscribeToTheNewsletter) {
         <div className='container'>
           <Typography
             variant='l'
-            className='mb-2 block font-black tracking-wider text-white md:mb-4 md:text-[26px] md:font-medium lg:mb-8 lg:text-[40px] lg:tracking-wide'
+            className='font-grey-950 mb-2 block tracking-wider text-white md:mb-4 md:text-[26px] md:font-medium lg:mb-8 lg:text-[40px] lg:tracking-wide'
           >
             Новостная рассылка
           </Typography>
-          <Typography className='mb-6 block font-normal text-white md:pr-[140px] md:text-[18px] md:font-thin md:text-blue-light lg:mb-10 lg:pr-[0px] lg:text-[32px]'>
+          <Typography className='mb-6 block font-normal text-white md:pr-[140px] md:text-[18px] md:font-thin md:text-blue-200 lg:mb-10 lg:pr-[0px] lg:text-[32px]'>
             Подпишитесь, чтобы первыми узнавать о новых турах, скидках и промокодах
           </Typography>
 
@@ -31,6 +31,7 @@ export function SubscribeToTheNewsletter({}: ISubscribeToTheNewsletter) {
                 type='text'
                 className='h-[55px] w-[100%] rounded-[7px] pl-[15px] text-base font-normal outline-none md:mb-3 md:h-[45px] md:w-[78%] md:rounded-[25px] md:text-[18px] lg:h-[70px] lg:w-[81%] lg:rounded-[35px] lg:pl-[30px] lg:text-[20px]'
                 placeholder='Введите вашу почту'
+                name='почта'
               />
             </label>
 
@@ -45,7 +46,7 @@ export function SubscribeToTheNewsletter({}: ISubscribeToTheNewsletter) {
                 className='text-nowrap text-base font-semibold md:text-[16px] md:font-normal lg:text-[20px]'
               />
             </ButtonCustom>
-            <Typography className='order-3 mb-5 block font-normal text-white md:order-4 md:text-blue-light'>
+            <Typography className='order-3 mb-5 block font-normal text-white md:order-4 md:text-blue-200'>
               Нажимая на кнопку, вы соглашаетесь с политикой обработки персональных
               данных
             </Typography>
