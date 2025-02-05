@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId } from 'react';
 
 import { SvgSprite } from '@/shared/svg-sprite';
 
@@ -12,8 +12,10 @@ const Checkbox: React.FC<ICheckbox> = ({
   isDisabled,
   onChange,
   className,
+  id,
 }) => {
   const [checked, setChecked] = useState(isChecked ?? false);
+  const generatedId = useId();
 
   useEffect(() => {
     if (isChecked !== undefined) {
@@ -28,24 +30,29 @@ const Checkbox: React.FC<ICheckbox> = ({
     onChange && onChange(newChecked);
   };
 
+  const checkboxId = id || `checkbox-${generatedId}`;
+
   return (
     <div
       className={`flex items-center space-x-2 ${className}`}
       onClick={handleToggle}
     >
       <button
+        id={checkboxId}
+        name={checkboxId}
+        type='button'
         role='switch'
-        className={`flex h-6 w-6 items-center justify-center rounded-lg border border-grey-600 transition-colors duration-300 ${
+        className={`flex h-6 w-6 items-center justify-center rounded-lg border transition-colors duration-300 ${
           isDisabled
-            ? 'cursor-not-allowed bg-grey-100'
+            ? 'cursor-not-allowed border-grey-600 bg-grey-100'
             : checked
               ? 'border-0 bg-blue-600'
-              : 'bg-grey-100'
+              : 'border-grey-600 bg-grey-100'
         } ${!isDisabled && 'focus:outline-2 focus:outline-blue-600'}`}
         disabled={isDisabled}
         aria-checked={checked}
       >
-        {checked && <SvgSprite name='arrow-check'/>}
+        {checked && <SvgSprite name='arrow-check' />}
       </button>
       <div
         className={`cursor-pointer text-sm font-medium ${

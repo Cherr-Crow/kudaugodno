@@ -9,6 +9,7 @@ import { FilterPrice } from '@/shared/filter-price';
 import { FilterRating } from '@/shared/filter-rating';
 import { FilterRecreationType } from '@/shared/filter-recreation-type';
 import { FilterStarCategory } from '@/shared/filter-star-category';
+import { FilterTourOperator } from '@/shared/filter-tour-operator';
 import { FilterTypeOfMeals } from '@/shared/filter-type-of-meals';
 import { HotelComponentPhotoSlider } from '@/shared/hotel-component-photo-slider';
 import { Rating } from '@/shared/rating';
@@ -154,10 +155,8 @@ export function HotelCatalog() {
           className={`w-full p-4 md:w-1/4 ${filtersVisible ? 'block' : 'hidden'} lg:block`}
         >
           <div className='filter-section mb-6 flex flex-col gap-1'>
-            <div className='hidden flex-wrap items-center justify-between bg-white p-4 text-blue-950 shadow-md md:flex lg:flex-nowrap'>
-              <Typography variant='h5' className=''>
-                Фильтры
-              </Typography>
+            <div className='hidden flex-wrap items-center justify-between bg-white p-4 text-blue-950 md:flex lg:flex-nowrap'>
+              <Typography variant='h5'>Фильтры</Typography>
               <button className='hover:underline' onClick={handleFiltersReset}>
                 Сбросить все
               </button>
@@ -189,10 +188,10 @@ export function HotelCatalog() {
               selectedDistance={airportDistance}
               onDistanceChange={setAirportDistance}
             />
-            {/* <FilterTourOperator
+            <FilterTourOperator
               selectedOperators={tourOperators}
-              onOperatorChange={setTourOperators}
-            /> */}
+              onOperatorsChange={setTourOperators}
+            />
           </div>
         </aside>
 
@@ -202,7 +201,7 @@ export function HotelCatalog() {
         >
           <div className='filter-section mb-6 flex flex-col gap-1 text-blue-950'>
             <button
-              className='text-secondary hover:underline'
+              className='text-secondary mr-auto hover:underline'
               onClick={handleFiltersReset}
             >
               Сбросить все
@@ -230,13 +229,15 @@ export function HotelCatalog() {
               selectedAmenities={amenities}
               onAmenitiesChange={setAmenities}
             />
+            <FilterAirportDistance
+              selectedDistance={airportDistance}
+              onDistanceChange={setAirportDistance}
+            />
+            <FilterTourOperator
+              selectedOperators={tourOperators}
+              onOperatorsChange={setTourOperators}
+            />
           </div>
-          <button
-            className='text-secondary hover:underline'
-            onClick={handleFiltersReset}
-          >
-            Сбросить все
-          </button>
           <button
             className='text-secondary absolute right-4 top-4'
             onClick={handleToggleFilters}
@@ -247,7 +248,7 @@ export function HotelCatalog() {
 
         <main className='mx-auto w-full max-w-md p-4 md:max-w-xl lg:w-3/4 lg:max-w-none'>
           <div className='mb-4 flex md:hidden'>
-            <button className='text-primary ml-auto flex w-20 justify-center gap-1 rounded-xl bg-blue-50 px-2 py-1 font-medium'>
+            <button className='text-primary ml-auto flex w-20 justify-center gap-1 rounded-lg bg-blue-50 px-2 py-1 font-medium'>
               <SvgSprite name='map' width={20} />
               <Typography variant='s'>Карта</Typography>
             </button>
@@ -255,17 +256,17 @@ export function HotelCatalog() {
 
           <div className='view-options mb-4 flex items-center justify-between'>
             <div className='hidden gap-4 text-blue-950 lg:flex'>
-              <button className='text-primary flex gap-1 font-medium'>
+              <button className='text-primary flex gap-1 rounded-lg bg-blue-50 px-2 py-1 font-medium'>
                 <SvgSprite name='list' width={20} color='blue' />
                 <Typography variant='s'>Список</Typography>
               </button>
-              <button className='text-primary flex gap-1 font-medium'>
+              <button className='text-primary flex gap-1 rounded-lg bg-blue-50 px-2 py-1 font-medium'>
                 <SvgSprite name='map' width={20} />
                 <Typography variant='s'>Карта</Typography>
               </button>
             </div>
             <button
-              className='text-primary flex gap-1 font-medium'
+              className='text-primary flex gap-1 rounded-lg border border-grey-100 bg-grey-50 px-2 py-1 font-medium'
               onClick={toggleSortOrder}
             >
               <Typography variant='s'>По популярности</Typography>
@@ -273,7 +274,7 @@ export function HotelCatalog() {
             </button>
 
             <button
-              className='text-primary flex gap-1 font-medium lg:hidden'
+              className='text-primary flex gap-1 rounded-lg border border-grey-100 bg-grey-50 px-2 font-medium lg:hidden'
               onClick={handleToggleFilters}
             >
               <Typography variant='s'>Фильтры</Typography>
