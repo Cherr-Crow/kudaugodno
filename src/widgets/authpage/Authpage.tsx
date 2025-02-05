@@ -20,7 +20,7 @@ export function Authpage({}: IAuthpage) {
 
 
   const handleClick = () => {
-    console.log("Привет", showCodePanel);
+    // console.log("Привет", showCodePanel);
     setShowCodePanel(true);
     setShowBackArrow(true);
     setStartTimer(true);
@@ -28,7 +28,7 @@ export function Authpage({}: IAuthpage) {
   };
 
   const handleClickBack = () => {
-    console.log("Пока", showCodePanel);
+    // console.log("Пока", showCodePanel);
     setShowCodePanel(false);
     setShowBackArrow(false);
   };
@@ -60,7 +60,7 @@ export function Authpage({}: IAuthpage) {
   }, [startTimer, seconds]);
 
   const handleSentNewCode = () => {
-    console.log("Прислать новый код");
+    // console.log("Прислать новый код");
     setSeconds(45);
     // setShowButtonNewCode(false);
     setStartTimer(true);
