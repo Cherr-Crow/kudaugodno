@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
@@ -14,40 +14,47 @@ export function Authpage({}: IAuthpage) {
   const [seconds, setSeconds] = useState<number>(45);
   const [startTimer, setStartTimer] = useState<boolean>(false);
 
-  // Показать кнопку Прислать новый код, Скрыть Обратный отсчёт
-  // const [showButtonNewCode, setShowButtonNewCode] = useState<boolean>(false);
+  const [input1, setInput1] = useState<string>('');
+  const [input2, setInput2] = useState<string>('');
+  const [input3, setInput3] = useState<string>('');
+  const [input4, setInput4] = useState<string>('');
+
+
+  const [email, setEmail] = useState<string>('');
+
+  const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+
+  const inputRef2 = useRef<HTMLInputElement>(null); 
+  const inputRef3 = useRef<HTMLInputElement>(null); 
+  const inputRef4 = useRef<HTMLInputElement>(null); 
 
   const handleClick = () => {
-    console.log('Привет', showCodePanel);
-    setShowCodePanel(true);
-    setShowBackArrow(true);
-    setStartTimer(true);
-    setSeconds(45);
+
+    if(isEmailValid && email !== ''){
+      setShowCodePanel(true);
+      setShowBackArrow(true);
+      setStartTimer(true);
+      setSeconds(45);
+    }
+    
   };
 
   const handleClickBack = () => {
-    console.log('Пока', showCodePanel);
     setShowCodePanel(false);
     setShowBackArrow(false);
   };
 
-  // Таймер
 
   useEffect(() => {
     if (!startTimer) return;
-    // if()
     if (seconds === 0) {
-      // setShowButtonNewCode(true);
       setStartTimer(false);
       return;
     }
 
     const i = setInterval(() => {
       setSeconds((seconds) => seconds - 1);
-      // if (seconds === 0 ) {
-      //   console.log('if (seconds === 0 )')
-      //   clearInterval(i);
-      // };
+     
     }, 1000);
     return () => {
       clearInterval(i);
@@ -57,12 +64,9 @@ export function Authpage({}: IAuthpage) {
   const handleSentNewCode = () => {
     console.log('Прислать новый код');
     setSeconds(45);
-    // setShowButtonNewCode(false);
     setStartTimer(true);
-    // setShowBackArrow(false);
   };
 
-  // Ф-я показа времени в нужном формате
 
   const timeForComponent = (time: number) => {
     if (!time) return;
@@ -82,6 +86,89 @@ export function Authpage({}: IAuthpage) {
     ].join(':');
 
     return hours >= 1 ? formattedWithHours : formattedWithouthHours;
+  };
+
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const emailexample = "user@example.com";
+
+
+  function emailValid (email: string) {
+    if (emailRegex.test(email)) {
+      setIsEmailValid(true);
+    } else {
+      setIsEmailValid(false);
+    }
+    
+  }
+
+  const handleFocusForInput2 = (e: React.ChangeEvent<HTMLInputElement>) => {
+   
+    if(onlyNumberForFocusChenge(e.target.value) ){
+      setInput1(onlyNumber(e.target.value));
+      inputRef2.current?.focus(); 
+    }
+  }
+  const handleFocusForInput3 = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    if(onlyNumberForFocusChenge(e.target.value)){
+      setInput2(onlyNumber(e.target.value));
+      inputRef3.current?.focus(); 
+   }
+  }
+  const handleFocusForInput4 = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    if(onlyNumberForFocusChenge(e.target.value)){
+      setInput3(onlyNumber(e.target.value));
+      inputRef4.current?.focus(); 
+   }
+
+  }
+  const handleDataToServer = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput4(onlyNumber(e.target.value));
+  };
+
+  let codeForAuth = {
+    input1,
+    input2,
+    input3,
+    input4
+  };
+
+  let codeForAuthArr = [+input1, +input2, input3, input4];
+
+  useEffect(() => {
+    if(input1 !== '' && input2 !== '' && input3 !== '' && input4 !== '' ) {
+      setTimeout(()=>{
+        if(codeForAuth.input4 !== ''){
+          setInput1('');
+          setInput2('');
+          setInput3('');
+          setInput4('');
+          console.log('Поехали! на сервер объектом:', codeForAuth );
+          console.log('Поехали! на сервер массивом:', codeForAuthArr );
+        }
+      }, 500)
+    }
+    
+  }, [input1, input2, input3, input4]);
+
+  function onlyNumber(text: string) {
+    const regex = new RegExp('^[0-9]$');
+    if (regex.test(text)) {
+      return text;
+    } else {
+      return '';
+    }
+  };
+
+  function onlyNumberForFocusChenge(text: string) {
+    const regex = new RegExp('^[0-9]$');
+    if (regex.test(text) || text === '') {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   return (
@@ -115,11 +202,17 @@ export function Authpage({}: IAuthpage) {
                     type='email'
                     name='email'
                     placeholder='example@mail.com'
+                    onBlur={()=>{emailValid(email)}}
+                    onChange={(e)=>{setEmail(e.target.value)}}
+                    value={email}
                   />
                 </label>
-
+                  {!isEmailValid &&
+                    <Typography children='Некорректный адрес почты' className='block mt-[-16px] text-red-primary-800 font-normal text-[19px] mb-[5px]  md:text-[18px] lg:text-[20px] text-nowrap' /> 
+                  }
                 {!startTimer ? (
                   <ButtonCustom
+                    type="button"
                     onClick={handleClick}
                     variant='primary'
                     size='m'
@@ -144,6 +237,7 @@ export function Authpage({}: IAuthpage) {
 
               <div className='flex w-[100%] flex-col md:flex-row md:justify-between md:px-[15px] lg:px-[40px]'>
                 <ButtonCustom
+                  type="button"
                   variant='wzhuh'
                   disabled={startTimer}
                   size='m'
@@ -159,6 +253,7 @@ export function Authpage({}: IAuthpage) {
                   </div>
                 </ButtonCustom>
                 <ButtonCustom
+                  type="button"
                   variant='wzhuh'
                   disabled={startTimer}
                   size='m'
@@ -174,6 +269,7 @@ export function Authpage({}: IAuthpage) {
                   </div>
                 </ButtonCustom>
                 <ButtonCustom
+                  type="button"
                   variant='wzhuh'
                   disabled={startTimer}
                   size='m'
@@ -203,30 +299,42 @@ export function Authpage({}: IAuthpage) {
                 <div className='flex justify-between md:px-[37px] lg:px-[132px]'>
                   <label htmlFor='' className='block'>
                     <input
+                      autoFocus
                       className='h-[75px] w-[75px] rounded-[8px] bg-blue-200 px-[15px] text-center text-[20px] text-grey-950 md:h-[81px] md:w-[65px]'
                       type='text'
                       placeholder=''
+                      onChange={handleFocusForInput2}
+                      value={input1}
                     />
                   </label>
                   <label htmlFor='' className='block'>
                     <input
+                      ref={inputRef2}
                       className='h-[75px] w-[75px] rounded-[8px] bg-blue-200 px-[15px] text-center text-[20px] text-grey-950 md:h-[81px] md:w-[65px]'
                       type='text'
                       placeholder=''
+                      onChange={handleFocusForInput3}
+                      value={input2}
                     />
                   </label>
                   <label htmlFor='' className='block'>
                     <input
+                      ref={inputRef3}
                       className='h-[75px] w-[75px] rounded-[8px] bg-blue-200 px-[15px] text-center text-[20px] text-grey-950 md:h-[81px] md:w-[65px]'
                       type='text'
                       placeholder=''
+                      onChange={handleFocusForInput4}
+                      value={input3}
                     />
                   </label>
                   <label htmlFor='' className='block'>
                     <input
+                      ref={inputRef4}
                       className='h-[75px] w-[75px] rounded-[8px] bg-blue-200 px-[15px] text-center text-[20px] text-grey-950 md:h-[81px] md:w-[65px]'
                       type='text'
                       placeholder=''
+                      onChange={handleDataToServer}
+                      value={input4}
                     />
                   </label>
                 </div>
@@ -236,6 +344,7 @@ export function Authpage({}: IAuthpage) {
 
               {!startTimer ? (
                 <ButtonCustom
+                  type="button"
                   onClick={handleSentNewCode}
                   variant='primary'
                   size='m'
@@ -252,7 +361,6 @@ export function Authpage({}: IAuthpage) {
                 </Typography>
               )}
 
-              {/* <div>{seconds}</div> */}
             </div>
           )}
         </div>
