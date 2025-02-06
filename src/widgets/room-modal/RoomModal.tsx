@@ -128,7 +128,7 @@ export function RoomModal({}: IRoomModal) {
           {hotels[0].rooms.map((item) => (
             <li className='' key={nanoid()}>
               <Typography className='mb-3 block font-semibold text-blue-900 md:text-lg md:text-grey-950 lg:text-xl'>
-                {item.category.name}
+                {item.category}
               </Typography>
               {item.amenities.map((comfortitem) => (
                 <div className='mb-2 flex' key={nanoid()}>

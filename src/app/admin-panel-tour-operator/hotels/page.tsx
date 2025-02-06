@@ -1,9 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 
+import { nanoid } from 'nanoid';
 import { useRouter } from 'next/navigation';
 
+import { useGetHotelsQuery } from '@/sericesApi/hotelsApi';
+import { ContextMenu } from '@/shared/context-menu';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
@@ -11,10 +14,25 @@ import { Checkbox } from '@/shared/ui/checkbox';
 
 export default function Hotels() {
   const route = useRouter();
+  const { data } = useGetHotelsQuery();
+
+  const workArr = useMemo(() => {
+    return data ? [...data.results].sort((a, b) => a.id - b.id) : [];
+  }, [data?.results]);
 
   const handleClick = () => {
     route.push('/admin-panel-tour-operator/hotels/added-hotel');
   };
+
+  const handleItemClick = (action: string) => {
+    console.log(action);
+  };
+
+  const menuItems = [
+    { label: 'Copy', action: () => handleItemClick('Copy') },
+    { label: 'Paste', action: () => handleItemClick('Paste') },
+    { label: 'Delete', action: () => handleItemClick('Delete') },
+  ];
 
   return (
     <div className='w-full'>
@@ -47,16 +65,23 @@ export default function Hotels() {
           </tr>
         </thead>
         <tbody>
-          <tr className='cursor-pointer border-b border-grey-100 hover:bg-grey-100'>
-            <td className='p-3 text-start'>12345</td>
-            <td className='p-3 text-start'>Турция</td>
-            <td className='p-3 text-start'>Стамбул</td>
-            <td className='p-3 text-start'>The Wests Hotel & Spa</td>
-            <td className='p-3 text-start'>15.12.2024</td>
-            <td className='p-3 text-start'>от 120 000 ₽</td>
-          </tr>
+          {!!workArr.length &&
+            workArr.map((item, i) => (
+              <tr
+                className='cursor-pointer border-b border-grey-100 hover:bg-grey-100'
+                key={nanoid()}
+              >
+                <td className='p-3 text-start'>{item.id}</td>
+                <td className='p-3 text-start'>{item.country}</td>
+                <td className='p-3 text-start'>{item.city}</td>
+                <td className='p-3 text-start'>{item.name}</td>
+                <td className='p-3 text-start'>надо подумать над полем</td>
+                <td className='p-3 text-start'>(минимум за номер?) ₽</td>
+              </tr>
+            ))}
         </tbody>
       </table>
+      <ContextMenu items={menuItems} />
     </div>
   );
 }

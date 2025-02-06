@@ -3,20 +3,23 @@
 import React, { useState } from 'react';
 
 import { Typography } from '../typography';
+import { IFilterTourOperator } from './FilterTourOperator.types';
 import { Checkbox } from '../ui/checkbox';
 
 const tourOperators = ['Тез тур', 'Санмар', 'Библио Глобус', 'Интурист', 'Пегас'];
 
-export function FilterTourOperator() {
-  const [selectedOperators, setSelectedOperators] = useState<string[]>([]);
+export function FilterTourOperator({
+  selectedOperators,
+  onOperatorsChange,
+}: IFilterTourOperator) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleOperator = (operator: string) => {
-    setSelectedOperators((prev) =>
-      prev.includes(operator)
-        ? prev.filter((item) => item !== operator)
-        : [...prev, operator],
-    );
+    const updatedOperators = selectedOperators.includes(operator)
+      ? selectedOperators.filter((item) => item !== operator)
+      : [...selectedOperators, operator];
+
+    onOperatorsChange(updatedOperators);
   };
 
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
@@ -42,9 +45,10 @@ export function FilterTourOperator() {
         }`}
       >
         <ul className='grid grid-cols-1 gap-2'>
-          {tourOperators.map((operator) => (
+          {tourOperators.map((operator, index) => (
             <li key={operator} className='mb-2 flex items-center gap-2'>
               <Checkbox
+                id={`checkbox-${index}`}
                 label={operator}
                 isChecked={selectedOperators.includes(operator)}
                 onChange={() => toggleOperator(operator)}

@@ -13,10 +13,6 @@ import { Hotel } from '@/types/hotel';
 
 import { IHotOffer } from './HotOffer.types';
 
-
-
-
-
 export function HotOffer({ className, title, link, array, type }: IHotOffer) {
   const [workArr, setWorkArr] = useState<Hotel[]>(array);
   const screen = useScreen();

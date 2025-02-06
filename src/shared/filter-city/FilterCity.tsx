@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useId } from 'react';
 
 import { IFilterCity } from './FilterCity.types';
 import { SvgSprite } from '../svg-sprite';
@@ -8,6 +8,7 @@ import { Checkbox } from '../ui/checkbox';
 export const FilterCity = ({ selectedCities, onCityChange }: IFilterCity) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [search, setSearch] = useState('');
+  const uniqueId = useId();
   const cities = [
     'Москва',
     'Санкт-Петербург',
@@ -52,6 +53,8 @@ export const FilterCity = ({ selectedCities, onCityChange }: IFilterCity) => {
         <div className='relative mb-4'>
           <input
             type='text'
+            id={`city-search-${uniqueId}`}
+            name={`city-search-${uniqueId}`}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder='Поиск'
@@ -76,6 +79,7 @@ export const FilterCity = ({ selectedCities, onCityChange }: IFilterCity) => {
           {filteredCities.map((city, index) => (
             <li key={index} className='mb-2'>
               <Checkbox
+                id={`${uniqueId}-checkbox-${index}`}
                 label={city}
                 isChecked={selectedCities.includes(city)}
                 onChange={() => handleCityChange(city)}
