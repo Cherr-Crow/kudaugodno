@@ -1,18 +1,25 @@
 'use client';
-// eslint-disable @typescript-eslint/no-unused-vars
 
 import React, { useState } from 'react';
 
 import { nanoid } from 'nanoid';
+import { useRouter } from 'next/navigation';
 
+import {
+  useChangeHotelMutation,
+  useDeleteHotelMutation,
+  useGetOneHotelQuery,
+} from '@/sericesApi/hotelsApi';
 import { Accordeon } from '@/shared/accordeon';
 import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
+import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { NamedInput } from '@/shared/ui/named-input';
 import { Select } from '@/shared/ui/select';
+import { Hotel } from '@/types/hotel';
 import { RulesAdd } from '@/widgets/admin-panel/rules-add';
 
 import { IAddedHotelField } from './AddedHotelField.types';
@@ -51,14 +58,18 @@ const comfort = [
   },
 ];
 
-export function AddedHotelField({}: IAddedHotelField) {
-  const [category, setCategory] = useState<number>(0);
-  const [country, setCountry] = useState<string>('');
-  const [city, setCity] = useState<string>('');
-  const [address, setAddress] = useState<string>('');
-  const [checkIn, setCheckIn] = useState<string>('');
-  const [departure, setDeparture] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
+export function AddedHotelField({ hotel }: IAddedHotelField) {
+  const { data } = useGetOneHotelQuery(hotel.id);
+  const [deletHotel] = useDeleteHotelMutation();
+  const [changeHotel] = useChangeHotelMutation();
+  const route = useRouter();
+  const [category, setCategory] = useState<number>(data?.star_category || 0);
+  const [country, setCountry] = useState<string>(data?.country || '');
+  const [city, setCity] = useState<string>(data?.city || '');
+  const [address, setAddress] = useState<string>(data?.address || '');
+  const [checkIn, setCheckIn] = useState<string>(data?.check_in_time || '');
+  const [departure, setDeparture] = useState<string>(data?.check_out_time || '');
+  const [description, setDescription] = useState<string>(data?.description || '');
   const [photo, setPhoto] = useState<string>('');
   const [distance, setDistance] = useState<{
     location: string;
@@ -100,6 +111,95 @@ export function AddedHotelField({}: IAddedHotelField) {
   // const handleDistanceChange = (e: { location: string; distance: number }) => {
   //   setDistance(e);
   // };
+
+  const handleCancel = () => {
+    deletHotel(hotel.id);
+    route.push('/admin-panel-tour-operator/hotels');
+  };
+
+  const handleSaved = () => {
+    // const _obj: Omit<Hotel, 'rooms' | 'dates' | 'id'> = {
+    //   address: address || '',
+    //   country: country || '',
+    //   city: city || '',
+    //   description: description || '',
+    //   name: hotel.name,
+    //   star_category: 0,
+    //   place: '',
+    //   distance_to_the_station: null,
+    //   distance_to_the_sea: 0,
+    //   distance_to_the_center: 0,
+    //   distance_to_the_metro: 0,
+    //   distance_to_the_airport: 0,
+    //   check_in_time: '',
+    //   check_out_time: '',
+    //   amenities_common: [],
+    //   amenities_in_the_room: [],
+    //   amenities_sports_and_recreation: [],
+    //   amenities_for_children: [],
+    //   type_of_meals_ultra_all_inclusive: null,
+    //   type_of_meals_all_inclusive: null,
+    //   type_of_meals_full_board: null,
+    //   type_of_meals_half_board: null,
+    //   type_of_meals_only_breakfast: null,
+    //   user_rating: 0,
+    //   reviews: [],
+    //   photos: [],
+    //   type_of_rest: '',
+    //   rules: [],
+    // };
+    const _obj: Omit<Hotel, 'rooms' | 'dates' | 'id' | 'reviews' | 'photos'> = {
+      name: 'новый-новый',
+      star_category: 5,
+      place: 'Отель',
+      country: 'страна',
+      city: 'город',
+      address: 'адрес',
+      distance_to_the_station: 200000,
+      distance_to_the_sea: 200000,
+      distance_to_the_center: 200000,
+      distance_to_the_metro: 200000,
+      distance_to_the_airport: 200000,
+      description: 'string',
+      check_in_time: '14:00:00',
+      check_out_time: '12:00:00',
+      amenities_common: [
+        {
+          name: 'string',
+        },
+      ],
+      amenities_in_the_room: [
+        {
+          name: 'string',
+        },
+      ],
+      amenities_sports_and_recreation: [
+        {
+          name: 'string',
+        },
+      ],
+      amenities_for_children: [
+        {
+          name: 'string',
+        },
+      ],
+      type_of_meals_ultra_all_inclusive: 10000,
+      type_of_meals_all_inclusive: 10000,
+      type_of_meals_full_board: 10000,
+      type_of_meals_half_board: 10000,
+      type_of_meals_only_breakfast: 10000,
+      user_rating: 0,
+      type_of_rest: 'Пляжный',
+      rules: [
+        {
+          name: 'string',
+          description: 'string',
+        },
+      ],
+    };
+    console.log(_obj);
+    changeHotel({ body: _obj, id: hotel.id });
+  };
 
   return (
     <section className='flex flex-col gap-4'>
@@ -206,18 +306,21 @@ export function AddedHotelField({}: IAddedHotelField) {
             name='country'
             getValue={handleCountryChange}
             title='Страна'
+            startValue={country}
           />
           <NamedInput
             placeholder='Введите город'
             name='city'
             getValue={handleCityChange}
             title='Город'
+            startValue={city}
           />
           <NamedInput
             placeholder='Введите адрес'
             name='address'
             getValue={handleAddressChange}
             title='Адрес'
+            startValue={address}
           />
           <div className='flex flex-col'>
             <Typography
@@ -281,12 +384,14 @@ export function AddedHotelField({}: IAddedHotelField) {
               getValue={handleCheckIn}
               title='Заселение'
               type='time'
+              startValue={checkIn}
             />
             <NamedInput
               name='departure'
               getValue={handleDeparture}
               title='Выезд'
               type='time'
+              startValue={departure}
             />
           </div>
           <RulesAdd />
@@ -315,6 +420,14 @@ export function AddedHotelField({}: IAddedHotelField) {
           </ul>
         </div>
       </Accordeon>
+      <div className={`mt-10 flex justify-end gap-4`}>
+        <ButtonCustom variant='secondary' size='m' onClick={handleCancel}>
+          <Typography children='Отменить' variant='l-bold' />
+        </ButtonCustom>
+        <ButtonCustom variant='primary' size='m' onClick={handleSaved}>
+          <Typography children='Сохранить' variant='l-bold' />
+        </ButtonCustom>
+      </div>
     </section>
   );
 }

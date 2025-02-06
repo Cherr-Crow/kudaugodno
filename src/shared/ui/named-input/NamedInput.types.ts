@@ -6,4 +6,5 @@ export interface INamedInput extends DivProps {
   name: string;
   getValue: (val: string) => void;
   type?: 'text' | 'time';
+  startValue?: string;
 }

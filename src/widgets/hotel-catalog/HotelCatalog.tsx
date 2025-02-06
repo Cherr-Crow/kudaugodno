@@ -99,20 +99,20 @@ export function HotelCatalog() {
           (hotel.user_rating >= rating[0] && hotel.user_rating <= rating[1])) &&
         (starCategory.length === 0 || starCategory.includes(hotel.star_category)) &&
         (mealType.length === 0 ||
-          hotel.rooms.some((room) => mealType.includes(room.food.type_of_meals))) &&
+          hotel.rooms.some((room) => mealType.includes(room.type_of_meal))) &&
         (amenities.length === 0 ||
           amenities.every((amenity) =>
-            hotel.amenities.some((cat) => cat.amenity.includes(amenity)),
-          )) &&
-        (airportDistance === 'Любое' ||
-          hotel.distances.some(
-            (d) =>
-              d.location === 'airport' &&
-              ((airportDistance === 'До 15 км' && d.distance <= 15) ||
-                (airportDistance === 'До 50 км' && d.distance <= 50) ||
-                (airportDistance === 'До 75 км' && d.distance <= 75) ||
-                (airportDistance === 'До 100 км' && d.distance <= 100)),
+            hotel.amenities_common.some((cat) => cat.name.includes(amenity)),
           ))
+        // (airportDistance === 'Любое' ||
+        //   hotel.distance_to_the_sea.some(
+        //     (d) =>
+        //       d.location === 'airport' &&
+        //       ((airportDistance === 'До 15 км' && d.distance <= 15) ||
+        //         (airportDistance === 'До 50 км' && d.distance <= 50) ||
+        //         (airportDistance === 'До 75 км' && d.distance <= 75) ||
+        //         (airportDistance === 'До 100 км' && d.distance <= 100)),
+        //   ))
         //   &&
         // (tourOperators.length === 0 || tourOperators.includes(hotel.tour_operator))
       );
@@ -356,7 +356,7 @@ export function HotelCatalog() {
 
                         {/* Удобства */}
                         <div className='hotel-amenities mb-2 flex flex-nowrap gap-2'>
-                          {hotel.amenities[0]?.amenity
+                          {hotel.amenities_common
                             .slice(0, 3)
                             .map((amenity, amenityIndex) => (
                               <Typography
@@ -364,7 +364,7 @@ export function HotelCatalog() {
                                 variant='l-bold'
                                 className='rounded-xl bg-blue-50 px-2 py-1 text-xs md:text-lg'
                               >
-                                {amenity}
+                                {amenity.name}
                               </Typography>
                             ))}
                         </div>
@@ -372,7 +372,7 @@ export function HotelCatalog() {
                         {/* Цена */}
                         <div className='hotel-price flex items-center justify-between rounded-xl bg-blue-50 p-2'>
                           <Typography variant='l-bold' className='mb-2 text-xs'>
-                            Питание: {hotel.rooms[0]?.food.type_of_meals}
+                            Питание: {hotel.rooms[0]?.type_of_meal}
                           </Typography>
                           <Typography
                             variant='h4'

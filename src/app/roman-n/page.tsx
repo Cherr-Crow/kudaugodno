@@ -1,11 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 
 import { nanoid } from 'nanoid';
 
-import { useAppDispatch, useAppSelector } from '@/rtk/hooks';
-import { selectTest, test } from '@/rtk/slices/testSlice';
 import { Accordeon } from '@/shared/accordeon';
 import { PopupWindow } from '@/shared/popup-window';
 import { SvgSprite } from '@/shared/svg-sprite';
@@ -19,29 +17,8 @@ import { Switcher } from '@/shared/ui/switcher';
 import { TabBar } from '@/shared/ui/tab-bar';
 
 export default function RomanN() {
-  const dispatch = useAppDispatch();
-  const testValue = useAppSelector(selectTest);
-  const [testRtk, setTestRtk] = useState<string>('введи значение');
-
   return (
     <div className='w-screen bg-white p-32'>
-      <div className='p-5'>
-        <Typography children='Проверка RTK' variant='h4' />
-        <div className='flex gap-5'>
-          <input
-            value={testRtk}
-            onChange={(e) => setTestRtk(e.target.value)}
-            className='rounded-md bg-blue-50 p-2'
-          />
-          <button
-            onClick={() => dispatch(test(testRtk))}
-            className='rounded-md bg-green-200 p-2'
-          >
-            назначить значение тестового стейта
-          </button>
-          <Typography children={testValue} className='bg-grey-100 p-2' />
-        </div>
-      </div>
       <div className='relative'>
         <h2 className='w-fit bg-blue-400'>элемент PopupWindow</h2>
         <PopupWindow className='top-15 left-3 px-4 py-5'>

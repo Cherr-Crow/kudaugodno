@@ -1,29 +1,33 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import axios from 'axios';
+import { nanoid } from 'nanoid';
 
-import { useAppDispatch, useAppSelector } from '@/rtk/hooks';
-import { createHotelTemp, selectorHotelCreate } from '@/rtk/slices/hotelCreate';
+import { useAddHotelMutation, useGetHotelsQuery } from '@/sericesApi/hotelsApi';
 import { PopupWindow } from '@/shared/popup-window';
 import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
-import { hotelNewMock } from '@/temp/hotel-new-mock';
+import { Hotel } from '@/types/hotel';
 import { AddedHotelField } from '@/widgets/admin-panel/added-hotel-field';
 
 export default function AddedHotel() {
+  const [addHotel, { data: newHotelResponce }] = useAddHotelMutation();
+  const { data } = useGetHotelsQuery();
+  const [listOfMatches, setListOfMatches] = useState<Hotel[]>([] as Hotel[]);
   const [value, setValue] = useState('');
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openField, setOpenField] = useState(false);
 
-  const [newHotel, setNewHotel] = useState();
-
-  const dispatch = useAppDispatch();
-  const { data } = useAppSelector(selectorHotelCreate);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
+
+    setListOfMatches(
+      data?.results.filter((el) =>
+        el.name.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase()),
+      ) || ([] as Hotel[]),
+    );
+
     if (e.target.value.length > 1) {
       setOpenDropdown(true);
     } else {
@@ -34,32 +38,10 @@ export default function AddedHotel() {
   const handleFieldClick = async () => {
     //TODO: тут должен быть запрос к серверу, на который вернётся новый отель с присвоенным id
 
-    axios
-      .post(
-        'https://ku.mer1d1an.ru/api/v1/hotels/',
-        {
-          name: value,
-        },
-        {
-          headers: {
-            accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-        },
-      )
-      .then((response) => console.log(response));
-
-    dispatch(createHotelTemp(hotelNewMock));
+    await addHotel({ name: value });
+    setOpenDropdown(false);
     setOpenField(true);
   };
-
-  useEffect(() => {
-    window.addEventListener('click', () => setOpenDropdown(false));
-
-    return () => {
-      window.removeEventListener('click', () => setOpenDropdown(false));
-    };
-  }, []);
 
   return (
     <div className='flex w-full flex-col gap-10'>
@@ -76,12 +58,24 @@ export default function AddedHotel() {
         />
         {openDropdown && !openField && (
           <PopupWindow className='top-[110%] flex flex-col gap-2 px-5 py-4'>
-            <Typography children='Этого отеля нет в нашей базе' />
-            <AddedButton text='Добавить отель' onClick={handleFieldClick} />
+            {!!listOfMatches.length ? (
+              <ul>
+                {listOfMatches.map((item: Hotel) => (
+                  <li key={nanoid()}>
+                    <Typography>{item.name}</Typography>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <>
+                <Typography children='Этого отеля нет в нашей базе' />
+                <AddedButton text='Добавить отель' onClick={handleFieldClick} />
+              </>
+            )}
           </PopupWindow>
         )}
       </div>
-      {openField && <AddedHotelField />}
+      {openField && newHotelResponce && <AddedHotelField hotel={newHotelResponce} />}
     </div>
   );
 }
