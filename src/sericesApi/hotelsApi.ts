@@ -1,9 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+import { BASE_URL } from '@/temp/domen_nikita';
 import { Hotel } from '@/types/hotel';
-
-const BASE_URL = 'https://ku.mer1d1an.ru/api/v1/';
-// process.env.NEXT_PUBLIC_KUDA_UGODNO__FRONTEND__MAIN_APP__FULL_DOMAIN__DEV;
+import { PhotoHotel } from '@/types/photo_hotel';
 
 interface IResponceListHotels {
   count: number;
@@ -14,7 +13,7 @@ interface IResponceListHotels {
 
 export const hotelsApi = createApi({
   reducerPath: 'hotelsApi',
-  tagTypes: ['Hotels'],
+  tagTypes: ['Hotels', 'PhotosHotel'],
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (build) => ({
     getHotels: build.query<IResponceListHotels, number | void>({
@@ -71,6 +70,42 @@ export const hotelsApi = createApi({
       }),
       invalidatesTags: [{ type: 'Hotels', id: 'LIST' }],
     }),
+
+    getPhotosHotel: build.query<PhotoHotel[], number>({
+      query: (id) => `hotels/${id}/photos/`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }: { id: number }) => ({
+                type: 'PhotosHotel' as const,
+                id,
+              })),
+              { type: 'PhotosHotel', id: 'LIST' },
+            ]
+          : [{ type: 'PhotosHotel', id: 'LIST' }],
+    }),
+    addPhotoHotel: build.mutation<PhotoHotel, { body: FormData; id: number }>({
+      query: ({ body, id }) => ({
+        url: `hotels/${id}/photos/`,
+        method: 'POST',
+        // headers: {
+        //   accept: 'application/json',
+        //   'Content-Type': 'multipart/form-data',
+        // },
+        body,
+      }),
+      invalidatesTags: [{ type: 'PhotosHotel', id: 'LIST' }],
+    }),
+    delPhotoHotel: build.mutation<null, { hotel_id: number; photo_id: number }>({
+      query: ({ hotel_id, photo_id }) => ({
+        url: `hotels/${hotel_id}/photos/${photo_id}/`,
+        method: 'DELETE',
+        headers: {
+          accept: '*/*',
+        },
+      }),
+      invalidatesTags: [{ type: 'PhotosHotel', id: 'LIST' }],
+    }),
   }),
 });
 
@@ -80,4 +115,7 @@ export const {
   useAddHotelMutation,
   useChangeHotelMutation,
   useDeleteHotelMutation,
+  useGetPhotosHotelQuery,
+  useAddPhotoHotelMutation,
+  useDelPhotoHotelMutation,
 } = hotelsApi;

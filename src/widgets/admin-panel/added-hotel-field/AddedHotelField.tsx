@@ -11,7 +11,6 @@ import {
 } from '@/sericesApi/hotelsApi';
 import { Accordeon } from '@/shared/accordeon';
 import { Rating } from '@/shared/rating';
-import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
@@ -26,6 +25,7 @@ import {
   typeOfHoliday,
 } from '@/widgets/admin-panel/added-hotel-field/services/arrais';
 import { CheckBoxBlock } from '@/widgets/admin-panel/check-box-block';
+import { PhotoBlock } from '@/widgets/admin-panel/photo-block';
 import { RulesAdd } from '@/widgets/admin-panel/rules-add';
 
 import { IAddedHotelField } from './AddedHotelField.types';
@@ -60,8 +60,8 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
     data?.distance_to_the_airport || null,
   ); // расстояние до аэропорта
   const [description, setDscription] = useState(data?.description || ''); // описание
-  const [checkInTime, setCheckInTime] = useState(data?.check_in_time || ''); // время заезда
-  const [checkOutTime, setCheckOutTime] = useState(data?.check_out_time || ''); // время выезда
+  const [checkInTime, setCheckInTime] = useState(data?.check_in_time || '00:00'); // время заезда
+  const [checkOutTime, setCheckOutTime] = useState(data?.check_out_time || '00:00'); // время выезда
   const [amenitiesCommon, setAmenitiesCommon] = useState(
     !!data?.amenities_common.length ? data?.amenities_common : amenities_common,
   ); // общие удобства
@@ -216,61 +216,7 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
               name='description'
             />
           </div>
-          <div className='flex w-full flex-col gap-3'>
-            <Typography children='Фотографии' variant='l-bold' />
-            <div className='flex gap-2'>
-              <ul className='flex gap-2'>
-                <li className='relative h-24 w-24 overflow-hidden rounded-2xl border md:h-32 md:w-32'>
-                  <img
-                    src='/mob_picture_404.png'
-                    alt=''
-                    className='h-full w-full'
-                    rel='prefetch'
-                  />
-                  <div className='absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-grey-700 opacity-0 hover:opacity-70'>
-                    <SvgSprite
-                      name='trash-light'
-                      width={24}
-                      color='white'
-                      className='relative left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-                    />
-                  </div>
-                </li>
-                <li className='relative h-24 w-24 overflow-hidden rounded-2xl border md:h-32 md:w-32'>
-                  <img
-                    src='/mob_picture_404.png'
-                    alt=''
-                    className='h-full w-full'
-                    rel='prefetch'
-                  />
-                  <div className='absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-grey-700 opacity-0 hover:opacity-70'>
-                    <SvgSprite
-                      name='trash-light'
-                      width={24}
-                      color='white'
-                      className='relative left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-                    />
-                  </div>
-                </li>
-              </ul>
-              <label
-                htmlFor='file'
-                className='relative block h-24 w-24 cursor-pointer rounded-2xl border border-blue-600 md:h-32 md:w-32'
-              >
-                <input
-                  type='file'
-                  accept='image/*,.jpg,.png,.jpeg'
-                  id='file'
-                  // value={photo}
-                  // onChange={handlePhotoChange}
-                  className='h-20 w-20 cursor-pointer opacity-0'
-                />
-                <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl text-blue-600'>
-                  +
-                </span>
-              </label>
-            </div>
-          </div>
+          <PhotoBlock idHotel={hotelId} />
         </div>
       </Accordeon>
       <Accordeon title='Локация'>
