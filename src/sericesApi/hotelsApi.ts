@@ -2,8 +2,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { Hotel } from '@/types/hotel';
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_KUDA_UGODNO__FRONTEND__MAIN_APP__FULL_DOMAIN__DEV;
+const BASE_URL = 'https://ku.mer1d1an.ru/api/v1/';
+// process.env.NEXT_PUBLIC_KUDA_UGODNO__FRONTEND__MAIN_APP__FULL_DOMAIN__DEV;
 
 interface IResponceListHotels {
   count: number;
