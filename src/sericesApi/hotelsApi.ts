@@ -18,7 +18,7 @@ export const hotelsApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (build) => ({
     getHotels: build.query<IResponceListHotels, number | void>({
-      query: (limit) => `hotels?${limit && `limit=${limit}`}`,
+      query: (limit = 15, offset = 1) => `hotels?limit=${limit}&offset=${offset}`,
       providesTags: (result) =>
         result
           ? [
@@ -30,8 +30,8 @@ export const hotelsApi = createApi({
             ]
           : [{ type: 'Hotels', id: 'LIST' }],
     }),
-    getOneHotel: build.query<Hotel, number>({
-      query: (id) => `hotels/${id}`,
+    getOneHotel: build.query<Hotel, number | null>({
+      query: (id) => `hotels/${id ?? ''}`,
       providesTags: [{ type: 'Hotels', id: 'LIST' }],
     }),
     addHotel: build.mutation<{ id: number; name: string }, { name: string }>({
@@ -55,7 +55,7 @@ export const hotelsApi = createApi({
     >({
       query: ({ body, id }) => ({
         url: `hotels/${id}/`,
-        method: 'PATCH',
+        method: 'PUT',
         headers: {
           accept: 'application/json',
           'Content-Type': 'application/json',

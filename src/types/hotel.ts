@@ -8,11 +8,11 @@ export type Hotel = {
   country: string;
   city: string;
   address: string;
-  distance_to_the_station: number | 0 | null;
-  distance_to_the_sea: number;
-  distance_to_the_center: number;
-  distance_to_the_metro: number;
-  distance_to_the_airport: number;
+  distance_to_the_station: number | null;
+  distance_to_the_sea: number | null;
+  distance_to_the_center: number | null;
+  distance_to_the_metro: number | null;
+  distance_to_the_airport: number | null;
   description: string;
   check_in_time: string;
   check_out_time: string;
@@ -46,6 +46,7 @@ export type Hotel = {
     name: string;
     description: string;
   }[];
+  is_active: boolean;
 };
 
 type room = {

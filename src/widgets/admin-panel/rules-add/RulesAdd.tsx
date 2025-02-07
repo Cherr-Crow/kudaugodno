@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { nanoid } from 'nanoid';
+import { useSearchParams } from 'next/navigation';
 
+import { useGetOneHotelQuery } from '@/sericesApi/hotelsApi';
 import { Modal } from '@/shared/modal';
 import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
@@ -15,75 +17,88 @@ import { Rule } from '@/shared/ui/rule-add/RuleAdd.types';
 import { IRulesAdd } from './RulesAdd.types';
 
 const typeRules = [
-  'Размещение животных',
-  'Детская кроватка',
-  'Курение на территории',
-  'Возрастные ограничения',
-  'Отмена бронирования',
+  { name: 'Размещение животных', description: '' },
+  { name: 'Детская кроватка', description: '' },
+  { name: 'Курение на территории', description: '' },
+  { name: 'Возрастные ограничения', description: '' },
+  { name: 'Отмена бронирования', description: '' },
 ];
 
-export function RulesAdd({ className }: IRulesAdd) {
+export function RulesAdd({ className, getRules }: IRulesAdd) {
+  const id = useSearchParams().get('id');
+  const { data } = useGetOneHotelQuery(id ? +id : null);
   const [rules, setRules] = useState(typeRules);
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const ruleValues = useRef<Rule[]>([]);
-  let nameRule: string = '';
+  let name: string = '';
+  let description: string = '';
+  let newRules = rules;
 
   const handleChangeCheckbox = (obj: Rule) => {
-    if (obj.checked) {
-      ruleValues.current = [
-        ...ruleValues.current,
-        { name: obj.name, description: obj.description, checked: obj.checked },
-      ];
-    } else {
-      ruleValues.current = ruleValues.current.filter((val) => val.name !== obj.name);
+    if (!obj.checked) {
+      const _rules = newRules?.filter((rule) => rule.name !== obj.name);
+      setRules(_rules);
+      newRules = _rules;
+      return;
     }
-    console.log(ruleValues.current);
+    newRules = newRules?.map((rule) => {
+      return rule.name === obj.name
+        ? { ...rule, description: obj.description }
+        : rule;
+    });
   };
+
+  useEffect(() => {
+    if (!data) return;
+    if (Array.isArray(data.rules) && !!data.rules.length) setRules(data.rules);
+  }, [data]);
+
+  useEffect(() => {
+    getRules(newRules || []);
+  }, [newRules]);
 
   const handleOpenModal = () => {
     setIsOpenModal(true);
   };
 
-  const handleCloseModal = (e: boolean) => {
-    setIsOpenModal(e);
-  };
-
   const handleAddRule = () => {
-    if (nameRule === '') return;
-    setRules((prev) => [...prev, nameRule]);
+    if (!rules) return;
+    const _rules = [...rules, { name, description }];
+    setRules(_rules);
     setIsOpenModal(false);
-    nameRule = '';
-  };
-
-  const addNameRule = (e: string) => {
-    nameRule = e;
   };
 
   return (
-    <div className={`flex flex-col gap-3 ${className ?? ''}`}>
+    <div className={`flex flex-col gap-3 overflow-scroll pb-10 ${className ?? ''}`}>
       <Typography children='Правила' variant='l-bold' />
       <ul className='flex flex-col gap-2'>
-        {rules.map((rule) => (
+        {rules?.map((rule) => (
           <li className='' key={nanoid()}>
-            <RuleAdd name={rule} getValue={handleChangeCheckbox} />
+            <RuleAdd rule={rule} getValue={handleChangeCheckbox} />
           </li>
         ))}
       </ul>
       <AddedButton text='Добавить правило' onClick={handleOpenModal} />
-      {isOpenModal && (
-        <Modal close={handleCloseModal}>
+      <Modal isOpen={isOpenModal} getState={setIsOpenModal}>
+        <div className='min-w-80'>
           <NamedInput
             name='addRule'
-            getValue={addNameRule}
+            getValue={(val) => (name = val as string)}
             title='Название правила'
             placeholder='Введите название правила'
+            className='mb-5 w-96'
+          />
+          <NamedInput
+            name='addRule'
+            getValue={(val) => (description = val as string)}
+            title='Описание правила'
+            placeholder='Введите описание правила'
             className='mb-5 w-96'
           />
           <ButtonCustom variant='primary' size='m' onClick={handleAddRule}>
             <Typography children='Добавить' />
           </ButtonCustom>
-        </Modal>
-      )}
+        </div>
+      </Modal>
     </div>
   );
 }
