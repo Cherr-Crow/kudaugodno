@@ -153,13 +153,13 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
       return;
     }
 
-    if (isError) {
-      if ('status' in error) {
-        throw new Error(error.status.toString() || 'Неизвестная ошибка');
-      } else {
-        throw new Error(error.message || 'Неизвестная ошибка');
-      }
-    }
+    // if (isError) {
+    //   if ('status' in error) {
+    //     throw new Error(error.status.toString() || 'Неизвестная ошибка');
+    //   } else {
+    //     throw new Error(error.message || 'Неизвестная ошибка');
+    //   }
+    // }
   }, [cangeValueHotel, isError]);
 
   return (

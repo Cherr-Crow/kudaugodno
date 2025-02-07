@@ -113,6 +113,7 @@ export const hotels: Hotel[] = [
     type_of_meals_full_board: null,
     type_of_meals_half_board: null,
     type_of_meals_only_breakfast: null,
+    is_active: true,
   },
   {
     id: 2,
@@ -226,6 +227,7 @@ export const hotels: Hotel[] = [
     type_of_meals_full_board: null,
     type_of_meals_half_board: null,
     type_of_meals_only_breakfast: null,
+    is_active: true,
   },
   {
     id: 3,
@@ -339,5 +341,6 @@ export const hotels: Hotel[] = [
     type_of_meals_full_board: null,
     type_of_meals_half_board: null,
     type_of_meals_only_breakfast: null,
+    is_active: true,
   },
 ];
