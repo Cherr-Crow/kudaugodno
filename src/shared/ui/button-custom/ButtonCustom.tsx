@@ -3,6 +3,7 @@ import React from 'react';
 import { IButtonCustom } from './ButtonCustom.types';
 
 export function ButtonCustom({
+  type,
   variant,
   size,
   disabled,
@@ -26,7 +27,7 @@ export function ButtonCustom({
   }
   return (
     <button
-      type='button'
+      type={type}
       style={style}
       className={`${variants[variant]} ${sizes[size]} ${disabled && 'pointer-events-none opacity-20'} h-fit w-fit rounded-full px-7 hover:shadow-lg ${className ?? ''}`}
       onClick={onClick}
