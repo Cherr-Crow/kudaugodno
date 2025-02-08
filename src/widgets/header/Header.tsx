@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { PopupWindow } from '@/shared/popup-window';
 import { SvgSprite } from '@/shared/svg-sprite';
@@ -12,6 +13,7 @@ import { IHeader } from './Header.types';
 
 export function Header({ className }: IHeader) {
   const [openUser, setOpenUser] = useState(false);
+  const router = useRouter();
 
   const toggleUserMenu = () => {
     setOpenUser(!openUser);

@@ -33,7 +33,7 @@ export function SubscribeToTheNewsletter({}: ISubscribeToTheNewsletter) {
       <div
         className='min-h-[315px] rounded-t-3xl bg-auto bg-cover bg-no-repeat p-5 md:p-[55px] lg:px-[10%] lg:pt-[93px]'
         style={{
-          backgroundImage: `url('./subsimg.jpg')`,
+          backgroundImage: `url('/subsimg.jpg')`,
         }}
       >
         <div className='container'>

@@ -72,3 +72,18 @@
     - Для деплоя кода на test'овый контур - необходимо в сообщении коммита указать "волшебное слово": PushMe!.
     - Пример сообщения коммита:
     [+] Авторизация и регистрация пользователей. PushMe!
+
+# В реализованы методы (RTK Query, src/sericesApi/hotelsApi.ts):
+
+    - useGetHotelsQuery - получение списка отелей;
+    - useGetOneHotelQuery - получение одного отеля;
+    - useAddHotelMutation - добавление отеля;
+    - useChangeHotelMutation - изменение отеля;
+    - useDeleteHotelMutation - удаление отеля;
+    - useGetPhotosHotelQuery - получение фото отеля;
+    - useAddPhotoHotelMutation - добавление фото отеля;
+    - useDelPhotoHotelMutation - удаление фото отеля;
+
+- В дальнейшем эндпойнты по отелю реализовывать в src/sericesApi/hotelsApi.ts.
+  Остальные в соответствии с докой в свагере - /api/v1/название сервиса/. Например
+  для /api/v1/applications/ файл будет - src/sericesApi/applicationsApi.ts

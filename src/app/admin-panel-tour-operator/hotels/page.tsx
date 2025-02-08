@@ -5,7 +5,7 @@ import React, { useMemo, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/navigation';
 
-import { useDeleteHotelMutation, useGetHotelsQuery } from '@/sericesApi/hotelsApi';
+import { useDeleteHotelMutation, useGetHotelsQuery } from '@/servicesApi/hotelsApi';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';

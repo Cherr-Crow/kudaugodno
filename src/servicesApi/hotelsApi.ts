@@ -88,10 +88,6 @@ export const hotelsApi = createApi({
       query: ({ body, id }) => ({
         url: `hotels/${id}/photos/`,
         method: 'POST',
-        // headers: {
-        //   accept: 'application/json',
-        //   'Content-Type': 'multipart/form-data',
-        // },
         body,
       }),
       invalidatesTags: [{ type: 'PhotosHotel', id: 'LIST' }],

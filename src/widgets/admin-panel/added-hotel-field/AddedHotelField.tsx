@@ -8,7 +8,7 @@ import {
   useChangeHotelMutation,
   useDeleteHotelMutation,
   useGetOneHotelQuery,
-} from '@/sericesApi/hotelsApi';
+} from '@/servicesApi/hotelsApi';
 import { Accordeon } from '@/shared/accordeon';
 import { Rating } from '@/shared/rating';
 import { Typography } from '@/shared/typography';

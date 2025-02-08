@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 
 import { nanoid } from 'nanoid';
 
@@ -6,12 +6,11 @@ import {
   useAddPhotoHotelMutation,
   useDelPhotoHotelMutation,
   useGetPhotosHotelQuery,
-} from '@/sericesApi/hotelsApi';
+} from '@/servicesApi/hotelsApi';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 
 import { IPhotoBlock } from './PhotoBlock.types';
-
 
 export function PhotoBlock({ idHotel }: IPhotoBlock) {
   const { data } = useGetPhotosHotelQuery(idHotel);
@@ -25,7 +24,6 @@ export function PhotoBlock({ idHotel }: IPhotoBlock) {
 
     const formData = new FormData();
 
-    // Получаем файл из инпута и добавляем его в FormData
     const file = fileInputRef.current.files ? fileInputRef.current.files[0] : null;
     if (file) {
       formData.append('photo', file);
@@ -35,21 +33,14 @@ export function PhotoBlock({ idHotel }: IPhotoBlock) {
     }
     try {
       const result = await addPhoto({ body: formData, id: idHotel }).unwrap();
-      console.log('Photo added successfully:', result);
     } catch (err) {
       console.log(err);
     }
   };
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  // const handleSubmit = () => {
-  //   fileInputRef.current && form.current.dispatchEvent(new Event('submit'));
-  //
-  //   console.log(form.current);
-  // };
+  const handleDelPhoto = async (id: number) => {
+    await delPhoto({ hotel_id: idHotel, photo_id: id });
+  };
 
   return (
     <div className=''>
@@ -68,7 +59,10 @@ export function PhotoBlock({ idHotel }: IPhotoBlock) {
                   className='h-full w-full'
                   rel='prefetch'
                 />
-                <div className='absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-grey-700 opacity-0 hover:opacity-70'>
+                <div
+                  className='absolute left-0 top-0 z-10 h-full w-full cursor-pointer bg-grey-700 opacity-0 hover:opacity-70'
+                  onClick={() => handleDelPhoto(item.id)}
+                >
                   <SvgSprite
                     name='trash-light'
                     width={24}
@@ -89,7 +83,6 @@ export function PhotoBlock({ idHotel }: IPhotoBlock) {
               accept='image/*,.jpg,.png,.jpeg'
               id='file'
               className='h-20 w-20 cursor-pointer opacity-0'
-              // onChange={(e) => handleAddPhoto(e)}
               onChange={handleAddPhoto}
               ref={fileInputRef}
             />

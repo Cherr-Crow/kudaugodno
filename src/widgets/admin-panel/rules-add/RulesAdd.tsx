@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { useSearchParams } from 'next/navigation';
 
-import { useGetOneHotelQuery } from '@/sericesApi/hotelsApi';
+import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { Modal } from '@/shared/modal';
 import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
