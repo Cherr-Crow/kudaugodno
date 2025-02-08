@@ -1,15 +1,29 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 
 import { nanoid } from 'nanoid';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { hotels } from '@/temp/hotel-mock';
 
 import { IRoomModal } from './RoomModal.types';
+// import { ISlider } from './Slider.types';
 import { serviceNames } from '../hotel-block-photos-review/service';
 
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/navigation';
+import 'swiper/css/thumbs';
+
+// eslint-disable-next-line import/order
+import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
+
 export function RoomModal({}: IRoomModal) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
   return (
     <section className='relative mx-auto min-h-[200px] max-w-[1011px] rounded-[20px] p-[20px] shadow-md md:pt-[30px] lg:p-[40px] lg:pt-[60px]'>
       <Typography className='mb-[20px] block font-semibold tracking-[1px] md:mb-[30px] md:text-[35px] lg:mb-[57px] lg:text-[60px] lg:tracking-[2.4px]'>
@@ -22,7 +36,102 @@ export function RoomModal({}: IRoomModal) {
         <img className='max-w-[100%]' src='/closeimg.jpg' alt='' />
       </div>
       {/* Блок с картинками */}
-      <div className='mb-[20px] lg:mb-[40px]'>
+      <div className='bg-green-secondary mx-auto max-w-[1000px]'>
+        <Swiper
+          style={{}}
+          loop={true}
+          spaceBetween={10}
+          navigation={true}
+          thumbs={{ swiper: thumbsSwiper }}
+          modules={[FreeMode, Navigation, Thumbs]}
+          className='mySwiper2 hidden rounded-[20px] lg:h-[622px]'
+        >
+          <SwiperSlide>
+            <img
+              className='h-[100%] w-[100%] object-cover'
+              src='/Novotel-Nairobi-Westlands-photo-3.png'
+              alt=''
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              className='h-[100%] w-[100%] object-cover'
+              src='/Novotel-Nairobi-Westlands-photo-1.png'
+              alt=''
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              className='h-[100%] w-[100%] object-cover'
+              src='/Novotel-Nairobi-Westlands-photo-2.png'
+              alt=''
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              className='h-[100%] w-[100%] object-cover'
+              src='/Novotel-Nairobi-Westlands-photo-3.png'
+              alt=''
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              className='h-[100%] w-[100%] object-cover'
+              src='/Novotel-Nairobi-Westlands-photo-4.png'
+              alt=''
+            />
+          </SwiperSlide>
+        </Swiper>
+        {/* <div className=''> */}
+        <Swiper
+          onSwiper={setThumbsSwiper}
+          loop={true}
+          spaceBetween={15}
+          slidesPerView={4}
+          freeMode={true}
+          watchSlidesProgress={true}
+          modules={[FreeMode, Navigation, Thumbs]}
+          className='mySwiper mb-10 mt-5 hidden lg:h-[188px]'
+        >
+          <SwiperSlide>
+            <img
+              className='h-[100%] w-[100%] rounded-[20px] object-cover'
+              src='/Novotel-Nairobi-Westlands-photo-3.png'
+              alt=''
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              className='h-[100%] w-[100%] rounded-[20px] object-cover'
+              src='/Novotel-Nairobi-Westlands-photo-1.png'
+              alt=''
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              className='h-[100%] w-[100%] rounded-[20px] object-cover'
+              src='/Novotel-Nairobi-Westlands-photo-2.png'
+              alt=''
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              className='h-[100%] w-[100%] rounded-[20px] object-cover'
+              src='/Novotel-Nairobi-Westlands-photo-3.png'
+              alt=''
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img
+              className='h-[100%] w-[100%] rounded-[20px] object-cover'
+              src='/Novotel-Nairobi-Westlands-photo-4.png'
+              alt=''
+            />
+          </SwiperSlide>
+        </Swiper>
+        {/* </div> */}
+      </div>
+      {/* <div className='mb-[20px] lg:mb-[40px]'>
         <div className='h-[224px] overflow-hidden rounded-[20px] md:mb-[20px] md:h-[545px] lg:h-[621px]'>
           <img className='h-[100%] w-[100%]' src='modalromimg.jpg' alt='' />
         </div>
@@ -56,7 +165,7 @@ export function RoomModal({}: IRoomModal) {
             />
           </div>
         </div>
-      </div>
+      </div> */}
       {/* Блок со списком преимуществ */}
       <div className='md:flex'>
         <div className='mb-4 md:mr-8'>
