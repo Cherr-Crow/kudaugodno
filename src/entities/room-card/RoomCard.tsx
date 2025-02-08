@@ -31,12 +31,13 @@ interface IRoomCardProps {
     amenities: string;
     price: number;
     images: string[]; 
+    hasChild?: boolean; // добавляем опциональный параметр hasChild
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const RoomCard: React.FC<IRoomCardProps> = ({ id, name, description, quadrature, amenities, price, images }) => {
+const RoomCard: React.FC<IRoomCardProps> = ({ id, name, description, quadrature, amenities, price, images, hasChild }) => {
     return (
         <div className="w-full bg-white md:shadow-lg rounded-xl md:flex mb-3 "> 
-        <h3 className="text-lg font-bold mt-4 block md:hidden lg:mb-4">{name}</h3>
+            <h3 className="text-lg font-bold mt-4 block md:hidden lg:mb-4">{name}</h3>
             <div className="md:w-1/3  "> 
                 <div className=" rounded-xl overflow-hidden"> 
                     <ImageSlider images={images} />
@@ -47,26 +48,29 @@ const RoomCard: React.FC<IRoomCardProps> = ({ id, name, description, quadrature,
                     <h3 className="text-lg font-bold hidden md:block">{name}</h3>
                     <div className=' w-full  md:hidden'>
                         <div className='flex-col'>
-                            <RoomDescription  description={description} />
+                            <RoomDescription description={description} />
                             <RoomSquare quadrature={quadrature} />
                         </div>
                         
                         <RoomAmenities amenities={amenities} /> 
                         <div className=' flex md:flex-col mb-4 mt-4 md:w-full'> 
-                                    <Typography variant='m' children='Колличество номеров' />
-                                    <div className='ml-auto md:ml-0 '>
-                                        <Select options={testList} color='blue' size='mobile'  />
-                                    </div>                                                                                          
+                            <Typography variant='m' children='Колличество номеров' />
+                            <div className='ml-auto md:ml-0 '>
+                                <Select options={testList} color='blue' size='mobile' />
+                            </div>                                                                                          
                         </div >
                     </div>
                     <div className='flex lg:mt-4 '>
                         <div className=' flex '>
                             <div className='flex-1 hidden md:block'>
-                                <RoomDescription  description={description} />
+                                <RoomDescription description={description} />
                                 <RoomSquare quadrature={quadrature} />
                             </div>
                             <div className='pt-5'>
-                                <SvgSprite name='room-guests' className='hidden md:block' />
+                                <div className='flex items-center'>
+                                    <SvgSprite name='room-guests' className='hidden md:block' />
+                                    {hasChild && <SvgSprite name='room_guest_child' className='hidden md:block ml-2' />} {/* отображаемый только если hasChild равно true */}
+                                </div>
                             </div>
                         </div>
                         <div className='flex justify-end ml-auto '>
@@ -79,7 +83,6 @@ const RoomCard: React.FC<IRoomCardProps> = ({ id, name, description, quadrature,
                                     <Select options={testList} color='blue' size='mobile' className='justify-end' />
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div className='md:flex md:ml-20 md:gap-4 lg:justify-end lg:mt-5'>
@@ -97,12 +100,8 @@ const RoomCard: React.FC<IRoomCardProps> = ({ id, name, description, quadrature,
                                 </div>
                             </ButtonCustom>
                         </div>
-                    </div>    
-                      
-                
-
+                    </div>                
                 </div>
-
             </div>
         </div>
     );

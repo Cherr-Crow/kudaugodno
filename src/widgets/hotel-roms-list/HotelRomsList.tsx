@@ -3,8 +3,10 @@
 import React from 'react';
 
 import { Typography } from '@/shared/typography';
+// eslint-disable-next-line import/order
 import { ButtonCustom } from '@/shared/ui/button-custom';
 
+// eslint-disable-next-line import/order
 import { RoomCard } from '../../entities/room-card';
 
 interface HotelRomsListProps {
@@ -16,6 +18,7 @@ interface HotelRomsListProps {
         amenities: string;
         price: number;
         images: string[];
+        hasChild: boolean;  // flag for displaying "подрядка" icon or not  // eslint-disable-next-line react/no-unused-prop-types
     }[];
 }
 
@@ -33,6 +36,7 @@ const HotelRomsList: React.FC<HotelRomsListProps> = ({ hotels }) => {
                     amenities={hotel.amenities}
                     price={hotel.price}
                     images={hotel.images}
+                    hasChild={hotel.hasChild}
                 />
             ))}
             <div className="group flex items-center justify-center w-full  md:relative md:mb-9 mt-6 mb-7 ">

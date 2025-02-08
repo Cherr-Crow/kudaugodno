@@ -9,7 +9,8 @@ export interface ISvgSprite extends DivProps {
 }
 
 export type NameSvg =
-  |'icutlery_items'
+  | 'room_guest_child'
+  | 'icutlery_items'
   | 'square_room'
   | 'bed'
   | 'room-guests'

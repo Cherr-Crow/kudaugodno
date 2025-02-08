@@ -1,8 +1,8 @@
 import React from 'react';
 
+import { RoomAmenitiesProps } from './RoomAmenities.types';
 import { SvgSprite } from '@/shared/svg-sprite';
 
-import { RoomAmenitiesProps } from './RoomAmenities.types';
 
 
 
