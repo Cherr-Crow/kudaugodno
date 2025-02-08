@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ITypography } from './Typography.types';
 
 export function Typography({ className, children, variant }: ITypography) {

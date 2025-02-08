@@ -1,19 +1,33 @@
 'use client';
 
+import React, { useEffect, useState } from 'react';
+
+import { nanoid } from 'nanoid';
+import { useRouter } from 'next/navigation';
+
+import { useAddHotelMutation, useGetHotelsQuery } from '@/servicesApi/hotelsApi';
 import { PopupWindow } from '@/shared/popup-window';
 import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
-import { ButtonCustom } from '@/shared/ui/button-custom';
-import { AddedHotelField } from '../../../../widgets/admin-panel/added-hotel-field';
-import React, { useEffect, useState } from 'react';
+import { Hotel } from '@/types/hotel';
 
 export default function AddedHotel() {
+  const [addHotel, { data: newHotelResponce }] = useAddHotelMutation();
+  const { data } = useGetHotelsQuery();
+  const router = useRouter();
+  const [listOfMatches, setListOfMatches] = useState<Hotel[]>([] as Hotel[]);
   const [value, setValue] = useState('');
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [openField, setOpenField] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
+
+    setListOfMatches(
+      data?.results.filter((el) =>
+        el.name.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase()),
+      ) || ([] as Hotel[]),
+    );
+
     if (e.target.value.length > 1) {
       setOpenDropdown(true);
     } else {
@@ -21,17 +35,17 @@ export default function AddedHotel() {
     }
   };
 
-  const handleFieldClick = () => {
-    setOpenField(true);
+  const handleFieldClick = async () => {
+    await addHotel({ name: value });
+    setOpenDropdown(false);
   };
 
   useEffect(() => {
-    window.addEventListener('click', () => setOpenDropdown(false));
-
-    return () => {
-      window.removeEventListener('click', () => setOpenDropdown(false));
-    };
-  }, []);
+    if (!newHotelResponce) return;
+    router.push(
+      `/admin-panel-tour-operator/hotels/change-hotel/?id=${newHotelResponce.id}`,
+    );
+  }, [newHotelResponce]);
 
   return (
     <div className='flex w-full flex-col gap-10'>
@@ -48,12 +62,23 @@ export default function AddedHotel() {
         />
         {openDropdown && (
           <PopupWindow className='top-[110%] flex flex-col gap-2 px-5 py-4'>
-            <Typography children='Этого отеля нет в нашей базе' />
-            <AddedButton text='Добавить отель' onClick={handleFieldClick} />
+            {!!listOfMatches.length ? (
+              <ul>
+                {listOfMatches.map((item: Hotel) => (
+                  <li key={nanoid()}>
+                    <Typography>{item.name}</Typography>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <>
+                <Typography children='Этого отеля нет в нашей базе' />
+                <AddedButton text='Добавить отель' onClick={handleFieldClick} />
+              </>
+            )}
           </PopupWindow>
         )}
       </div>
-      {openField && <AddedHotelField />}
     </div>
   );
 }

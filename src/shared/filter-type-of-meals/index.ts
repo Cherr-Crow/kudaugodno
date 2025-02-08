@@ -1,0 +1,1 @@
+export { FilterTypeOfMeals } from './FilterTypeOfMeals';

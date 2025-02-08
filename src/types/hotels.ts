@@ -1,4 +1,4 @@
-import { Hotel } from './hotel';
+import { Hotel } from '@/types/hotel';
 
 export type Hotels = {
   count: number;

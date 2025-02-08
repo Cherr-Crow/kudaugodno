@@ -1,10 +1,13 @@
 'use client';
 
 import React from 'react';
-import { IAdminPanelDashboard } from './AdminPanelDashboard.types';
-import { Typography } from '@/shared/typography';
+
 import { nanoid } from 'nanoid';
 import { usePathname, useRouter } from 'next/navigation';
+
+import { Typography } from '@/shared/typography';
+
+import { IAdminPanelDashboard } from './AdminPanelDashboard.types';
 
 const links = [
   { name: 'Профиль', path: '/admin-panel-tour-operator' },

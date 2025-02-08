@@ -1,0 +1,1 @@
+export { HotelComponentMap } from './HotelComponentMap';

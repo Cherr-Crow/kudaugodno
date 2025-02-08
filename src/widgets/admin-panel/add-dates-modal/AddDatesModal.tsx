@@ -1,6 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import { IAddDatesModal } from './AddDatesModal.types';
+import React from 'react';
+
 import { Typography } from '@/shared/typography';
+
+import { IAddDatesModal } from './AddDatesModal.types';
 
 export function AddDatesModal({}: IAddDatesModal) {
   return (

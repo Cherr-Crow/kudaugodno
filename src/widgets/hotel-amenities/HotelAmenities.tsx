@@ -1,48 +1,44 @@
 import React from 'react';
-import { Typography } from '@/shared/typography';
-import { IHotelAmenities } from './HotelAmenities.types';
-import { SvgSprite } from '@/shared/svg-sprite';
+
 import { nanoid } from '@reduxjs/toolkit';
+
+import { SvgSprite } from '@/shared/svg-sprite';
+import { Typography } from '@/shared/typography';
 import { hotels } from '@/temp/hotel-mock';
 
-export function HotelAmenities({}: IHotelAmenities) {
+import { IHotelAmenities } from './HotelAmenities.types';
 
-  
+export function HotelAmenities({}: IHotelAmenities) {
   return (
     <section>
-      <div className="hidden sm:block">
-        <Typography variant="l" className="block mb-7 font-black text-blue-900 md:font-normal md:text-[24px] md:text-black lg:text-[32px]">
+      <div className='hidden sm:block'>
+        <Typography
+          variant='l'
+          className='font-grey-950 mb-7 block text-blue-900 md:text-[24px] md:font-normal md:text-grey-950 lg:text-[32px]'
+        >
           Удобства
         </Typography>
-        
-        <ul className="grid grid-cols-2 gap-7 mb-5 lg:flex lg:justify-between">
 
-          {hotels[0].amenities.map((item) => (
+        <ul className='mb-5 grid grid-cols-2 gap-7 lg:flex lg:justify-between'>
+          {hotels[0].amenities_common.map((item) => (
             <li className='' key={nanoid()}>
-                <Typography className="block mb-3 font-semibold text-blue-900 md:text-lg md:text-black lg:text-xl">
-                   {item.category_name}
-                </Typography>
-               {item.amenity.map((comfortitem) => (
-                <div className="flex mb-2" key={nanoid()}>
-                  <SvgSprite
+              <Typography className='mb-3 block font-semibold text-blue-900 md:text-lg md:text-grey-950 lg:text-xl'>
+                общие удобства
+              </Typography>
+              <div className='mb-2 flex' key={nanoid()}>
+                <SvgSprite
                   name='check-mark'
                   width={16}
-                  className='cursor-pointer m-0 mr-4'
+                  className='m-0 mr-4 cursor-pointer'
                 />
-                <Typography variant="s" className=" font-normal md:text-base">
-                   {comfortitem}
+                <Typography variant='s' className='font-normal md:text-base'>
+                  {item.name}
                 </Typography>
-                </div>
-                  
-               ))}
-            
+              </div>
             </li>
-            )
-          )}
-
+          ))}
         </ul>
       </div>
     </section>
   );
-  
 }

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { INamedInput } from './NamedInput.types';
+
 import { Typography } from '@/shared/typography';
+
+import { INamedInput } from './NamedInput.types';
 
 export function NamedInput({
   title,
@@ -9,8 +11,9 @@ export function NamedInput({
   getValue,
   className,
   type = 'text',
+  startValue,
 }: INamedInput) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(startValue || '');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);

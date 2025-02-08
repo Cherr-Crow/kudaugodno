@@ -1,9 +1,12 @@
 import React from 'react';
-import { IHotelRules } from './HotelRules.types';
-import { Typography } from '@/shared/typography';
+
 import { nanoid } from 'nanoid';
+
 import { SvgSprite } from '@/shared/svg-sprite';
 import { ISvgSprite } from '@/shared/svg-sprite/SvgSprite.types';
+import { Typography } from '@/shared/typography';
+
+import { IHotelRules } from './HotelRules.types';
 
 export function HotelRules({}: IHotelRules) {
   interface IRules {

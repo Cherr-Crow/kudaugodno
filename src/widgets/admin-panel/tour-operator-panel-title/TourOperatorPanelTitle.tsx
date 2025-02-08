@@ -1,12 +1,15 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { ITourOperatorPanelTitle } from './TourOperatorPanelTitle.types';
+
 import { usePathname, useRouter } from 'next/navigation';
+
 import { Typography } from '@/shared/typography';
 import { TabBar } from '@/shared/ui/tab-bar';
 
-const tabsHotelAdded = ['Отель', 'Питание', 'Номера', 'Даты'];
+import { ITourOperatorPanelTitle } from './TourOperatorPanelTitle.types';
+
+const tabsHotelAdded = ['Отель', 'Номера', 'Даты'];
 
 export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
   const patch = usePathname();
@@ -49,9 +52,6 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
       case 'Отель':
         router.push('/admin-panel-tour-operator/hotels/added-hotel');
         break;
-      case 'Питание':
-        router.push('/admin-panel-tour-operator/hotels/added-hotel/food');
-        break;
       case 'Номера':
         router.push('/admin-panel-tour-operator/hotels/added-hotel/rooms');
         break;
@@ -75,7 +75,7 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
           {openTabsAddHotel && (
             <TabBar
               tabs={tabsHotelAdded}
-              getTabName={handleTabName}
+              getActiveTab={handleTabName}
               setTab={activeTab}
             />
           )}
