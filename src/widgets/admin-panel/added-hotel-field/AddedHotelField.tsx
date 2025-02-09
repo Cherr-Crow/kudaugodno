@@ -100,10 +100,6 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
   const [rules, setRules] = useState(data?.rules || []); // тип отдыха
   const [isActive, setIsActive] = useState(data?.is_active || true); // активный или архивный
 
-  // const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setPhoto(e.target.value);
-  // };
-
   useEffect(() => {
     if (!data) return;
     setName(data.name);

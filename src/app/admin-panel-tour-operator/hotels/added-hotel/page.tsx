@@ -43,7 +43,7 @@ export default function AddedHotel() {
   useEffect(() => {
     if (!newHotelResponce) return;
     router.push(
-      `/admin-panel-tour-operator/hotels/change-hotel/?id=${newHotelResponce.id}`,
+      `/admin-panel-tour-operator/hotels/change-hotel/${newHotelResponce.id}/`,
     );
   }, [newHotelResponce]);
 
