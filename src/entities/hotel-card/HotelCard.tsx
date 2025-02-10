@@ -10,8 +10,15 @@ import { Typography } from '@/shared/typography';
 import { IHotelCard } from './HotelCard.types';
 
 export function HotelCard({ hotel }: IHotelCard) {
-  const { name, photos, city, country, user_rating, star_category, amenities } =
-    hotel;
+  const {
+    name,
+    photos,
+    city,
+    country,
+    user_rating,
+    star_category,
+    amenities_common,
+  } = hotel;
 
   const stars = Array.from({ length: star_category }, (_, index) => index + 1);
 
@@ -68,9 +75,9 @@ export function HotelCard({ hotel }: IHotelCard) {
           <Typography children='за сутки' className='text-grey-600 md:text-xl' />
         </div>
         <ul className='flex gap-2'>
-          {amenities.map((el) => (
+          {amenities_common.map((el: { name: string }) => (
             <li className='rounded-2xl bg-blue-200 px-3 py-1' key={nanoid()}>
-              <Typography children={el.amenity[0]} />
+              <Typography children={el.name} />
             </li>
           ))}
         </ul>

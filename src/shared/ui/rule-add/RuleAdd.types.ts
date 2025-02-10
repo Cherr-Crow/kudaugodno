@@ -1,7 +1,10 @@
 type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
 export interface IRuleAdd extends DivProps {
-  name: string;
+  rule: {
+    name: string;
+    description: string;
+  };
   getValue: (val: Rule) => void;
 }
 

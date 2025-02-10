@@ -4,11 +4,9 @@ import React, { useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
-import { Modal } from '@/shared/modal';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
-import { AddDatesModal } from '@/widgets/admin-panel/add-dates-modal';
 import { Calendar } from '@/widgets/calendar';
 
 const years = [2025, 2024, 2023];
@@ -84,11 +82,6 @@ export default function Dates() {
       </div>
 
       <Calendar year={year} month={month} />
-      {isOpenModal && (
-        <Modal close={(e) => setIsOpenModal(e)}>
-          <AddDatesModal />
-        </Modal>
-      )}
     </div>
   );
 }

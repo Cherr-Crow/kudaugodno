@@ -20,23 +20,21 @@ export function HotelAmenities({}: IHotelAmenities) {
         </Typography>
 
         <ul className='mb-5 grid grid-cols-2 gap-7 lg:flex lg:justify-between'>
-          {hotels[0].amenities.map((item) => (
+          {hotels[0].amenities_common.map((item) => (
             <li className='' key={nanoid()}>
               <Typography className='mb-3 block font-semibold text-blue-900 md:text-lg md:text-grey-950 lg:text-xl'>
-                {item.category_name}
+                общие удобства
               </Typography>
-              {item.amenity.map((comfortitem) => (
-                <div className='mb-2 flex' key={nanoid()}>
-                  <SvgSprite
-                    name='check-mark'
-                    width={16}
-                    className='m-0 mr-4 cursor-pointer'
-                  />
-                  <Typography variant='s' className='font-normal md:text-base'>
-                    {comfortitem}
-                  </Typography>
-                </div>
-              ))}
+              <div className='mb-2 flex' key={nanoid()}>
+                <SvgSprite
+                  name='check-mark'
+                  width={16}
+                  className='m-0 mr-4 cursor-pointer'
+                />
+                <Typography variant='s' className='font-normal md:text-base'>
+                  {item.name}
+                </Typography>
+              </div>
             </li>
           ))}
         </ul>

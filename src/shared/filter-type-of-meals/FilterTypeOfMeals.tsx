@@ -56,9 +56,10 @@ export function FilterTypeOfMeals({
         {/* Опции питания с чекбоксами */}
         <div className='transition-max-height overflow-hidden duration-300 ease-in-out'>
           <ul className='grid grid-cols-1 gap-2'>
-            {mealOptions.map((meal) => (
+            {mealOptions.map((meal, index) => (
               <li key={meal} className='mb-2 flex items-center gap-2'>
                 <Checkbox
+                  id={`checkbox-${index}`}
                   label={meal}
                   isChecked={selectedMeals.includes(meal)}
                   onChange={() => toggleMealSelection(meal)}

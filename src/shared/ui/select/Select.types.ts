@@ -7,5 +7,6 @@ export interface ISelect extends DivProps {
   color?: 'blue' | 'green';
   // markerChange?: boolean;
   arrowHidden?: boolean;
-  size?: 'small' | 'medium'| 'mobile';
+  size?: 'small' | 'medium' | 'mobile';
+  startValue?: string;
 }

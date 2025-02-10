@@ -6,7 +6,6 @@ import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { hotels } from '@/temp/hotel-mock';
-import { Amenity } from '@/types/amenity';
 
 import { IHotelBlockPhotosReview } from './HotelBlockPhotosReview.types';
 import { serviceNames } from './service';
@@ -23,9 +22,12 @@ export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
   const reviewContainerRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    const _arr = hotels[0].amenities.reduce((akk: string[], prev: Amenity) => {
-      return [...akk, ...prev.amenity];
-    }, []);
+    const _arr = hotels[0].amenities_common.reduce(
+      (akk: string[], prev: { name: string }) => {
+        return [...akk, ...prev.name];
+      },
+      [],
+    );
     setAmenities(_arr);
   }, []);
 
