@@ -44,7 +44,6 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
                         </SwiperSlide>
                     ))}
                 </Swiper>
-                {/* Кнопки навигации */}
                 <div className="absolute top-1/2 left-0 right-0 flex justify-between transform -translate-y-1/2 z-50 ">
                     <button
                         className="p-2 bg-white rounded-full shadow-md hover:bg-opacity-100 opacity-70 ml-8 "
