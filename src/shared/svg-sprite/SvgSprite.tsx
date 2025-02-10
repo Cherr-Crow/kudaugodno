@@ -2021,8 +2021,8 @@ export function SvgSprite({
       return (
         <svg
           className={className ?? ''}
-          width='36'
-          height='24'
+          width={width}
+          height={height}
           viewBox='0 0 36 24'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
@@ -2165,9 +2165,10 @@ export function SvgSprite({
     case 'room_guest_child':
       return (
         <svg
-          width='33'
-          height='32'
+          width={width}
+          height={height}
           viewBox='0 0 33 32'
+          strokeWidth={strokeWidth}
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
         >
