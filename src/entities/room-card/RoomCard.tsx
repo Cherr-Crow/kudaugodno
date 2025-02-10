@@ -68,8 +68,10 @@ const RoomCard: React.FC<IRoomCardProps> = ({ id, name, description, quadrature,
                             </div>
                             <div className='pt-5'>
                                 <div className='flex items-center'>
-                                    <SvgSprite name='room-guests' className='hidden md:block' />
-                                    {hasChild && <SvgSprite name='room_guest_child' className='hidden md:block ml-2' />} {/* отображаемый только если hasChild равно true */}
+                                    <SvgSprite name='room-guests' className='hidden md:block' /> 
+                                    {hasChild &&  <div className='flex'> + 
+                                        <SvgSprite name='room_guest_child' className='hidden md:block ml-2' />
+                                        </div>} 
                                 </div>
                             </div>
                         </div>

@@ -10,6 +10,7 @@ export function SvgSprite({
   color,
   width,
   height,
+  strokeWidth,
   onClick,
 }: ISvgSprite) {
   switch (name) {
@@ -998,6 +999,7 @@ export function SvgSprite({
           className={className ?? ''}
           width={width}
           height={height}
+          strokeWidth={strokeWidth}
           viewBox='0 0 25 24'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
