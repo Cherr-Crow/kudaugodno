@@ -9,7 +9,9 @@ import { FilterPrice } from '@/shared/filter-price';
 import { FilterRating } from '@/shared/filter-rating';
 import { FilterRecreationType } from '@/shared/filter-recreation-type';
 import { FilterStarCategory } from '@/shared/filter-star-category';
+import { FilterTourOperator } from '@/shared/filter-tour-operator';
 import { FilterTypeOfMeals } from '@/shared/filter-type-of-meals';
+import { HotelComponentMap } from '@/shared/hotel-component-map';
 import { HotelComponentPhotoSlider } from '@/shared/hotel-component-photo-slider';
 import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
@@ -98,20 +100,20 @@ export function HotelCatalog() {
           (hotel.user_rating >= rating[0] && hotel.user_rating <= rating[1])) &&
         (starCategory.length === 0 || starCategory.includes(hotel.star_category)) &&
         (mealType.length === 0 ||
-          hotel.rooms.some((room) => mealType.includes(room.food.type_of_meals))) &&
+          hotel.rooms.some((room) => mealType.includes(room.type_of_meal))) &&
         (amenities.length === 0 ||
           amenities.every((amenity) =>
-            hotel.amenities.some((cat) => cat.amenity.includes(amenity)),
-          )) &&
-        (airportDistance === 'Любое' ||
-          hotel.distances.some(
-            (d) =>
-              d.location === 'airport' &&
-              ((airportDistance === 'До 15 км' && d.distance <= 15) ||
-                (airportDistance === 'До 50 км' && d.distance <= 50) ||
-                (airportDistance === 'До 75 км' && d.distance <= 75) ||
-                (airportDistance === 'До 100 км' && d.distance <= 100)),
+            hotel.amenities_common.some((cat) => cat.name.includes(amenity)),
           ))
+        // (airportDistance === 'Любое' ||
+        //   hotel.distance_to_the_sea.some(
+        //     (d) =>
+        //       d.location === 'airport' &&
+        //       ((airportDistance === 'До 15 км' && d.distance <= 15) ||
+        //         (airportDistance === 'До 50 км' && d.distance <= 50) ||
+        //         (airportDistance === 'До 75 км' && d.distance <= 75) ||
+        //         (airportDistance === 'До 100 км' && d.distance <= 100)),
+        //   ))
         //   &&
         // (tourOperators.length === 0 || tourOperators.includes(hotel.tour_operator))
       );
@@ -147,6 +149,16 @@ export function HotelCatalog() {
     setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
   };
 
+  {
+    /* Карта*/
+  }
+
+  const [isMapVisible, setIsMapVisible] = useState(false);
+
+  {
+    /* Компонент каталога*/
+  }
+
   return (
     <div className='hotel-catalog-page flex justify-center'>
       <div className='flex flex-col md:flex-row'>
@@ -154,10 +166,8 @@ export function HotelCatalog() {
           className={`w-full p-4 md:w-1/4 ${filtersVisible ? 'block' : 'hidden'} lg:block`}
         >
           <div className='filter-section mb-6 flex flex-col gap-1'>
-            <div className='hidden flex-wrap items-center justify-between bg-white p-4 text-blue-950 shadow-md md:flex lg:flex-nowrap'>
-              <Typography variant='h5' className=''>
-                Фильтры
-              </Typography>
+            <div className='hidden flex-wrap items-center justify-between bg-white px-4 text-blue-950 md:flex lg:flex-nowrap'>
+              <Typography variant='h5'>Фильтры</Typography>
               <button className='hover:underline' onClick={handleFiltersReset}>
                 Сбросить все
               </button>
@@ -189,10 +199,10 @@ export function HotelCatalog() {
               selectedDistance={airportDistance}
               onDistanceChange={setAirportDistance}
             />
-            {/* <FilterTourOperator
+            <FilterTourOperator
               selectedOperators={tourOperators}
-              onOperatorChange={setTourOperators}
-            /> */}
+              onOperatorsChange={setTourOperators}
+            />
           </div>
         </aside>
 
@@ -202,7 +212,7 @@ export function HotelCatalog() {
         >
           <div className='filter-section mb-6 flex flex-col gap-1 text-blue-950'>
             <button
-              className='text-secondary hover:underline'
+              className='text-secondary mr-auto hover:underline'
               onClick={handleFiltersReset}
             >
               Сбросить все
@@ -230,13 +240,15 @@ export function HotelCatalog() {
               selectedAmenities={amenities}
               onAmenitiesChange={setAmenities}
             />
+            <FilterAirportDistance
+              selectedDistance={airportDistance}
+              onDistanceChange={setAirportDistance}
+            />
+            <FilterTourOperator
+              selectedOperators={tourOperators}
+              onOperatorsChange={setTourOperators}
+            />
           </div>
-          <button
-            className='text-secondary hover:underline'
-            onClick={handleFiltersReset}
-          >
-            Сбросить все
-          </button>
           <button
             className='text-secondary absolute right-4 top-4'
             onClick={handleToggleFilters}
@@ -247,25 +259,44 @@ export function HotelCatalog() {
 
         <main className='mx-auto w-full max-w-md p-4 md:max-w-xl lg:w-3/4 lg:max-w-none'>
           <div className='mb-4 flex md:hidden'>
-            <button className='text-primary ml-auto flex w-20 justify-center gap-1 rounded-xl bg-blue-50 px-2 py-1 font-medium'>
-              <SvgSprite name='map' width={20} />
-              <Typography variant='s'>Карта</Typography>
-            </button>
-          </div>
-
-          <div className='view-options mb-4 flex items-center justify-between'>
-            <div className='hidden gap-4 text-blue-950 lg:flex'>
-              <button className='text-primary flex gap-1 font-medium'>
+            {isMapVisible ? (
+              <button
+                onClick={() => setIsMapVisible((prev) => !prev)}
+                className='text-primary ml-auto flex w-20 justify-center gap-1 rounded-lg bg-blue-50 px-2 py-1 font-medium'
+              >
+                <SvgSprite name='map' width={20} />
+                <Typography variant='s'>Карта</Typography>
+              </button>
+            ) : (
+              <button
+                onClick={() => setIsMapVisible((prev) => !prev)}
+                className='text-primary ml-auto flex gap-1 rounded-lg bg-blue-50 px-2 py-1 font-medium'
+              >
                 <SvgSprite name='list' width={20} color='blue' />
                 <Typography variant='s'>Список</Typography>
               </button>
-              <button className='text-primary flex gap-1 font-medium'>
+            )}
+          </div>
+
+          <div className='view-options mb-4 flex items-center justify-between gap-2'>
+            <div className='hidden gap-4 text-blue-950 md:flex'>
+              <button
+                onClick={() => setIsMapVisible((prev) => !prev)}
+                className='text-primary flex gap-1 rounded-lg bg-blue-50 px-2 py-1 font-medium'
+              >
+                <SvgSprite name='list' width={20} color='blue' />
+                <Typography variant='s'>Список</Typography>
+              </button>
+              <button
+                onClick={() => setIsMapVisible((prev) => !prev)}
+                className='text-primary flex gap-1 rounded-lg bg-blue-50 px-2 py-1 font-medium'
+              >
                 <SvgSprite name='map' width={20} />
                 <Typography variant='s'>Карта</Typography>
               </button>
             </div>
             <button
-              className='text-primary flex gap-1 font-medium'
+              className='text-primary flex gap-1 rounded-lg border border-grey-100 bg-grey-50 px-2 py-1 font-medium'
               onClick={toggleSortOrder}
             >
               <Typography variant='s'>По популярности</Typography>
@@ -273,7 +304,7 @@ export function HotelCatalog() {
             </button>
 
             <button
-              className='text-primary flex gap-1 font-medium lg:hidden'
+              className='text-primary flex gap-1 rounded-lg border border-grey-100 bg-grey-50 px-2 font-medium lg:hidden'
               onClick={handleToggleFilters}
             >
               <Typography variant='s'>Фильтры</Typography>
@@ -282,197 +313,204 @@ export function HotelCatalog() {
           </div>
 
           {/* Блок с отелями */}
-          <div className='hotels-list grid gap-6 md:grid-cols-1'>
-            {filteredHotels.length > 0 ? (
-              <>
-                {sortedHotels.map((hotel, index) => (
-                  <div key={hotel.id}>
-                    <div
-                      key={`hotel-${hotel.id}`}
-                      className='hotel-card relative flex flex-col rounded-lg bg-white text-blue-950 shadow-xl md:flex-row'
-                    >
-                      <div className='hotel-image relative z-0 mb-4 w-full overflow-hidden md:mb-0 md:mr-4 md:w-2/5'>
-                        <button className='absolute right-2 top-2 z-10 rounded-full bg-blue-50 p-3 lg:hidden'>
-                          <SvgSprite name='heart-outline' width={15} />
-                        </button>
-                        <HotelComponentPhotoSlider hotel={hotel} />
-                      </div>
+          {isMapVisible ? (
+            <HotelComponentMap />
+          ) : (
+            <div className='hotels-list grid gap-6 md:grid-cols-1'>
+              {filteredHotels.length > 0 ? (
+                <>
+                  {sortedHotels.map((hotel, index) => (
+                    <div key={hotel.id}>
+                      <div
+                        key={`hotel-${hotel.id}`}
+                        className='hotel-card relative flex flex-col rounded-lg bg-white text-blue-950 shadow-xl md:flex-row'
+                      >
+                        <div className='hotel-image relative z-0 mb-4 w-full overflow-hidden md:mb-0 md:mr-4 md:w-2/5'>
+                          <button className='absolute right-2 top-2 z-10 rounded-full bg-blue-50 p-3 lg:hidden'>
+                            <SvgSprite name='heart-outline' width={15} />
+                          </button>
+                          <HotelComponentPhotoSlider hotel={hotel} />
+                        </div>
 
-                      <div className='hotel-info relative z-10 w-full rounded-lg p-4 md:ml-[-16px] md:w-3/5'>
-                        {/* Рейтинг и информация */}
-                        <div className='mb-2 flex gap-2'>
-                          <Rating
-                            category={hotel.star_category}
-                            starSize={16}
-                            gap={1}
-                          />
-                          {/* Кнопка "Показать отзывы" */}
-                          {hotel.reviews && hotel.reviews.length > 0 && (
-                            <div className='group ml-auto flex items-center justify-end gap-0.5'>
-                              <button
-                                className='flex items-center gap-1 text-blue-600 hover:underline'
-                                onClick={() => toggleReviews(hotel.id)}
-                              >
-                                <Typography
-                                  variant='m'
-                                  className='text-xs md:text-base'
+                        <div className='hotel-info relative z-10 w-full rounded-lg p-4 md:ml-[-16px] md:w-3/5'>
+                          {/* Рейтинг и информация */}
+                          <div className='mb-2 flex gap-2'>
+                            <Rating
+                              category={hotel.star_category}
+                              starSize={16}
+                              gap={1}
+                            />
+                            {/* Кнопка "Показать отзывы" */}
+                            {hotel.reviews && hotel.reviews.length > 0 && (
+                              <div className='group ml-auto flex items-center justify-end gap-0.5'>
+                                <button
+                                  className='flex items-center gap-1 text-blue-600 hover:underline'
+                                  onClick={() => toggleReviews(hotel.id)}
                                 >
-                                  {reviewStates[hotel.id]?.showAllReviews
-                                    ? 'Скрыть отзывы'
-                                    : `Еще ${hotel.reviews.length} отзывов`}
-                                </Typography>
+                                  <Typography
+                                    variant='m'
+                                    className='text-xs md:text-base'
+                                  >
+                                    {reviewStates[hotel.id]?.showAllReviews
+                                      ? 'Скрыть отзывы'
+                                      : `Еще ${hotel.reviews.length} отзывов`}
+                                  </Typography>
+                                </button>
+                              </div>
+                            )}
+
+                            <div className='flex items-center gap-2'>
+                              <Typography
+                                variant='l'
+                                className='rounded-lg bg-green-300 px-2 py-2 text-[16px] font-medium text-grey-950 md:px-3 md:py-2 md:text-sm'
+                              >
+                                {hotel.user_rating}
+                              </Typography>
+                              <button className='hidden rounded-full bg-blue-50 p-3 lg:flex'>
+                                <SvgSprite name='heart-outline' width={30} />
                               </button>
                             </div>
-                          )}
+                          </div>
 
-                          <div className='flex items-center gap-2'>
+                          <div className='relative mb-2 flex flex-col flex-wrap gap-2'>
+                            <Typography
+                              variant='h4'
+                              className='mb-2 text-[16px] md:text-lg'
+                            >
+                              {hotel.name}
+                            </Typography>
                             <Typography
                               variant='l'
-                              className='rounded-lg bg-green-300 px-2 py-2 text-[16px] font-medium text-grey-950 md:px-3 md:py-2 md:text-sm'
+                              className='mb-2 text-xs md:text-sm'
                             >
-                              {hotel.user_rating}
+                              {hotel.city}
                             </Typography>
-                            <button className='hidden rounded-full bg-blue-50 p-3 lg:flex'>
-                              <SvgSprite name='heart-outline' width={30} />
-                            </button>
                           </div>
-                        </div>
 
-                        <div className='relative mb-2 flex flex-col flex-wrap gap-2'>
-                          <Typography
-                            variant='h4'
-                            className='mb-2 text-[16px] md:text-lg'
-                          >
-                            {hotel.name}
-                          </Typography>
-                          <Typography
-                            variant='l'
-                            className='mb-2 text-xs md:text-sm'
-                          >
-                            {hotel.city}
-                          </Typography>
-                        </div>
+                          {/* Удобства */}
+                          <div className='hotel-amenities mb-2 flex flex-nowrap gap-2'>
+                            {hotel.amenities_common
+                              .slice(0, 3)
+                              .map((amenity, amenityIndex) => (
+                                <Typography
+                                  key={`amenity-${amenityIndex}`}
+                                  variant='l-bold'
+                                  className='rounded-xl bg-blue-50 px-2 py-1 text-xs md:text-lg'
+                                >
+                                  {amenity.name}
+                                </Typography>
+                              ))}
+                          </div>
 
-                        {/* Удобства */}
-                        <div className='hotel-amenities mb-2 flex flex-nowrap gap-2'>
-                          {hotel.amenities[0]?.amenity
-                            .slice(0, 3)
-                            .map((amenity, amenityIndex) => (
-                              <Typography
-                                key={`amenity-${amenityIndex}`}
-                                variant='l-bold'
-                                className='rounded-xl bg-blue-50 px-2 py-1 text-xs md:text-lg'
-                              >
-                                {amenity}
-                              </Typography>
-                            ))}
-                        </div>
+                          {/* Цена */}
+                          <div className='hotel-price flex items-center justify-between rounded-xl bg-blue-50 p-2'>
+                            <Typography variant='l-bold' className='mb-2 text-xs'>
+                              Питание: {hotel.rooms[0]?.type_of_meal}
+                            </Typography>
+                            <Typography
+                              variant='h4'
+                              className='text-[16px] text-blue-600 md:text-lg'
+                            >
+                              {hotel.rooms[0].nightly_price} ₽
+                            </Typography>
+                          </div>
 
-                        {/* Цена */}
-                        <div className='hotel-price flex items-center justify-between rounded-xl bg-blue-50 p-2'>
-                          <Typography variant='l-bold' className='mb-2 text-xs'>
-                            Питание: {hotel.rooms[0]?.food.type_of_meals}
-                          </Typography>
-                          <Typography
-                            variant='h4'
-                            className='text-[16px] text-blue-600 md:text-lg'
-                          >
-                            {hotel.rooms[0].nightly_price} ₽
-                          </Typography>
-                        </div>
-
-                        {/* Отзывы */}
-                        <div className='mt-4 flex flex-col'>
-                          <div
-                            ref={(el) => {
-                              reviewsContainerRefs.current[hotel.id] = el;
-                            }}
-                            className={`transition-max-height overflow-hidden duration-300 ${reviewStates[hotel.id]?.showAllReviews ? 'max-h-[220px] overflow-y-scroll' : 'max-h-0'}`}
-                          >
-                            {hotel.reviews.map((review) => (
-                              <div
-                                key={`review-${review.id}`}
-                                className='mb-4 border-b pb-4'
-                              >
-                                <div className='mb-2 flex items-center gap-3'>
-                                  <img
-                                    src={review.userPhoto}
-                                    alt={review.username}
-                                    className='h-8 w-8 rounded-full'
-                                  />
-                                  <div>
-                                    <Typography
-                                      variant='s'
-                                      className='font-semibold'
-                                    >
-                                      {review.username}
-                                    </Typography>
+                          {/* Отзывы */}
+                          <div className='mt-4 flex flex-col'>
+                            <div
+                              ref={(el) => {
+                                reviewsContainerRefs.current[hotel.id] = el;
+                              }}
+                              className={`transition-max-height overflow-hidden duration-300 ${reviewStates[hotel.id]?.showAllReviews ? 'max-h-[220px] overflow-y-scroll' : 'max-h-0'}`}
+                            >
+                              {hotel.reviews.map((review) => (
+                                <div
+                                  key={`review-${review.id}`}
+                                  className='mb-4 border-b pb-4'
+                                >
+                                  <div className='mb-2 flex items-center gap-3'>
+                                    <img
+                                      src={review.userPhoto}
+                                      alt={review.username}
+                                      className='h-8 w-8 rounded-full'
+                                    />
+                                    <div>
+                                      <Typography
+                                        variant='s'
+                                        className='font-semibold'
+                                      >
+                                        {review.username}
+                                      </Typography>
+                                    </div>
+                                    <div className='ml-auto rounded-lg bg-green-300 px-2 py-1 text-sm font-medium md:px-3 md:py-2'>
+                                      {review.rating}
+                                    </div>
                                   </div>
-                                  <div className='ml-auto rounded-lg bg-green-300 px-2 py-1 text-sm font-medium md:px-3 md:py-2'>
-                                    {review.rating}
-                                  </div>
+                                  <Typography
+                                    variant='xs'
+                                    className='mb-2 mr-2 text-blue-950'
+                                  >
+                                    {review.date}
+                                  </Typography>
+                                  <Typography
+                                    variant='s'
+                                    className='mb-2 text-blue-950'
+                                  >
+                                    {review.text}
+                                  </Typography>
                                 </div>
-                                <Typography
-                                  variant='xs'
-                                  className='mb-2 mr-2 text-blue-950'
-                                >
-                                  {review.date}
-                                </Typography>
-                                <Typography
-                                  variant='s'
-                                  className='mb-2 text-blue-950'
-                                >
-                                  {review.text}
-                                </Typography>
-                              </div>
-                            ))}
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </div>
+
+                      {/* Блок с объявлениями */}
+                      {index === Math.floor(sortedHotels.length / 2) && (
+                        <div
+                          className='announcement-block relative mt-6 flex flex-row items-center justify-between px-6 py-6 md:pr-0'
+                          key='announcement'
+                        >
+                          <div className='announcement-block-backgorund absolute inset-0 z-0 rounded-xl bg-blue-50 md:bottom-6 md:top-6 lg:top-12'></div>
+
+                          <div className='z-10 flex flex-col items-center justify-center gap-2 rounded-xl text-center md:items-start md:text-left'>
+                            <Typography
+                              variant='h4'
+                              className='text-lg text-blue-950'
+                            >
+                              Скидка на 10% на первую поездку
+                            </Typography>
+                            <ButtonCustom
+                              type='button'
+                              variant='primary'
+                              size='s'
+                              className='w-full text-sm font-bold text-green-950 md:w-auto md:border-blue-600 md:bg-blue-600 md:text-white md:hover:border-blue-200 md:hover:bg-blue-200 md:active:border-blue-500 md:active:bg-blue-500'
+                            >
+                              Узнать подробнее
+                            </ButtonCustom>
+                          </div>
+
+                          <div className='z-10 hidden w-1/2 justify-end md:flex'>
+                            <img
+                              src='famous-tourists-sights.png'
+                              alt='famous-tourists-sights'
+                              className='h-auto max-w-full object-contain'
+                            />
+                          </div>
+                        </div>
+                      )}
                     </div>
-
-                    {/* Блок с объявлениями */}
-                    {index === Math.floor(sortedHotels.length / 2) && (
-                      <div
-                        className='announcement-block relative mt-6 flex flex-row items-center justify-between px-6 py-6 md:pr-0'
-                        key='announcement'
-                      >
-                        <div className='announcement-block-backgorund absolute inset-0 z-0 rounded-xl bg-blue-50 md:bottom-6 md:top-6 lg:top-12'></div>
-
-                        <div className='z-10 flex flex-col items-center justify-center gap-2 rounded-xl text-center md:items-start md:text-left'>
-                          <Typography variant='h4' className='text-lg text-blue-950'>
-                            Скидка на 10% на первую поездку
-                          </Typography>
-                          <ButtonCustom
-                            type='button'
-                            variant='primary'
-                            size='s'
-                            className='w-full text-sm font-bold text-green-950 md:w-auto md:border-blue-600 md:bg-blue-600 md:text-white md:hover:border-blue-200 md:hover:bg-blue-200 md:active:border-blue-500 md:active:bg-blue-500'
-                          >
-                            Узнать подробнее
-                          </ButtonCustom>
-                        </div>
-
-                        <div className='z-10 hidden w-1/2 justify-end md:flex'>
-                          <img
-                            src='famous-tourists-sights.png'
-                            alt='famous-tourists-sights'
-                            className='h-auto max-w-full object-contain'
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </>
-            ) : (
-              <div className='flex w-auto items-center justify-center'>
-                <Typography variant='h4'>
-                  Отелей по выбранным критериям не найдено.
-                </Typography>
-              </div>
-            )}
-          </div>
+                  ))}
+                </>
+              ) : (
+                <div className='flex w-auto items-center justify-center'>
+                  <Typography variant='h4'>
+                    Отелей по выбранным критериям не найдено.
+                  </Typography>
+                </div>
+              )}
+            </div>
+          )}
         </main>
       </div>
     </div>

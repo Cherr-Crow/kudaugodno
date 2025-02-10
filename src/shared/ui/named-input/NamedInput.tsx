@@ -11,8 +11,9 @@ export function NamedInput({
   getValue,
   className,
   type = 'text',
+  startValue,
 }: INamedInput) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(startValue || '');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);

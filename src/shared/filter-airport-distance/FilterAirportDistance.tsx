@@ -37,7 +37,10 @@ export function FilterAirportDistance({
       >
         <ul className='grid grid-cols-1 gap-2'>
           {distances.map((distance) => (
-            <li key={distance} className='mb-2 flex items-center gap-2 text-blue-950'>
+            <li
+              key={distance}
+              className='mb-2 flex items-center gap-2 text-blue-950'
+            >
               <RadioButton
                 label={distance}
                 isSelected={selectedDistance === distance}

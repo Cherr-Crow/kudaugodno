@@ -35,7 +35,7 @@ export function Wzhuh({ className }: IWzhuh) {
 
         <div className='-mt-10 hidden md:order-2 md:block'>
           <img
-            src='frog_main.png'
+            src='/frog_main.png'
             alt='Лягушка с чемоданом'
             className='md:h-100 h-auto w-auto object-contain'
           />

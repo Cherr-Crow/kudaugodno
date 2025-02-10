@@ -18,9 +18,10 @@ export function Select({
   arrowHidden,
   size = 'medium',
   id,
+  startValue,
 }: ISelect) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0]);
+  const [selectedOption, setSelectedOption] = useState(startValue ?? options[0]);
   const screen = useScreen();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
