@@ -1,18 +1,21 @@
+'use client';
+
 import React, { useState } from 'react';
 
 import { Typography } from '@/shared/typography';
 
 import { INamedInput } from './NamedInput.types';
 
-export function NamedInput({
-  title,
-  placeholder,
-  name,
-  getValue,
-  className,
-  type = 'text',
-  startValue,
-}: INamedInput) {
+export function NamedInput(props: INamedInput) {
+  const {
+    title,
+    placeholder,
+    name,
+    getValue,
+    className,
+    type = 'text',
+    startValue,
+  } = props;
   const [value, setValue] = useState(startValue || '');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

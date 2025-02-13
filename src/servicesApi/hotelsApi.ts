@@ -16,19 +16,22 @@ export const hotelsApi = createApi({
   tagTypes: ['Hotels', 'PhotosHotel'],
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (build) => ({
-    getHotels: build.query<IResponceListHotels, number | void>({
-      query: (limit = 15, offset = 1) => `hotels?limit=${limit}&offset=${offset}`,
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.results.map(({ id }: { id: number }) => ({
-                type: 'Hotels' as const,
-                id,
-              })),
-              { type: 'Hotels', id: 'LIST' },
-            ]
-          : [{ type: 'Hotels', id: 'LIST' }],
-    }),
+    getHotels: build.query<IResponceListHotels, { limit?: number; offset?: number }>(
+      {
+        query: ({ limit, offset }) =>
+          `hotels?${limit && 'limit=' + limit}${offset && '&offset=' + offset}`,
+        providesTags: (result) =>
+          result
+            ? [
+                ...result.results.map(({ id }: { id: number }) => ({
+                  type: 'Hotels' as const,
+                  id,
+                })),
+                { type: 'Hotels', id: 'LIST' },
+              ]
+            : [{ type: 'Hotels', id: 'LIST' }],
+      },
+    ),
     getOneHotel: build.query<Hotel, number | null>({
       query: (id) => `hotels/${id ?? ''}`,
       providesTags: [{ type: 'Hotels', id: 'LIST' }],
@@ -71,12 +74,12 @@ export const hotelsApi = createApi({
       invalidatesTags: [{ type: 'Hotels', id: 'LIST' }],
     }),
 
-    getPhotosHotel: build.query<PhotoHotel[], number>({
+    getPhotosHotel: build.query<{ results: PhotoHotel[] }, number>({
       query: (id) => `hotels/${id}/photos/`,
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }: { id: number }) => ({
+              ...result.results.map(({ id }: { id: number }) => ({
                 type: 'PhotosHotel' as const,
                 id,
               })),

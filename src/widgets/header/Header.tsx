@@ -22,25 +22,23 @@ export function Header({ className }: IHeader) {
   return (
     <header className={`${className} bg-grey-50 py-4`}>
       <div className='container flex items-center justify-between'>
-        <Link href='/' as='/'>
-          <SvgSprite name='logo' width={65} className='sm:w-[106px]' />
+        <Link href='/' as='/' className=''>
+          {/*<div className='border border-grey-900'>*/}
+          <SvgSprite name='logo' width={65} className='link_hover sm:w-[106px]' />
+          {/*</div>*/}
         </Link>
         <nav className='hidden gap-3 md:flex'>
-          <Link href='/catalog-tours'>
+          <Link href='/catalog-tours' className='link_hover'>
             <Typography variant='l-bold' children='Туры' />
           </Link>
-          <Link href='/catalog-hotels'>
+          <Link className='link_hover' href='/catalog-hotels'>
             <Typography variant='l-bold' children='Отели' />
           </Link>
-          <Link href='/blog-page'>
+          <Link className='link_hover' href='/blog-page'>
             <Typography variant='l-bold' children='Блог' />
           </Link>
-          <Link href='/roman-n'>
-            <Typography
-              variant='l-bold'
-              children='ПЕРЕИСПОЛЬЗУЕМЫЕ КОМПОНЕНТЫ'
-              className='hidden md:flex'
-            />
+          <Link className='link_hover' href='/roman-n'>
+            <Typography variant='l-bold' children='ПК' className='hidden md:flex' />
           </Link>
         </nav>
         <div className='flex items-center gap-3'>

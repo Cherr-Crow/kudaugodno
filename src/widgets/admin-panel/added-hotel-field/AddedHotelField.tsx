@@ -139,6 +139,7 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
       type_of_rest: typeOfRest,
       rules,
       is_active: isActive,
+      room_categories: ['Стандарт', 'Полулюкс', 'Люкс', 'Апартаменты', 'Студия'],
     };
     changeHotel({ body: _obj, id: hotelId });
   };
@@ -148,14 +149,6 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
       route.push('/admin-panel-tour-operator/hotels');
       return;
     }
-
-    // if (isError) {
-    //   if ('status' in error) {
-    //     throw new Error(error.status.toString() || 'Неизвестная ошибка');
-    //   } else {
-    //     throw new Error(error.message || 'Неизвестная ошибка');
-    //   }
-    // }
   }, [cangeValueHotel, isError]);
 
   return (
@@ -340,7 +333,7 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
               startValue={checkOutTime}
             />
           </div>
-          <RulesAdd getRules={setRules} />
+          <RulesAdd getRules={setRules} oldRules={data?.rules} />
         </div>
       </Accordeon>
       <Accordeon title='Дополнительно'>

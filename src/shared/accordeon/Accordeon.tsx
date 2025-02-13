@@ -1,17 +1,28 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 
 import { IAccordeon } from './Accordeon.types';
 
-export function Accordeon({ title, children, className }: IAccordeon) {
-  const [isOpen, setIsOpen] = useState(false);
+export function Accordeon({
+  title,
+  children,
+  className,
+  opened = false,
+}: IAccordeon) {
+  const [isOpen, setIsOpen] = useState(opened);
   const contentRef = useRef<HTMLDivElement>(null);
+  const maxHeigth = useRef('');
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+    maxHeigth.current = contentRef.current.scrollHeight + 'px';
+  }, []);
 
   return (
     <div className={`w-full ${className ?? ''}`}>
@@ -31,9 +42,7 @@ export function Accordeon({ title, children, className }: IAccordeon) {
         className='transition-d overflow-hidden duration-500'
         ref={contentRef}
         style={{
-          maxHeight: isOpen
-            ? `${contentRef.current && contentRef.current.scrollHeight}px`
-            : '0',
+          maxHeight: isOpen ? `${maxHeigth.current}` : '0',
         }}
       >
         {children}

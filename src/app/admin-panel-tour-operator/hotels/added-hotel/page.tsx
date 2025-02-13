@@ -13,7 +13,7 @@ import { Hotel } from '@/types/hotel';
 
 export default function AddedHotel() {
   const [addHotel, { data: newHotelResponce }] = useAddHotelMutation();
-  const { data } = useGetHotelsQuery();
+  const { data } = useGetHotelsQuery({});
   const router = useRouter();
   const [listOfMatches, setListOfMatches] = useState<Hotel[]>([] as Hotel[]);
   const [value, setValue] = useState('');
@@ -42,8 +42,9 @@ export default function AddedHotel() {
 
   useEffect(() => {
     if (!newHotelResponce) return;
+
     router.push(
-      `/admin-panel-tour-operator/hotels/change-hotel/${newHotelResponce.id}/`,
+      `/admin-panel-tour-operator/hotels/change-hotel/?id=${newHotelResponce['id']}`,
     );
   }, [newHotelResponce]);
 

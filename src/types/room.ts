@@ -25,3 +25,41 @@ export type room = {
     photo: string;
   }[];
 };
+
+export type RoomType = [
+  {
+    id: number;
+    hotel_id: number;
+    category: string;
+    price: number;
+    type_of_meal: string;
+    number_of_adults: number;
+    number_of_children: number;
+    single_bed: number;
+    double_bed: number;
+    area: number;
+    quantity_rooms: number;
+    discount: {
+      name: string;
+      size: number;
+      start_date: string;
+      end_date: string;
+    };
+    unavailable: {
+      reason: string;
+      start_date: string;
+      end_date: string;
+    }[];
+    amenities_common: { name: string }[];
+    amenities_coffee: { name: string }[];
+    amenities_bathroom: { name: string }[];
+    amenities_view: { name: string }[];
+    photo: [
+      {
+        id: number;
+        photo: string;
+        room_id: number;
+      },
+    ];
+  },
+];

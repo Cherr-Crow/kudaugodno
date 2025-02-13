@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
@@ -13,10 +13,8 @@ const tabsHotelAdded = ['Отель', 'Номера', 'Даты'];
 
 export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
   const patch = usePathname();
+  const id = useSearchParams().get('id');
   const router = useRouter();
-  const idHotel = useSearchParams().get('id');
-
-  const id = useRef<string>(null);
 
   const [title, setTitle] = useState('Личный кабинет туроператора');
   const [openTabsAddHotel, setOpenTabsAddHotel] = useState(false);
@@ -50,18 +48,17 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
     }
   }, []);
 
-  useEffect(() => {
-    if (!idHotel) return;
-    id.current = idHotel;
-  }, []);
-
   const handleTabName = (tabName: string) => {
+    if (!id) return;
+
     switch (tabName) {
       case 'Отель':
-        router.push(`/admin-panel-tour-operator/hotels/change-hotel?id=${id}`);
+        router.push(`/admin-panel-tour-operator/hotels/change-hotel/?id=${id}`);
         break;
       case 'Номера':
-        router.push('/admin-panel-tour-operator/hotels/change-hotel/rooms');
+        router.push(
+          `/admin-panel-tour-operator/hotels/change-hotel/rooms/?id=${id}`,
+        );
         break;
       case 'Даты':
         router.push('/admin-panel-tour-operator/hotels/change-hotel/dates');

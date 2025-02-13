@@ -12,7 +12,7 @@ import { Typography } from '@/shared/typography';
 
 import { IPhotoBlock } from './PhotoBlock.types';
 
-export function PhotoBlock({ idHotel }: IPhotoBlock) {
+export function PhotoBlock({ idHotel, className }: IPhotoBlock) {
   const { data } = useGetPhotosHotelQuery(idHotel);
   const [addPhoto, { data: newPhoto }] = useAddPhotoHotelMutation();
   const [delPhoto] = useDelPhotoHotelMutation();
@@ -43,12 +43,12 @@ export function PhotoBlock({ idHotel }: IPhotoBlock) {
   };
 
   return (
-    <div className=''>
+    <div className={`${className ?? ''}`}>
       <Typography children='Фотографии' variant='l-bold' />
       <div className='flex gap-2'>
         <ul className='flex gap-2'>
           {data &&
-            data.map((item) => (
+            data.results.map((item) => (
               <li
                 className='relative h-24 w-24 overflow-hidden rounded-2xl border md:h-32 md:w-32'
                 key={nanoid()}

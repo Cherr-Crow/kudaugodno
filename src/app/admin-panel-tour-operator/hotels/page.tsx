@@ -10,12 +10,11 @@ import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
-
-import { ContextMenu } from '../../../shared/ui/context-menu';
+import { ContextMenu } from '@/shared/ui/context-menu';
 
 export default function Hotels() {
   const route = useRouter();
-  const { data } = useGetHotelsQuery();
+  const { data } = useGetHotelsQuery({});
   const [isVisible, setIsVisible] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [activeItem, setActiveItem] = useState(0);
@@ -81,7 +80,7 @@ export default function Hotels() {
         </ButtonCustom>
       </div>
       <Checkbox label='Показать архивные отели' className='my-5' />
-      <table className='w-full'>
+      <table className='max-h-2/3 w-full'>
         <thead>
           <tr className='bg-blue-50'>
             <th className='p-3 text-start text-blue-400'>№</th>

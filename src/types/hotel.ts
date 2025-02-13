@@ -47,6 +47,7 @@ export type Hotel = {
     description: string;
   }[];
   is_active: boolean;
+  room_categories: string[];
 };
 
 type room = {

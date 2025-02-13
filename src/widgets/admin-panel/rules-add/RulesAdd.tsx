@@ -24,10 +24,10 @@ const typeRules = [
   { name: 'Отмена бронирования', description: '' },
 ];
 
-export function RulesAdd({ className, getRules }: IRulesAdd) {
+export function RulesAdd({ className, getRules, oldRules }: IRulesAdd) {
   const id = useSearchParams().get('id');
-  const { data } = useGetOneHotelQuery(id ? +id : null);
-  const [rules, setRules] = useState(typeRules);
+  const { data } = useGetOneHotelQuery(id ? +id : 0);
+  const [rules, setRules] = useState(oldRules || typeRules);
   const [isOpenModal, setIsOpenModal] = useState(false);
   let name: string = '';
   let description: string = '';

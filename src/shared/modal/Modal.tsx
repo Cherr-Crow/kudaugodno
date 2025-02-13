@@ -10,10 +10,14 @@ import { IModal } from './Modal.types';
 import { SvgSprite } from '../svg-sprite';
 
 export function Modal({ children, isOpen, getState }: IModal) {
-  const modalRef = document.querySelector('#modal');
+  const modalRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(isOpen);
   const window = useRef<HTMLDivElement>(null);
   const popap = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    modalRef.current = document.querySelector('#modal');
+  }, []);
 
   const handleClose = () => {
     getState(false);
@@ -23,29 +27,24 @@ export function Modal({ children, isOpen, getState }: IModal) {
     setOpen(isOpen);
   }, [isOpen]);
 
-  if (!open) return null;
+  if (!open || !modalRef.current) return null;
 
-  return modalRef
-    ? createPortal(
-        <div
-          className='fixed left-0 top-0 h-full w-full bg-grey-opacity'
-          ref={window}
-        >
-          <PopupWindow
-            className='relative left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-10'
-            ref={popap}
-          >
-            <SvgSprite
-              name='cross'
-              width={16}
-              className='absolute right-4 top-4 cursor-pointer'
-              color='#888'
-              onClick={handleClose}
-            />
-            {children}
-          </PopupWindow>
-        </div>,
-        modalRef,
-      )
-    : null;
+  return createPortal(
+    <div className='fixed left-0 top-0 h-full w-full bg-grey-opacity' ref={window}>
+      <PopupWindow
+        className='relative left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-10'
+        ref={popap}
+      >
+        <SvgSprite
+          name='cross'
+          width={16}
+          className='absolute right-4 top-4 cursor-pointer'
+          color='#888'
+          onClick={handleClose}
+        />
+        {children}
+      </PopupWindow>
+    </div>,
+    modalRef.current,
+  );
 }
