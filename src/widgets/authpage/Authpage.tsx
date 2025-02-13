@@ -157,7 +157,7 @@ export function Authpage({}: IAuthpage) {
               <form className='mb-[25px] w-full md:mb-[30px]'>
                 <Typography
                   children='Введите e-mail'
-                  className='hidden text-nowrap text-lg font-semibold text-grey-950 md:mb-[7px] md:block lg:text-[20px]'
+                  className='text-nowrap text-lg font-semibold text-grey-950 md:mb-[7px] md:block lg:text-[20px]'
                 />
 
                 <label htmlFor='email' className='mb-[25px] block'>
