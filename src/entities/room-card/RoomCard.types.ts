@@ -10,4 +10,5 @@ export interface IRoomCard {
     amenities: string;
     price: number; 
     image: string[];
+    hasChild?: boolean;
 }
