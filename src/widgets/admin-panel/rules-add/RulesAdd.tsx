@@ -69,7 +69,7 @@ export function RulesAdd({ className, getRules, oldRules }: IRulesAdd) {
 
   return (
     <div className={`flex flex-col gap-3 overflow-scroll pb-10 ${className ?? ''}`}>
-      <Typography children='Правила' variant='l-bold' />
+      <Typography variant='l-bold'>Правила</Typography>
       <ul className='flex flex-col gap-2'>
         {rules?.map((rule) => (
           <li className='' key={nanoid()}>
@@ -95,7 +95,7 @@ export function RulesAdd({ className, getRules, oldRules }: IRulesAdd) {
             className='mb-5 w-96'
           />
           <ButtonCustom variant='primary' size='m' onClick={handleAddRule}>
-            <Typography children='Добавить' />
+            <Typography>Добавить</Typography>
           </ButtonCustom>
         </div>
       </Modal>

@@ -25,7 +25,6 @@ interface IRoomCardProps {
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RoomCard: React.FC<IRoomCardProps> = ({
-  id,
   name,
   description,
   quadrature,

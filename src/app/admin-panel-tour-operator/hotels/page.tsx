@@ -76,7 +76,7 @@ export default function Hotels() {
           />
         </form>
         <ButtonCustom variant='secondary' size='m' onClick={handleClick}>
-          <Typography children='Добавить отель' className='text-nowrap' />
+          <Typography className='text-nowrap'>Добавить отель</Typography>
         </ButtonCustom>
       </div>
       <Checkbox label='Показать архивные отели' className='my-5' />
@@ -93,7 +93,7 @@ export default function Hotels() {
         </thead>
         <tbody>
           {!!workArr.length &&
-            workArr.map((item, i) => (
+            workArr.map((item) => (
               <tr
                 className='cursor-pointer border-b border-grey-100 hover:bg-grey-100'
                 key={nanoid()}

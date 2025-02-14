@@ -46,7 +46,7 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
     } else {
       setActiveTab('Отель');
     }
-  }, []);
+  }, [patch]);
 
   const handleTabName = (tabName: string) => {
     if (!id) return;
@@ -71,11 +71,9 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
   return (
     <div className='rounded-b-2xl bg-blue-600 py-10 md:rounded-b-[100px] md:py-12'>
       <div className='container'>
-        <Typography
-          children={title}
-          variant='h4'
-          className='text-white md:text-5xl md:font-medium'
-        />
+        <Typography variant='h4' className='text-white md:text-5xl md:font-medium'>
+          {title}
+        </Typography>
         <div className='mt-10'>
           {openTabsAddHotel && (
             <TabBar

@@ -223,22 +223,22 @@ export default function RomanN() {
       </div>
       <div className='mt-4 flex flex-col items-center gap-4'>
         <h2 className='w-fit bg-blue-bold text-white'>элемент Typography</h2>
-        <Typography children='h1 (60px/500)' variant='h1' />
-        <Typography children='subtitle1 (60px/400)' variant='subtitle1' />
-        <Typography children='h2 (48px/500)' variant='h2' />
-        <Typography children='subtitle2 (48px/400)' variant='subtitle2' />
-        <Typography children='h3 (40px/500)' variant='h3' />
-        <Typography children='subtitle3 (40px/400)' variant='subtitle3' />
-        <Typography children='h4 (32px/500)' variant='h4' />
-        <Typography children='subtitle4 (24px/400)' variant='subtitle4' />
-        <Typography children='h5 (24px/500)' variant='h5' />
-        <Typography children='l (20px/400)' variant='l' />
-        <Typography children='l-bold (20px/500)' variant='l-bold' />
-        <Typography children='m (16px/400)' variant='m' />
-        <Typography children='m-bold (16px/500)' variant='m-bold' />
-        <Typography children='s (13px/400)' variant='s' />
-        <Typography children='s-bold (13px/500)' variant='s-bold' />
-        <Typography children='xs (11px/400)' variant='xs' />
+        <Typography variant='h1'>h1 (60px/500)</Typography>
+        <Typography variant='subtitle1'>subtitle1 (60px/400)</Typography>
+        <Typography variant='h2'>h2 (48px/500)</Typography>
+        <Typography variant='subtitle2'>subtitle2 (48px/400)</Typography>
+        <Typography variant='h3'>h3 (40px/500)</Typography>
+        <Typography variant='subtitle3'>subtitle3 (40px/400)</Typography>
+        <Typography variant='h4'>h4 (32px/500)</Typography>
+        <Typography variant='subtitle4'>subtitle4 (24px/400)</Typography>
+        <Typography variant='h5'>h5 (24px/500)</Typography>
+        <Typography variant='l'>l (20px/400)</Typography>
+        <Typography variant='l-bold'>l-bold (20px/500)</Typography>
+        <Typography variant='m'>m (16px/400)</Typography>
+        <Typography variant='m-bold'>m-bold (16px/500)</Typography>
+        <Typography variant='s'>s (13px/400)</Typography>
+        <Typography variant='s-bold'>s-bold (13px/500)</Typography>
+        <Typography variant='xs'>xs (11px/400)</Typography>
         <Typography>default (16px/400) = variant=m</Typography>
       </div>
       <div className='mt-4 pb-10'>
@@ -271,43 +271,41 @@ export default function RomanN() {
         <h2 className='mb-3 w-fit bg-blue-400 p-2'>элемент ButtonCustom</h2>
         <div className='flex gap-4'>
           <ButtonCustom variant='primary' size='l'>
-            <Typography
-              variant='s-bold'
-              children='Сюда можно вставлять всё что угодно'
-            />
+            <Typography variant='s-bold'>
+              Сюда можно вставлять всё что угодно
+            </Typography>
           </ButtonCustom>
           <ButtonCustom variant='primary' size='l' disabled>
             <div className='flex items-center gap-3'>
               <SvgSprite name='mail' width={30} />
-              <Typography variant='h4' children='Отправить' />
+              <Typography variant='h4'>Отправить</Typography>
             </div>
           </ButtonCustom>
           <ButtonCustom variant='primary' size='m'>
-            <Typography children='текст' />
+            <Typography>текст</Typography>
           </ButtonCustom>
           <ButtonCustom variant='primary' size='s'>
-            <Typography children='текст' />
+            <Typography>текст</Typography>
           </ButtonCustom>
         </div>
         <div className='flex gap-4'>
           <ButtonCustom variant='secondary' size='l'>
-            <Typography
-              variant='s-bold'
-              children='Сюда можно вставлять всё что угодно'
-            />
+            <Typography variant='s-bold'>
+              Сюда можно вставлять всё что угодно
+            </Typography>
           </ButtonCustom>
           <ButtonCustom variant='tetriary' size='m'>
             <div className='flex items-center gap-3'>
               <SvgSprite name='tennis-racket' width={30} />
-              <Typography variant='m-bold' children='Отправить' />
+              <Typography variant='m-bold'>Отправить</Typography>
             </div>
           </ButtonCustom>
           <ButtonCustom variant='danger' size='m'>
-            <Typography children='текст' />
+            <Typography>текст</Typography>
           </ButtonCustom>
           <ButtonCustom variant='wzhuh' size='s'>
             <div className='flex items-center gap-2'>
-              <Typography children='Вжух' className='text-white' />
+              <Typography className='text-white'>Вжух</Typography>
               <SvgSprite name='magic-wand' width={20} color='#fff' />
             </div>
           </ButtonCustom>

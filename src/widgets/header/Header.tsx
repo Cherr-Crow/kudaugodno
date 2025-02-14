@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 import { PopupWindow } from '@/shared/popup-window';
 import { SvgSprite } from '@/shared/svg-sprite';
@@ -13,7 +12,6 @@ import { IHeader } from './Header.types';
 
 export function Header({ className }: IHeader) {
   const [openUser, setOpenUser] = useState(false);
-  const router = useRouter();
 
   const toggleUserMenu = () => {
     setOpenUser(!openUser);
@@ -29,22 +27,26 @@ export function Header({ className }: IHeader) {
         </Link>
         <nav className='hidden gap-3 md:flex'>
           <Link href='/catalog-tours' className='link_hover'>
-            <Typography variant='l-bold' children='Туры' />
+            <Typography variant='l-bold'>Туры</Typography>
           </Link>
           <Link className='link_hover' href='/catalog-hotels'>
-            <Typography variant='l-bold' children='Отели' />
+            <Typography variant='l-bold'>Отели</Typography>
           </Link>
           <Link className='link_hover' href='/blog-page'>
-            <Typography variant='l-bold' children='Блог' />
+            <Typography variant='l-bold'>Блог</Typography>
           </Link>
           <Link className='link_hover' href='/roman-n'>
-            <Typography variant='l-bold' children='ПК' className='hidden md:flex' />
+            <Typography variant='l-bold' className='hidden md:flex'>
+              ПК
+            </Typography>
           </Link>
         </nav>
         <div className='flex items-center gap-3'>
           <div className='hidden cursor-pointer items-center gap-2 md:flex'>
             <SvgSprite name='phone' width={24} color='#4757EA' />
-            <Typography variant='l' className='text-blue-600' children='Поддержка' />
+            <Typography variant='l' className='text-blue-600'>
+              Поддержка
+            </Typography>
           </div>
           <SvgSprite
             name='bell'
@@ -66,14 +68,14 @@ export function Header({ className }: IHeader) {
                   onClick={toggleUserMenu}
                   className='rounded-xl px-4 py-1 hover:bg-grey-100'
                 >
-                  <Typography children='user' />
+                  <Typography>user</Typography>
                 </Link>
                 <Link
                   href='/admin-panel-tour-operator'
                   onClick={toggleUserMenu}
                   className='rounded-xl px-4 py-1 hover:bg-grey-100'
                 >
-                  <Typography children='tour-operator-panel' />
+                  <Typography>tour-operator-panel</Typography>
                 </Link>
               </PopupWindow>
             )}

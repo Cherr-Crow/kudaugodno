@@ -14,7 +14,7 @@ export default function AddedHotel() {
 
   return (
     <div className='flex w-full flex-col gap-10'>
-      <Typography children='Отель' variant='h4' />
+      <Typography variant='h4'>Отель</Typography>
       <AddedHotelField hotelId={+id} />
     </div>
   );

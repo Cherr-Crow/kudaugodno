@@ -32,7 +32,7 @@ export default function Rooms() {
               <div className='flex flex-col gap-5 p-5'>
                 <div className='grid grid-cols-4 items-center gap-3'>
                   <div>
-                    <Typography children='Категория номера' variant='l-bold' />
+                    <Typography variant='l-bold'>Категория номера</Typography>
                     <Select
                       options={[
                         'Стандарт',
@@ -47,7 +47,7 @@ export default function Rooms() {
                     />
                   </div>
                   <div>
-                    <Typography children='Тип питания' variant='l-bold' />
+                    <Typography variant='l-bold'>Тип питания</Typography>
                     <Select
                       options={[
                         'Без питания',

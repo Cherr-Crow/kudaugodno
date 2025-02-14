@@ -129,8 +129,6 @@ export function HotelCatalog() {
     starCategory,
     mealType,
     amenities,
-    airportDistance,
-    tourOperators,
   ]);
 
   {

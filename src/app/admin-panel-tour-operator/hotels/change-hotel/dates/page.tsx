@@ -44,7 +44,7 @@ export default function Dates() {
 
   return (
     <div className=''>
-      <Typography children='Даты тура' variant='h4' />
+      <Typography variant='h4'>Даты тура</Typography>
       <ul className='my-6 flex gap-3'>
         {years.map((el) => (
           <li
@@ -77,7 +77,7 @@ export default function Dates() {
           size='m'
           onClick={() => setIsOpenModal(!isOpenModal)}
         >
-          <Typography children='Добавить даты' variant='l-bold' />
+          <Typography variant='l-bold'>Добавить даты</Typography>
         </ButtonCustom>
       </div>
 

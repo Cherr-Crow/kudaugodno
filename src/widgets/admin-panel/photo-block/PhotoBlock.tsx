@@ -14,7 +14,7 @@ import { IPhotoBlock } from './PhotoBlock.types';
 
 export function PhotoBlock({ idHotel, className }: IPhotoBlock) {
   const { data } = useGetPhotosHotelQuery(idHotel);
-  const [addPhoto, { data: newPhoto }] = useAddPhotoHotelMutation();
+  const [addPhoto] = useAddPhotoHotelMutation();
   const [delPhoto] = useDelPhotoHotelMutation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -32,7 +32,7 @@ export function PhotoBlock({ idHotel, className }: IPhotoBlock) {
       return;
     }
     try {
-      const result = await addPhoto({ body: formData, id: idHotel }).unwrap();
+      await addPhoto({ body: formData, id: idHotel }).unwrap();
     } catch (err) {
       console.log(err);
     }
@@ -44,7 +44,7 @@ export function PhotoBlock({ idHotel, className }: IPhotoBlock) {
 
   return (
     <div className={`${className ?? ''}`}>
-      <Typography children='Фотографии' variant='l-bold' />
+      <Typography variant='l-bold'>Фотографии</Typography>
       <div className='flex gap-2'>
         <ul className='flex gap-2'>
           {data &&

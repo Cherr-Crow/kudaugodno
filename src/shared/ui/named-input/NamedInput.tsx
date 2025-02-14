@@ -25,7 +25,7 @@ export function NamedInput(props: INamedInput) {
 
   return (
     <div className={`flex w-full flex-col gap-3 ${className ?? ''}`}>
-      {title && <Typography children={title} variant='l-bold' />}
+      {title && <Typography variant='l-bold'>{title}</Typography>}
       <input
         type={type}
         className='w-full rounded-md border border-blue-600 px-4 py-2'
