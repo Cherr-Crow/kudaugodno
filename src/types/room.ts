@@ -29,7 +29,6 @@ export type room = {
 export type RoomType = [
   {
     id: number;
-    hotel_id: number;
     category: string;
     price: number;
     type_of_meal: string;
@@ -39,6 +38,12 @@ export type RoomType = [
     double_bed: number;
     area: number;
     quantity_rooms: number;
+
+    amenities_common: { name: string }[];
+    amenities_coffee: { name: string }[];
+    amenities_bathroom: { name: string }[];
+    amenities_view: { name: string }[];
+
     discount: {
       name: string;
       size: number;
@@ -50,16 +55,10 @@ export type RoomType = [
       start_date: string;
       end_date: string;
     }[];
-    amenities_common: { name: string }[];
-    amenities_coffee: { name: string }[];
-    amenities_bathroom: { name: string }[];
-    amenities_view: { name: string }[];
-    photo: [
-      {
-        id: number;
-        photo: string;
-        room_id: number;
-      },
-    ];
+    photo: {
+      id: number;
+      photo: string;
+      room_id: number;
+    }[];
   },
 ];
