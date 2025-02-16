@@ -110,7 +110,7 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
   };
 
   const handleSaved = () => {
-    const _obj: Omit<Hotel, 'rooms' | 'dates' | 'id' | 'reviews' | 'photos'> = {
+    const _obj: Omit<Hotel, 'rooms' | 'id' | 'reviews' | 'photo'> = {
       name,
       star_category: starCategory,
       place,
@@ -140,6 +140,7 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
       is_active: isActive,
       room_categories: ['Стандарт', 'Полулюкс', 'Люкс', 'Апартаменты', 'Студия'],
     };
+
     changeHotel({ body: _obj, id: hotelId });
   };
 
@@ -339,24 +340,24 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
           <Typography variant='l-bold'>Удобства</Typography>
           <CheckBoxBlock
             title='Общие'
-            checkboxes={amenities_common}
+            checkboxes={amenitiesCommon}
             getNewList={setAmenitiesCommon}
             className='bg-blue-50'
           />
           <CheckBoxBlock
             title='Удобвства а номерах'
-            checkboxes={amenities_in_the_room}
+            checkboxes={amenitiesInTheRoom}
             getNewList={setAmenitiesInTheRoom}
           />
           <CheckBoxBlock
             title='Спорт и оттдых'
-            checkboxes={amenities_sports_and_recreation}
+            checkboxes={amenitiesSportsAndRecreation}
             getNewList={setAmenitiesSportsAndRecreation}
             className='bg-blue-50'
           />
           <CheckBoxBlock
             title='Для детей'
-            checkboxes={amenities_for_children}
+            checkboxes={amenitiesForChildren}
             getNewList={setAmenitiesForChildren}
           />
         </div>

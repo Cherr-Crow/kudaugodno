@@ -46,7 +46,7 @@ export function PhotoBlock({ idHotel, className }: IPhotoBlock) {
     <div className={`${className ?? ''}`}>
       <Typography variant='l-bold'>Фотографии</Typography>
       <div className='flex gap-2'>
-        <ul className='flex gap-2'>
+        <ul className='flex flex-wrap gap-2'>
           {data &&
             data.results.map((item) => (
               <li
@@ -72,25 +72,27 @@ export function PhotoBlock({ idHotel, className }: IPhotoBlock) {
                 </div>
               </li>
             ))}
+          <li>
+            <form>
+              <label
+                htmlFor='file'
+                className='relative block h-24 w-24 cursor-pointer rounded-2xl border border-blue-600 md:h-32 md:w-32'
+              >
+                <input
+                  type='file'
+                  accept='image/*,.jpg,.png,.jpeg'
+                  id='file'
+                  className='h-20 w-20 cursor-pointer opacity-0'
+                  onChange={handleAddPhoto}
+                  ref={fileInputRef}
+                />
+                <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl text-blue-600'>
+                  +
+                </span>
+              </label>
+            </form>
+          </li>
         </ul>
-        <form>
-          <label
-            htmlFor='file'
-            className='relative block h-24 w-24 cursor-pointer rounded-2xl border border-blue-600 md:h-32 md:w-32'
-          >
-            <input
-              type='file'
-              accept='image/*,.jpg,.png,.jpeg'
-              id='file'
-              className='h-20 w-20 cursor-pointer opacity-0'
-              onChange={handleAddPhoto}
-              ref={fileInputRef}
-            />
-            <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl text-blue-600'>
-              +
-            </span>
-          </label>
-        </form>
       </div>
     </div>
   );

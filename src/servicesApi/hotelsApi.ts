@@ -51,7 +51,7 @@ export const hotelsApi = createApi({
     changeHotel: build.mutation<
       Hotel,
       {
-        body: Omit<Hotel, 'rooms' | 'dates' | 'id' | 'reviews' | 'photos'>;
+        body: Omit<Hotel, 'rooms' | 'id' | 'reviews' | 'photo'>;
         id: number;
       }
     >({

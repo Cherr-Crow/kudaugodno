@@ -12,7 +12,7 @@ import { IHotelCard } from './HotelCard.types';
 export function HotelCard({ hotel }: IHotelCard) {
   const {
     name,
-    photos,
+    photo,
     city,
     country,
     user_rating,
@@ -32,7 +32,7 @@ export function HotelCard({ hotel }: IHotelCard) {
           <SvgSprite name='heart-outline' width={24} />
         </div>
       </div>
-      <img src={photos[0].photo} alt='' className='w-full' />
+      <img src={photo[0].photo} alt='' className='w-full' />
       <div className='relative bottom-7 flex w-full flex-col gap-2 rounded-t-3xl bg-white px-4 pt-4'>
         <div className='flex items-center justify-between'>
           <div className='flex gap-2'>
@@ -70,9 +70,9 @@ export function HotelCard({ hotel }: IHotelCard) {
           <Typography className='text-grey-600 md:text-xl'>за сутки</Typography>
         </div>
         <ul className='flex gap-2'>
-          {amenities_common.map((el: { name: string }) => (
+          {amenities_common.map((el: string) => (
             <li className='rounded-2xl bg-blue-200 px-3 py-1' key={nanoid()}>
-              <Typography>{el.name}</Typography>
+              <Typography>{el}</Typography>
             </li>
           ))}
         </ul>

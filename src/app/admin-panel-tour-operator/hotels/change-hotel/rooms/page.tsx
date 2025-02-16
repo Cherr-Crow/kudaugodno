@@ -155,36 +155,24 @@ export default function Rooms() {
               <div className='p-5'>
                 <CheckBoxBlock
                   title='Общие'
-                  checkboxes={[
-                    { name: 'Бесплатный интернет' },
-                    { name: 'Вид на море' },
-                  ]}
+                  checkboxes={['Бесплатный интернет', 'Вид на море']}
                   getNewList={() => {}}
                   className='bg-blue-50'
                 />
                 <CheckBoxBlock
                   title='Кофе-станция'
-                  checkboxes={[
-                    { name: 'Бесплатный интернет' },
-                    { name: 'Вид на море' },
-                  ]}
+                  checkboxes={['Бесплатный интернет', 'Вид на море']}
                   getNewList={() => {}}
                 />
                 <CheckBoxBlock
                   title='В ванной комнате'
-                  checkboxes={[
-                    { name: 'Бесплатный интернет' },
-                    { name: 'Вид на море' },
-                  ]}
+                  checkboxes={['Бесплатный интернет', 'Вид на море']}
                   getNewList={() => {}}
                   className='bg-blue-50'
                 />
                 <CheckBoxBlock
                   title='Вид'
-                  checkboxes={[
-                    { name: 'Бесплатный интернет' },
-                    { name: 'Вид на море' },
-                  ]}
+                  checkboxes={['Бесплатный интернет', 'Вид на море']}
                   getNewList={() => {}}
                 />
               </div>

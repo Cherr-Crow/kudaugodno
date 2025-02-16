@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import { useResizeObserver } from 'usehooks-ts';
+
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 
@@ -13,7 +15,12 @@ export function Accordeon({
 }: IAccordeon) {
   const [isOpen, setIsOpen] = useState(opened);
   const contentRef = useRef<HTMLDivElement>(null);
-  const maxHeigth = useRef('');
+  const [maxHeigth, setMaxHeigth] = useState('');
+  const heigthChild = useRef<HTMLDivElement>(null!);
+  const { height } = useResizeObserver({
+    ref: heigthChild,
+    box: 'border-box',
+  });
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
@@ -21,8 +28,8 @@ export function Accordeon({
 
   useEffect(() => {
     if (!contentRef.current) return;
-    maxHeigth.current = contentRef.current.scrollHeight + 'px';
-  }, []);
+    setMaxHeigth(contentRef.current.scrollHeight + 'px');
+  }, [height]);
 
   return (
     <div className={`w-full ${className ?? ''}`}>
@@ -42,10 +49,12 @@ export function Accordeon({
         className='transition-d overflow-hidden duration-500'
         ref={contentRef}
         style={{
-          maxHeight: isOpen ? `${maxHeigth.current}` : '0',
+          maxHeight: isOpen ? `${maxHeigth}` : '0',
         }}
       >
-        {children}
+        <div className='' ref={heigthChild}>
+          {children}
+        </div>
       </div>
     </div>
   );
