@@ -1,34 +1,117 @@
 'use client';
 
-import React, { useState } from 'react';
-
-// import { SvgSprite } from '@/shared/svg-sprite';
+import React, { useEffect, useState } from 'react';
 
 import Link from 'next/link';
 
 import { Modal } from '@/shared/modal';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
-// import { ButtonCustom } from '@/shared/ui/button-custom';
-// import { timeForComponent } from '@/shared/ui/time-for-component/time';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
+import { timeForComponent } from '@/shared/ui/time-for-component/time';
 
 import { IAuthForBusiness } from './AuthForBusiness.types';
 
 export function AuthForBusiness({}: IAuthForBusiness) {
   const [file, setFile] = useState<string>('');
-  const [buttonText, setButtonText] = useState<string>('Загрузить');
+  const [buttonText, setButtonText] = useState<string | null>('Загрузить');
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isFormValid, setIsFormValid] = useState<boolean>(true);
+
+  const [hotelName, setHotelName] = useState<string>('');
+  const [isHotelNameValid, setIsHotelNameValid] = useState<boolean>(true);
+
+  const [name, setName] = useState<string>('');
+  const [isNameValid, setIsNameValid] = useState<boolean>(true);
+
+  const [lastName, setLastName] = useState<string>('');
+  const [isLastNameValid, setIsLastNameValid] = useState<boolean>(true);
+
+  const [email, setEmail] = useState<string>('');
+  const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
+
+  const [phone, setPhone] = useState<string>('');
+
+  const [startTimer, setStartTimer] = useState<boolean>(false);
+  const [seconds, setSeconds] = useState<number>(15);
+
+  useEffect(() => {
+    if (!startTimer) return;
+    if (seconds === 0) {
+      setStartTimer(false);
+      return;
+    }
+
+    const i = setInterval(() => {
+      setSeconds((seconds) => seconds - 1);
+      console.log(seconds);
+    }, 1000);
+    return () => {
+      clearInterval(i);
+    };
+  }, [startTimer, seconds]);
 
   let contentButton: React.ReactNode;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // e.preventDefault();
+  function validateName(name: string) {
+    console.log(name);
+    const regex = /^[a-zA-Zа-яА-ЯёЁ\s'-]+$/;
+    if (!regex.test(name)) {
+      return false;
+    }
+    if (name.length < 2 || name.length > 20) {
+      return false;
+    }
+    if (name.trim() !== name) {
+      return false;
+    }
 
+    setIsNameValid(true);
+    return true;
+  }
+
+  function emailValid(email: string) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (emailRegex.test(email)) {
+      setIsEmailValid(true);
+    } else {
+      setIsEmailValid(false);
+    }
+  }
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+
+    // Удаляем все нечисловые символы
+    const cleaned = input.replace(/\D/g, '');
+
+    // Применяем маску
+    let formatted = '';
+    if (cleaned.length > 0) {
+      formatted = `+7 (${cleaned.substring(1, 4)}`;
+    }
+    if (cleaned.length >= 4) {
+      formatted += `) ${cleaned.substring(4, 7)}`;
+    }
+    if (cleaned.length >= 7) {
+      formatted += `-${cleaned.substring(7, 9)}`;
+    }
+    if (cleaned.length >= 9) {
+      formatted += `-${cleaned.substring(9, 11)}`;
+    }
+    // Обновляем состояние
+    setPhone(formatted);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setFile(() => e.target.value);
 
     if (e.target.value !== '' && e.target.value !== null) {
+      if (!e.target.files || e.target.files.length === 0) {
+        return;
+      }
+
       setButtonText(e.target.files[0].name);
     }
   };
@@ -39,7 +122,34 @@ export function AuthForBusiness({}: IAuthForBusiness) {
 
   const handleCloseModal = () => {
     setIsOpenModal(false);
-    // setNewAmount('');
+  };
+
+  const handleOpenModal = () => {
+    if (
+      isHotelNameValid &&
+      hotelName !== '' &&
+      isNameValid &&
+      name !== '' &&
+      isLastNameValid &&
+      lastName !== '' &&
+      isEmailValid &&
+      email !== '' &&
+      phone.length == 18
+    ) {
+      setIsOpenModal(true);
+      setStartTimer(true);
+      setSeconds(15);
+
+      setHotelName('');
+      setName('');
+      setLastName('');
+      setEmail('');
+      setPhone('');
+      setFile('');
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
   };
 
   if (file == '') {
@@ -92,8 +202,8 @@ export function AuthForBusiness({}: IAuthForBusiness) {
   return (
     <section className='py-[80px] md:py-[80px]'>
       <div className='mx-auto min-h-[960px] rounded-[20px] border-blue-700 md:min-h-[640px] md:max-w-[1180px] md:border-[50px]'>
-        <div className='relative h-[960px] max-w-[1100px] items-center bg-blue-50 bg-right-bottom px-2 py-[28px] md:m-[-10px] md:h-[1022px] md:rounded-[20px] md:bg-[url(/authforbisback.jpg)]'>
-          <div className='mx-auto flex h-[468px] max-w-[540px] flex-col items-center md:max-w-[582px] md:pt-[45px]'>
+        <div className='relative h-[100%] min-h-[960px] max-w-[1100px] items-center bg-blue-50 bg-right-bottom px-2 py-[28px] md:m-[-10px] md:min-h-[1022px] md:rounded-[20px] md:bg-[url(/authforbisback.jpg)]'>
+          <div className='mx-auto flex h-[100%] min-h-[468px] max-w-[540px] flex-col items-center md:max-w-[582px] md:pt-[45px]'>
             <Typography className='mb-7 w-[80%] text-center text-[32px]/[110%] font-black text-grey-950 md:mb-11 md:w-[100%] md:text-[48px] md:font-semibold'>
               Заявка на подключение
             </Typography>
@@ -113,12 +223,25 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   children='Название'
                   className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'
                 />
+                {!isHotelNameValid && (
+                  <Typography
+                    children='Название не корректно (не менее 2х и не более 20и букв)'
+                    className='mb-[3px] mt-[-16px] block text-nowrap font-normal text-red-primary-800'
+                  />
+                )}
                 <input
                   id='hotelName'
                   className='h-[55px] w-full rounded-[8px] px-[15px] md:h-[47px] md:border md:border-grey-950 md:bg-transparent'
                   type='text'
                   name='hotelName'
                   placeholder='Отель Ромашка/Туроператор РомашкаАвиа'
+                  onBlur={() => {
+                    setIsHotelNameValid(validateName(hotelName));
+                  }}
+                  onChange={(e) => {
+                    setHotelName(e.target.value.trim());
+                  }}
+                  value={hotelName}
                 />
               </label>
               <label htmlFor='firstName' className='mb-[17px] block'>
@@ -126,12 +249,25 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   children='Имя'
                   className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'
                 />
+                {!isNameValid && (
+                  <Typography
+                    children='Имя не корректно (не менее 2х и не более 20и букв)'
+                    className='mb-[3px] mt-[-16px] block text-nowrap font-normal text-red-primary-800'
+                  />
+                )}
                 <input
                   id='firstName'
                   className='h-[55px] w-full rounded-[8px] px-[15px] md:h-[47px] md:border md:border-grey-950 md:bg-transparent'
                   type='text'
                   name='firstName'
                   placeholder='Иван'
+                  onBlur={() => {
+                    setIsNameValid(validateName(name));
+                  }}
+                  onChange={(e) => {
+                    setName(e.target.value.trim());
+                  }}
+                  value={name}
                 />
               </label>
               <label htmlFor='lastName' className='mb-[17px] block'>
@@ -139,12 +275,25 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   children='Фамилия'
                   className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'
                 />
+                {!isLastNameValid && (
+                  <Typography
+                    children='Фамилия не корректна (не менее 2х и не более 20и букв)'
+                    className='mb-[3px] mt-[-16px] block text-nowrap font-normal text-red-primary-800'
+                  />
+                )}
                 <input
                   id='lastName'
                   className='h-[55px] w-full rounded-[8px] px-[15px] md:h-[47px] md:border md:border-grey-950 md:bg-transparent'
                   type='text'
                   name='lastName'
                   placeholder='Иванов'
+                  onBlur={() => {
+                    setIsLastNameValid(validateName(lastName));
+                  }}
+                  onChange={(e) => {
+                    setLastName(e.target.value.trim());
+                  }}
+                  value={lastName}
                 />
               </label>
               <label htmlFor='email' className='mb-[17px] block'>
@@ -152,12 +301,25 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   children='Email'
                   className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'
                 />
+                {!isEmailValid && (
+                  <Typography
+                    children='Некорректный адрес почты'
+                    className='mb-[3px] mt-[-16px] block text-nowrap font-normal text-red-primary-800'
+                  />
+                )}
                 <input
                   id='email'
                   className='h-[55px] w-full rounded-[8px] px-[15px] md:h-[47px] md:border md:border-grey-950 md:bg-transparent'
                   type='email'
                   name='email'
                   placeholder='example@gmail.com'
+                  onBlur={() => {
+                    emailValid(email);
+                  }}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  value={email}
                 />
               </label>
               <label htmlFor='tel' className='mb-5 block'>
@@ -171,6 +333,8 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   type='tel'
                   name='tel'
                   placeholder='+7 (999) 678-22-22'
+                  onChange={handleInputChange}
+                  value={phone}
                 />
               </label>
               <Typography
@@ -183,56 +347,61 @@ export function AuthForBusiness({}: IAuthForBusiness) {
 
               {contentButton}
 
-              <ButtonCustom
-                type='button'
-                // onClick={handleClick}
-                variant='primary'
-                size='m'
-                className='h-[70px] w-full px-[35px] py-[7px] md:mx-auto md:block md:w-auto md:px-[32px] md:py-[20px] lg:py-[20px]'
-              >
-                <Typography
-                  children='Отправить заявку'
-                  className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'
-                />
-              </ButtonCustom>
+              {!isFormValid && (
+                <Typography className='mb-[15px] block text-center text-[18px] font-normal text-red-primary-800'>
+                  Все поля формы должны быть заполнены!
+                </Typography>
+              )}
+
+              {!startTimer ? (
+                <ButtonCustom
+                  type='button'
+                  onClick={handleOpenModal}
+                  variant='primary'
+                  size='m'
+                  className='h-[70px] w-full px-[35px] py-[7px] md:mx-auto md:block md:w-auto md:px-[32px] md:py-[20px] lg:py-[20px]'
+                >
+                  <Typography
+                    children='Отправить заявку'
+                    className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'
+                  />
+                </ButtonCustom>
+              ) : (
+                <Typography className='mb-[15px] block text-nowrap text-[20px] font-normal text-grey-700 md:mb-[21px] md:text-[18px] lg:mb-[28px] lg:text-[20px]'>
+                  Отправить новую заявку через {timeForComponent(seconds)}
+                </Typography>
+              )}
             </form>
           </div>
         </div>
       </div>
-      <div className='relative m-auto min-h-[478px] max-w-[348px] rounded-[20px] bg-[url("/authModal375.jpg")] px-5 py-16 md:min-h-[480px] md:max-w-[800px] md:bg-[url("/authModal800.jpg")] md:px-[120px] md:py-12 lg:min-h-[638px] lg:max-w-[1180px] lg:bg-[url("/authModal1024.jpg")] lg:py-[110px]'>
-        <div className='absolute right-[30px] top-[30px] cursor-pointer'>
-          <SvgSprite className='' name='cross' width={16} />
-        </div>
-        <Typography className='m-auto mb-6 block w-[80%] text-center text-[18px] font-semibold tracking-wide md:w-[100%] md:text-[24px] lg:text-[32px]'>
-          Ваши данные отправлены администратору сайта
-        </Typography>
-        <Typography className='text-4 m-auto mb-4 block text-center font-normal md:mb-5 md:text-[19px] lg:mb-6 lg:w-[60%] lg:text-[19px]/[150%]'>
-          Скоро администратор свяжется с вами по указанной почте. Если всё в порядке,
-          вы получите доступ к Личному кабинету туроператора.
-        </Typography>
-        {/* <Typography className='block font-normal text-4 md:text-[18px] lg:text-5'>
-          Если всё в порядке, вы получите доступ к Личному кабинету туроператора.
-        </Typography>  */}
-        <ButtonCustom
-          type='button'
-          // onClick={handleClick}
-          variant='primary'
-          size='m'
-          className='m-auto block h-[70px] px-[30px] py-[7px] md:mx-auto md:block md:w-auto md:px-[30px] md:py-[12px] lg:px-[100px] lg:py-[20px]'
-        >
-          {/* <Typography
-            children='На главную'
-            className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'
-          /> */}
-          <Link
-            className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'
-            href={'/'}
+      <Modal isOpen={isOpenModal} getState={handleCloseModal}>
+        <div className='relative m-auto min-h-[478px] max-w-[348px] rounded-[20px] bg-[url("/authModal375.jpg")] px-5 py-16 md:min-h-[480px] md:max-w-[800px] md:bg-[url("/authModal800.jpg")] md:px-[120px] md:py-12 lg:min-h-[638px] lg:max-w-[1180px] lg:bg-[url("/authModal1024.jpg")] lg:py-[110px]'>
+          {/* <button className='block cursor-pointer absolute top-[30px] right-[30px]'>
+            <SvgSprite className='' name='cross' width={16}/>
+          </button> */}
+          <Typography className='m-auto mb-6 block w-[80%] text-center text-[18px] font-semibold tracking-wide md:w-[100%] md:text-[24px] lg:text-[32px]'>
+            Ваши данные отправлены администратору сайта
+          </Typography>
+          <Typography className='text-4 m-auto mb-4 block text-center font-normal md:mb-5 md:text-[19px] lg:mb-6 lg:w-[60%] lg:text-[19px]/[150%]'>
+            Скоро администратор свяжется с вами по указанной почте. Если всё в
+            порядке, вы получите доступ к Личному кабинету туроператора.
+          </Typography>
+          <ButtonCustom
+            type='button'
+            variant='primary'
+            size='m'
+            className='m-auto block h-[70px] px-[30px] py-[7px] md:mx-auto md:block md:w-auto md:px-[30px] md:py-[12px] lg:px-[100px] lg:py-[20px]'
           >
-            На главную
-          </Link>
-        </ButtonCustom>
-      </div>
-      <Modal isOpen={isOpenModal} getState={handleCloseModal}></Modal>
+            <Link
+              className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'
+              href={'/'}
+            >
+              На главную
+            </Link>
+          </ButtonCustom>
+        </div>
+      </Modal>
     </section>
   );
 }
