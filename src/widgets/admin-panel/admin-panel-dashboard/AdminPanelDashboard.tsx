@@ -28,7 +28,7 @@ export function AdminPanelDashboard({}: IAdminPanelDashboard) {
           key={nanoid()}
           onClick={() => routes.push(link.path)}
         >
-          <Typography children={link.name} />
+          <Typography>{link.name}</Typography>
         </li>
       ))}
     </ul>

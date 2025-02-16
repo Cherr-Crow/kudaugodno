@@ -155,10 +155,9 @@ export function Authpage({}: IAuthpage) {
                 Добро пожаловать !
               </Typography>
               <form className='mb-[25px] w-full md:mb-[30px]'>
-                <Typography
-                  children='Введите e-mail'
-                  className='text-nowrap text-lg font-semibold text-grey-950 md:mb-[7px] md:block lg:text-[20px]'
-                />
+                <Typography className='text-nowrap text-lg font-semibold text-grey-950 md:mb-[7px] md:block lg:text-[20px]'>
+                  Введите e-mail
+                </Typography>
 
                 <label htmlFor='email' className='mb-[25px] block'>
                   <input
@@ -177,10 +176,9 @@ export function Authpage({}: IAuthpage) {
                   />
                 </label>
                 {!isEmailValid && (
-                  <Typography
-                    children='Некорректный адрес почты'
-                    className='mb-[5px] mt-[-16px] block text-nowrap text-[19px] font-normal text-red-primary-800 md:text-[18px] lg:text-[20px]'
-                  />
+                  <Typography className='mb-[5px] mt-[-16px] block text-nowrap text-[19px] font-normal text-red-primary-800 md:text-[18px] lg:text-[20px]'>
+                    Некорректный адрес почты
+                  </Typography>
                 )}
                 {!startTimer ? (
                   <ButtonCustom
@@ -190,10 +188,9 @@ export function Authpage({}: IAuthpage) {
                     size='m'
                     className='h-[70px] w-full px-[35px] py-[7px] md:mx-auto md:block md:w-auto md:px-[30px] md:py-[11px] lg:py-[20px]'
                   >
-                    <Typography
-                      children='Получить код'
-                      className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'
-                    />
+                    <Typography className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'>
+                      Получить код
+                    </Typography>
                   </ButtonCustom>
                 ) : (
                   <Typography className='mb-[15px] block text-nowrap text-[20px] font-normal text-grey-700 md:mb-[21px] md:text-[18px] lg:mb-[28px] lg:text-[20px]'>
@@ -202,10 +199,9 @@ export function Authpage({}: IAuthpage) {
                 )}
               </form>
 
-              <Typography
-                children='Другие способы входа'
-                className='mb-[15px] block text-nowrap text-base font-semibold text-grey-950 md:mb-[21px] md:text-[18px] lg:mb-[28px] lg:text-[20px]'
-              />
+              <Typography className='mb-[15px] block text-nowrap text-base font-semibold text-grey-950 md:mb-[21px] md:text-[18px] lg:mb-[28px] lg:text-[20px]'>
+                Другие способы входа
+              </Typography>
 
               <div className='flex w-[100%] flex-col md:flex-row md:justify-between md:px-[15px] lg:px-[40px]'>
                 <ButtonCustom
@@ -264,10 +260,9 @@ export function Authpage({}: IAuthpage) {
                 Добро пожаловать!
               </Typography>
               <form className='mb-[25px] w-full md:mb-[18px]'>
-                <Typography
-                  children='Введите код из письма'
-                  className='mb-[16px] block text-nowrap text-center text-base font-semibold text-grey-950 md:text-[18px] lg:mb-[20px] lg:text-[20px]'
-                />
+                <Typography className='mb-[16px] block text-nowrap text-center text-base font-semibold text-grey-950 md:text-[18px] lg:mb-[20px] lg:text-[20px]'>
+                  Введите код из письма
+                </Typography>
                 <div className='flex justify-between md:px-[37px] lg:px-[132px]'>
                   <label htmlFor='' className='block'>
                     <input
@@ -322,10 +317,9 @@ export function Authpage({}: IAuthpage) {
                   size='m'
                   className='mt-[25px] h-[70px] w-full px-[35px] py-[7px] md:mx-auto md:block md:w-auto md:px-[30px] md:py-[11px] lg:py-[14px]'
                 >
-                  <Typography
-                    children='Прислать новый код'
-                    className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'
-                  />
+                  <Typography className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'>
+                    Прислать новый код
+                  </Typography>
                 </ButtonCustom>
               ) : (
                 <Typography className='mb-[15px] block text-nowrap text-[20px] font-normal text-grey-700 md:mb-[21px] md:text-[18px] lg:mb-[28px] lg:text-[20px]'>

@@ -1,5 +1,5 @@
 import React from 'react';
 
 export default function AdminPanelTourOperator() {
-  return <div className=''>AdminPanelTourOperator</div>;
+  return <div className=''></div>;
 }

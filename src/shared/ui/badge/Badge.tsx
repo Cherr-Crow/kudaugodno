@@ -9,9 +9,9 @@ export function Badge({ size = 'base', name, price }: IBadge) {
     <div
       className={`flex items-center justify-between rounded-xl bg-blue-50 ${size === 'base' ? 'px-5 py-3' : 'px-3 py-2'} `}
     >
-      <Typography children={name} variant={size === 'base' ? 'subtitle4' : 'm'} />
+      <Typography variant={size === 'base' ? 'subtitle4' : 'm'}>{name}</Typography>
       {price && (
-        <Typography children={price} variant={size === 'base' ? 'h5' : 'm-bold'} />
+        <Typography variant={size === 'base' ? 'h5' : 'm-bold'}>{price}</Typography>
       )}
     </div>
   );

@@ -10,7 +10,7 @@ import { HotelRules } from '@/widgets/hotel-rules';
 import { RoomModal } from '@/widgets/room-modal';
 
 export default function CatalogHotels() {
-    const hotelsData = [
+  const hotelsData = [
     {
       id: 1,
       name: 'Номер Double',
@@ -18,11 +18,12 @@ export default function CatalogHotels() {
       quadrature: '24',
       amenities: 'Завтрак включен',
       price: 65000,
-      images: [ 
+      images: [
         'Novotel-Nairobi-Westlands-photo-4.png',
         'Novotel-Nairobi-Westlands-photo-2.png',
         'Novotel-Nairobi-Westlands-photo-3.png',
       ],
+      hasChild: false,
     },
     {
       id: 2,
@@ -31,11 +32,12 @@ export default function CatalogHotels() {
       quadrature: '44',
       amenities: 'Завтрак и ужин включены',
       price: 85000,
-      images: [ 
+      images: [
         'Novotel-Nairobi-Westlands-photo-4.png',
         'Novotel-Nairobi-Westlands-photo-2.png',
         'Novotel-Nairobi-Westlands-photo-3.png',
       ],
+      hasChild: true,
     },
     {
       id: 3,
@@ -44,11 +46,12 @@ export default function CatalogHotels() {
       quadrature: '30',
       amenities: 'Завтрак включен',
       price: 70000,
-      images: [ 
+      images: [
         'Novotel-Nairobi-Westlands-photo-5.png',
         'Novotel-Nairobi-Westlands-photo-1.png',
         'Novotel-Nairobi-Westlands-photo-4.png',
       ],
+      hasChild: true,
     },
     {
       id: 4,
@@ -62,6 +65,7 @@ export default function CatalogHotels() {
         'Novotel-Nairobi-Westlands-photo-1.png',
         'Novotel-Nairobi-Westlands-photo-4.png',
       ],
+      hasChild: true,
     },
     {
       id: 5,
@@ -70,11 +74,12 @@ export default function CatalogHotels() {
       quadrature: '24',
       amenities: 'Завтрак и ужин включены',
       price: 70000,
-      images: [ 
+      images: [
         'Novotel-Nairobi-Westlands-photo-3.png',
         'Novotel-Nairobi-Westlands-photo-1.png',
         'Novotel-Nairobi-Westlands-photo-4.png',
       ],
+      hasChild: true,
     },
     {
       id: 6,
@@ -83,13 +88,13 @@ export default function CatalogHotels() {
       quadrature: '24',
       amenities: 'Завтрак и ужин включены',
       price: 70000,
-      images: [ 
+      images: [
         'Novotel-Nairobi-Westlands-photo-3.png',
         'Novotel-Nairobi-Westlands-photo-1.png',
         'Novotel-Nairobi-Westlands-photo-4.png',
       ],
+      hasChild: true,
     },
-    
   ];
   return (
     <>
@@ -103,11 +108,9 @@ export default function CatalogHotels() {
         <HotelBlockPhotosReview />
         <HotelAmenities />
         <HotelRules />
-        <HotelRomsList hotels={hotelsData}/>
+        <HotelRomsList hotels={hotelsData} />
         <RoomModal />
       </section>
     </>
   );
 }
-
-

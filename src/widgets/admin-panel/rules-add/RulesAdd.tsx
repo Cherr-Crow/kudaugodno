@@ -24,10 +24,10 @@ const typeRules = [
   { name: 'Отмена бронирования', description: '' },
 ];
 
-export function RulesAdd({ className, getRules }: IRulesAdd) {
+export function RulesAdd({ className, getRules, oldRules }: IRulesAdd) {
   const id = useSearchParams().get('id');
-  const { data } = useGetOneHotelQuery(id ? +id : null);
-  const [rules, setRules] = useState(typeRules);
+  const { data } = useGetOneHotelQuery(id ? +id : 0);
+  const [rules, setRules] = useState(oldRules || typeRules);
   const [isOpenModal, setIsOpenModal] = useState(false);
   let name: string = '';
   let description: string = '';
@@ -69,7 +69,7 @@ export function RulesAdd({ className, getRules }: IRulesAdd) {
 
   return (
     <div className={`flex flex-col gap-3 overflow-scroll pb-10 ${className ?? ''}`}>
-      <Typography children='Правила' variant='l-bold' />
+      <Typography variant='l-bold'>Правила</Typography>
       <ul className='flex flex-col gap-2'>
         {rules?.map((rule) => (
           <li className='' key={nanoid()}>
@@ -95,7 +95,7 @@ export function RulesAdd({ className, getRules }: IRulesAdd) {
             className='mb-5 w-96'
           />
           <ButtonCustom variant='primary' size='m' onClick={handleAddRule}>
-            <Typography children='Добавить' />
+            <Typography>Добавить</Typography>
           </ButtonCustom>
         </div>
       </Modal>
