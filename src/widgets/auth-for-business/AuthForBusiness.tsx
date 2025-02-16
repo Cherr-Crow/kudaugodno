@@ -377,9 +377,6 @@ export function AuthForBusiness({}: IAuthForBusiness) {
       </div>
       <Modal isOpen={isOpenModal} getState={handleCloseModal}>
         <div className='relative m-auto min-h-[478px] max-w-[348px] rounded-[20px] bg-[url("/authModal375.jpg")] px-5 py-16 md:min-h-[480px] md:max-w-[800px] md:bg-[url("/authModal800.jpg")] md:px-[120px] md:py-12 lg:min-h-[638px] lg:max-w-[1180px] lg:bg-[url("/authModal1024.jpg")] lg:py-[110px]'>
-          {/* <button className='block cursor-pointer absolute top-[30px] right-[30px]'>
-            <SvgSprite className='' name='cross' width={16}/>
-          </button> */}
           <Typography className='m-auto mb-6 block w-[80%] text-center text-[18px] font-semibold tracking-wide md:w-[100%] md:text-[24px] lg:text-[32px]'>
             Ваши данные отправлены администратору сайта
           </Typography>
