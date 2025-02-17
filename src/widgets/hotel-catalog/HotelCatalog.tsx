@@ -258,6 +258,7 @@ export function HotelCatalog() {
         </div>
 
         <main className='mx-auto w-full max-w-md p-4 md:max-w-xl lg:w-3/4 lg:max-w-none'>
+          {/* Мобильная версия кнопок*/}
           <div className='mb-4 flex md:hidden'>
             {isMapVisible ? (
               <button

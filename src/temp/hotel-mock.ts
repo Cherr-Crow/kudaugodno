@@ -104,7 +104,11 @@ export const hotels: Hotel[] = [
     distance_to_the_center: 0,
     distance_to_the_metro: 0,
     distance_to_the_airport: 0,
-    amenities_common: [],
+    amenities_common: [
+      { name: 'Только завтрак' },
+      { name: 'Бесплатная отмена до 1 ноября' },
+      { name: 'Бесплатный Wi-fi' },
+    ],
     amenities_in_the_room: [],
     amenities_sports_and_recreation: [],
     amenities_for_children: [],
