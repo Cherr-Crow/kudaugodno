@@ -208,26 +208,22 @@ export function AuthForBusiness({}: IAuthForBusiness) {
               Заявка на подключение
             </Typography>
             <form className='mb-[25px] w-full md:mb-[30px]' method='post'>
-              <Typography
-                children='Выберите тип'
-                className='mb-2 block text-[21px] font-semibold text-grey-950'
-              />
-
+              <Typography className='mb-2 block text-[21px] font-semibold text-grey-950'>
+                Выберите тип
+              </Typography>
               <div className='mb-3 flex'>
                 <Checkbox label='Туроператор' className='my-1 mr-7' />
                 <Checkbox label='Отельер' className='my-1' />
               </div>
 
               <label htmlFor='hotelName' className='mb-[17px] block'>
-                <Typography
-                  children='Название'
-                  className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'
-                />
+                <Typography className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'>
+                  Название
+                </Typography>
                 {!isHotelNameValid && (
-                  <Typography
-                    children='Название не корректно (не менее 2х и не более 20и букв)'
-                    className='mb-[3px] mt-[-16px] block text-nowrap font-normal text-red-primary-800'
-                  />
+                  <Typography className='mb-[3px] mt-[-16px] block text-nowrap font-normal text-red-primary-800'>
+                    Название не корректно (не менее 2х и не более 20и букв)
+                  </Typography>
                 )}
                 <input
                   id='hotelName'
@@ -245,15 +241,13 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                 />
               </label>
               <label htmlFor='firstName' className='mb-[17px] block'>
-                <Typography
-                  children='Имя'
-                  className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'
-                />
+                <Typography className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'>
+                  Имя
+                </Typography>
                 {!isNameValid && (
-                  <Typography
-                    children='Имя не корректно (не менее 2х и не более 20и букв)'
-                    className='mb-[3px] mt-[-16px] block text-nowrap font-normal text-red-primary-800'
-                  />
+                  <Typography className='mb-[3px] mt-[-16px] block text-nowrap font-normal text-red-primary-800'>
+                    Имя не корректно (не менее 2х и не более 20и букв)
+                  </Typography>
                 )}
                 <input
                   id='firstName'
@@ -271,15 +265,13 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                 />
               </label>
               <label htmlFor='lastName' className='mb-[17px] block'>
-                <Typography
-                  children='Фамилия'
-                  className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'
-                />
+                <Typography className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'>
+                  Фамилия
+                </Typography>
                 {!isLastNameValid && (
-                  <Typography
-                    children='Фамилия не корректна (не менее 2х и не более 20и букв)'
-                    className='mb-[3px] mt-[-16px] block text-nowrap font-normal text-red-primary-800'
-                  />
+                  <Typography className='mb-[3px] mt-[-16px] block text-nowrap font-normal text-red-primary-800'>
+                    Фамилия не корректна (не менее 2х и не более 20и букв)
+                  </Typography>
                 )}
                 <input
                   id='lastName'
@@ -297,15 +289,13 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                 />
               </label>
               <label htmlFor='email' className='mb-[17px] block'>
-                <Typography
-                  children='Email'
-                  className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'
-                />
+                <Typography className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'>
+                  Email
+                </Typography>
                 {!isEmailValid && (
-                  <Typography
-                    children='Некорректный адрес почты'
-                    className='mb-[3px] mt-[-16px] block text-nowrap font-normal text-red-primary-800'
-                  />
+                  <Typography className='mb-[3px] mt-[-16px] block text-nowrap font-normal text-red-primary-800'>
+                    Некорректный адрес почты
+                  </Typography>
                 )}
                 <input
                   id='email'
@@ -323,10 +313,9 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                 />
               </label>
               <label htmlFor='tel' className='mb-5 block'>
-                <Typography
-                  children='Телефон'
-                  className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'
-                />
+                <Typography className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'>
+                  Телефон
+                </Typography>
                 <input
                   id='tel'
                   className='h-[55px] w-full rounded-[8px] px-[15px] md:h-[47px] md:border md:border-grey-950 md:bg-transparent'
@@ -337,10 +326,9 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   value={phone}
                 />
               </label>
-              <Typography
-                children='Добавить документы'
-                className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-2'
-              />
+              <Typography className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-2'>
+                Добавить документы
+              </Typography>
               <Typography className='mb-3 block text-[16px] font-normal text-grey-800'>
                 Прикрепите документы об отеле/туроператоре (необязательно)
               </Typography>
@@ -361,10 +349,9 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   size='m'
                   className='h-[70px] w-full px-[35px] py-[7px] md:mx-auto md:block md:w-auto md:px-[32px] md:py-[20px] lg:py-[20px]'
                 >
-                  <Typography
-                    children='Отправить заявку'
-                    className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'
-                  />
+                  <Typography className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'>
+                    Отправить заявку
+                  </Typography>
                 </ButtonCustom>
               ) : (
                 <Typography className='mb-[15px] block text-nowrap text-[20px] font-normal text-grey-700 md:mb-[21px] md:text-[18px] lg:mb-[28px] lg:text-[20px]'>
