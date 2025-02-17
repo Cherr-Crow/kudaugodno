@@ -19,8 +19,10 @@ export function NamedInput(props: INamedInput) {
   const [value, setValue] = useState(startValue || '');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-    getValue(event.target.value);
+    const newValue =
+      type === 'number' ? Number(event.target.value) : event.target.value;
+    setValue(newValue);
+    getValue?.(newValue);
   };
 
   return (
@@ -28,7 +30,7 @@ export function NamedInput(props: INamedInput) {
       {title && <Typography variant='l-bold'>{title}</Typography>}
       <input
         type={type}
-        className='w-full rounded-md border border-blue-600 px-4 py-2'
+        className='w-full rounded-md border border-blue-600 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
         placeholder={placeholder ?? ''}
         value={value}
         onChange={handleChange}
