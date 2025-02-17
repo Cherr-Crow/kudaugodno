@@ -155,7 +155,7 @@ export function Authpage({}: IAuthpage) {
                 Добро пожаловать !
               </Typography>
               <form className='mb-[25px] w-full md:mb-[30px]'>
-                <Typography className='hidden text-nowrap text-lg font-semibold text-grey-950 md:mb-[7px] md:block lg:text-[20px]'>
+                <Typography className='text-nowrap text-lg font-semibold text-grey-950 md:mb-[7px] md:block lg:text-[20px]'>
                   Введите e-mail
                 </Typography>
 
