@@ -29,14 +29,16 @@ export function Hero({ className }: IHero) {
         <div className='flex flex-col items-center pt-20'>
           <Typography
             variant='h1'
-            children='Легко найти — выгодно забронировать'
             className={`text-center text-white ${windowWidth && windowWidth.width < 1280 ? 'font-semibold' : 'font-bold'} `}
-          />
+          >
+            Легко найти — выгодно забронировать
+          </Typography>
           <Typography
             variant='subtitle3'
-            children='Поиск туров и отелей по всему миру'
             className={`font-normal text-white ${windowWidth && windowWidth.width < 1280 && 'text-base'} m-[0 auto] mb-8`}
-          />
+          >
+            Поиск туров и отелей по всему миру
+          </Typography>
 
           <SearchBlock />
         </div>

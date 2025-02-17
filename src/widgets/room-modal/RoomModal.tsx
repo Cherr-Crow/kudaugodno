@@ -130,7 +130,7 @@ export function RoomModal({}: IRoomModal) {
               <Typography className='mb-3 block font-semibold text-blue-900 md:text-lg md:text-grey-950 lg:text-xl'>
                 {item.category}
               </Typography>
-              {item.amenities.map((comfortitem) => (
+              {item.amenities_common.map((comfortitem) => (
                 <div className='mb-2 flex' key={nanoid()}>
                   <SvgSprite
                     name='check-mark'
@@ -138,7 +138,7 @@ export function RoomModal({}: IRoomModal) {
                     className='m-0 mr-4 cursor-pointer'
                   />
                   <Typography variant='s' className='font-normal md:text-base'>
-                    {comfortitem.name}
+                    {comfortitem}
                   </Typography>
                 </div>
               ))}

@@ -9,7 +9,7 @@ export function ContextMenu({ items, visible, positionProp }: IContextMenu) {
   const [position, setPosition] = useState(positionProp);
   const contextMenuRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseOut = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleMouseOut = () => {
     setIsVisible(false);
   };
 

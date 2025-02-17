@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
-import { ButtonCustom } from '@/shared/ui/button-custom';
-import { Calendar } from '@/widgets/calendar';
+import { SvgSprite } from '../../../../../shared/svg-sprite';
+import { Typography } from '../../../../../shared/typography';
+import { ButtonCustom } from '../../../../../shared/ui/button-custom';
+import { Calendar } from '../../../../../widgets/calendar';
 
 const years = [2025, 2024, 2023];
 
@@ -44,7 +44,7 @@ export default function Dates() {
 
   return (
     <div className=''>
-      <Typography children='Даты тура' variant='h4' />
+      <Typography variant='h4'>Даты тура</Typography>
       <ul className='my-6 flex gap-3'>
         {years.map((el) => (
           <li
@@ -77,7 +77,7 @@ export default function Dates() {
           size='m'
           onClick={() => setIsOpenModal(!isOpenModal)}
         >
-          <Typography children='Добавить даты' variant='l-bold' />
+          <Typography variant='l-bold'>Добавить даты</Typography>
         </ButtonCustom>
       </div>
 

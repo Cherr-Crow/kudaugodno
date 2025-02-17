@@ -32,7 +32,7 @@ export function HotelAmenities({}: IHotelAmenities) {
                   className='m-0 mr-4 cursor-pointer'
                 />
                 <Typography variant='s' className='font-normal md:text-base'>
-                  {item.name}
+                  {item}
                 </Typography>
               </div>
             </li>

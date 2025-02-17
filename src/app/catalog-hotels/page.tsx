@@ -23,6 +23,7 @@ export default function CatalogHotels() {
         'Novotel-Nairobi-Westlands-photo-2.png',
         'Novotel-Nairobi-Westlands-photo-3.png',
       ],
+      hasChild: false,
     },
     {
       id: 2,
@@ -36,6 +37,7 @@ export default function CatalogHotels() {
         'Novotel-Nairobi-Westlands-photo-2.png',
         'Novotel-Nairobi-Westlands-photo-3.png',
       ],
+      hasChild: true,
     },
     {
       id: 3,
@@ -49,6 +51,7 @@ export default function CatalogHotels() {
         'Novotel-Nairobi-Westlands-photo-1.png',
         'Novotel-Nairobi-Westlands-photo-4.png',
       ],
+      hasChild: true,
     },
     {
       id: 4,
@@ -62,6 +65,7 @@ export default function CatalogHotels() {
         'Novotel-Nairobi-Westlands-photo-1.png',
         'Novotel-Nairobi-Westlands-photo-4.png',
       ],
+      hasChild: true,
     },
     {
       id: 5,
@@ -75,6 +79,7 @@ export default function CatalogHotels() {
         'Novotel-Nairobi-Westlands-photo-1.png',
         'Novotel-Nairobi-Westlands-photo-4.png',
       ],
+      hasChild: true,
     },
     {
       id: 6,
@@ -88,7 +93,9 @@ export default function CatalogHotels() {
         'Novotel-Nairobi-Westlands-photo-1.png',
         'Novotel-Nairobi-Westlands-photo-4.png',
       ],
+      hasChild: true,
     },
+    
     
   ];
   return (

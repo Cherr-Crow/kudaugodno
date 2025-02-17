@@ -59,7 +59,7 @@ export function Select({
   }, []);
 
   useEffect(() => {
-    getValue && getValue(selectedOption);
+    if (getValue) getValue(selectedOption);
   }, [selectedOption]);
 
   return (

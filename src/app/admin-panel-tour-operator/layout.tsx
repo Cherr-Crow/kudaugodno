@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 
 import { usePathname } from 'next/navigation';
 
-import { AdminPanelDashboard } from '../../widgets/admin-panel/admin-panel-dashboard';
-import { TourOperatorPanelTitle } from '../../widgets/admin-panel/tour-operator-panel-title';
+import { AdminPanelDashboard } from '@/widgets/admin-panel/admin-panel-dashboard';
+import { TourOperatorPanelTitle } from '@/widgets/admin-panel/tour-operator-panel-title';
 
 export default function AdminPanelTourOperatorLayout({
   children,
@@ -28,16 +28,18 @@ export default function AdminPanelTourOperatorLayout({
   }, [path]);
 
   return (
-    <section className='grid h-full'>
-      <TourOperatorPanelTitle />
-      <div className='container flex h-full gap-5 py-10'>
-        {openDashboard && (
-          <div className='hidden h-full md:flex'>
-            <AdminPanelDashboard />
-          </div>
-        )}
-        {children}
-      </div>
-    </section>
+    <Suspense>
+      <section className='grid h-full'>
+        <TourOperatorPanelTitle />
+        <div className='container flex h-full gap-5 py-10'>
+          {openDashboard && (
+            <div className='hidden h-full md:flex'>
+              <AdminPanelDashboard />
+            </div>
+          )}
+          {children}
+        </div>
+      </section>
+    </Suspense>
   );
 }

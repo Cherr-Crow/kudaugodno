@@ -13,7 +13,7 @@ import { Hotel } from '@/types/hotel';
 
 export default function AddedHotel() {
   const [addHotel, { data: newHotelResponce }] = useAddHotelMutation();
-  const { data } = useGetHotelsQuery();
+  const { data } = useGetHotelsQuery({});
   const router = useRouter();
   const [listOfMatches, setListOfMatches] = useState<Hotel[]>([] as Hotel[]);
   const [value, setValue] = useState('');
@@ -42,16 +42,17 @@ export default function AddedHotel() {
 
   useEffect(() => {
     if (!newHotelResponce) return;
+
     router.push(
-      `/admin-panel-tour-operator/hotels/change-hotel/?id=${newHotelResponce.id}`,
+      `/admin-panel-tour-operator/hotels/change-hotel/?id=${newHotelResponce['id']}`,
     );
   }, [newHotelResponce]);
 
   return (
     <div className='flex w-full flex-col gap-10'>
-      <Typography children='Отель' variant='h4' />
+      <Typography variant='h4'>Отель</Typography>
       <div className='relative flex flex-col gap-2'>
-        <Typography children='Название отеля' variant='l-bold' />
+        <Typography variant='l-bold'>Название отеля</Typography>
         <input
           type='text'
           className='w-full rounded-lg border border-blue-600 p-3'
@@ -72,7 +73,7 @@ export default function AddedHotel() {
               </ul>
             ) : (
               <>
-                <Typography children='Этого отеля нет в нашей базе' />
+                <Typography>Этого отеля нет в нашей базе</Typography>
                 <AddedButton text='Добавить отель' onClick={handleFieldClick} />
               </>
             )}

@@ -16,13 +16,11 @@ export default function Error({
   return (
     <div className='container grid items-center gap-2 pb-10 pt-6 md:grid-cols-[0.5fr_1fr]'>
       <div className='md:order-1'>
-        <Typography
-          children='Уппсс... Не волнуйтесь!'
-          variant='h4'
-          className='text-center text-blue-900'
-        />
+        <Typography variant='h4' className='text-center text-blue-900'>
+          Уппсс... Не волнуйтесь!
+        </Typography>
         {error && (
-          <Typography className='my-5 block text-center text-blue-900 text-red-primary-800 md:text-xl'>
+          <Typography className='my-5 block text-center text-red-primary-800 md:text-xl'>
             {error.message}
           </Typography>
         )}
@@ -33,7 +31,7 @@ export default function Error({
             onClick={router.back}
             className='w-full'
           >
-            <Typography children='Вернуться' variant='m-bold' />
+            <Typography variant='m-bold'>Вернуться</Typography>
           </ButtonCustom>
           <ButtonCustom
             variant='primary'
@@ -41,7 +39,7 @@ export default function Error({
             onClick={() => router.push('/')}
             className='w-full'
           >
-            <Typography children='На главную' variant='m-bold' />
+            <Typography variant='m-bold'>На главную</Typography>
           </ButtonCustom>
         </div>
       </div>

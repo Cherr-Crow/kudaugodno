@@ -12,9 +12,9 @@ import { Typography } from '@/shared/typography';
 
 import { IPhotoBlock } from './PhotoBlock.types';
 
-export function PhotoBlock({ idHotel }: IPhotoBlock) {
+export function PhotoBlock({ idHotel, className }: IPhotoBlock) {
   const { data } = useGetPhotosHotelQuery(idHotel);
-  const [addPhoto, { data: newPhoto }] = useAddPhotoHotelMutation();
+  const [addPhoto] = useAddPhotoHotelMutation();
   const [delPhoto] = useDelPhotoHotelMutation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -32,7 +32,7 @@ export function PhotoBlock({ idHotel }: IPhotoBlock) {
       return;
     }
     try {
-      const result = await addPhoto({ body: formData, id: idHotel }).unwrap();
+      await addPhoto({ body: formData, id: idHotel }).unwrap();
     } catch (err) {
       console.log(err);
     }
@@ -43,12 +43,12 @@ export function PhotoBlock({ idHotel }: IPhotoBlock) {
   };
 
   return (
-    <div className=''>
-      <Typography children='Фотографии' variant='l-bold' />
+    <div className={`${className ?? ''}`}>
+      <Typography variant='l-bold'>Фотографии</Typography>
       <div className='flex gap-2'>
-        <ul className='flex gap-2'>
+        <ul className='flex flex-wrap gap-2'>
           {data &&
-            data.map((item) => (
+            data.results.map((item) => (
               <li
                 className='relative h-24 w-24 overflow-hidden rounded-2xl border md:h-32 md:w-32'
                 key={nanoid()}
@@ -72,25 +72,27 @@ export function PhotoBlock({ idHotel }: IPhotoBlock) {
                 </div>
               </li>
             ))}
+          <li>
+            <form>
+              <label
+                htmlFor='file'
+                className='relative block h-24 w-24 cursor-pointer rounded-2xl border border-blue-600 md:h-32 md:w-32'
+              >
+                <input
+                  type='file'
+                  accept='image/*,.jpg,.png,.jpeg'
+                  id='file'
+                  className='h-20 w-20 cursor-pointer opacity-0'
+                  onChange={handleAddPhoto}
+                  ref={fileInputRef}
+                />
+                <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl text-blue-600'>
+                  +
+                </span>
+              </label>
+            </form>
+          </li>
         </ul>
-        <form>
-          <label
-            htmlFor='file'
-            className='relative block h-24 w-24 cursor-pointer rounded-2xl border border-blue-600 md:h-32 md:w-32'
-          >
-            <input
-              type='file'
-              accept='image/*,.jpg,.png,.jpeg'
-              id='file'
-              className='h-20 w-20 cursor-pointer opacity-0'
-              onChange={handleAddPhoto}
-              ref={fileInputRef}
-            />
-            <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-5xl text-blue-600'>
-              +
-            </span>
-          </label>
-        </form>
       </div>
     </div>
   );

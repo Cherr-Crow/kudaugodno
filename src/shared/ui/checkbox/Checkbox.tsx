@@ -27,7 +27,7 @@ const Checkbox: React.FC<ICheckbox> = ({
     if (isDisabled) return;
     const newChecked = !checked;
     setChecked(newChecked);
-    onChange && onChange(newChecked);
+    if (onChange) onChange(newChecked);
   };
 
   const checkboxId = id || `checkbox-${generatedId}`;

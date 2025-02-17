@@ -93,8 +93,7 @@ export function HotelCatalog() {
         (placeType.length === 0 || placeType.includes(hotel.place)) &&
         ((price[0] === 0 && price[1] === 0) ||
           hotel.rooms.some(
-            (room) =>
-              room.nightly_price >= price[0] && room.nightly_price <= price[1],
+            (room) => room.price >= price[0] && room.price <= price[1],
           )) &&
         ((rating[0] === 0 && rating[1] === 0) ||
           (hotel.user_rating >= rating[0] && hotel.user_rating <= rating[1])) &&
@@ -103,7 +102,7 @@ export function HotelCatalog() {
           hotel.rooms.some((room) => mealType.includes(room.type_of_meal))) &&
         (amenities.length === 0 ||
           amenities.every((amenity) =>
-            hotel.amenities_common.some((cat) => cat.name.includes(amenity)),
+            hotel.amenities_common.some((cat) => cat.includes(amenity)),
           ))
         // (airportDistance === 'Любое' ||
         //   hotel.distance_to_the_sea.some(
@@ -129,8 +128,6 @@ export function HotelCatalog() {
     starCategory,
     mealType,
     amenities,
-    airportDistance,
-    tourOperators,
   ]);
 
   {
@@ -398,7 +395,7 @@ export function HotelCatalog() {
                                   variant='l-bold'
                                   className='rounded-xl bg-blue-50 px-2 py-1 text-xs md:text-lg'
                                 >
-                                  {amenity.name}
+                                  {amenity}
                                 </Typography>
                               ))}
                           </div>
@@ -412,7 +409,7 @@ export function HotelCatalog() {
                               variant='h4'
                               className='text-[16px] text-blue-600 md:text-lg'
                             >
-                              {hotel.rooms[0].nightly_price} ₽
+                              {hotel.rooms[0].price} ₽
                             </Typography>
                           </div>
 

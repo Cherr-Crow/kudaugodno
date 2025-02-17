@@ -33,8 +33,7 @@ import { IAddedHotelField } from './AddedHotelField.types';
 export function AddedHotelField({ hotelId }: IAddedHotelField) {
   const { data } = useGetOneHotelQuery(hotelId);
   const [deletHotel] = useDeleteHotelMutation();
-  const [changeHotel, { data: cangeValueHotel, isError, error }] =
-    useChangeHotelMutation();
+  const [changeHotel, { data: cangeValueHotel, isError }] = useChangeHotelMutation();
   const route = useRouter();
   const path = usePathname();
 
@@ -95,14 +94,10 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
   const [typeOfMealsOnlyBreakfast, setTypeOfMealsOnlyBreakfast] = useState(
     data?.type_of_meals_only_breakfast || null,
   ); // цена питания только завтрак
-  const [userRating, setUserRating] = useState(data?.user_rating || 8.5); // рэйтинг посетителей
   const [typeOfRest, setTypeOfRest] = useState(data?.type_of_rest || ''); //
   const [rules, setRules] = useState(data?.rules || []); // тип отдыха
-  const [isActive, setIsActive] = useState(data?.is_active || true); // активный или архивный
-
-  // const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setPhoto(e.target.value);
-  // };
+  const isActive = true; // активный или архивный
+  const userRating = 8.5; // рэйтинг посетителей
 
   useEffect(() => {
     if (!data) return;
@@ -110,12 +105,12 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
   }, [data]);
 
   const handleCancel = () => {
-    path.includes('added-hotel') && deletHotel(hotelId);
+    if (path.includes('added-hotel')) deletHotel(hotelId);
     route.push('/admin-panel-tour-operator/hotels');
   };
 
   const handleSaved = () => {
-    const _obj: Omit<Hotel, 'rooms' | 'dates' | 'id' | 'reviews' | 'photos'> = {
+    const _obj: Omit<Hotel, 'rooms' | 'id' | 'reviews' | 'photo'> = {
       name,
       star_category: starCategory,
       place,
@@ -143,7 +138,9 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
       type_of_rest: typeOfRest,
       rules,
       is_active: isActive,
+      room_categories: ['Стандарт', 'Полулюкс', 'Люкс', 'Апартаменты', 'Студия'],
     };
+
     changeHotel({ body: _obj, id: hotelId });
   };
 
@@ -152,20 +149,12 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
       route.push('/admin-panel-tour-operator/hotels');
       return;
     }
-
-    // if (isError) {
-    //   if ('status' in error) {
-    //     throw new Error(error.status.toString() || 'Неизвестная ошибка');
-    //   } else {
-    //     throw new Error(error.message || 'Неизвестная ошибка');
-    //   }
-    // }
   }, [cangeValueHotel, isError]);
 
   return (
     <section className='flex flex-col gap-4'>
       <div className='relative flex flex-col gap-2'>
-        <Typography children='Название отеля' variant='l-bold' />
+        <Typography variant='l-bold'>Название отеля</Typography>
         <input
           type='text'
           className='w-full rounded-lg border border-blue-600 p-3'
@@ -178,7 +167,7 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
       <Accordeon title='Общие'>
         <div className='flex flex-col gap-4 p-5'>
           <div className='w-full'>
-            <Typography children='Тип отдыха' variant='l-bold' />
+            <Typography variant='l-bold'>Тип отдыха</Typography>
             <Select
               options={typeOfHoliday}
               color='blue'
@@ -207,7 +196,7 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
             />
           </div>
           <div className='flex w-full flex-col gap-3'>
-            <Typography children='Описание' variant='l-bold' />
+            <Typography variant='l-bold'>Описание</Typography>
             <textarea
               className='w-full resize-none rounded-md border border-blue-600 px-4 py-2'
               placeholder='Введите описание отеля'
@@ -243,10 +232,9 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
             startValue={address}
           />
           <div className='flex flex-col'>
-            <Typography
-              children='Расстояния от отеля до основных точек'
-              variant='l-bold'
-            />
+            <Typography variant='l-bold'>
+              Расстояния от отеля до основных точек
+            </Typography>
             <div className='flex gap-2'>
               <NamedInput
                 placeholder='расстояние в метрах'
@@ -344,42 +332,42 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
               startValue={checkOutTime}
             />
           </div>
-          <RulesAdd getRules={setRules} />
+          <RulesAdd getRules={setRules} oldRules={data?.rules} />
         </div>
       </Accordeon>
       <Accordeon title='Дополнительно'>
         <div className='flex w-full flex-col gap-3 p-5'>
-          <Typography children='Удобства' variant='l-bold' />
+          <Typography variant='l-bold'>Удобства</Typography>
           <CheckBoxBlock
             title='Общие'
-            checkboxes={amenities_common}
+            checkboxes={amenitiesCommon}
             getNewList={setAmenitiesCommon}
             className='bg-blue-50'
           />
           <CheckBoxBlock
             title='Удобвства а номерах'
-            checkboxes={amenities_in_the_room}
+            checkboxes={amenitiesInTheRoom}
             getNewList={setAmenitiesInTheRoom}
           />
           <CheckBoxBlock
             title='Спорт и оттдых'
-            checkboxes={amenities_sports_and_recreation}
+            checkboxes={amenitiesSportsAndRecreation}
             getNewList={setAmenitiesSportsAndRecreation}
             className='bg-blue-50'
           />
           <CheckBoxBlock
             title='Для детей'
-            checkboxes={amenities_for_children}
+            checkboxes={amenitiesForChildren}
             getNewList={setAmenitiesForChildren}
           />
         </div>
       </Accordeon>
       <div className={`mt-10 flex justify-end gap-4`}>
         <ButtonCustom variant='secondary' size='m' onClick={handleCancel}>
-          <Typography children='Отменить' variant='l-bold' />
+          <Typography variant='l-bold'>Отменить</Typography>
         </ButtonCustom>
         <ButtonCustom variant='primary' size='m' onClick={handleSaved}>
-          <Typography children='Сохранить' variant='l-bold' />
+          <Typography variant='l-bold'>Сохранить</Typography>
         </ButtonCustom>
       </div>
     </section>

@@ -85,3 +85,7 @@ input[type="date"]::-webkit-datetime-edit {
     opacity: 0;
 }
 
+.link_hover {
+    @apply transition-all hover:scale-110 active:opacity-50
+}
+
