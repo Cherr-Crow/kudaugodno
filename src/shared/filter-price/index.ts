@@ -1,1 +1,1 @@
-export { FilterPrice } from "./FilterPrice";
+export { FilterPrice } from './FilterPrice';

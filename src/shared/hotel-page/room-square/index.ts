@@ -1,1 +1,1 @@
-export { default as RoomSquare } from "./RoomSquare";
+export { default as RoomSquare } from './RoomSquare';

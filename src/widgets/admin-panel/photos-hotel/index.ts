@@ -1,0 +1,1 @@
+export { PhotosHotel } from './PhotosHotel';

@@ -15,24 +15,31 @@ export function NamedInput(props: INamedInput) {
     className,
     type = 'text',
     startValue,
+    disabled,
   } = props;
   const [value, setValue] = useState(startValue || '');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue =
-      type === 'number' ? Number(event.target.value) : event.target.value;
-    setValue(newValue);
-    getValue?.(newValue);
+    if (disabled) return;
+    setValue(event.target.value);
+  };
+
+  const handlePushValue = () => {
+    if (!getValue) return;
+    getValue(value);
   };
 
   return (
-    <div className={`flex w-full flex-col gap-3 ${className ?? ''}`}>
+    <div
+      className={`flex w-full flex-col gap-3 ${className ?? ''}`}
+      onBlur={handlePushValue}
+    >
       {title && <Typography variant='l-bold'>{title}</Typography>}
       <input
         type={type}
         className='w-full rounded-md border border-blue-600 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
         placeholder={placeholder ?? ''}
-        value={value}
+        value={disabled ? startValue : value}
         onChange={handleChange}
         name={name}
         autoComplete='on'

@@ -1,1 +1,1 @@
-export { FilterRecreationType } from "./FilterRecreationType";
+export { FilterRecreationType } from './FilterRecreationType';

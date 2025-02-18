@@ -1,1 +1,1 @@
-export { HotelComponentButtonMoreReview } from "./HotelComponentButtonMoreReview";
+export { HotelComponentButtonMoreReview } from './HotelComponentButtonMoreReview';

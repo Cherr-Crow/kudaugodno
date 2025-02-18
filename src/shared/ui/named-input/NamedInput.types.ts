@@ -7,4 +7,5 @@ export interface INamedInput extends DivProps {
   getValue?: (val: string | number) => void;
   type?: 'text' | 'time' | 'number' | 'email' | 'tel';
   startValue?: string | number;
+  disabled?: boolean;
 }

@@ -1,0 +1,1 @@
+export { RoomForAdminPanel } from './RoomForAdminPanel';

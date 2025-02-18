@@ -34,7 +34,7 @@ export const hotels: Hotel[] = [
         single_bed: null,
         double_bed: 1,
         price: 1000,
-        type_of_meal: 'полный пансион',
+        type_of_meals: 'полный пансион',
         photo: [
           { id: 1, photo: 'room1.png', room: 0 },
           { id: 2, photo: 'room2.png', room: 0 },

@@ -1,1 +1,1 @@
-export { InputForSearchBlock } from "./InputForSearchBlock";
+export { InputForSearchBlock } from './InputForSearchBlock';

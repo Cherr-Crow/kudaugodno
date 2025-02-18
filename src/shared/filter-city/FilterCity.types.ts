@@ -1,5 +1,4 @@
-
 export interface IFilterCity {
-    selectedCities: string[];
-    onCityChange: (cities: string[]) => void;
+  selectedCities: string[];
+  onCityChange: (cities: string[]) => void;
 }

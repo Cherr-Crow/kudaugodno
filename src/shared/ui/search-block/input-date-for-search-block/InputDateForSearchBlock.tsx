@@ -10,8 +10,9 @@ export function InputDateForSearchBlock({
   placeholder,
   getValue,
   className,
+  startValue,
 }: IInputDateForSearchBlock) {
-  const [value, setValue] = useState<string | null>(null);
+  const [value, setValue] = useState<string | null>(startValue ?? null);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {

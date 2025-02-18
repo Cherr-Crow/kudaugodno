@@ -1,1 +1,1 @@
-export { SearchHotel } from "./SearchHotel";
+export { SearchHotel } from './SearchHotel';

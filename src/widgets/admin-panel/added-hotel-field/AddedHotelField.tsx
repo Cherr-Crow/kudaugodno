@@ -25,7 +25,7 @@ import {
   typeOfHoliday,
 } from '@/widgets/admin-panel/added-hotel-field/services/arrais';
 import { CheckBoxBlock } from '@/widgets/admin-panel/check-box-block';
-import { PhotoBlock } from '@/widgets/admin-panel/photo-block';
+import { PhotosHotel } from '@/widgets/admin-panel/photos-hotel';
 import { RulesAdd } from '@/widgets/admin-panel/rules-add';
 
 import { IAddedHotelField } from './AddedHotelField.types';
@@ -205,7 +205,7 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
               name='description'
             />
           </div>
-          <PhotoBlock idHotel={hotelId} />
+          <PhotosHotel />
         </div>
       </Accordeon>
       <Accordeon title='Локация'>

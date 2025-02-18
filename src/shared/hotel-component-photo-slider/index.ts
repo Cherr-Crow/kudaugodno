@@ -1,1 +1,1 @@
-export { HotelComponentPhotoSlider } from "./HotelComponentPhotoSlider";
+export { HotelComponentPhotoSlider } from './HotelComponentPhotoSlider';

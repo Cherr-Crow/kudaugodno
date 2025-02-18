@@ -4,5 +4,5 @@ type DivProps = React.ComponentPropsWithoutRef<'div'>;
 export interface IRoomAmenities extends DivProps {}
 
 export interface RoomAmenitiesProps {
-    amenities: string; 
+  amenities: string;
 }

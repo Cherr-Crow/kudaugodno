@@ -1,1 +1,1 @@
-export { HotelCatalog } from "./HotelCatalog";
+export { HotelCatalog } from './HotelCatalog';

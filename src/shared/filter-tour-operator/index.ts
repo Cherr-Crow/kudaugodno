@@ -1,1 +1,1 @@
-export { FilterTourOperator } from "./FilterTourOperator";
+export { FilterTourOperator } from './FilterTourOperator';

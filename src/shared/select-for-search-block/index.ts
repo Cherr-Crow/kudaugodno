@@ -1,1 +1,1 @@
-export { SelectForSearchBlock } from "./SelectForSearchBlock";
+export { SelectForSearchBlock } from './SelectForSearchBlock';

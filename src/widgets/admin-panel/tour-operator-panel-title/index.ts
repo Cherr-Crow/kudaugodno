@@ -1,1 +1,1 @@
-export { TourOperatorPanelTitle } from "./TourOperatorPanelTitle";
+export { TourOperatorPanelTitle } from './TourOperatorPanelTitle';

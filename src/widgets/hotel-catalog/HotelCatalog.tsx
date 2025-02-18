@@ -99,7 +99,7 @@ export function HotelCatalog() {
           (hotel.user_rating >= rating[0] && hotel.user_rating <= rating[1])) &&
         (starCategory.length === 0 || starCategory.includes(hotel.star_category)) &&
         (mealType.length === 0 ||
-          hotel.rooms.some((room) => mealType.includes(room.type_of_meal))) &&
+          hotel.rooms.some((room) => mealType.includes(room.type_of_meals))) &&
         (amenities.length === 0 ||
           amenities.every((amenity) =>
             hotel.amenities_common.some((cat) => cat.includes(amenity)),
@@ -403,7 +403,7 @@ export function HotelCatalog() {
                           {/* Цена */}
                           <div className='hotel-price flex items-center justify-between rounded-xl bg-blue-50 p-2'>
                             <Typography variant='l-bold' className='mb-2 text-xs'>
-                              Питание: {hotel.rooms[0]?.type_of_meal}
+                              Питание: {hotel.rooms[0]?.type_of_meals}
                             </Typography>
                             <Typography
                               variant='h4'

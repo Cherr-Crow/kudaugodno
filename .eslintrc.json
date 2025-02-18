@@ -1,6 +1,6 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript"],
-  "plugins": ["import", "unused-imports"],
+  "plugins": ["import", "unused-imports", "no-commented-code"],
   "rules": {
     "@next/next/no-img-element": "off",
     "unused-imports/no-unused-imports": "error",
@@ -33,6 +33,12 @@
         "vars": "all",
         "args": "after-used",
         "ignoreRestSiblings": false
+      }
+    ],
+    "no-commented-code/no-commented-code": [
+      "warn",
+      {
+        "ignorePatterns": ["TODO", "FIXME"]
       }
     ]
   }

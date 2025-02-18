@@ -2182,22 +2182,5 @@ export function SvgSprite({
           />
         </svg>
       );
-
-    // case '':
-    //   return;
-    // case '':
-    //   return;
-    // case '':
-    //   return;
-    // case '':
-    //   return;
-    // case '':
-    //   return;
-    // case '':
-    //   return;
-    // case '':
-    //   return;
-    // case '':
-    //   return;
   }
 }

@@ -1,1 +1,1 @@
-export { AddedHotelField } from "./AddedHotelField";
+export { AddedHotelField } from './AddedHotelField';
