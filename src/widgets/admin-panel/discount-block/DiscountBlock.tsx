@@ -77,13 +77,13 @@ export function DiscountBlock({ startData, getData }: IDiscountBlock) {
         <NamedInput
           name='Наименование'
           placeholder='Наименование'
-          getValue={handleNameChange}
+          getValue={(val) => handleNameChange(val as string)}
           startValue={name}
         />
         <NamedInput
           name='Процент скидки'
           placeholder='Процент скидки'
-          getValue={handleSizeChange}
+          getValue={(val) => handleSizeChange(val as number)}
           startValue={size}
         />
         <InputDateForSearchBlock

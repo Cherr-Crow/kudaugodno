@@ -61,7 +61,7 @@ export function UnavailableBlock({ startData, getData }: IUnavailableBlock) {
         <NamedInput
           name='Причина'
           placeholder='Причина'
-          getValue={handleReasonChange}
+          getValue={(val) => handleReasonChange(val as string)}
           startValue={reason}
         />
         <InputDateForSearchBlock

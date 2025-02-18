@@ -43,7 +43,7 @@ export function HotelBooking({}: IHotelBooking) {
                     variant='l-bold'
                     className='rounded-xl bg-grey-50 p-1 text-xs text-grey-800 md:text-base'
                   >
-                    {amenity.name}
+                    {amenity}
                   </Typography>
                 ))}
               </div>

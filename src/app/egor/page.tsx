@@ -2,8 +2,6 @@ import React from 'react';
 
 import { HotelBooking } from '@/widgets/hotel-booking';
 
-// import { HotelCatalog } from '@/widgets/hotel-catalog';
-
 export default function Egor() {
   return (
     <div className={`ml-5 mt-5 flex-col`}>

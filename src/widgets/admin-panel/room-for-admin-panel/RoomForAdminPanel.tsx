@@ -245,7 +245,7 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
                   name='Цена'
                   title='Цена'
                   startValue={room.price}
-                  getValue={handlePriceChange}
+                  getValue={(val) => handlePriceChange(val as number)}
                 />
                 <div>
                   <Typography variant='l-bold'>Тип питания</Typography>
@@ -283,37 +283,37 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
                 <NamedInput
                   name='Количество взрослых'
                   title='Количество проживающих взрослых'
-                  getValue={handleNumberOfAdultsChange}
+                  getValue={(val) => handleNumberOfAdultsChange(val as number)}
                   startValue={room.number_of_adults}
                 />
                 <NamedInput
                   name='Количество детей'
                   title='Количество проживающих детей'
-                  getValue={handleNumberOfChildrenChange}
+                  getValue={(val) => handleNumberOfChildrenChange(val as number)}
                   startValue={room.number_of_children}
                 />
                 <NamedInput
                   name='Количество одноместных кроватей'
                   title='Количество одноместных кроватей'
-                  getValue={handleSingleBedChange}
+                  getValue={(val) => handleSingleBedChange(val as number)}
                   startValue={room.single_bed ?? 0}
                 />
                 <NamedInput
                   name='Количество двухместных кроватей'
                   title='Количество двухместных кроватей'
-                  getValue={handleDoubleBedChange}
+                  getValue={(val) => handleDoubleBedChange(val as number)}
                   startValue={room.double_bed ?? 0}
                 />
                 <NamedInput
                   name='Площадь'
                   title='Площадь, м²'
-                  getValue={handleAreaChange}
+                  getValue={(val) => handleAreaChange(val as number)}
                   startValue={room.area}
                 />
                 <NamedInput
                   name='Количество номеров'
                   title='Количество номеров данного типа'
-                  getValue={handleQuantityRoomsChange}
+                  getValue={(val) => handleQuantityRoomsChange(val as number)}
                   startValue={room.quantity_rooms}
                 />
               </div>
