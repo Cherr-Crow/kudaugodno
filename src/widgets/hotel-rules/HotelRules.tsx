@@ -2,27 +2,17 @@ import React from 'react';
 
 import { nanoid } from 'nanoid';
 
-import { ISvgSprite } from '@/shared/svg-sprite/SvgSprite.types';
+import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { Typography } from '@/shared/typography';
 
 import { IHotelRules } from './HotelRules.types';
 
 export function HotelRules({}: IHotelRules) {
-  interface IRules {
-    rule: string;
-    imgname: ISvgSprite['name'];
-  }
+  const { data: hotel } = useGetOneHotelQuery(1);
 
-  const reles: Array<IRules> = [
-    {
-      rule: 'Можно с животными. Гулять с собаками разрешается в специально отведённых местах',
-      imgname: 'marker',
-    },
-    {
-      rule: 'Детская кроватка при необходимости оплачивается отдельно - 500р/ночь. Детский стульчик предоставляется по запросу',
-      imgname: 'marker',
-    },
-  ];
+  if (!hotel || hotel === undefined) {
+    return <div>Ошибка!</div>;
+  }
 
   return (
     <section>
@@ -35,22 +25,18 @@ export function HotelRules({}: IHotelRules) {
         </Typography>
 
         <ul className=''>
-          {reles.map((item) => (
+          {hotel.rules.map((item) => (
             <li
               className='mb-3 flex items-start gap-3 lg:items-center'
               key={nanoid()}
             >
-              {/* <SvgSprite
-                  name={item.imgname}
-                  width={32}
-                  className='m-0 mr-2'
-                /> */}
               <div className='h-1 w-1 pt-[10px] lg:pt-[0px]'>
-                <div className='bg-black h-1 w-1 rounded-full'></div>
+                <div className='h-1 w-1 rounded-full bg-blue-bold'></div>
               </div>
 
               <Typography className='block font-normal text-blue-900'>
-                {item.rule}
+                {item.name}
+                {'.'} {item.description}
               </Typography>
             </li>
           ))}
