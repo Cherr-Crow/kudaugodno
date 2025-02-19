@@ -26,7 +26,7 @@ export function NamedInput(props: INamedInput) {
 
   const handlePushValue = () => {
     if (!getValue) return;
-    getValue(value);
+    getValue(type === 'number' ? +value : value);
   };
 
   return (
