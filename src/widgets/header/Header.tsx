@@ -1,11 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { IHeader } from './Header.types';
-import { SvgSprite } from '@/shared/svg-sprite';
+
 import Link from 'next/link';
-import { Typography } from '@/shared/typography';
+
 import { PopupWindow } from '@/shared/popup-window';
+import { SvgSprite } from '@/shared/svg-sprite';
+import { Typography } from '@/shared/typography';
+
+import { IHeader } from './Header.types';
 
 export function Header({ className }: IHeader) {
   const [openUser, setOpenUser] = useState(false);
@@ -15,29 +18,35 @@ export function Header({ className }: IHeader) {
   };
 
   return (
-    <header className={`${className} bg-white-secondary py-4`}>
+    <header className={`${className} bg-grey-50 py-4`}>
       <div className='container flex items-center justify-between'>
-        <Link href='/' as='/'>
-          <SvgSprite name='logo' width={65} className='sm:w-[106px]' />
+        <Link href='/' as='/' className=''>
+          {/*<div className='border border-grey-900'>*/}
+          <SvgSprite name='logo' width={65} className='link_hover sm:w-[106px]' />
+          {/*</div>*/}
         </Link>
-        <nav className='hidden gap-3 sm:flex'>
-          <Link href='/catalog-tours'>
-            <Typography variant='l-bold' children='Туры' />
+        <nav className='hidden gap-3 md:flex'>
+          <Link href='/catalog-tours' className='link_hover'>
+            <Typography variant='l-bold'>Туры</Typography>
           </Link>
-          <Link href='/catalog-hotels'>
-            <Typography variant='l-bold' children='Отели' />
+          <Link className='link_hover' href='/catalog-hotels'>
+            <Typography variant='l-bold'>Отели</Typography>
           </Link>
-          <Link href='/blog-page'>
-            <Typography variant='l-bold' children='Блог' />
+          <Link className='link_hover' href='/blog-page'>
+            <Typography variant='l-bold'>Блог</Typography>
           </Link>
-          <Link href='/roman-n'>
-            <Typography variant='l-bold' children='ПЕРЕИСПОЛЬЗУЕМЫЕ КОМПОНЕНТЫ' />
+          <Link className='link_hover' href='/roman-n'>
+            <Typography variant='l-bold' className='hidden md:flex'>
+              ПК
+            </Typography>
           </Link>
         </nav>
         <div className='flex items-center gap-3'>
-          <div className='hidden cursor-pointer items-center gap-2 sm:flex'>
+          <div className='hidden cursor-pointer items-center gap-2 md:flex'>
             <SvgSprite name='phone' width={24} color='#4757EA' />
-            <Typography variant='l' className='text-blue-600' children='Поддержка' />
+            <Typography variant='l' className='text-blue-600'>
+              Поддержка
+            </Typography>
           </div>
           <SvgSprite
             name='bell'
@@ -47,7 +56,7 @@ export function Header({ className }: IHeader) {
           />
           <div className='relative'>
             <div
-              className='flex w-fit cursor-pointer items-center justify-center rounded-full border border-black p-1'
+              className='flex w-fit cursor-pointer items-center justify-center rounded-full border border-grey-950 p-1'
               onClick={toggleUserMenu}
             >
               <SvgSprite name='user' width={24} color='#1a1f4c' />
@@ -55,18 +64,18 @@ export function Header({ className }: IHeader) {
             {openUser && (
               <PopupWindow className='absolute right-full flex flex-col gap-2 text-nowrap py-2'>
                 <Link
-                  href='/'
+                  href='/auth-page'
                   onClick={toggleUserMenu}
                   className='rounded-xl px-4 py-1 hover:bg-grey-100'
                 >
-                  <Typography children='user' />
+                  <Typography>user</Typography>
                 </Link>
                 <Link
                   href='/admin-panel-tour-operator'
                   onClick={toggleUserMenu}
                   className='rounded-xl px-4 py-1 hover:bg-grey-100'
                 >
-                  <Typography children='tour-operator-panel' />
+                  <Typography>tour-operator-panel</Typography>
                 </Link>
               </PopupWindow>
             )}

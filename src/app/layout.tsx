@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import Head from 'next/head';
+
 import './globals.css';
-import { Header } from '@/widgets/header';
+
+import StoreProvider from '@/rtk/StoreProvider';
 import { Footer } from '@/widgets/footer';
-import StoreProvider from './rtk/StoreProvider';
+import { Header } from '@/widgets/header';
 
 const futura = localFont({
   src: [
@@ -33,12 +36,22 @@ export default function RootLayout({
   return (
     <StoreProvider>
       <html lang='ru'>
-        <link
-          rel='icon'
-          href='/icon?<generated>'
-          type='image/<generated>'
-          sizes='<generated>'
-        />
+        <Head>
+          <link
+            rel='icon'
+            href='/icon?<generated>'
+            type='image/<generated>'
+            sizes='<generated>'
+          />
+          <link
+            rel='prefetch'
+            href='/fonts/FuturaPTBook.otf'
+            as='font'
+            type='font/otf'
+            crossOrigin='anonymous'
+          />
+          <link rel='prefetch' href='/globals.css' as='style' />
+        </Head>
         <body className={`${futura.className} flex min-h-screen flex-col`}>
           <Header />
           <main className='grow'> {children}</main>

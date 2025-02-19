@@ -1,27 +1,27 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { IRating } from './Rating.types';
+import React from 'react';
+
 import { SvgSprite } from '@/shared/svg-sprite';
 
-export function Rating({ setRating, category }: IRating) {
+import { IRating } from './Rating.types';
+
+export function Rating({ setRating, category, gap = 8, starSize = 24 }: IRating) {
   return (
-    <ul className='flex gap-2'>
-      {new Array(5).fill(1).map((_, index) => {
-        return (
-          <li
-            className={`${setRating ? 'cursor-pointer' : null}`}
-            key={index}
-            onClick={() => (setRating ? setRating(index) : {})}
-          >
-            {index + 1 <= category ? (
-              <SvgSprite name='star-full' width={24} />
-            ) : (
-              <SvgSprite name='star' width={24} />
-            )}
-          </li>
-        );
-      })}
+    <ul className='flex items-center' style={{ gap: `${gap}px` }}>
+      {new Array(5).fill(1).map((_, index) => (
+        <li
+          className={setRating ? 'cursor-pointer' : ''}
+          key={index}
+          onClick={() => (setRating ? setRating(index) : {})}
+        >
+          {index + 1 <= category ? (
+            <SvgSprite name='star-full' width={starSize} />
+          ) : (
+            <SvgSprite name='star' width={starSize} />
+          )}
+        </li>
+      ))}
     </ul>
   );
 }

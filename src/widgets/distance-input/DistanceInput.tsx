@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { IDistanceInput } from './DistanceInput.types';
+
 import { Select } from '@/shared/ui/select';
+
+import { IDistanceInput } from './DistanceInput.types';
 
 export function DistanceInput({ options, getDistance, reset }: IDistanceInput) {
   const [distance, setDistance] = useState('');

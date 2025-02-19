@@ -1,9 +1,11 @@
 'use client';
 
-import { AdminPanelDashboard } from '@/widgets/admin-panel-dashboard';
-import { TourOperatorPanelTitle } from '@/widgets/tour-operator-panel-title';
+import React, { Suspense, useEffect, useState } from 'react';
+
 import { usePathname } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+
+import { AdminPanelDashboard } from '@/widgets/admin-panel/admin-panel-dashboard';
+import { TourOperatorPanelTitle } from '@/widgets/admin-panel/tour-operator-panel-title';
 
 export default function AdminPanelTourOperatorLayout({
   children,
@@ -14,7 +16,11 @@ export default function AdminPanelTourOperatorLayout({
   const [openDashboard, setOpenDashboard] = useState<boolean>(true);
 
   useEffect(() => {
-    if (path.includes('added-hotel') || path.includes('added-flights')) {
+    if (
+      path.includes('added-hotel') ||
+      path.includes('added-flights') ||
+      path.includes('change-hotel')
+    ) {
       setOpenDashboard(false);
     } else {
       setOpenDashboard(true);
@@ -22,16 +28,18 @@ export default function AdminPanelTourOperatorLayout({
   }, [path]);
 
   return (
-    <section className='grid'>
-      <TourOperatorPanelTitle />
-      <div className='container mb-20 mt-10 flex h-full gap-5'>
-        {openDashboard && (
-          <div className='hidden h-full md:flex'>
-            <AdminPanelDashboard />
-          </div>
-        )}
-        {children}
-      </div>
-    </section>
+    <Suspense>
+      <section className='grid h-full'>
+        <TourOperatorPanelTitle />
+        <div className='container flex h-full gap-5 py-10'>
+          {openDashboard && (
+            <div className='hidden h-full md:flex'>
+              <AdminPanelDashboard />
+            </div>
+          )}
+          {children}
+        </div>
+      </section>
+    </Suspense>
   );
 }

@@ -1,0 +1,1 @@
+export { HotelComponentButtonMoreReview } from './HotelComponentButtonMoreReview';

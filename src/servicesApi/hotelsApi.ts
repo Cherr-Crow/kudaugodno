@@ -1,0 +1,216 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+import { BASE_URL } from '@/temp/domen_nikita';
+import { Hotel } from '@/types/hotel';
+import { PhotoHotel } from '@/types/photo_hotel';
+import { RoomType } from '@/types/room';
+
+interface IResponceListHotels {
+  count: number;
+  next: null;
+  previous: null;
+  results: Hotel[];
+}
+
+export const hotelsApi = createApi({
+  reducerPath: 'hotelsApi',
+  tagTypes: ['Hotels', 'PhotosHotel', 'RoomsHotel', 'PhotosRoom'],
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  endpoints: (build) => ({
+    getHotels: build.query<IResponceListHotels, { limit?: number; offset?: number }>(
+      {
+        query: ({ limit, offset }) =>
+          `hotels?${limit && 'limit=' + limit}${offset && '&offset=' + offset}`,
+        providesTags: (result) =>
+          result
+            ? [
+                ...result.results.map(({ id }: { id: number }) => ({
+                  type: 'Hotels' as const,
+                  id,
+                })),
+                { type: 'Hotels', id: 'LIST' },
+              ]
+            : [{ type: 'Hotels', id: 'LIST' }],
+      },
+    ),
+    getOneHotel: build.query<Hotel, number | null>({
+      query: (id) => `hotels/${id ?? ''}`,
+      providesTags: [{ type: 'Hotels', id: 'LIST' }],
+    }),
+    addHotel: build.mutation<{ id: number; name: string }, { name: string }>({
+      query: (body) => ({
+        url: 'hotels/',
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+      invalidatesTags: [{ type: 'Hotels', id: 'LIST' }],
+    }),
+    changeHotel: build.mutation<
+      Hotel,
+      {
+        body: Omit<Hotel, 'rooms' | 'id' | 'reviews' | 'photo'>;
+        id: number;
+      }
+    >({
+      query: ({ body, id }) => ({
+        url: `hotels/${id}/`,
+        method: 'PUT',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+      invalidatesTags: [{ type: 'Hotels', id: 'LIST' }],
+    }),
+    deleteHotel: build.mutation({
+      query: (id: number) => ({
+        url: `hotels/${id}/`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: [{ type: 'Hotels', id: 'LIST' }],
+    }),
+
+    getPhotosHotel: build.query<{ results: PhotoHotel[] }, number>({
+      query: (id) => `hotels/${id}/photos/`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.results.map(({ id }: { id: number }) => ({
+                type: 'PhotosHotel' as const,
+                id,
+              })),
+              { type: 'PhotosHotel', id: 'LIST' },
+            ]
+          : [{ type: 'PhotosHotel', id: 'LIST' }],
+    }),
+    addPhotoHotel: build.mutation<PhotoHotel, { body: FormData; id: number }>({
+      query: ({ body, id }) => ({
+        url: `hotels/${id}/photos/`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: [{ type: 'PhotosHotel', id: 'LIST' }],
+    }),
+    delPhotoHotel: build.mutation<null, { hotel_id: number; photo_id: number }>({
+      query: ({ hotel_id, photo_id }) => ({
+        url: `hotels/${hotel_id}/photos/${photo_id}/`,
+        method: 'DELETE',
+        headers: {
+          accept: '*/*',
+        },
+      }),
+      invalidatesTags: [{ type: 'PhotosHotel', id: 'LIST' }],
+    }),
+
+    getRoomsHotel: build.query<{ results: RoomType[] }, number>({
+      query: (id) => `hotels/${id}/rooms/`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.results.map(({ id }: { id: number }) => ({
+                type: 'PhotosHotel' as const,
+                id,
+              })),
+              { type: 'RoomsHotel', id: 'LIST' },
+            ]
+          : [{ type: 'RoomsHotel', id: 'LIST' }],
+    }),
+    addRoomHotel: build.mutation<
+      PhotoHotel,
+      { body: Omit<RoomType, 'id' | 'photo'>; id: number }
+    >({
+      query: ({ body, id }) => ({
+        url: `hotels/${id}/rooms/`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: [{ type: 'RoomsHotel', id: 'LIST' }],
+    }),
+    changeRoomHotel: build.mutation<
+      RoomType,
+      {
+        body: Omit<RoomType, 'id' | 'photo'>;
+        hotel_id: number;
+        room_id: number;
+      }
+    >({
+      query: ({ body, hotel_id, room_id }) => ({
+        url: `hotels/${hotel_id}/rooms/${room_id}/`,
+        method: 'PUT',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+      invalidatesTags: [{ type: 'RoomsHotel', id: 'LIST' }],
+    }),
+    delRoomHotel: build.mutation<null, { hotelId: number; roomId: number }>({
+      query: ({ hotelId, roomId }) => ({
+        url: `hotels/${hotelId}/rooms/${roomId}/`,
+        method: 'DELETE',
+        headers: {
+          accept: '*/*',
+        },
+      }),
+      invalidatesTags: [{ type: 'RoomsHotel', id: 'LIST' }],
+    }),
+
+    getPhotosRoom: build.query<{ results: PhotoHotel[] }, number>({
+      query: (id) => `hotels/rooms/${id}/photos/`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.results.map(({ id }: { id: number }) => ({
+                type: 'PhotosRoom' as const,
+                id,
+              })),
+              { type: 'PhotosRoom', id: 'LIST' },
+            ]
+          : [{ type: 'PhotosRoom', id: 'LIST' }],
+    }),
+    addPhotoRoom: build.mutation<PhotoHotel, { body: FormData; id: number }>({
+      query: ({ body, id }) => ({
+        url: `hotels/rooms/${id}/photos/`,
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: [{ type: 'PhotosRoom', id: 'LIST' }],
+    }),
+    delPhotoRoom: build.mutation<null, { room_id: number; photo_id: number }>({
+      query: ({ room_id, photo_id }) => ({
+        url: `hotels/rooms/${room_id}/photos/${photo_id}/`,
+        method: 'DELETE',
+        headers: {
+          accept: '*/*',
+        },
+      }),
+      invalidatesTags: [{ type: 'PhotosRoom', id: 'LIST' }],
+    }),
+
+    // /api/v1/hotels/{hotel_id}/rooms/
+  }),
+});
+
+export const {
+  useGetHotelsQuery,
+  useGetOneHotelQuery,
+  useAddHotelMutation,
+  useChangeHotelMutation,
+  useDeleteHotelMutation,
+  useGetPhotosHotelQuery,
+  useAddPhotoHotelMutation,
+  useDelPhotoHotelMutation,
+  useGetRoomsHotelQuery,
+  useAddRoomHotelMutation,
+  useChangeRoomHotelMutation,
+  useDelRoomHotelMutation,
+  useGetPhotosRoomQuery,
+  useAddPhotoRoomMutation,
+  useDelPhotoRoomMutation,
+} = hotelsApi;

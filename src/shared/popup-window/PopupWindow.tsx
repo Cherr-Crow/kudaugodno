@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+
 import { IPopupWindow } from './PopupWindow.types';
 
 export const PopupWindow: React.FC<IPopupWindow> = ({

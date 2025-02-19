@@ -1,0 +1,1 @@
+export { InputForSearchBlock } from './InputForSearchBlock';
