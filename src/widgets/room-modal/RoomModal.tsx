@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { hotels } from '@/temp/hotel-mock';
@@ -22,6 +23,9 @@ import 'swiper/css/thumbs';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 
 export function RoomModal({}: IRoomModal) {
+  const { data: hotel } = useGetOneHotelQuery(3);
+  console.log(hotel?.rooms);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
   return (
