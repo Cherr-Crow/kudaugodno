@@ -14,16 +14,16 @@ export function HotelComponentPhotoSlider({
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const nextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % hotel.photos.length);
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % hotel.photo.length);
   };
 
   const prevImage = () => {
     setCurrentImageIndex(
-      (prevIndex) => (prevIndex - 1 + hotel.photos.length) % hotel.photos.length,
+      (prevIndex) => (prevIndex - 1 + hotel.photo.length) % hotel.photo.length,
     );
   };
 
-  if (!hotel.photos || hotel.photos.length === 0) {
+  if (!hotel.photo || hotel.photo.length === 0) {
     return (
       <div className='mb-4 w-full md:mb-0 md:mr-4 md:w-2/5'>Нет фотографий</div>
     );
@@ -38,7 +38,7 @@ export function HotelComponentPhotoSlider({
           transition: 'transform 1s ease-in-out',
         }}
       >
-        {hotel.photos.map((photo, index) => (
+        {hotel.photo.map((photo, index) => (
           <img
             key={index}
             src={photo?.photo || '/placeholder-image.png'}

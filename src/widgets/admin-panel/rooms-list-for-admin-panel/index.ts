@@ -1,0 +1,1 @@
+export { RoomsListForAdminPanel } from './RoomsListForAdminPanel';

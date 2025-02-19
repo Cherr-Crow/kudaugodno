@@ -46,10 +46,11 @@ export function TabBar({
             />
           )}
           <Typography
-            children={tab}
             variant='m-bold'
             className={`${svgTab ? 'ml-2' : ''} ${active !== tab && 'text-white'}`}
-          />
+          >
+            {tab}
+          </Typography>
         </li>
       ))}
     </ul>

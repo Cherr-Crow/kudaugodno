@@ -1,1 +1,1 @@
-export { DistanceInput } from "./DistanceInput";
+export { DistanceInput } from './DistanceInput';

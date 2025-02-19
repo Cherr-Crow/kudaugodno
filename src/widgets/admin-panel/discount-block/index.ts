@@ -1,0 +1,1 @@
+export { DiscountBlock } from './DiscountBlock';

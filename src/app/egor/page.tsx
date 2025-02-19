@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { HotelCatalog } from '@/widgets/hotel-catalog';
+import { HotelBooking } from '@/widgets/hotel-booking';
 
 export default function Egor() {
   return (
     <div className={`ml-5 mt-5 flex-col`}>
       <div className='container'>
-        {/* <Hero /> */}
-        <HotelCatalog />
+        {/* <HotelCatalog /> */}
+        <HotelBooking />
       </div>
 
       {/* <div className={`mb-5`}>

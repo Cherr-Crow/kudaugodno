@@ -1,0 +1,1 @@
+export { HotelBookingPayForm } from './HotelBookingPayForm';

@@ -21,21 +21,22 @@ interface IRoomCardProps {
   amenities: string;
   price: number;
   images: string[];
+  hasChild?: boolean; // добавляем опциональный параметр hasChild
 }
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RoomCard: React.FC<IRoomCardProps> = ({
-  id,
   name,
   description,
   quadrature,
   amenities,
   price,
   images,
+  hasChild,
 }) => {
   return (
     <div className='mb-3 w-full rounded-xl bg-white md:flex md:shadow-lg'>
       <h3 className='mt-4 block text-lg font-bold md:hidden lg:mb-4'>{name}</h3>
-      <div className='p-0 md:w-1/3'>
+      <div className='md:w-1/3'>
         <div className='overflow-hidden rounded-xl'>
           <ImageSlider images={images} />
         </div>
@@ -63,12 +64,30 @@ const RoomCard: React.FC<IRoomCardProps> = ({
                 <RoomDescription description={description} />
                 <RoomSquare quadrature={quadrature} />
               </div>
-              <div className='pt-5'>
-                <SvgSprite name='room-guests' className='hidden md:block' />
+              <div className='lg:ml-11'>
+                <div className='flex items-center'>
+                  <SvgSprite
+                    name='room-guests'
+                    width={48}
+                    height={32}
+                    className='hidden md:block'
+                  />
+                  {hasChild && (
+                    <div className='hidden md:flex'>
+                      {' '}
+                      +
+                      <SvgSprite
+                        name='room_guest_child'
+                        width={32}
+                        className='ml-2 hidden md:block'
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             <div className='ml-auto flex justify-end'>
-              <div className='hidden sm:block md:justify-end md:text-xs lg:text-base'>
+              <div className='hidden md:flex md:justify-end md:text-xs lg:text-base'>
                 <RoomAmenities amenities={amenities} />
               </div>
               <div className='hidden justify-end md:ml-2 md:block'>
@@ -89,7 +108,7 @@ const RoomCard: React.FC<IRoomCardProps> = ({
             </div>
           </div>
           <div className='md:ml-20 md:flex md:gap-4 lg:mt-5 lg:justify-end'>
-            <div className='hidden sm:block'>
+            <div className='hidden md:flex'>
               <h3 className='mr-6 flex w-full'>17-27 июля</h3>
             </div>
 

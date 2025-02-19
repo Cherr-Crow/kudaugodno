@@ -10,8 +10,9 @@ export function InputDateForSearchBlock({
   placeholder,
   getValue,
   className,
+  startValue,
 }: IInputDateForSearchBlock) {
-  const [value, setValue] = useState<string | null>(null);
+  const [value, setValue] = useState<string | null>(startValue ?? null);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
@@ -26,9 +27,11 @@ export function InputDateForSearchBlock({
       <div
         className={`relative hidden w-full min-w-[120px] flex-col justify-center md:flex ${className ?? ''}`}
       >
-        {value && <Typography className='absolute top-0'>{placeholder}</Typography>}
+        {value && (
+          <Typography className='absolute top-0 pl-3'>{placeholder}</Typography>
+        )}
         <Typography
-          className={`absolute ${value ? 'top-2/3 -translate-y-1/3' : 'top-1/2 -translate-y-1/2 text-grey-400'} `}
+          className={`absolute pl-3 ${value ? 'top-2/3 -translate-y-1/3' : 'top-1/2 -translate-y-1/2 text-grey-400'} `}
         >
           {value ?? placeholder}
         </Typography>

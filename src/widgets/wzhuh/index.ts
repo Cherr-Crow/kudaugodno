@@ -1,1 +1,1 @@
-export { Wzhuh } from "./Wzhuh";
+export { Wzhuh } from './Wzhuh';

@@ -1,1 +1,1 @@
-export { HotelRules } from "./HotelRules";
+export { HotelRules } from './HotelRules';

@@ -1,1 +1,1 @@
-export { HotOffer } from "./HotOffer";
+export { HotOffer } from './HotOffer';

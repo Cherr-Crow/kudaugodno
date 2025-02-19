@@ -47,7 +47,7 @@
 
     - для создания страницы npm run page "Имя страницы" (с большой буквы, если название составное -- camelCase), страница создасться в папке pages.
 
-    - npm i "nanoid" (https://www.npmjs.com/package/nanoid) - библиотека для генерации идентификаторов (например для списков).
+    - "nanoid" (https://www.npmjs.com/package/nanoid) - библиотека для генерации идентификаторов (например для списков).
 
     - "usehooks-ts" (https://usehooks-ts.com/introduction) - большая библиотека пользовательских хуков.
 

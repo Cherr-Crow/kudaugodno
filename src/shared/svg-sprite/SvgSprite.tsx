@@ -10,6 +10,7 @@ export function SvgSprite({
   color,
   width,
   height,
+  strokeWidth,
   onClick,
 }: ISvgSprite) {
   switch (name) {
@@ -998,6 +999,7 @@ export function SvgSprite({
           className={className ?? ''}
           width={width}
           height={height}
+          strokeWidth={strokeWidth}
           viewBox='0 0 25 24'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
@@ -2019,8 +2021,8 @@ export function SvgSprite({
       return (
         <svg
           className={className ?? ''}
-          width='36'
-          height='24'
+          width={width}
+          height={height}
           viewBox='0 0 36 24'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
@@ -2160,22 +2162,25 @@ export function SvgSprite({
           />
         </svg>
       );
-
-    // case '':
-    //   return;
-    // case '':
-    //   return;
-    // case '':
-    //   return;
-    // case '':
-    //   return;
-    // case '':
-    //   return;
-    // case '':
-    //   return;
-    // case '':
-    //   return;
-    // case '':
-    //   return;
+    case 'room_guest_child':
+      return (
+        <svg
+          width={width}
+          height={height}
+          viewBox='0 0 33 32'
+          strokeWidth={strokeWidth}
+          fill='none'
+          xmlns='http://www.w3.org/2000/svg'
+        >
+          <path
+            d='M16.6667 10.6673C18.1394 10.6673 19.3333 9.47341 19.3333 8.00065C19.3333 6.52789 18.1394 5.33398 16.6667 5.33398C15.1939 5.33398 14 6.52789 14 8.00065C14 9.47341 15.1939 10.6673 16.6667 10.6673Z'
+            fill='#1A1F4C'
+          />
+          <path
+            d='M19.3336 12H14.0003C13.7933 12 13.5891 12.0482 13.404 12.1408C13.2188 12.2333 13.0578 12.3677 12.9336 12.5333L8.93359 17.8667L11.0669 19.4667L12.6669 17.3333V26.6667H15.3336V21.3333H18.0003V26.6667H20.6669V17.3333L22.2669 19.4667L24.4003 17.8667L20.4003 12.5333C20.2761 12.3677 20.115 12.2333 19.9299 12.1408C19.7447 12.0482 19.5406 12 19.3336 12Z'
+            fill='#1A1F4C'
+          />
+        </svg>
+      );
   }
 }

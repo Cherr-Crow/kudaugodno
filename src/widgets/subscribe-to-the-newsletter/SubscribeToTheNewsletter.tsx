@@ -71,16 +71,14 @@ export function SubscribeToTheNewsletter({}: ISubscribeToTheNewsletter) {
               type='button'
               className='order-4 h-[70px] w-full px-[35px] py-[7px] md:order-4 md:w-[21%] md:px-[3px] lg:w-[18%] lg:px-[8px] lg:py-[20px]'
             >
-              <Typography
-                children='Подписаться'
-                className='text-nowrap text-base font-semibold md:text-[16px] md:font-normal lg:text-[20px]'
-              />
+              <Typography className='text-nowrap text-base font-semibold md:text-[16px] md:font-normal lg:text-[20px]'>
+                Подписаться
+              </Typography>
             </ButtonCustom>
             {!isEmailValid && (
-              <Typography
-                children='Некорректный адрес почты'
-                className='mb-[5px] mt-1 block text-nowrap text-[19px] font-normal text-red-primary-800 md:text-[18px] lg:text-[20px]'
-              />
+              <Typography className='mb-[5px] mt-1 block text-nowrap text-[19px] font-normal text-red-primary-800 md:text-[18px] lg:text-[20px]'>
+                Некорректный адрес почты
+              </Typography>
             )}
             <Typography className='order-3 mb-5 block font-normal text-white md:order-4 md:text-blue-200'>
               Нажимая на кнопку, вы соглашаетесь с политикой обработки персональных

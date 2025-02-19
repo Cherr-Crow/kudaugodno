@@ -18,13 +18,13 @@ export function CheckBoxBlock({
   getNewList,
   className,
 }: ICheckBoxBlock) {
-  const [list, setList] = useState<{ name: string }[]>(checkboxes);
+  const [list, setList] = useState<string[]>(checkboxes);
   const [newAmount, setNewAmount] = useState('');
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const handleCheckedChange = (checked: boolean, name: string) => {
     if (checked) return;
-    const _list = list.filter((item) => item.name !== name);
+    const _list = list.filter((item) => item !== name);
     setList(_list);
     getNewList(_list);
   };
@@ -39,12 +39,12 @@ export function CheckBoxBlock({
   };
 
   const handleAddAmount = () => {
-    if (list.some((item) => item.name === newAmount)) {
+    if (list.some((item) => item === newAmount)) {
       alert('Такое удобство уже присутствует в этом списке!');
       return;
     }
-    setList([...list, { name: newAmount }]);
-    getNewList([...list, { name: newAmount }]);
+    setList([...list, newAmount]);
+    getNewList([...list, newAmount]);
     setIsOpenModal(false);
   };
 
@@ -54,10 +54,10 @@ export function CheckBoxBlock({
       <div className='flex gap-3'>
         {list.map((checkbox) => (
           <Checkbox
-            label={checkbox.name}
+            label={checkbox}
             key={nanoid()}
             isChecked={true}
-            onChange={(checked) => handleCheckedChange(checked, checkbox.name)}
+            onChange={(checked) => handleCheckedChange(checked, checkbox)}
           />
         ))}
       </div>

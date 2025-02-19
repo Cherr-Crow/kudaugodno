@@ -1,27 +1,40 @@
-export type room = {
+export type RoomType = {
   id: number;
-  category: {
-    // id: number;   удалил id категории номера
-    name: string;
-  };
-  food: {
-    reservation_available_without_meals: boolean;
-    type_of_meals: string;
-    cost_day: number;
-  };
-  smoking: boolean;
-  pet: boolean;
-  area: number;
-  amenities: {
-    // id: number;
-    name: string;
-  }[];
-  capacity: number;
+  category: string;
+  price: number;
+  type_of_meals: string;
+  number_of_adults: number;
+  number_of_children: number;
   single_bed: number | null;
   double_bed: number | null;
-  nightly_price: number;
-  photos: {
-    id: number;
-    photo: string;
-  }[];
+  area: number;
+  quantity_rooms: number;
+  amenities_common: string[];
+  amenities_coffee: string[];
+  amenities_bathroom: string[];
+  amenities_view: string[];
+  discount: discountType[];
+  unavailable: unavailableType[];
+  photo: photoType[];
+};
+
+type discountType = {
+  id?: number;
+  name: string;
+  size: number;
+  start_date: string;
+  end_date: string;
+};
+
+type unavailableType = {
+  id?: number;
+  reason: string;
+  start_date: string;
+  end_date: string;
+};
+
+type photoType = {
+  id: number;
+  photo: string;
+  room: number;
 };
