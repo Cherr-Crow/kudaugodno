@@ -199,7 +199,7 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
         );
         break;
       case 'Все включено':
-        setPraceMeal((hotel.type_of_meals_all_inclusive ?? 0) + price);
+        setPraceMeal(+(hotel.type_of_meals_all_inclusive ?? 0) + price);
         setPraceDiscount(
           price +
             (hotel.type_of_meals_all_inclusive ?? 0) -
@@ -215,12 +215,12 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
         );
         break;
       default:
-        setPraceMeal(price);
+        setPraceMeal(+price);
         setPraceDiscount(
           price - (price * (discount[0] ? discount[0].size : 0)) / 100,
         );
     }
-  }, [typeOfMeals]);
+  }, [typeOfMeals, price]);
 
   return (
     <div className=''>
@@ -244,6 +244,7 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
                 <NamedInput
                   name='Цена'
                   title='Цена'
+                  type='number'
                   startValue={room.price}
                   getValue={(val) => handlePriceChange(val as number)}
                 />
@@ -269,6 +270,7 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
                   name='Цена c питанием'
                   title='Цена c питанием'
                   startValue={praceMeal}
+                  type='number'
                   disabled
                 />
                 <NamedInput
