@@ -8,7 +8,6 @@ import { HotelBlockPhotosReview } from '@/widgets/hotel-block-photos-review';
 import { HotelRomsList } from '@/widgets/hotel-roms-list';
 import { HotelRules } from '@/widgets/hotel-rules';
 import { RoomModal } from '@/widgets/room-modal';
-import { Slider } from '@/widgets/slider';
 
 export default function CatalogHotels() {
   const hotelsData = [
@@ -111,7 +110,6 @@ export default function CatalogHotels() {
         <HotelAmenities />
         <HotelRules />
         <RoomModal />
-        <Slider />
       </section>
     </>
   );

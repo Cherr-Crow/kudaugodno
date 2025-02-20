@@ -5,14 +5,11 @@ import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { useGetHotelsQuery, useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
+import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
-import { hotels } from '@/temp/hotel-mock';
 
 import { IRoomModal } from './RoomModal.types';
-// eslint-disable-next-line no-commented-code/no-commented-code
-// import { ISlider } from './Slider.types';
 import { serviceNames } from '../hotel-block-photos-review/service';
 
 import 'swiper/css';
@@ -24,9 +21,7 @@ import 'swiper/css/thumbs';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 
 export function RoomModal({}: IRoomModal) {
-  const { data } = useGetHotelsQuery({});
   const { data: hotel } = useGetOneHotelQuery(1);
-  console.log('1 отель ', hotel);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
@@ -36,23 +31,16 @@ export function RoomModal({}: IRoomModal) {
   const nomer = hotel.rooms[0].category;
   const doubleBed = hotel.rooms[0].double_bed;
   const area = hotel.rooms[0].area;
-
-  console.log('1 комната фото', roomPhotos);
-
-  console.log(data);
+  const amenitiel = hotel.rooms[0];
 
   return (
     <section className='relative mx-auto min-h-[200px] max-w-[1011px] rounded-[20px] p-[20px] shadow-md md:pt-[30px] lg:p-[40px] lg:pt-[60px]'>
-      <Typography className='mb-[20px] block font-semibold tracking-[1px] md:mb-[30px] md:text-[35px] lg:mb-[57px] lg:text-[60px] lg:tracking-[2.4px]'>
-        Модальное окно комнаты
-      </Typography>
       <Typography className='mb-[20px] block font-semibold tracking-[1px] md:mb-[30px] md:text-[35px] lg:mb-[57px] lg:text-[60px] lg:tracking-[2.4px]'>
         Номер {nomer}
       </Typography>
       <div className='absolute right-[20px] top-[22px] w-[16px] cursor-pointer md:w-[20px] lg:right-[40px] lg:top-[40px] lg:w-[24px]'>
         <img className='max-w-[100%]' src='/closeimg.jpg' alt='' />
       </div>
-      {/* Блок с картинками */}
       <div className='bg-green-secondary mx-auto max-w-[1000px]'>
         <Swiper
           style={{}}
@@ -74,7 +62,6 @@ export function RoomModal({}: IRoomModal) {
               </SwiperSlide>
             ))}
         </Swiper>
-        {/* <div className=''> */}
         <Swiper
           onSwiper={setThumbsSwiper}
           loop={true}
@@ -96,44 +83,7 @@ export function RoomModal({}: IRoomModal) {
               </SwiperSlide>
             ))}
         </Swiper>
-        {/* </div> */}
       </div>
-      {/* <div className='mb-[20px] lg:mb-[40px]'>
-        <div className='h-[224px] overflow-hidden rounded-[20px] md:mb-[20px] md:h-[545px] lg:h-[621px]'>
-          <img className='h-[100%] w-[100%]' src='modalromimg.jpg' alt='' />
-        </div>
-        <div className='hidden justify-between md:flex md:gap-2 md:overflow-x-auto lg:gap-10'>
-          <div className='w-[220px] overflow-hidden rounded-[20px] md:h-[163px] lg:h-[188px]'>
-            <img
-              className='h-[100%] w-[100%]'
-              src='Novotel-Nairobi-Westlands-photo-1.png'
-              alt=''
-            />
-          </div>
-          <div className='w-[220px] overflow-hidden rounded-[20px] md:h-[163px] lg:h-[188px]'>
-            <img
-              className='h-[100%] w-[100%]'
-              src='Novotel-Nairobi-Westlands-photo-2.png'
-              alt=''
-            />
-          </div>
-          <div className='w-[220px] overflow-hidden rounded-[20px] md:h-[163px] lg:h-[188px]'>
-            <img
-              className='h-[100%] w-[100%]'
-              src='Novotel-Nairobi-Westlands-photo-3.png'
-              alt=''
-            />
-          </div>
-          <div className='w-[220px] overflow-hidden rounded-[20px] md:h-[163px] lg:h-[188px]'>
-            <img
-              className='h-[100%] w-[100%]'
-              src='Novotel-Nairobi-Westlands-photo-4.png'
-              alt=''
-            />
-          </div>
-        </div>
-      </div> */}
-      {/* Блок со списком преимуществ */}
       <div className='md:flex'>
         <div className='mb-4 md:mr-8'>
           <div className='m-0 h-[136px] max-w-[304px] rounded-[20px] border-[1px] border-blue-200 bg-blue-50 p-4 pb-3 md:h-[145px] md:w-[190px] md:p-2 lg:mr-[0px] lg:h-[168px] lg:w-[262px] lg:p-4'>
@@ -192,7 +142,6 @@ export function RoomModal({}: IRoomModal) {
           </div>
         </div>
       </div>
-      {/* Блок Удобства */}
       <div className='py-5 pb-0 lg:py-5'>
         <Typography
           variant='l'
@@ -200,26 +149,91 @@ export function RoomModal({}: IRoomModal) {
         >
           Удобства
         </Typography>
-        <ul className='mb-5 grid grid-cols-1 gap-7 sm:flex'>
-          {hotels[0].rooms.map((item) => (
-            <li className='' key={nanoid()}>
-              <Typography className='mb-3 block font-semibold text-blue-900 md:text-lg md:text-grey-950 lg:text-xl'>
-                {item.category}
-              </Typography>
-              {item.amenities_common.map((comfortitem) => (
-                <div className='mb-2 flex' key={nanoid()}>
-                  <SvgSprite
-                    name='check-mark'
-                    width={16}
-                    className='m-0 mr-4 cursor-pointer'
-                  />
-                  <Typography variant='s' className='font-normal md:text-base'>
-                    {comfortitem}
-                  </Typography>
-                </div>
+        <ul className='mb-5 grid grid-cols-2 gap-7 lg:flex lg:justify-between'>
+          <li>
+            <p className='mb-3 block font-semibold text-blue-900 md:text-lg md:text-grey-950 lg:text-xl'>
+              В номере
+            </p>
+            <ul>
+              {amenitiel?.amenities_common.map((item) => (
+                <li key={nanoid()}>
+                  <div className='mb-2 flex' key={nanoid()}>
+                    <SvgSprite
+                      name='check-mark'
+                      width={16}
+                      className='m-0 mr-4 cursor-pointer'
+                    />
+                    <Typography variant='s' className='font-normal md:text-base'>
+                      {item}
+                    </Typography>
+                  </div>
+                </li>
               ))}
-            </li>
-          ))}
+            </ul>
+          </li>
+          <li>
+            <p className='mb-3 block font-semibold text-blue-900 md:text-lg md:text-grey-950 lg:text-xl'>
+              Общие
+            </p>
+            <ul>
+              {amenitiel?.amenities_coffee.map((item) => (
+                <li key={nanoid()}>
+                  <div className='mb-2 flex' key={nanoid()}>
+                    <SvgSprite
+                      name='check-mark'
+                      width={16}
+                      className='m-0 mr-4 cursor-pointer'
+                    />
+                    <Typography variant='s' className='font-normal md:text-base'>
+                      {item}
+                    </Typography>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </li>
+          <li>
+            <p className='mb-3 block font-semibold text-blue-900 md:text-lg md:text-grey-950 lg:text-xl'>
+              Спорт и отдых
+            </p>
+            <ul>
+              {amenitiel?.amenities_bathroom.map((item) => (
+                <li key={nanoid()}>
+                  <div className='mb-2 flex' key={nanoid()}>
+                    <SvgSprite
+                      name='check-mark'
+                      width={16}
+                      className='m-0 mr-4 cursor-pointer'
+                    />
+                    <Typography variant='s' className='font-normal md:text-base'>
+                      {item}
+                    </Typography>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </li>
+          <li>
+            <p className='mb-3 block font-semibold text-blue-900 md:text-lg md:text-grey-950 lg:text-xl'>
+              Для детей
+            </p>
+            <ul>
+              {amenitiel?.amenities_view.map((item) => (
+                <li key={nanoid()}>
+                  <div className='mb-2 flex' key={nanoid()}>
+                    <SvgSprite
+                      name='check-mark'
+                      width={16}
+                      className='m-0 mr-4 cursor-pointer'
+                    />
+                    <Typography variant='s' className='font-normal md:text-base'>
+                      {item}
+                    </Typography>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </li>
         </ul>
       </div>
     </section>
