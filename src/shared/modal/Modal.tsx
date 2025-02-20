@@ -9,7 +9,7 @@ import { PopupWindow } from '@/shared/popup-window';
 import { IModal } from './Modal.types';
 import { SvgSprite } from '../svg-sprite';
 
-export function Modal({ children, isOpen, getState }: IModal) {
+export function Modal({ children, isOpen, getState, err = false }: IModal) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(isOpen);
   const window = useRef<HTMLDivElement>(null);
@@ -30,9 +30,9 @@ export function Modal({ children, isOpen, getState }: IModal) {
   if (!open || !modalRef.current) return null;
 
   return createPortal(
-    <div className='fixed left-0 top-0 h-full w-full bg-grey-opacity' ref={window}>
+    <div className={`fixed left-0 top-0 h-full w-full bg-grey-opacity`} ref={window}>
       <PopupWindow
-        className='relative left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-10'
+        className={`relative left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-10 ${err && 'bg-gradient-to-tl from-red-primary-400'}`}
         ref={popap}
       >
         <SvgSprite
