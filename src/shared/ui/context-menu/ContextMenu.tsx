@@ -29,11 +29,11 @@ export function ContextMenu({ items, visible, positionProp }: IContextMenu) {
         }}
         onMouseLeave={handleMouseOut}
       >
-        <ul>
+        <ul className='p-2'>
           {items.map((item, index) => (
             <li
               key={index}
-              className='cursor-pointer rounded px-7 py-1 hover:bg-grey-100'
+              className='cursor-pointer rounded border-b border-b-grey-100 px-7 py-1 last-of-type:border-none hover:bg-grey-100'
               onClick={() => {
                 item.action();
                 setIsVisible(false);

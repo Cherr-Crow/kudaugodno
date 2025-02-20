@@ -101,15 +101,15 @@ export default function CatalogHotels() {
     <>
       <section className='container rounded-bl-[20px] rounded-br-[20px] xl:rounded-bl-[100px] xl:rounded-br-[100px]'>
         <Breadcrumbs />
-        {/*<SearchForm*/}
-        {/*  className={'mb-[40px] border-solid shadow-lg xl:mb-[313px]'}*/}
-        {/*  tabClick='Туры'*/}
-        {/*/>*/}
+        {/* <SearchTour
+         className={'mb-[40px] border-solid shadow-lg xl:mb-[313px]'}
+         tabClick='Туры'
+        /> */}
         <SearchTour type={'Туры'} />
         <HotelBlockPhotosReview />
+        <HotelRomsList hotels={hotelsData} />
         <HotelAmenities />
         <HotelRules />
-        <HotelRomsList hotels={hotelsData} />
         <RoomModal />
         <Slider />
       </section>
