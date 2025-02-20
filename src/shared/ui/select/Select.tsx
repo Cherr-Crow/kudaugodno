@@ -84,7 +84,7 @@ export function Select({
       </div>
       {isOpen && (
         <PopupWindow className='top-[110%] w-full'>
-          <ul className='dropdown-list py-2'>
+          <ul className='dropdown-list max-h-60 overflow-scroll py-2'>
             {options.map((option) => (
               <li
                 key={nanoid()}

@@ -1,0 +1,1 @@
+export { TableForFlights } from './TableForFlights';
