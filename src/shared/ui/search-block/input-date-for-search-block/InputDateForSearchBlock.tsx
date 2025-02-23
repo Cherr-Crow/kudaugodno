@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Typography } from '@/shared/typography';
 
@@ -21,6 +21,11 @@ export function InputDateForSearchBlock({
       getValue(val);
     }
   };
+
+  useEffect(() => {
+    if (!startValue) return;
+    setValue(startValue);
+  }, [startValue]);
 
   return (
     <>

@@ -49,6 +49,7 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
   }, [patch]);
 
   const handleTabName = (tabName: string) => {
+    console.log(id);
     if (!id) return;
 
     switch (tabName) {
@@ -61,7 +62,7 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
         );
         break;
       case 'Даты':
-        router.push('/admin-panel-tour-operator/hotels/change-hotel/dates');
+        // router.push('/admin-panel-tour-operator/hotels/change-hotel/dates');
         break;
       default:
         break;

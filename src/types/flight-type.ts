@@ -1,4 +1,5 @@
 export interface IFlight {
+  id: number;
   flight_number: string;
   airline: string;
   departure_airport: string;
@@ -10,4 +11,5 @@ export interface IFlight {
   price: string;
   service_class: string;
   flight_type: string;
+  description: string;
 }
