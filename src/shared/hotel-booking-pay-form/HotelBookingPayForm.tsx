@@ -15,7 +15,7 @@ export function HotelBookingPayForm({}: IHotelBookingPayForm) {
   return (
     <div className='rounded-lg bg-white p-4 shadow-lg'>
       <div className='mb-4'>
-        <Typography variant='l-bold' className='text-grey-950'>
+        <Typography variant='l' className='font-bold text-grey-950'>
           Стоимость бронирования
         </Typography>
       </div>
@@ -73,10 +73,10 @@ export function HotelBookingPayForm({}: IHotelBookingPayForm) {
         {/* Итоговая сумма */}
         <div className='border-gray-300 border-t pt-4'>
           <div className='flex justify-between'>
-            <Typography variant='l-bold' className='text-grey-950'>
+            <Typography variant='l' className='font-bold text-grey-950'>
               Итого
             </Typography>
-            <Typography variant='l-bold' className='text-grey-950'>
+            <Typography variant='l' className='font-bold text-grey-950'>
               {totalPrice.toLocaleString()} ₽
             </Typography>
           </div>
