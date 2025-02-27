@@ -66,10 +66,10 @@ export type NameSvg =
   | 'face'
   | 'ruler'
   | 'parentsChld'
-  | 'map'
   | 'filter'
   | 'back-arrow'
   | 'google'
   | 'vkontakte'
   | 'yandex'
-  | 'arrow-check';
+  | 'arrow-check'
+  | 'eat';

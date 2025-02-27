@@ -34,7 +34,7 @@ export function RoomCards({
                 <div className='flex items-center justify-start' key={nanoid()}>
                   <SvgSprite name={`${elem.type}`} width={24} className='mr-3' />
                   <Typography variant='s-bold' className='text-black text-nowrap'>
-                    elem.text
+                    {elem.text}
                   </Typography>
                 </div>
               );

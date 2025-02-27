@@ -5,13 +5,12 @@ import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { ModalTours } from '@/shared/ui/modal-tours';
 import { hotels } from '@/temp/hotel-mock';
 
 import { IToursBlockPhoto } from './ToursBlockPhoto.types';
-import { ModalTours } from '@/shared/ui/modal-tours';
 
 export function ToursBlockPhoto({}: IToursBlockPhoto) {
-  // const [tabClick, setTabClick] = useState<string>('Туры');
   const [isOpenModal, setIsOpenModal] = useState(false);
   return (
     <>
@@ -52,24 +51,24 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
 
             <div className='grid h-[182px] grid-cols-1 gap-4 py-4 md:h-auto lg:grid-cols-2'>
               <img
-                src={hotel.photos[0]?.photo}
+                src={hotel.photo[0]?.photo}
                 alt={`Hotel ${hotel.name} hotel-photo`}
                 className='hidden h-full w-full rounded-lg object-cover shadow-md lg:block'
               />
 
               <div className='flex gap-4 overflow-x-auto md:grid md:grid-cols-2'>
                 <img
-                  src={hotel.photos[1]?.photo}
+                  src={hotel.photo[1]?.photo}
                   alt={`Hotel ${hotel.name} hotel-photo`}
                   className='flex-shrink-0 rounded-lg object-cover shadow-md md:w-full'
                 />
                 <img
-                  src={hotel.photos[2]?.photo}
+                  src={hotel.photo[2]?.photo}
                   alt={`Hotel ${hotel.name} hotel-photo`}
                   className='flex-shrink-0 rounded-lg object-cover shadow-md md:w-full'
                 />
                 <img
-                  src={hotel.photos[3]?.photo}
+                  src={hotel.photo[3]?.photo}
                   alt={`Hotel ${hotel.name} hotel-photo`}
                   className='flex-shrink-0 rounded-lg object-cover shadow-md md:w-full'
                 />
@@ -78,7 +77,7 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
                   <div
                     className='absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transform bg-cover bg-center'
                     style={{
-                      backgroundImage: `url(${hotel.photos[4]?.photo})`,
+                      backgroundImage: `url(${hotel.photo[4]?.photo})`,
                       opacity: 0.6,
                     }}
                   />
