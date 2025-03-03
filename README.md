@@ -8,7 +8,7 @@
     - TailWind css;
 
 ## Getting Started
-    -*_*-
+    -***-
     - npm install --force
     - npm run dev
 
