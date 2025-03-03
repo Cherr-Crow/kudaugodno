@@ -1,0 +1,1 @@
+export { ModalTours } from './ModalTours';

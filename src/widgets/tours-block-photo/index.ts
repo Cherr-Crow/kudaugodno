@@ -1,0 +1,1 @@
+export { ToursBlockPhoto } from './ToursBlockPhoto';
