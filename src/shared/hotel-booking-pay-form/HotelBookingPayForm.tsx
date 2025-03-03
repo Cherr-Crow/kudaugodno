@@ -1,16 +1,25 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 
 import { IHotelBookingPayForm } from './HotelBookingPayForm.types';
+import { HotelBookingModalCancel } from '../hotel-booking-modal-cancel';
+import { HotelBookingModalConfirm } from '../hotel-booking-modal-confirm';
 import { Typography } from '../typography';
 import { ButtonCustom } from '../ui/button-custom';
 import { NamedInput } from '../ui/named-input';
 
 export function HotelBookingPayForm({}: IHotelBookingPayForm) {
-  const stayPrice = 22765;
-  const taxes = 765;
-  const discount = 765;
-  const bonuses = 238;
-  const totalPrice = stayPrice + taxes - discount;
+  const bookingPrice = {
+    stayPrice: 22765,
+    taxes: 765,
+    discount: 765,
+    bonuses: 238,
+    totalPrice: 22765 + 765 - 765,
+  };
+
+  const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [isCancelModalOpen, setCancelModalOpen] = useState(false);
 
   return (
     <div className='rounded-lg bg-white p-4 shadow-lg'>
@@ -26,7 +35,7 @@ export function HotelBookingPayForm({}: IHotelBookingPayForm) {
           Проживание
         </Typography>
         <Typography variant='m' className='text-grey-800'>
-          {stayPrice.toLocaleString()} ₽
+          {bookingPrice.stayPrice.toLocaleString()} ₽
         </Typography>
       </div>
       <div className='mb-2 flex justify-between'>
@@ -34,7 +43,7 @@ export function HotelBookingPayForm({}: IHotelBookingPayForm) {
           Налоги и сборы
         </Typography>
         <Typography variant='m' className='text-grey-800'>
-          {taxes.toLocaleString()} ₽
+          {bookingPrice.taxes.toLocaleString()} ₽
         </Typography>
       </div>
       <div className='mb-2 flex justify-between'>
@@ -42,7 +51,7 @@ export function HotelBookingPayForm({}: IHotelBookingPayForm) {
           Скидка
         </Typography>
         <Typography variant='m' className='text-[#FF0202]'>
-          -{discount.toLocaleString()} ₽
+          -{bookingPrice.discount.toLocaleString()} ₽
         </Typography>
       </div>
       <div className='mb-4 flex justify-between'>
@@ -50,7 +59,7 @@ export function HotelBookingPayForm({}: IHotelBookingPayForm) {
           Начислим бонусы
         </Typography>
         <Typography variant='m' className='text-grey-800'>
-          {bonuses.toLocaleString()} бонусов
+          {bookingPrice.bonuses.toLocaleString()} бонусов
         </Typography>
       </div>
 
@@ -77,22 +86,42 @@ export function HotelBookingPayForm({}: IHotelBookingPayForm) {
               Итого
             </Typography>
             <Typography variant='l' className='font-bold text-grey-950'>
-              {totalPrice.toLocaleString()} ₽
+              {bookingPrice.totalPrice.toLocaleString()} ₽
             </Typography>
           </div>
         </div>
       </div>
 
-      {/* Кнопка завершения бронирования */}
-      <div>
+      {/* Кнопки подтверждения и отмены */}
+      <div className='flex justify-between gap-4'>
         <ButtonCustom
           variant='primary'
-          className='bg-lime-400 hover:bg-lime-500 h-[10%] w-full rounded-full py-3 text-sm font-bold text-grey-950 shadow-md'
-          size={'s'}
+          className='bg-lime-400 hover:bg-lime-500 w-full rounded-full py-3 text-sm font-bold text-grey-950 shadow-md'
+          size='s'
+          onClick={() => setConfirmModalOpen(true)}
         >
           Завершить бронирование
         </ButtonCustom>
+
+        <ButtonCustom
+          variant='secondary'
+          className='bg-lime-400 hover:bg-lime-500 w-full rounded-full py-3 text-sm font-bold text-grey-950 shadow-md'
+          size='s'
+          onClick={() => setCancelModalOpen(true)}
+        >
+          Отменить бронирование
+        </ButtonCustom>
       </div>
+
+      {/* Модальные окна */}
+      <HotelBookingModalConfirm
+        isOpen={isConfirmModalOpen}
+        onClose={() => setConfirmModalOpen(false)}
+      />
+      <HotelBookingModalCancel
+        isOpen={isCancelModalOpen}
+        onClose={() => setCancelModalOpen(false)}
+      />
     </div>
   );
 }

@@ -1,0 +1,1 @@
+export { HotelBookingModalConfirm } from './HotelBookingModalConfirm';
