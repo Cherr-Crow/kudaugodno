@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { IRadioButton } from './RadioButton.types';
 
@@ -12,29 +12,50 @@ const RadioButton: React.FC<IRadioButton> = ({
 }) => {
   const [selected, setSelected] = useState(isSelected);
 
-  const handleToggle = () => {
+  useEffect(() => {
+    if (isSelected !== undefined) {
+      setSelected(isSelected);
+    }
+  }, [isSelected]);
+
+  const handleToggle = (e: React.MouseEvent<HTMLLabelElement>) => {
+    e.preventDefault();
     if (isDisabled) return;
-    setSelected(!selected);
-    onChange(!selected);
+    if (!selected) {
+      setSelected(true);
+      onChange(true);
+    }
   };
 
+  const buttonId = `radio-button-${label.replace(/\s+/g, '-')}`;
+
   return (
-    <div className='flex items-center space-x-2'>
+    <label
+      className='flex cursor-pointer items-center space-x-2'
+      onClick={handleToggle}
+    >
       <button
-        className={`bg-gray-100 border-1 flex h-6 w-6 items-center justify-center rounded-full border border-grey-600 transition-colors duration-300 ${isDisabled ? 'cursor-not-allowed' : selected ? 'border-1 border-blue-600' : 'border-1 border-grey-600'} ${!isDisabled && 'focus:outline-2 focus:outline-blue-600'} `}
-        onClick={handleToggle}
+        id={buttonId}
+        type='button'
+        className={`bg-gray-100 flex h-6 w-6 items-center justify-center rounded-full border transition-colors duration-300 ${
+          isDisabled
+            ? 'cursor-not-allowed'
+            : selected
+              ? 'border-blue-600'
+              : 'border-grey-600'
+        } ${!isDisabled && 'focus:outline-2 focus:outline-blue-600'}`}
         disabled={isDisabled}
         aria-checked={selected}
-        role='switch'
+        role='radio'
       >
         <span
-          className={`h-3 w-3 scale-0 transform rounded-full bg-blue-600 transition-transform duration-300 ${selected ? 'scale-100' : ''} `}
+          className={`h-3 w-3 transform rounded-full bg-blue-600 transition-transform duration-300 ${
+            selected ? 'scale-100' : 'scale-0'
+          }`}
         />
       </button>
-      <label className={`text-sm font-medium`} onClick={handleToggle}>
-        {label}
-      </label>
-    </div>
+      <span className='text-sm font-medium'>{label}</span>
+    </label>
   );
 };
 

@@ -1,20 +1,19 @@
-import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 
-import hotelCreateReducer from './slices/hotelCreate';
-import testReducer from './slices/testSlice';
+import { flightsApi } from '@/servicesApi/flightsApi';
+import { hotelsApi } from '@/servicesApi/hotelsApi';
+import { toursApi } from '@/servicesApi/toursApi';
 
 export const store = configureStore({
   reducer: {
-    hotelCreate: hotelCreateReducer,
-    testVal: testReducer,
+    [hotelsApi.reducerPath]: hotelsApi.reducer,
+    [flightsApi.reducerPath]: flightsApi.reducer,
+    [toursApi.reducerPath]: toursApi.reducer,
   },
+  middleware: (getDefaultMiddlware) =>
+    getDefaultMiddlware().concat(
+      hotelsApi.middleware,
+      flightsApi.middleware,
+      toursApi.middleware,
+    ),
 });
-
-export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
-export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
->;

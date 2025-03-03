@@ -1,1 +1,1 @@
-export { SvgSprite } from "./SvgSprite";
+export { SvgSprite } from './SvgSprite';

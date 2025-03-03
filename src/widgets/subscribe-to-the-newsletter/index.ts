@@ -1,1 +1,1 @@
-export { SubscribeToTheNewsletter } from "./SubscribeToTheNewsletter";
+export { SubscribeToTheNewsletter } from './SubscribeToTheNewsletter';

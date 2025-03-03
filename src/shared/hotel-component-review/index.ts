@@ -1,1 +1,1 @@
-export { HotelComponentReview } from "./HotelComponentReview";
+export { HotelComponentReview } from './HotelComponentReview';

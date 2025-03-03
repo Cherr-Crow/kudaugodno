@@ -13,6 +13,7 @@ const links = [
   { name: 'Профиль', path: '/admin-panel-tour-operator' },
   { name: 'Отели', path: '/admin-panel-tour-operator/hotels' },
   { name: 'Рейсы', path: '/admin-panel-tour-operator/flights' },
+  { name: 'Туры', path: '/admin-panel-tour-operator/tours-page' },
   { name: 'Заявки', path: '/admin-panel-tour-operator/applications-page' },
 ];
 
@@ -28,7 +29,7 @@ export function AdminPanelDashboard({}: IAdminPanelDashboard) {
           key={nanoid()}
           onClick={() => routes.push(link.path)}
         >
-          <Typography children={link.name} />
+          <Typography>{link.name}</Typography>
         </li>
       ))}
     </ul>

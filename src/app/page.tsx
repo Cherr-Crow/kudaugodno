@@ -6,11 +6,6 @@ import { SubscribeToTheNewsletter } from '@/widgets/subscribe-to-the-newsletter'
 import { Wzhuh } from '@/widgets/wzhuh';
 
 export default async function Home() {
-  // const data = await fetch('http://82.202.137.38/hotels/');
-  // const hotOffers = data.json();
-
-  // console.log(hotOffers);
-
   return (
     <div className='flex flex-col gap-3'>
       <Hero />

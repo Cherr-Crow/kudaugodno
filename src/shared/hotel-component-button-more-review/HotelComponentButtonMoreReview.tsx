@@ -9,7 +9,9 @@ interface HotelComponentButtonMoreReviewProps {
   hotel: Hotel;
 }
 
-export function HotelComponentButtonMoreReview({ hotel }: HotelComponentButtonMoreReviewProps) {
+export function HotelComponentButtonMoreReview({
+  hotel,
+}: HotelComponentButtonMoreReviewProps) {
   const [showAllReviews, setShowAllReviews] = useState(false);
 
   const handleToggleReviews = () => {
@@ -21,13 +23,13 @@ export function HotelComponentButtonMoreReview({ hotel }: HotelComponentButtonMo
   }
 
   return (
-    <div key={hotel.id} className="mb-4">
-      <div className="group flex items-center justify-end gap-0.5 mb-4">
+    <div key={hotel.id} className='mb-4'>
+      <div className='group mb-4 flex items-center justify-end gap-0.5'>
         <button
-          className="text-blue-600 hover:underline flex items-center gap-1"
+          className='flex items-center gap-1 text-blue-600 hover:underline'
           onClick={handleToggleReviews}
         >
-          <Typography variant="m">
+          <Typography variant='m'>
             {showAllReviews
               ? 'Скрыть отзывы'
               : `Еще ${hotel.reviews.length} отзывов`}

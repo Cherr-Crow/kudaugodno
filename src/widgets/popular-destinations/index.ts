@@ -1,1 +1,1 @@
-export { PopularDestinations } from "./PopularDestinations";
+export { PopularDestinations } from './PopularDestinations';

@@ -18,20 +18,22 @@ export function Select({
   arrowHidden,
   size = 'medium',
   id,
+  startValue,
 }: ISelect) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(options[0]);
+  const [selectedOption, setSelectedOption] = useState(startValue ?? options[0]);
   const screen = useScreen();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   enum Background {
-    'blue' = 'border border-blue-primary bg-blue-300',
-    'green' = 'border border-green-tetriary bg-green-secondary',
+    'blue' = 'border border-blue-400 bg-blue-300',
+    'green' = 'border border-green-500 bg-green-300',
   }
 
   enum Size {
     'small' = 'rounded-md py-2 px-4',
     'medium' = 'rounded-full p-4',
+    'mobile' = 'rounded-full  w-20 h-7',
   }
 
   const handleToggle = () => {
@@ -57,6 +59,11 @@ export function Select({
   }, []);
 
   useEffect(() => {
+    if (!startValue) return;
+    setSelectedOption(startValue);
+  }, [startValue]);
+
+  useEffect(() => {
     getValue && getValue(selectedOption);
   }, [selectedOption]);
 
@@ -72,6 +79,7 @@ export function Select({
           onChange={() => {}}
           className={`pointer-events-none w-4/5 cursor-pointer bg-transparent outline-none`}
           id={id}
+          name='select'
         />
         <SvgSprite
           name='arrow'
@@ -81,11 +89,11 @@ export function Select({
       </div>
       {isOpen && (
         <PopupWindow className='top-[110%] w-full'>
-          <ul className='dropdown-list py-2'>
+          <ul className='dropdown-list max-h-60 overflow-scroll py-2'>
             {options.map((option) => (
               <li
                 key={nanoid()}
-                className='px-4 py-2 hover:bg-blue-extra-light'
+                className='px-4 py-2 hover:bg-blue-100'
                 onClick={() => handleOptionClick(option)}
               >
                 {option}

@@ -1,1 +1,1 @@
-export { FilterAmenities } from "./FilterAmenities";
+export { FilterAmenities } from './FilterAmenities';

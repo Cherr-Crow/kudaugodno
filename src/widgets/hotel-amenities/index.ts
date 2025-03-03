@@ -1,1 +1,1 @@
-export { HotelAmenities } from "./HotelAmenities";
+export { HotelAmenities } from './HotelAmenities';

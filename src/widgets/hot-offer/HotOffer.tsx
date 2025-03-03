@@ -13,10 +13,6 @@ import { Hotel } from '@/types/hotel';
 
 import { IHotOffer } from './HotOffer.types';
 
-
-
-
-
 export function HotOffer({ className, title, link, array, type }: IHotOffer) {
   const [workArr, setWorkArr] = useState<Hotel[]>(array);
   const screen = useScreen();
@@ -33,16 +29,16 @@ export function HotOffer({ className, title, link, array, type }: IHotOffer) {
     <section className={className}>
       <div className='mb-6 flex items-center justify-between'>
         {title && (
-          <Typography children={title} variant='m-bold' className='md:text-2xl' />
+          <Typography variant='m-bold' className='md:text-2xl'>
+            {title}
+          </Typography>
         )}
         {link && (
           <div className='hidden items-center gap-2 md:flex'>
             <Link href={link}>
-              <Typography
-                children='Смотреть больше'
-                variant='m-bold'
-                className='md:text-2xl'
-              />
+              <Typography variant='m-bold' className='md:text-2xl'>
+                Смотреть больше
+              </Typography>
             </Link>
             <SvgSprite name='arrow' width={24} />
           </div>
@@ -59,11 +55,9 @@ export function HotOffer({ className, title, link, array, type }: IHotOffer) {
       {link && (
         <div className='mt-4 flex items-center justify-end gap-2 md:hidden'>
           <Link href={link}>
-            <Typography
-              children='Смотреть больше'
-              variant='m-bold'
-              className='md:text-2xl'
-            />
+            <Typography variant='m-bold' className='md:text-2xl'>
+              Смотреть больше
+            </Typography>
           </Link>
           <SvgSprite name='arrow' width={24} />
         </div>

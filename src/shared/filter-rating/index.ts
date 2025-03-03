@@ -1,1 +1,1 @@
-export { FilterRating } from "./FilterRating";
+export { FilterRating } from './FilterRating';

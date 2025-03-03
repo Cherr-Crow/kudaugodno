@@ -1,226 +1,335 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { timeForComponent } from '@/shared/ui/time-for-component/time';
 
 import { IAuthpage } from './Authpage.types';
 
 export function Authpage({}: IAuthpage) {
-    const [showCodePanel, setShowCodePanel] = useState<boolean>(false);
-    const [showBackArrow, setShowBackArrow] = useState<boolean>(false);
-    const [seconds, setSeconds] = useState<number>(45);
-    const [startTimer, setStartTimer] = useState<boolean>(false);
+  const [showCodePanel, setShowCodePanel] = useState<boolean>(false);
+  const [showBackArrow, setShowBackArrow] = useState<boolean>(false);
+  const [seconds, setSeconds] = useState<number>(45);
+  const [startTimer, setStartTimer] = useState<boolean>(false);
 
+  const [input1, setInput1] = useState<string>('');
+  const [input2, setInput2] = useState<string>('');
+  const [input3, setInput3] = useState<string>('');
+  const [input4, setInput4] = useState<string>('');
 
-    // Показать кнопку Прислать новый код, Скрыть Обратный отсчёт
-    // const [showButtonNewCode, setShowButtonNewCode] = useState<boolean>(false);
-    
+  const [email, setEmail] = useState<string>('');
 
+  const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
 
+  const inputRef2 = useRef<HTMLInputElement>(null);
+  const inputRef3 = useRef<HTMLInputElement>(null);
+  const inputRef4 = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
-    console.log("Привет", showCodePanel);
-    setShowCodePanel(true);
-    setShowBackArrow(true);
-    setStartTimer(true);
-    setSeconds(45);
+    if (isEmailValid && email !== '') {
+      setShowCodePanel(true);
+      setShowBackArrow(true);
+      setStartTimer(true);
+      setSeconds(45);
+    }
   };
 
   const handleClickBack = () => {
-    console.log("Пока", showCodePanel);
     setShowCodePanel(false);
     setShowBackArrow(false);
   };
 
-  // Таймер
-
-  
-  useEffect(()=>{
+  useEffect(() => {
     if (!startTimer) return;
-    // if()
-    if (seconds === 0 ) {
-      // setShowButtonNewCode(true);
+    if (seconds === 0) {
       setStartTimer(false);
       return;
     }
 
-
-    const i = setInterval(()=>{
-      setSeconds((seconds)=> seconds -1)
-      // if (seconds === 0 ) {
-      //   console.log('if (seconds === 0 )')
-      //   clearInterval(i);
-      // };
-
+    const i = setInterval(() => {
+      setSeconds((seconds) => seconds - 1);
     }, 1000);
-    return()=>{
+    return () => {
       clearInterval(i);
     };
   }, [startTimer, seconds]);
 
   const handleSentNewCode = () => {
-    console.log("Прислать новый код");
+    console.log('Прислать новый код');
     setSeconds(45);
-    // setShowButtonNewCode(false);
     setStartTimer(true);
-    // setShowBackArrow(false);
   };
 
-  // Ф-я показа времени в нужном формате
+  function emailValid(email: string) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (emailRegex.test(email)) {
+      setIsEmailValid(true);
+    } else {
+      setIsEmailValid(false);
+    }
+  }
 
-  const timeForComponent=(time: number)=>{
-    if(!time) return;
-    const hours = Math.floor(time / 60 / 60);
-    const minutes = Math.floor(time / 60) - (hours * 60);
-    const seconds = time % 60;
+  const handleFocusForInput2 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onlyNumberForFocusChenge(e.target.value)) {
+      setInput1(onlyNumber(e.target.value));
+      inputRef2.current?.focus();
+    }
+  };
+  const handleFocusForInput3 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onlyNumberForFocusChenge(e.target.value)) {
+      setInput2(onlyNumber(e.target.value));
+      inputRef3.current?.focus();
+    }
+  };
+  const handleFocusForInput4 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onlyNumberForFocusChenge(e.target.value)) {
+      setInput3(onlyNumber(e.target.value));
+      inputRef4.current?.focus();
+    }
+  };
+  const handleDataToServer = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput4(onlyNumber(e.target.value));
+  };
 
-    const formattedWithHours = [
-        hours.toString().padStart(2, '0'),
-        minutes.toString().padStart(2, '0'),
-        seconds.toString().padStart(2, '0')
-      ].join(':');
+  const codeForAuth = {
+    input1,
+    input2,
+    input3,
+    input4,
+  };
 
+  const codeForAuthArr = [+input1, +input2, input3, input4];
 
-    const  formattedWithouthHours = [        
-        minutes.toString().padStart(2, '0'),
-        seconds.toString().padStart(2, '0')
-      ].join(':');     
-      
+  useEffect(() => {
+    if (input1 !== '' && input2 !== '' && input3 !== '' && input4 !== '') {
+      setTimeout(() => {
+        if (codeForAuth.input4 !== '') {
+          setInput1('');
+          setInput2('');
+          setInput3('');
+          setInput4('');
+          console.log('Поехали! на сервер объектом:', codeForAuth);
+          console.log('Поехали! на сервер массивом:', codeForAuthArr);
+        }
+      }, 500);
+    }
+  }, [input1, input2, input3, input4]);
 
-      return hours>=1 ? formattedWithHours : formattedWithouthHours;
-}
+  function onlyNumber(text: string) {
+    const regex = new RegExp('^[0-9]$');
+    if (regex.test(text)) {
+      return text;
+    } else {
+      return '';
+    }
+  }
 
+  function onlyNumberForFocusChenge(text: string) {
+    const regex = new RegExp('^[0-9]$');
+    if (regex.test(text) || text === '') {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   return (
     <section className='md:py-[80px]'>
-      <div className=' md:min-h-[640px] md:max-w-[1180px] mx-auto md:border-[50px] border-blue-secondary rounded-[20px]'>
-        <div 
-          className='relative items-center py-[30px] px-2
-          bg-blue-disabled md:bg-[url("/authback.jpg")] max-w-[1100px] md:h-[559px] md:rounded-[20px] md:m-[-10px]'
-        > 
-          {showBackArrow && 
-            <button onClick={handleClickBack} className='absolute top-[15px] left-[15px] w-[44px] h-[44px]'>
-            <SvgSprite name='back-arrow' width={44} height={44} className=''/>
-           </button>
-          }
-         
-          {!showCodePanel ?
-              <div className='flex flex-col items-center max-w-[540px] h-[468px] lg:max-w-[580px] mx-auto md:pt-[75px] lg:pt-[55px]'>
-                <Typography className='block mb-[30px] md:mb-[36px] lg:mb-[56px] text-blue-900 md:text-black text-[2rem] md:text-[40px] lg:text-[48px] font-black md:font-semibold' >
-                  Добро пожаловать !
+      <div className='mx-auto rounded-[20px] border-blue-700 md:min-h-[640px] md:max-w-[1180px] md:border-[50px]'>
+        <div className='relative max-w-[1100px] items-center bg-blue-50 px-2 py-[30px] md:m-[-10px] md:h-[559px] md:rounded-[20px] md:bg-[url("/authback.jpg")]'>
+          {showBackArrow && (
+            <button
+              onClick={handleClickBack}
+              className='absolute left-[15px] top-[15px] h-[44px] w-[44px]'
+            >
+              <SvgSprite name='back-arrow' width={44} height={44} className='' />
+            </button>
+          )}
+
+          {!showCodePanel ? (
+            <div className='mx-auto flex h-[468px] max-w-[540px] flex-col items-center md:pt-[75px] lg:max-w-[580px] lg:pt-[55px]'>
+              <Typography className='font-grey-950 mb-[30px] block text-[2rem] text-blue-900 md:mb-[36px] md:text-[40px] md:font-semibold md:text-grey-950 lg:mb-[56px] lg:text-[48px]'>
+                Добро пожаловать !
+              </Typography>
+              <form className='mb-[25px] w-full md:mb-[30px]'>
+                <Typography className='text-nowrap text-lg font-semibold text-grey-950 md:mb-[7px] md:block lg:text-[20px]'>
+                  Введите e-mail
                 </Typography>
-                <form className='w-full mb-[25px] md:mb-[30px]'>
-                  <Typography children='Введите e-mail' className='hidden md:block text-black text-lg font-semibold text-nowrap md:mb-[7px] lg:text-[20px]' />
-                  
-                  <label htmlFor="email" className='block mb-[25px]'>
-                    <input id='email' className='h-[55px] md:h-[47px] w-full rounded-[8px] px-[15px] md:border md:border-black md:bg-transparent'
-                    type="email" name="email" placeholder='example@mail.com'/>
-                  </label>
 
-
-                  {!startTimer 
-                    ?
-                    <ButtonCustom onClick={handleClick} variant='primary' size='m' className='h-[70px] px-[35px] py-[7px] w-full md:block md:mx-auto md:w-auto md:px-[30px] md:py-[11px] lg:py-[20px]'>
-                     <Typography children='Получить код' className='text-base text-black lg:text-green-950 font-semibold text-nowrap md:text-[20px]' />
-                    </ButtonCustom>
-                    :
-                    <Typography className='block text-grey-secondary font-normal text-[20px] mb-[15px] md:mb-[21px] lg:mb-[28px] md:text-[18px] lg:text-[20px] text-nowrap'>
-                     Запросить новый код через {timeForComponent(seconds)}
-                    </Typography>  
-                   }
-
-                  
-                </form>
-              
-
-                <Typography children='Другие способы входа' className='block text-black text-base mb-[15px] md:mb-[21px] lg:mb-[28px] md:text-[18px] lg:text-[20px] font-semibold text-nowrap' />
-
-                <div className='flex flex-col w-[100%] md:flex-row md:justify-between md:px-[15px] lg:px-[40px]'>
-                  <ButtonCustom variant="wzhuh" disabled={startTimer} size="m" className='mb-[12px] w-full md:w-[32%] md:py-[18px] lg:py-[12px] flex justify-center'>
-                    <div className="flex items-center text-[20px] justify-center gap-2 w-full h-5 md:w-28 md:h-9 md:text-[40px] lg:h-12">
-                      <div className='w-[20px] h-[20px]'>
-                        <SvgSprite name="google" width={20} color="#fff" />
-                      </div>
-                      <Typography variant="l-bold" className="text-white">
-                        Google
-                      </Typography>
-                    </div>
+                <label htmlFor='email' className='mb-[25px] block'>
+                  <input
+                    id='email'
+                    className='h-[55px] w-full rounded-[8px] px-[15px] md:h-[47px] md:border md:border-grey-950 md:bg-transparent'
+                    type='email'
+                    name='email'
+                    placeholder='example@mail.com'
+                    onBlur={() => {
+                      emailValid(email);
+                    }}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
+                    value={email}
+                  />
+                </label>
+                {!isEmailValid && (
+                  <Typography className='mb-[5px] mt-[-16px] block text-nowrap text-[19px] font-normal text-red-primary-800 md:text-[18px] lg:text-[20px]'>
+                    Некорректный адрес почты
+                  </Typography>
+                )}
+                {!startTimer ? (
+                  <ButtonCustom
+                    type='button'
+                    onClick={handleClick}
+                    variant='primary'
+                    size='m'
+                    className='h-[70px] w-full px-[35px] py-[7px] md:mx-auto md:block md:w-auto md:px-[30px] md:py-[11px] lg:py-[20px]'
+                  >
+                    <Typography className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'>
+                      Получить код
+                    </Typography>
                   </ButtonCustom>
-                  <ButtonCustom variant="wzhuh" disabled={startTimer} size="m" className='mb-[12px] w-full md:w-[32%] md:py-[18px] lg:py-[12px] flex justify-center'>
-                    <div className="flex items-center text-[20px] justify-center gap-2 w-full h-5 md:w-28 md:h-9 md:text-[40px] lg:h-12">
-                      <div className='w-[20px] h-[20px] pt-[3px]'>
-                        <SvgSprite name="vkontakte" width={24} color="#fff" />
-                      </div>
-                      <Typography variant="l-bold" className="text-white">
-                        Вконтакте
-                      </Typography>
+                ) : (
+                  <Typography className='mb-[15px] block text-nowrap text-[20px] font-normal text-grey-700 md:mb-[21px] md:text-[18px] lg:mb-[28px] lg:text-[20px]'>
+                    Запросить новый код через {timeForComponent(seconds)}
+                  </Typography>
+                )}
+              </form>
+
+              <Typography className='mb-[15px] block text-nowrap text-base font-semibold text-grey-950 md:mb-[21px] md:text-[18px] lg:mb-[28px] lg:text-[20px]'>
+                Другие способы входа
+              </Typography>
+
+              <div className='flex w-[100%] flex-col md:flex-row md:justify-between md:px-[15px] lg:px-[40px]'>
+                <ButtonCustom
+                  type='button'
+                  variant='wzhuh'
+                  disabled={startTimer}
+                  size='m'
+                  className='mb-[12px] flex w-full justify-center md:w-[32%] md:py-[18px] lg:py-[12px]'
+                >
+                  <div className='flex h-5 w-full items-center justify-center gap-2 text-[20px] md:h-9 md:w-28 md:text-[40px] lg:h-12'>
+                    <div className='h-[20px] w-[20px]'>
+                      <SvgSprite name='google' width={20} color='#fff' />
                     </div>
-                  </ButtonCustom>
-                  <ButtonCustom variant="wzhuh" disabled={startTimer} size="m" className='mb-[12px] w-full md:w-[32%] md:py-[18px] lg:py-[12px] flex justify-center'>
-                    <div className="flex items-center text-[20px] justify-center gap-2 w-full h-5 md:w-28 md:h-9 md:text-[40px] lg:h-12">
-                      <div className='w-[20px] h-[20px]'>
-                        <SvgSprite name="yandex" width={12} color="#fff" />
-                      </div>
-                      <Typography variant="l-bold" className="text-white">
-                        Яндекс
-                      </Typography>
-                    </div>
-                  </ButtonCustom>
-                </div>
-              </div>  
-            :
-              <div className='flex flex-col items-center max-w-[390px] h-[290px] lg:max-w-[580px] mx-auto md:pt-[105px] lg:pt-[94px]'>
-                <Typography className='text-[31px] block mb-[28px] md:mb-[40px] lg:mb-[60px] text-blue-900 md:text-black md:text-[40px] lg:text-[48px] font-black md:font-semibold' >
-                  Добро пожаловать!
-                </Typography>
-                <form className='w-full mb-[25px] md:mb-[18px]'>
-                  <Typography children='Введите код из письма' className='block text-center text-black text-base font-semibold text-nowrap mb-[16px] lg:mb-[20px] md:text-[18px] lg:text-[20px]' />
-                  <div className='flex justify-between md:px-[37px] lg:px-[132px]'>
-                    <label htmlFor="" className='block'>
-                      <input className='text-black text-[20px] bg-blue-light text-center h-[75px] md:h-[81px] w-[75px] md:w-[65px] rounded-[8px] px-[15px]'
-                      type="text" placeholder=''/>
-                    </label>
-                    <label htmlFor="" className='block'>
-                      <input className='text-black text-[20px] bg-blue-light text-center h-[75px] md:h-[81px] w-[75px] md:w-[65px] rounded-[8px] px-[15px]'
-                      type="text" placeholder=''/>
-                    </label>
-                    <label htmlFor="" className='block'>
-                      <input className='text-black text-[20px] bg-blue-light text-center h-[75px] md:h-[81px] w-[75px] md:w-[65px] rounded-[8px] px-[15px]'
-                      type="text" placeholder=''/>
-                    </label>
-                    <label htmlFor="" className='block'>
-                      <input className='text-black text-[20px] bg-blue-light text-center h-[75px] md:h-[81px] w-[75px] md:w-[65px] rounded-[8px] px-[15px]'
-                      type="text" placeholder=''/>
-                    </label>
-                  
+                    <Typography variant='l-bold' className='text-white'>
+                      Google
+                    </Typography>
                   </div>
-                  
-                </form>
+                </ButtonCustom>
+                <ButtonCustom
+                  type='button'
+                  variant='wzhuh'
+                  disabled={startTimer}
+                  size='m'
+                  className='mb-[12px] flex w-full justify-center md:w-[32%] md:py-[18px] lg:py-[12px]'
+                >
+                  <div className='flex h-5 w-full items-center justify-center gap-2 text-[20px] md:h-9 md:w-28 md:text-[40px] lg:h-12'>
+                    <div className='h-[20px] w-[20px] pt-[3px]'>
+                      <SvgSprite name='vkontakte' width={24} color='#fff' />
+                    </div>
+                    <Typography variant='l-bold' className='text-white'>
+                      Вконтакте
+                    </Typography>
+                  </div>
+                </ButtonCustom>
+                <ButtonCustom
+                  type='button'
+                  variant='wzhuh'
+                  disabled={startTimer}
+                  size='m'
+                  className='mb-[12px] flex w-full justify-center md:w-[32%] md:py-[18px] lg:py-[12px]'
+                >
+                  <div className='flex h-5 w-full items-center justify-center gap-2 text-[20px] md:h-9 md:w-28 md:text-[40px] lg:h-12'>
+                    <div className='h-[20px] w-[20px]'>
+                      <SvgSprite name='yandex' width={12} color='#fff' />
+                    </div>
+                    <Typography variant='l-bold' className='text-white'>
+                      Яндекс
+                    </Typography>
+                  </div>
+                </ButtonCustom>
+              </div>
+            </div>
+          ) : (
+            <div className='mx-auto flex h-[290px] max-w-[390px] flex-col items-center md:pt-[105px] lg:max-w-[580px] lg:pt-[94px]'>
+              <Typography className='font-grey-950 mb-[28px] block text-[31px] text-blue-900 md:mb-[40px] md:text-[40px] md:font-semibold md:text-grey-950 lg:mb-[60px] lg:text-[48px]'>
+                Добро пожаловать!
+              </Typography>
+              <form className='mb-[25px] w-full md:mb-[18px]'>
+                <Typography className='mb-[16px] block text-nowrap text-center text-base font-semibold text-grey-950 md:text-[18px] lg:mb-[20px] lg:text-[20px]'>
+                  Введите код из письма
+                </Typography>
+                <div className='flex justify-between md:px-[37px] lg:px-[132px]'>
+                  <label htmlFor='' className='block'>
+                    <input
+                      autoFocus
+                      className='h-[75px] w-[75px] rounded-[8px] bg-blue-200 px-[15px] text-center text-[20px] text-grey-950 md:h-[81px] md:w-[65px]'
+                      type='text'
+                      placeholder=''
+                      onChange={handleFocusForInput2}
+                      value={input1}
+                    />
+                  </label>
+                  <label htmlFor='' className='block'>
+                    <input
+                      ref={inputRef2}
+                      className='h-[75px] w-[75px] rounded-[8px] bg-blue-200 px-[15px] text-center text-[20px] text-grey-950 md:h-[81px] md:w-[65px]'
+                      type='text'
+                      placeholder=''
+                      onChange={handleFocusForInput3}
+                      value={input2}
+                    />
+                  </label>
+                  <label htmlFor='' className='block'>
+                    <input
+                      ref={inputRef3}
+                      className='h-[75px] w-[75px] rounded-[8px] bg-blue-200 px-[15px] text-center text-[20px] text-grey-950 md:h-[81px] md:w-[65px]'
+                      type='text'
+                      placeholder=''
+                      onChange={handleFocusForInput4}
+                      value={input3}
+                    />
+                  </label>
+                  <label htmlFor='' className='block'>
+                    <input
+                      ref={inputRef4}
+                      className='h-[75px] w-[75px] rounded-[8px] bg-blue-200 px-[15px] text-center text-[20px] text-grey-950 md:h-[81px] md:w-[65px]'
+                      type='text'
+                      placeholder=''
+                      onChange={handleDataToServer}
+                      value={input4}
+                    />
+                  </label>
+                </div>
+              </form>
 
-                {/* <Typography children='Неверный код, попробуйте ещё раз' className='block text-red-primary-800 font-normal text-[19px] mb-[15px] md:mb-[24px] lg:mb-[25px] md:text-[18px] lg:text-[20px] text-nowrap' /> */}
+              {/* <Typography children='Неверный код, попробуйте ещё раз' className='block text-red-primary-800 font-normal text-[19px] mb-[15px] md:mb-[24px] lg:mb-[25px] md:text-[18px] lg:text-[20px] text-nowrap' /> */}
 
-                {!startTimer 
-                    ?
-                    <ButtonCustom onClick={handleSentNewCode} variant='primary' size='m' className='h-[70px] px-[35px] py-[7px] w-full md:block md:mx-auto md:w-auto md:px-[30px] md:py-[11px] lg:py-[14px] mt-[25px]'>
-                     <Typography children='Прислать новый код' className='text-base text-black lg:text-green-950 font-semibold text-nowrap md:text-[20px]' />
-                    </ButtonCustom>
-                    :
-                    <Typography className='block text-grey-secondary font-normal text-[20px] mb-[15px] md:mb-[21px] lg:mb-[28px] md:text-[18px] lg:text-[20px] text-nowrap'>
-                     Запросить новый код через {timeForComponent(seconds)}
-                    </Typography>  
-                }
-                  
-                  {/* <div>{seconds}</div> */}
-               
-
-              </div> 
-          }
-
+              {!startTimer ? (
+                <ButtonCustom
+                  type='button'
+                  onClick={handleSentNewCode}
+                  variant='primary'
+                  size='m'
+                  className='mt-[25px] h-[70px] w-full px-[35px] py-[7px] md:mx-auto md:block md:w-auto md:px-[30px] md:py-[11px] lg:py-[14px]'
+                >
+                  <Typography className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'>
+                    Прислать новый код
+                  </Typography>
+                </ButtonCustom>
+              ) : (
+                <Typography className='mb-[15px] block text-nowrap text-[20px] font-normal text-grey-700 md:mb-[21px] md:text-[18px] lg:mb-[28px] lg:text-[20px]'>
+                  Запросить новый код через {timeForComponent(seconds)}
+                </Typography>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </section>
-  )
+  );
 }

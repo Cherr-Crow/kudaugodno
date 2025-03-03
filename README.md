@@ -8,7 +8,7 @@
     - TailWind css;
 
 ## Getting Started
-
+    -*_*-
     - npm install --force
     - npm run dev
 
@@ -47,7 +47,7 @@
 
     - для создания страницы npm run page "Имя страницы" (с большой буквы, если название составное -- camelCase), страница создасться в папке pages.
 
-    - npm i "nanoid" (https://www.npmjs.com/package/nanoid) - библиотека для генерации идентификаторов (например для списков).
+    - "nanoid" (https://www.npmjs.com/package/nanoid) - библиотека для генерации идентификаторов (например для списков).
 
     - "usehooks-ts" (https://usehooks-ts.com/introduction) - большая библиотека пользовательских хуков.
 
@@ -62,9 +62,28 @@
 
     - установлен плагин для ESLint, позволяющий сортировать импорты, разбивая их на категории;
 
+    - Hasky - пакет, позволяющий осуществлять проверку линтерами на этапе создания коммита (коммит не удастся создать если в изменнённых вами файлах ESLint  обнаружит ошибку) и отформатирует код в соответствии с настройками проекта (.prettierrc);
+
+    - Lint-stage - пакет позволяющий проверять при коммите не весь проект целиком, а только изменённую часть;
+
 # Деплой:
 
     - Деплой на TEST'овый контур
     - Для деплоя кода на test'овый контур - необходимо в сообщении коммита указать "волшебное слово": PushMe!.
     - Пример сообщения коммита:
     [+] Авторизация и регистрация пользователей. PushMe!
+
+# В реализованы методы (RTK Query, src/sericesApi/hotelsApi.ts):
+
+    - useGetHotelsQuery - получение списка отелей;
+    - useGetOneHotelQuery - получение одного отеля;
+    - useAddHotelMutation - добавление отеля;
+    - useChangeHotelMutation - изменение отеля;
+    - useDeleteHotelMutation - удаление отеля;
+    - useGetPhotosHotelQuery - получение фото отеля;
+    - useAddPhotoHotelMutation - добавление фото отеля;
+    - useDelPhotoHotelMutation - удаление фото отеля;
+
+- В дальнейшем эндпойнты по отелю реализовывать в src/sericesApi/hotelsApi.ts.
+  Остальные в соответствии с докой в свагере - /api/v1/название сервиса/. Например
+  для /api/v1/applications/ файл будет - src/sericesApi/applicationsApi.ts

@@ -1,1 +1,1 @@
-export { HotelBlockPhotosReview } from "./HotelBlockPhotosReview";
+export { HotelBlockPhotosReview } from './HotelBlockPhotosReview';

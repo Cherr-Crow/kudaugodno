@@ -9,6 +9,11 @@ export interface ISvgSprite extends DivProps {
 }
 
 export type NameSvg =
+  | 'room_guest_child'
+  | 'icutlery_items'
+  | 'square_room'
+  | 'bed'
+  | 'room-guests'
   | 'map'
   | 'entertainment'
   | 'bus'
@@ -66,4 +71,5 @@ export type NameSvg =
   | 'back-arrow'
   | 'google'
   | 'vkontakte'
-  | 'yandex';
+  | 'yandex'
+  | 'arrow-check';

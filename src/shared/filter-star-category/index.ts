@@ -1,1 +1,1 @@
-export { FilterStarCategory } from "./FilterStarCategory";
+export { FilterStarCategory } from './FilterStarCategory';

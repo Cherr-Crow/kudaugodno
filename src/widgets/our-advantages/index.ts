@@ -1,1 +1,1 @@
-export { OurAdvantages } from "./OurAdvantages";
+export { OurAdvantages } from './OurAdvantages';

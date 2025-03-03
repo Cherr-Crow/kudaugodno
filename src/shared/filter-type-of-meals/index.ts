@@ -1,1 +1,1 @@
-export { FilterTypeOfMeals } from "./FilterTypeOfMeals";
+export { FilterTypeOfMeals } from './FilterTypeOfMeals';

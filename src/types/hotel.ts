@@ -1,6 +1,24 @@
-import { Amenity } from '@/types/amenity';
-import { date } from '@/types/date';
-import { room } from '@/types/room';
+import { RoomType } from '@/types/room';
+
+type rulesType = {
+  name: string;
+  description: string;
+};
+
+type photoType = {
+  id: number;
+  photo: string;
+  hotel: number;
+};
+
+type reviewsType = {
+  id: number;
+  username: string;
+  userPhoto: string;
+  date: string;
+  rating: number;
+  text: string;
+};
 
 export type Hotel = {
   id: number;
@@ -10,30 +28,29 @@ export type Hotel = {
   country: string;
   city: string;
   address: string;
-  distances: { location: string; distance: number }[];
+  distance_to_the_station: number | null;
+  distance_to_the_sea: number | null;
+  distance_to_the_center: number | null;
+  distance_to_the_metro: number | null;
+  distance_to_the_airport: number | null;
   description: string;
   check_in_time: string;
   check_out_time: string;
-  amenities: Amenity[];
+  amenities_common: string[];
+  amenities_in_the_room: string[];
+  amenities_sports_and_recreation: string[];
+  amenities_for_children: string[];
+  type_of_meals_ultra_all_inclusive: number | null;
+  type_of_meals_all_inclusive: number | null;
+  type_of_meals_full_board: number | null;
+  type_of_meals_half_board: number | null;
+  type_of_meals_only_breakfast: number | null;
   user_rating: number;
-  reviews: {
-    id: number;
-    username: string;
-    userPhoto: string;
-    date: string;
-    rating: number;
-    text: string;
-  }[];
-  photos: {
-    id: number;
-    photo: string;
-  }[];
   type_of_rest: string;
-  rooms: room[];
-  dates: date[] | null;
-  rules: {
-    name: string;
-    description: string;
-    checked: boolean;
-  }[];
+  rules: rulesType[];
+  is_active: boolean;
+  room_categories: string[];
+  photo: photoType[];
+  rooms: RoomType[];
+  reviews: reviewsType[];
 };

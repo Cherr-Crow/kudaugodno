@@ -4,6 +4,8 @@ export interface INamedInput extends DivProps {
   title?: string;
   placeholder?: string;
   name: string;
-  getValue: (val: string) => void;
-  type?: 'text' | 'time';
+  getValue?: (val: string | number) => void;
+  type?: 'text' | 'time' | 'number' | 'email' | 'tel';
+  startValue?: string | number;
+  disabled?: boolean;
 }

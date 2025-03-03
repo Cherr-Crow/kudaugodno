@@ -9,24 +9,23 @@ export default function NotFound() {
         <p className='text-center text-[128px] font-medium text-blue-900 md:text-[200px] xl:text-[280px]'>
           404
         </p>
-        <Typography
-          children='Уппсс... Не волнуйтесь!'
-          variant='h4'
-          className='text-center text-blue-900'
-        />
-        <Typography
-          children='Извините, но страница, которую вы ищете, не найдена, возможно, вы ввели неправильный URL-адрес, или страница была перемещена, удалена или временно недоступна'
-          className='my-5 block text-blue-900 md:text-xl'
-        />
+        <Typography variant='h4' className='text-center text-blue-900'>
+          Уппсс... Не волнуйтесь!
+        </Typography>
+        <Typography className='my-5 block text-blue-900 md:text-xl'>
+          Извините, но страница, которую вы ищете, не найдена, возможно, вы ввели
+          неправильный URL-адрес, или страница была перемещена, удалена или временно
+          недоступна
+        </Typography>
         <Link
           href='/'
-          className='flex w-full items-center justify-center rounded-full bg-green-secondary py-3'
+          className='flex w-full items-center justify-center rounded-full bg-green-300 py-3'
         >
-          <Typography children='На главную' variant='m-bold' />
+          <Typography variant='m-bold'>На главную</Typography>
         </Link>
       </div>
       <div className='flex h-full w-full items-center py-5 md:order-2 md:py-0 lg:items-end'>
-        <img src={'/mob_picture_404.png'} alt='' className='w-full' />
+        <img src={'/mob_picture_404.png'} alt='' className='w-full' rel='prefetch' />
       </div>
     </div>
   );

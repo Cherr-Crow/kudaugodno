@@ -6,7 +6,6 @@ import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { hotels } from '@/temp/hotel-mock';
-import { Amenity } from '@/types/amenity';
 
 import { IHotelBlockPhotosReview } from './HotelBlockPhotosReview.types';
 import { serviceNames } from './service';
@@ -23,8 +22,8 @@ export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
   const reviewContainerRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
   useEffect(() => {
-    const _arr = hotels[0].amenities.reduce((akk: string[], prev: Amenity) => {
-      return [...akk, ...prev.amenity];
+    const _arr = hotels[0].amenities_common.reduce((akk: string[], prev: string) => {
+      return [...akk, prev];
     }, []);
     setAmenities(_arr);
   }, []);
@@ -90,7 +89,7 @@ export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
                 </Typography>
                 <Typography
                   variant='s-bold'
-                  className='rounded-lg bg-green-secondary p-1 pl-2 pr-2 text-sm font-medium'
+                  className='rounded-lg bg-green-300 p-1 pl-2 pr-2 text-sm font-medium'
                 >
                   {hotel.user_rating}
                 </Typography>
@@ -99,24 +98,24 @@ export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
 
             <div className='grid h-[182px] grid-cols-1 gap-4 py-4 md:h-auto lg:grid-cols-2'>
               <img
-                src={hotel.photos[0]?.photo}
+                src={hotel.photo[0]?.photo}
                 alt={`Hotel ${hotel.name} hotel-photo`}
                 className='hidden h-full w-full rounded-lg object-cover shadow-md lg:block'
               />
 
               <div className='flex gap-4 overflow-x-auto md:grid md:grid-cols-2'>
                 <img
-                  src={hotel.photos[1]?.photo}
+                  src={hotel.photo[1]?.photo}
                   alt={`Hotel ${hotel.name} hotel-photo`}
                   className='flex-shrink-0 rounded-lg object-cover shadow-md md:w-full'
                 />
                 <img
-                  src={hotel.photos[2]?.photo}
+                  src={hotel.photo[2]?.photo}
                   alt={`Hotel ${hotel.name} hotel-photo`}
                   className='flex-shrink-0 rounded-lg object-cover shadow-md md:w-full'
                 />
                 <img
-                  src={hotel.photos[3]?.photo}
+                  src={hotel.photo[3]?.photo}
                   alt={`Hotel ${hotel.name} hotel-photo`}
                   className='flex-shrink-0 rounded-lg object-cover shadow-md md:w-full'
                 />
@@ -125,15 +124,15 @@ export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
                   <div
                     className='absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transform bg-cover bg-center'
                     style={{
-                      backgroundImage: `url(${hotel.photos[4]?.photo})`,
+                      backgroundImage: `url(${hotel.photo[4]?.photo})`,
                       opacity: 0.6,
                     }}
                   />
-                  <div className='absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform items-center justify-center gap-1 rounded-3xl bg-blue-light p-3 pl-4 pr-4 md:min-w-40'>
+                  <div className='absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform items-center justify-center gap-1 rounded-3xl bg-blue-200 p-3 pl-4 pr-4 md:min-w-40'>
                     <SvgSprite name='image' width={24} />
                     <Typography
                       variant='s-bold'
-                      className='text-sm font-bold text-black'
+                      className='text-sm font-bold text-grey-950'
                     >
                       Все фотографии
                     </Typography>
@@ -227,9 +226,9 @@ export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
                     backgroundPosition: '10% 10%',
                   }}
                 >
-                  <div className='m-auto flex items-center justify-center gap-1 rounded-3xl bg-blue-light p-3 pl-6 pr-6'>
+                  <div className='m-auto flex items-center justify-center gap-1 rounded-3xl bg-blue-200 p-3 pl-6 pr-6'>
                     <SvgSprite name='location' width={24} />
-                    <Typography variant='s-bold' className='text-black'>
+                    <Typography variant='s-bold' className='text-grey-950'>
                       Смотреть на карте
                     </Typography>
                   </div>
@@ -260,7 +259,7 @@ export function HotelBlockPhotosReview({}: IHotelBlockPhotosReview) {
                               {review.username}
                             </Typography>
                           </div>
-                          <div className='ml-auto rounded-lg bg-green-secondary px-2 py-1 text-sm font-medium md:px-3 md:py-2'>
+                          <div className='ml-auto rounded-lg bg-green-300 px-2 py-1 text-sm font-medium md:px-3 md:py-2'>
                             {review.rating}
                           </div>
                         </div>
