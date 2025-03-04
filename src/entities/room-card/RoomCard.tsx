@@ -13,8 +13,6 @@ import { Select } from '@/shared/ui/select';
 import { RoomType } from '@/types/room';
 import { RoomModal } from '@/widgets/room-modal';
 
-// const testList = ['   1', '   2', '   3', '   4', '   5', '   6', '   7'];
-
 interface IRoomCardProps {
   room: RoomType;
   key: number;

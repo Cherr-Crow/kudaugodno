@@ -3,11 +3,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { nanoid } from 'nanoid';
+import { FreeMode, Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 
+// eslint-disable-next-line import/order
 import { IRoomModal } from './RoomModal.types';
 
 import 'swiper/css';
@@ -15,28 +17,20 @@ import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 
-// eslint-disable-next-line import/order
-import { FreeMode, Navigation, Pagination, Thumbs } from 'swiper/modules';
 import { serviceNames } from '../hotel-block-photos-review/service';
 
 export function RoomModal({ room }: IRoomModal) {
-  // const { data: hotel } = useGetOneHotelQuery(1);
-  // console.log(hotel);
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
   const amenitiesContainerRef = useRef<HTMLDivElement | null>(null);
   const [showAll, setShowAll] = useState(false);
   const [amenities, setAmenities] = useState<string[]>([]);
   const [visibleAmenities, setVisibleAmenities] = useState(3);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const swiperRef = useRef<any>(null);
 
   useEffect(() => {
-    // const _arr = hotels[0].amenities_common.reduce((akk: string[], prev: string) => {
-    //   return [...akk, prev];
-    // }, []);
-
     const amenitiesNew = [
       ...room.amenities_common,
       ...room.amenities_coffee,
@@ -45,8 +39,6 @@ export function RoomModal({ room }: IRoomModal) {
     ];
 
     setAmenities(amenitiesNew);
-
-    // setAmenities(_arr);
   }, []);
 
   useEffect(() => {
@@ -71,13 +63,6 @@ export function RoomModal({ room }: IRoomModal) {
   const [style, setStyle] = useState<{}>({});
 
   useEffect(() => {
-    // const updateWidth = () => {
-    //   if (window.innerWidth >= 640) {
-    //     setStyle( {visibility : 'visible'});
-    //   } else {
-    //     setStyle( {visibility : 'hidden'});
-    //   }
-    // };
     const updateWidth = () => {
       if (window.innerWidth >= 640) {
         setStyle({ display: 'block' });
@@ -101,12 +86,6 @@ export function RoomModal({ room }: IRoomModal) {
   const doubleBed = room.double_bed;
   const area = room.area;
   const amenitiel = room;
-
-  // const roomPhotos = hotel.rooms[0].photo;
-  // const nomer = hotel.rooms[0].category;
-  // const doubleBed = hotel.rooms[0].double_bed;
-  // const area = hotel.rooms[0].area;
-  // const amenitiel = hotel.rooms[0];
 
   const toggleAmenities = () => {
     setShowAll((prev) => {
@@ -146,7 +125,6 @@ export function RoomModal({ room }: IRoomModal) {
           style={{}}
           loop={true}
           spaceBetween={10}
-          // navigation={true}
           thumbs={{ swiper: thumbsSwiper }}
           modules={[FreeMode, Navigation, Thumbs]}
           className='mySwiper2 rounded-[20px] lg:h-[622px]'
@@ -314,38 +292,6 @@ export function RoomModal({ room }: IRoomModal) {
             )}
           </div>
         </div>
-        {/* <div className='flex flex-wrap justify-between'>
-          <div className='mb-[15px] flex h-[56px] w-[300px] items-center justify-center gap-2 rounded-[20px] px-4 py-4 shadow-md outline outline-1 outline-blue-bold md:max-w-[210px] lg:mb-[26px] lg:h-[70px] lg:max-w-[300px] lg:rounded-2xl'>
-            <SvgSprite name={serviceNames('Много зелени')} width={24} height={24} />
-            <Typography variant='s' className='text-gray-700'>
-              Много зелени
-            </Typography>
-          </div>
-          <div className='mb-[15px] flex h-[56px] w-[300px] items-center justify-center gap-1 rounded-[20px] px-4 py-4 shadow-md outline outline-1 outline-blue-bold md:max-w-[210px] lg:mb-[26px] lg:h-[70px] lg:max-w-[310px] lg:rounded-2xl'>
-            <SvgSprite name={serviceNames('Много зелени')} width={24} height={24} />
-            <Typography variant='s' className='text-gray-700'>
-              Много зелени
-            </Typography>
-          </div>
-          <div className='mb-[15px] flex h-[56px] w-[300px] items-center justify-center gap-2 rounded-[20px] px-4 py-4 shadow-md outline outline-1 outline-blue-bold md:max-w-[210px] lg:mb-[26px] lg:h-[70px] lg:max-w-[310px] lg:rounded-2xl'>
-            <SvgSprite name={serviceNames('Много зелени')} width={24} height={24} />
-            <Typography variant='s' className='text-gray-700'>
-              Много зелени
-            </Typography>
-          </div>
-          <div className='mb-[15px] flex h-[56px] w-[300px] items-center justify-center gap-2 rounded-[20px] px-4 py-4 shadow-md outline outline-1 outline-blue-bold md:max-w-[210px] lg:mb-[26px] lg:h-[70px] lg:max-w-[310px] lg:rounded-2xl'>
-            <SvgSprite name={serviceNames('Много зелени')} width={24} height={24} />
-            <Typography variant='s' className='text-gray-700'>
-              Много зелени
-            </Typography>
-          </div>
-          <div className='mb-[15px] hidden h-[56px] w-[300px] items-center justify-center gap-2 rounded-[20px] px-4 py-4 shadow-md outline outline-1 outline-blue-bold md:flex md:max-w-[210px] lg:mb-[26px] lg:h-[70px] lg:max-w-[310px] lg:rounded-2xl'>
-            <SvgSprite name={serviceNames('Много зелени')} width={24} height={24} />
-            <Typography variant='s' className='text-gray-700'>
-              Много зелени
-            </Typography>
-          </div>
-        </div> */}
       </div>
       <div className='py-5 pb-0 lg:py-5'>
         <Typography
