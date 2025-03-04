@@ -4,18 +4,12 @@ import React from 'react';
 
 import { nanoid } from 'nanoid';
 
-// import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 
 import { IHotelAmenities } from './HotelAmenities.types';
 
 export function HotelAmenities({ amenities }: IHotelAmenities) {
-  // const { data: hotel, isLoading, isError } = useGetOneHotelQuery(1);
-
-  // if (isLoading) return <div>Загрузка...</div>;
-  // if (isError) return <div>Ошибка</div>;
-
   return (
     <section>
       <div className='p-4'>

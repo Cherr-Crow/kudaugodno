@@ -4,10 +4,8 @@ import React, { useEffect, useState } from 'react';
 
 import { RoomCard } from '@/entities/room-card';
 import { Typography } from '@/shared/typography';
-// eslint-disable-next-line import/order
 import { ButtonCustom } from '@/shared/ui/button-custom';
 
-// eslint-disable-next-line import/order
 import { HotelRomsListProps } from './HotelRomsList.types';
 
 const HotelRomsList: React.FC<HotelRomsListProps> = ({ rooms }) => {
@@ -18,12 +16,6 @@ const HotelRomsList: React.FC<HotelRomsListProps> = ({ rooms }) => {
 
   const roomCount = rooms.length;
   console.log(roomCount);
-
-  // if(roomCount === count){
-  //   setBottonShowMore(false);
-  // } else {
-  //   setBottonShowMore(true);
-  // }
 
   useEffect(() => {
     if (roomCount === count) {
@@ -40,23 +32,11 @@ const HotelRomsList: React.FC<HotelRomsListProps> = ({ rooms }) => {
     setBottonShowMore(true);
   };
 
-  // hotels.slice(0, 1)
   return (
     <div className='hotel-rooms-list'>
       {rooms.slice(0, count).map((room) => (
         <div key={room.id}>
-          <RoomCard
-            key={room.id}
-            room={room}
-            // id={room.id}
-            // name={room.category}
-            // description={room.description}
-            // quadrature={room.area}
-            // amenities={room.amenities}
-            // price={room.price}
-            // images={room.photo}
-            // hasChild={room.number_of_children}
-          />
+          <RoomCard key={room.id} room={room} />
         </div>
       ))}
       {bottonShowMore ? (
