@@ -20,6 +20,12 @@ interface IRoomCardProps {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RoomCard: React.FC<IRoomCardProps> = ({ room }) => {
+  const arrNumbersForSelect = [];
+  for (let i = room.quantity_rooms; i > 0; i--) {
+    arrNumbersForSelect.unshift(String(i));
+  }
+  console.log(arrNumbersForSelect);
+
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const handleCloseModal = () => {
@@ -28,7 +34,6 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room }) => {
 
   const handleOpenModal = () => {
     setIsOpenModal(true);
-    console.log('Модал');
   };
 
   return (
@@ -62,7 +67,7 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room }) => {
             <div className='mb-4 mt-4 flex md:w-full md:flex-col'>
               <Typography variant='m' children='Количество номеров' />
               <div className='ml-auto md:ml-0'>
-                <Select options={['1', '2', '3']} color='blue' size='mobile' />
+                <Select options={arrNumbersForSelect} color='blue' size='mobile' />
               </div>
             </div>
           </div>
@@ -139,7 +144,7 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room }) => {
                 ></Typography>
                 <div className='ml-auto flex justify-center md:ml-2'>
                   <Select
-                    options={['1', '2', '3']}
+                    options={arrNumbersForSelect}
                     color='blue'
                     size='mobile'
                     className='justify-end'

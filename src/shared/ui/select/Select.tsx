@@ -21,7 +21,7 @@ export function Select({
   startValue,
 }: ISelect) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(startValue ?? options);
+  const [selectedOption, setSelectedOption] = useState(startValue ?? options[0]);
   const screen = useScreen();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -59,7 +59,7 @@ export function Select({
   }, []);
 
   useEffect(() => {
-    getValue && getValue(String(selectedOption));
+    getValue && getValue(selectedOption);
   }, [selectedOption]);
 
   return (
@@ -72,7 +72,7 @@ export function Select({
           type='text'
           value={selectedOption}
           onChange={() => {}}
-          className={`pointer-events-none w-4/5 cursor-pointer bg-transparent pl-4 outline-none`}
+          className={`pointer-events-none w-4/5 cursor-pointer bg-transparent outline-none`}
           id={id}
           name='select'
         />
@@ -85,7 +85,7 @@ export function Select({
       {isOpen && (
         <PopupWindow className='top-[110%] w-full'>
           <ul className='dropdown-list max-h-60 overflow-scroll py-2'>
-            {options.map((option: string) => (
+            {options.map((option) => (
               <li
                 key={nanoid()}
                 className='px-4 py-2 hover:bg-blue-100'
