@@ -2,7 +2,7 @@ type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
 export interface ISelect extends DivProps {
   className?: string;
-  options: string[] | number;
+  options: string[];
   getValue?: (value: string) => void;
   color?: 'blue' | 'green';
   arrowHidden?: boolean;

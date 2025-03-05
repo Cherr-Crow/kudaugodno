@@ -85,13 +85,13 @@ export function Select({
       {isOpen && (
         <PopupWindow className='top-[110%] w-full'>
           <ul className='dropdown-list max-h-60 overflow-scroll py-2'>
-            {Array.from({ length: options }).map((_, option) => (
+            {options.map((option: string) => (
               <li
                 key={nanoid()}
                 className='px-4 py-2 hover:bg-blue-100'
-                onClick={() => handleOptionClick(String(option + 1))}
+                onClick={() => handleOptionClick(option)}
               >
-                {option + 1}
+                {option}
               </li>
             ))}
           </ul>

@@ -62,7 +62,7 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room }) => {
             <div className='mb-4 mt-4 flex md:w-full md:flex-col'>
               <Typography variant='m' children='Количество номеров' />
               <div className='ml-auto md:ml-0'>
-                <Select options={room.quantity_rooms} color='blue' size='mobile' />
+                <Select options={['1', '2', '3']} color='blue' size='mobile' />
               </div>
             </div>
           </div>
@@ -139,7 +139,7 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room }) => {
                 ></Typography>
                 <div className='ml-auto flex justify-center md:ml-2'>
                   <Select
-                    options={room.quantity_rooms}
+                    options={['1', '2', '3']}
                     color='blue'
                     size='mobile'
                     className='justify-end'
