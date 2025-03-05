@@ -3,9 +3,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { nanoid } from 'nanoid';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useAddFlightMutation } from '@/servicesApi/flightsApi';
+import {
+  useAddFlightMutation,
+  useChangeFlightMutation,
+  useLazyGetOneFlightQuery,
+} from '@/servicesApi/flightsApi';
 import { Modal } from '@/shared/modal';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
@@ -18,11 +22,16 @@ import { IFlight } from '@/types/flight-type';
 
 export default function AddedFlights() {
   const router = useRouter();
+  const idFlight = useSearchParams().get('id');
+
+  const [trigger, { data }] = useLazyGetOneFlightQuery();
+  const [changeFlight] = useChangeFlightMutation();
 
   const [addFlight, { error: queryErr, isError }] = useAddFlightMutation();
+  const airportsName = airports.map((airport) => airport.name);
 
   const [flightNumber, setFlightNumber] = useState<string>('');
-  const [airline, setAirline] = useState<string>('');
+  const [airline, setAirline] = useState<string>(airportsName[0]);
   const [departureAirport, setDepartureAirport] = useState<string>('');
   const [arrivalAirport, setArrivalAirport] = useState<string>('');
   const [departureDate, setDepartureDate] = useState<string>('');
@@ -34,8 +43,6 @@ export default function AddedFlights() {
   const errors = useRef<{ name: string; description: string }[]>([]);
   const [errModal, setErrModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
-
-  const airportsName = airports.map((airport) => airport.name);
 
   const handleAirlineChange = (val: string) => {
     setAirline(val);
@@ -66,13 +73,11 @@ export default function AddedFlights() {
   const handleServiceClassChange = (val: string) => {
     setServiceClass(val);
   };
-
   const handleBack = () => {
     router.back();
   };
-
   const handleSave = async () => {
-    const _flight: IFlight = {
+    const _flight: Omit<IFlight, 'id'> = {
       flight_number: flightNumber,
       airline,
       departure_airport: departureAirport,
@@ -84,14 +89,27 @@ export default function AddedFlights() {
       price,
       service_class: serviceClass,
       flight_type: 'Регулярный',
+      description: 'string',
     };
-
-    try {
-      await addFlight(_flight).unwrap();
-      setSuccessModal(true);
-    } catch (error) {
-      console.error(error);
+    if (!idFlight) {
+      try {
+        await addFlight(_flight).unwrap();
+        setSuccessModal(true);
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      try {
+        await changeFlight({ body: _flight, id: +idFlight }).unwrap();
+        setSuccessModal(true);
+      } catch (error) {
+        console.error(error);
+      }
     }
+  };
+  const closeErrModal = () => {
+    setErrModal(false);
+    errors.current = [];
   };
 
   // TODO: обработка ошибки валидации с бэка
@@ -112,11 +130,6 @@ export default function AddedFlights() {
     }
   }, [isError]);
 
-  const closeErrModal = () => {
-    setErrModal(false);
-    errors.current = [];
-  };
-
   useEffect(() => {
     if (!successModal) return;
     const timer = setTimeout(() => {
@@ -124,6 +137,25 @@ export default function AddedFlights() {
     }, 1000);
     return () => clearTimeout(timer);
   }, [successModal]);
+
+  useEffect(() => {
+    if (!idFlight) return;
+    trigger(+idFlight);
+  }, [idFlight]);
+
+  useEffect(() => {
+    if (!data) return;
+    setFlightNumber(data.flight_number);
+    setAirline(data.airline);
+    setDepartureAirport(data.departure_airport);
+    setArrivalAirport(data.arrival_airport);
+    setDepartureDate(data.departure_date);
+    setDepartureTime(data.departure_time);
+    setArrivalDate(data.arrival_date);
+    setArrivalTime(data.arrival_time);
+    setPrice(data.price);
+    setServiceClass(data.service_class);
+  }, [data]);
 
   return (
     <div className='w-full'>
@@ -143,6 +175,7 @@ export default function AddedFlights() {
               size='small'
               className='w-full'
               getValue={handleAirlineChange}
+              startValue={airline}
             />
           </div>
           <div className='flex w-full flex-col gap-3'>
@@ -153,6 +186,7 @@ export default function AddedFlights() {
               size='small'
               className='w-full'
               getValue={handleServiceClassChange}
+              startValue={serviceClass}
             />
           </div>
           <NamedInput
@@ -160,6 +194,7 @@ export default function AddedFlights() {
             title='Цена билета'
             placeholder='100 ₽'
             getValue={(val) => handlePriceChange(val as string)}
+            startValue={price}
           />
           <NamedInput
             name='Номер рейса'
@@ -175,6 +210,7 @@ export default function AddedFlights() {
             title='Аэропорт вылета'
             placeholder='Москва'
             getValue={(val) => handleDepartureAirportChange(val as string)}
+            startValue={departureAirport}
           />
           <div className='flex flex-col gap-3'>
             <Typography variant='l-bold'>Дата вылета</Typography>
@@ -182,6 +218,7 @@ export default function AddedFlights() {
               placeholder='Дата вылета'
               getValue={handleDepartureDateChange}
               className='rounded-md border border-blue-600 py-5'
+              startValue={departureDate}
             />
           </div>
           <div className='flex flex-col gap-3'>
@@ -192,6 +229,7 @@ export default function AddedFlights() {
               id='timeStart'
               className='w-full rounded-md border border-blue-600 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
               onChange={(e) => handleDepartureTimeChange(e.target.value)}
+              value={departureTime}
             />
           </div>
         </div>
@@ -201,6 +239,7 @@ export default function AddedFlights() {
             title='Аэропорт прилёта'
             placeholder='Санкт-Петербург'
             getValue={(val) => handleArrivalAirportChange(val as string)}
+            startValue={arrivalAirport}
           />
           <div className='flex flex-col gap-3'>
             <Typography variant='l-bold'>Дата прилёта</Typography>
@@ -208,6 +247,7 @@ export default function AddedFlights() {
               placeholder='Дата прилёта'
               getValue={handleArrivalDateChange}
               className='rounded-md border border-blue-600 py-5'
+              startValue={arrivalDate}
             />
           </div>
           <div className='flex flex-col gap-3'>
@@ -218,6 +258,7 @@ export default function AddedFlights() {
               id='timeEnd'
               className='w-full rounded-md border border-blue-600 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
               onChange={(e) => handleArrivalTimeChange(e.target.value)}
+              value={arrivalTime}
             />
           </div>
         </div>
@@ -246,7 +287,9 @@ export default function AddedFlights() {
       <Modal isOpen={successModal} getState={() => {}}>
         <div className='flex flex-col items-center gap-3 px-10'>
           <Typography variant='subtitle4'>Успешно</Typography>
-          <Typography>рейс добавлен в базу данных</Typography>
+          <Typography>
+            {idFlight ? 'рейс обновлён' : 'рейс добавлен в базу данных'}
+          </Typography>
         </div>
       </Modal>
     </div>

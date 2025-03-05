@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Typography } from '@/shared/typography';
 
@@ -17,7 +17,7 @@ export function NamedInput(props: INamedInput) {
     startValue,
     disabled,
   } = props;
-  const [value, setValue] = useState(startValue || '');
+  const [value, setValue] = useState(startValue ?? '');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (disabled) return;
@@ -28,6 +28,11 @@ export function NamedInput(props: INamedInput) {
     if (!getValue) return;
     getValue(type === 'number' ? +value : value);
   };
+
+  useEffect(() => {
+    if (!startValue) return;
+    setValue(startValue);
+  }, [startValue]);
 
   return (
     <div

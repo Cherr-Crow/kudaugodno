@@ -9,6 +9,7 @@ import { SvgSprite } from '../svg-sprite';
 
 const crumbs: Record<string, string> = {
   'catalog-hotels': 'Отели',
+  'catalog-tours': 'Туры',
   Kenia: 'Кения',
   Nairobi: 'Найроби',
 };

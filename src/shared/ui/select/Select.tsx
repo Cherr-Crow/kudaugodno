@@ -59,6 +59,11 @@ export function Select({
   }, []);
 
   useEffect(() => {
+    if (!startValue) return;
+    setSelectedOption(startValue);
+  }, [startValue]);
+
+  useEffect(() => {
     getValue && getValue(selectedOption);
   }, [selectedOption]);
 

@@ -1,0 +1,1 @@
+export { TableForTours } from './TableForTours';

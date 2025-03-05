@@ -22,7 +22,7 @@ export const flightsApi = createApi({
             ]
           : [{ type: 'Flights', id: 'LIST' }],
     }),
-    addFlight: build.mutation<IFlight, IFlight>({
+    addFlight: build.mutation<IFlight, Omit<IFlight, 'id'>>({
       query: (body) => ({
         url: 'flights/',
         method: 'POST',
@@ -34,14 +34,14 @@ export const flightsApi = createApi({
       }),
       invalidatesTags: [{ type: 'Flights', id: 'LIST' }],
     }),
-    getOneFlight: build.query<IFlight, number | null>({
+    getOneFlight: build.query<IFlight, number | void>({
       query: (id) => `flights/${id ?? ''}`,
       providesTags: [{ type: 'Flights', id: 'LIST' }],
     }),
     changeFlight: build.mutation<
       IFlight,
       {
-        body: IFlight;
+        body: Omit<IFlight, 'id'>;
         id: number;
       }
     >({
@@ -56,7 +56,7 @@ export const flightsApi = createApi({
       }),
       invalidatesTags: [{ type: 'Flights', id: 'LIST' }],
     }),
-    deleteHotel: build.mutation({
+    deleteFlight: build.mutation({
       query: (id: number) => ({
         url: `flights/${id}/`,
         method: 'DELETE',
@@ -70,6 +70,7 @@ export const {
   useGetFlightsQuery,
   useAddFlightMutation,
   useGetOneFlightQuery,
+  useLazyGetOneFlightQuery,
   useChangeFlightMutation,
-  useDeleteHotelMutation,
+  useDeleteFlightMutation,
 } = flightsApi;

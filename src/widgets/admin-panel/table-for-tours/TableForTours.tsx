@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/navigation';
 
-import { useDeleteFlightMutation } from '@/servicesApi/flightsApi';
+import { useDeleteTourMutation } from '@/servicesApi/toursApi';
 import { ContextMenu } from '@/shared/ui/context-menu';
 
-import { ITableForFlights } from './TableForFlights.types';
+import { ITableForTours } from './TableForTours.types';
 
-export function TableForFlights({ flights }: ITableForFlights) {
+export function TableForTours({ tours }: ITableForTours) {
   const route = useRouter();
-  const [deleteFlight] = useDeleteFlightMutation();
+  const [deleteTour] = useDeleteTourMutation();
 
   const [isVisible, setIsVisible] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -42,7 +42,7 @@ export function TableForFlights({ flights }: ITableForFlights) {
       case 'В архив':
         break;
       case 'Удалить':
-        activeItem && deleteFlight(activeItem);
+        activeItem && deleteTour(activeItem);
         break;
       default:
         return;
@@ -64,19 +64,19 @@ export function TableForFlights({ flights }: ITableForFlights) {
           </tr>
         </thead>
         <tbody>
-          {flights.map((flight) => (
+          {tours.map((tour) => (
             <tr
               className='border-b border-b-grey-100 even:bg-grey-50 hover:bg-blue-50'
               key={nanoid()}
-              onContextMenu={(event) => handleContextMenu(event, flight.id)}
+              onContextMenu={(event) => handleContextMenu(event, tour.id)}
             >
-              <td className='py-1 pl-2'>{flight.flight_number}</td>
-              <td>{flight.departure_airport}</td>
-              <td>{flight.arrival_airport}</td>
-              <td>{flight.airline}</td>
-              <td className=''>{flight.departure_date}</td>
-              <td>{flight.arrival_date}</td>
-              <td className='pr-2'>{flight.price}</td>
+              <td className='py-1 pl-2'>{tour.departure_city}</td>
+              <td>{tour.hotel}</td>
+              <td>{tour.start_date}</td>
+              <td>{tour.end_date}</td>
+              <td className=''>{tour.number_of_adults}</td>
+              <td>{tour.number_of_children}</td>
+              <td className='pr-2'>{tour.price}</td>
             </tr>
           ))}
         </tbody>
