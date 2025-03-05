@@ -1,50 +1,67 @@
 /* eslint-disable react/no-children-prop */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { RoomCard } from '@/entities/room-card';
 import { Typography } from '@/shared/typography';
-// eslint-disable-next-line import/order
 import { ButtonCustom } from '@/shared/ui/button-custom';
 
-// eslint-disable-next-line import/order
-import { RoomCard } from '../../entities/room-card';
+import { HotelRomsListProps } from './HotelRomsList.types';
 
-interface HotelRomsListProps {
-  hotels: {
-    id: number;
-    name: string;
-    description: string;
-    quadrature: string;
-    amenities: string;
-    price: number;
-    images: string[];
-    hasChild: boolean;
-  }[];
-}
+const HotelRomsList: React.FC<HotelRomsListProps> = ({ rooms }) => {
+  const [count, setCount] = useState<number>(1);
+  const [bottonShowMore, setBottonShowMore] = useState<boolean>(true);
 
-const HotelRomsList: React.FC<HotelRomsListProps> = ({ hotels }) => {
+  console.log(count);
+
+  const roomCount = rooms.length;
+  console.log(roomCount);
+
+  useEffect(() => {
+    if (roomCount === count) {
+      setBottonShowMore(false);
+    }
+  }, [count]);
+
+  const handleShowMore = () => {
+    setCount(1 + count);
+  };
+
+  const handleClose = () => {
+    setCount(1);
+    setBottonShowMore(true);
+  };
+
   return (
     <div className='hotel-rooms-list'>
-      {hotels.map((hotel) => (
-        <RoomCard
-          key={hotel.id}
-          id={hotel.id}
-          name={hotel.name}
-          description={hotel.description}
-          quadrature={hotel.quadrature}
-          amenities={hotel.amenities}
-          price={hotel.price}
-          images={hotel.images}
-          hasChild={hotel.hasChild}
-        />
+      {rooms.slice(0, count).map((room) => (
+        <div key={room.id}>
+          <RoomCard key={room.id} room={room} />
+        </div>
       ))}
-      <div className='group mb-7 mt-6 flex w-full items-center justify-center md:relative md:mb-9'>
-        <ButtonCustom variant='tetriary' size='m' className=''>
-          <div className='flex items-center gap-3 bg-blue-200'>
-            <Typography variant='m-bold' children='Показать еще' />
-          </div>
-        </ButtonCustom>
-      </div>
+      {bottonShowMore ? (
+        <div className='group mb-7 mt-6 flex w-full items-center justify-center md:relative md:mb-9'>
+          <ButtonCustom
+            variant='tetriary'
+            size='m'
+            className=''
+            onClick={handleShowMore}
+          >
+            <Typography variant='m-bold' children='Показать ещё' />
+          </ButtonCustom>
+        </div>
+      ) : (
+        <div className='group mb-7 mt-6 flex w-full items-center justify-center md:relative md:mb-9'>
+          <ButtonCustom
+            variant='tetriary'
+            size='m'
+            className=''
+            onClick={handleClose}
+          >
+            <Typography variant='m-bold' children='Скрыть' />
+          </ButtonCustom>
+        </div>
+      )}
     </div>
   );
 };
