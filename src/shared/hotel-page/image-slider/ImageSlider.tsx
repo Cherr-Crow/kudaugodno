@@ -11,8 +11,15 @@ import 'swiper/css/pagination';
 import { SvgSprite } from '@/shared/svg-sprite';
 
 interface ImageSliderProps {
-  images: string[];
+  images: photoTypeRoom[];
+  // onClick: () => void
 }
+
+type photoTypeRoom = {
+  id: number;
+  photo: string;
+  room: number;
+};
 
 const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   const swiperRef = useRef<any>(null);
@@ -35,22 +42,22 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   };
 
   return (
-    <div className='relative w-full'>
-      <div className='w-full rounded-xl bg-white pb-5 pt-5 md:pl-5'>
-        <Swiper ref={swiperRef} {...settings}>
+    <div className='w-full'>
+      <div className='relative w-full rounded-xl bg-white pb-5 pt-5 md:pl-5'>
+        <Swiper ref={swiperRef} {...settings} className='z-1 absolute'>
           {images.map((image, index) => (
             <SwiperSlide key={index}>
               <img
-                src={image}
+                src={image.photo}
                 alt={`Фото ${index + 1}`}
-                className='w-full rounded-lg object-cover'
+                className='h-[240px] w-full rounded-3xl object-cover'
               />
             </SwiperSlide>
           ))}
         </Swiper>
-        <div className='absolute left-0 right-0 top-1/2 z-50 hidden -translate-y-1/2 transform justify-between md:flex'>
+        <div className='absolute left-0 right-0 top-1/2 z-10 hidden -translate-y-1/2 transform justify-between md:flex'>
           <button
-            className='ml-8 rounded-full bg-white p-2 opacity-70 shadow-md hover:bg-opacity-100'
+            className='ml-8 rounded-full bg-white p-2 opacity-70 shadow-md hover:opacity-100 active:opacity-70'
             onClick={() => {
               if (swiperRef.current) {
                 swiperRef.current.swiper.slidePrev();
@@ -67,7 +74,7 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
             />
           </button>
           <button
-            className='mr-5 rounded-full bg-white p-2 opacity-70 shadow-md hover:bg-opacity-100'
+            className='mr-5 rounded-full bg-white p-2 opacity-70 shadow-md hover:opacity-100 active:opacity-70'
             onClick={() => {
               if (swiperRef.current) {
                 swiperRef.current.swiper.slideNext();

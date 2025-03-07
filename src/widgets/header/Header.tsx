@@ -70,13 +70,13 @@ export function Header({ className }: IHeader) {
                 >
                   <Typography>user</Typography>
                 </Link>
-                {/*<Link*/}
-                {/*  href='/admin-panel-tour-operator'*/}
-                {/*  onClick={toggleUserMenu}*/}
-                {/*  className='rounded-xl px-4 py-1 hover:bg-grey-100'*/}
-                {/*>*/}
-                {/*  <Typography>tour-operator-panel</Typography>*/}
-                {/*</Link>*/}
+                <Link
+                  href='/admin-panel-tour-operator'
+                  onClick={toggleUserMenu}
+                  className='rounded-xl px-4 py-1 hover:bg-grey-100'
+                >
+                  <Typography>tour-operator-panel</Typography>
+                </Link>
               </PopupWindow>
             )}
           </div>

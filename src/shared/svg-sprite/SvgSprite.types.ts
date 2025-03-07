@@ -66,7 +66,6 @@ export type NameSvg =
   | 'face'
   | 'ruler'
   | 'parentsChld'
-  | 'map'
   | 'filter'
   | 'back-arrow'
   | 'google'
