@@ -72,4 +72,4 @@ export type NameSvg =
   | 'vkontakte'
   | 'yandex'
   | 'arrow-check'
-  | 'eat';
+  | 'airplane-tour';
