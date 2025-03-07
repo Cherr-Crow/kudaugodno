@@ -93,7 +93,7 @@ export function HotelBookingPayForm({}: IHotelBookingPayForm) {
       </div>
 
       {/* Кнопки подтверждения и отмены */}
-      <div className='flex justify-between gap-4'>
+      <div className='flex flex-col justify-between gap-4'>
         <ButtonCustom
           variant='primary'
           className='bg-lime-400 hover:bg-lime-500 w-full rounded-full py-3 text-sm font-bold text-grey-950 shadow-md'

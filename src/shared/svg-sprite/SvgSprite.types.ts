@@ -72,4 +72,5 @@ export type NameSvg =
   | 'google'
   | 'vkontakte'
   | 'yandex'
-  | 'arrow-check';
+  | 'arrow-check'
+  | 'airplane-tour';

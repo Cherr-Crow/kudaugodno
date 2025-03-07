@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { HotelBooking } from '@/widgets/hotel-booking';
+import { TourBooking } from '@/widgets/tour-booking';
 
 export default function Egor() {
   return (
@@ -8,6 +9,7 @@ export default function Egor() {
       <div className='container'>
         {/* <HotelCatalog /> */}
         <HotelBooking />
+        <TourBooking />
       </div>
 
       {/* <div className={`mb-5`}>
