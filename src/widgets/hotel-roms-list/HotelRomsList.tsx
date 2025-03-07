@@ -12,10 +12,7 @@ const HotelRomsList: React.FC<HotelRomsListProps> = ({ rooms }) => {
   const [count, setCount] = useState<number>(1);
   const [bottonShowMore, setBottonShowMore] = useState<boolean>(true);
 
-  console.log(count);
-
   const roomCount = rooms.length;
-  console.log(roomCount);
 
   useEffect(() => {
     if (roomCount === count) {

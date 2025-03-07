@@ -24,7 +24,6 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room }) => {
   for (let i = room.quantity_rooms; i > 0; i--) {
     arrNumbersForSelect.unshift(String(i));
   }
-  console.log(arrNumbersForSelect);
 
   const [isOpenModal, setIsOpenModal] = useState(false);
 

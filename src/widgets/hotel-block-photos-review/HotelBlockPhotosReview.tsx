@@ -11,7 +11,6 @@ import { IHotelBlockPhotosReview } from './HotelBlockPhotosReview.types';
 import { serviceNames } from './service';
 
 export function HotelBlockPhotosReview({ hotel }: IHotelBlockPhotosReview) {
-  console.log(hotel);
   const hotels = [hotel];
 
   const [amenities, setAmenities] = useState<string[]>([]);
