@@ -221,11 +221,11 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
           </div>
         ))}
       </div>
-      {isOpenModal && (
-        <Modal getState={setIsOpenModal} isOpen={false}>
+      {
+        <Modal getState={setIsOpenModal} isOpen={isOpenModal}>
           <ModalTours type={'comfort'} />
         </Modal>
-      )}
+      }
     </>
   );
 }
