@@ -85,7 +85,7 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
                     <SvgSprite name='image' width={24} />
                     <Typography
                       variant='s-bold'
-                      className='text-black text-sm font-bold'
+                      className='text-black cursor-pointer text-sm font-bold'
                     >
                       Все фотографии
                     </Typography>
@@ -114,7 +114,7 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
                     </Typography>
                   </div>
                   <div className='group flex items-center gap-0.5'>
-                    <Typography variant='l' className='text-blue-600'>
+                    <Typography variant='l' className='cursor-pointer text-blue-600'>
                       Ещё 27 удобств
                     </Typography>
                     <SvgSprite
@@ -141,7 +141,7 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
                     </Typography>
                   </div>
                   <div className='group flex items-center gap-0.5'>
-                    <Typography variant='l' className='text-blue-600'>
+                    <Typography variant='l' className='cursor-pointer text-blue-600'>
                       Все условия
                     </Typography>
                     <SvgSprite
@@ -170,7 +170,7 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
                     </Typography>
                   </div>
                   <div className='group flex items-center gap-0.5'>
-                    <Typography variant='l' className='text-blue-600'>
+                    <Typography variant='l' className='cursor-pointer text-blue-600'>
                       Подробнее
                     </Typography>
                     <SvgSprite
@@ -191,14 +191,17 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
                 >
                   <div className='bg-blue-light m-auto flex items-center justify-center gap-1 rounded-3xl p-3 pl-6 pr-6'>
                     <SvgSprite name='location' width={24} />
-                    <Typography variant='s-bold' className='text-black'>
+                    <Typography
+                      variant='s-bold'
+                      className='text-black cursor-pointer'
+                    >
                       Смотреть на карте
                     </Typography>
                   </div>
                 </div>
                 <div
                   onClick={() => setIsOpenModal(!isOpenModal)}
-                  className='flex h-44 flex-1 flex-col justify-center rounded-2xl p-6 shadow-md md:h-56 lg:col-span-3'
+                  className='flex h-44 flex-1 cursor-pointer flex-col justify-center rounded-2xl p-6 shadow-md md:h-56 lg:col-span-3'
                 >
                   <Typography variant='s-bold' className='text-black mb-1'>
                     Информация о туре
