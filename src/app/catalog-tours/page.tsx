@@ -1,8 +1,9 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
+import { useGetOneTourQuery } from '@/servicesApi/toursApi';
 import { Breadcrumbs } from '@/shared/breadcrumbs';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
@@ -47,6 +48,14 @@ export default function CatalogTours() {
       coste: 240894,
     },
   ]);
+  const { data } = useGetOneTourQuery(0);
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
+  if (!data) {
+    return <div className='pt-[40px] text-center text-[32px]'>Загрузка...!!!</div>;
+  }
   return (
     <div className='container'>
       <Breadcrumbs></Breadcrumbs>
