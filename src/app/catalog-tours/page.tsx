@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
-import { useGetOneTourQuery } from '@/servicesApi/toursApi';
+import { useGetToursQuery } from '@/servicesApi/toursApi';
 import { Breadcrumbs } from '@/shared/breadcrumbs';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
@@ -11,9 +11,10 @@ import { OtherTours } from '@/shared/ui/other-tours/OtherTours';
 import { ReviewsTours } from '@/shared/ui/reviews-tours';
 import { RoomCards } from '@/shared/ui/room-cards';
 import { IRoomCards } from '@/shared/ui/room-cards/RoomCards.types';
+import { SearchTour } from '@/shared/ui/search-block/search-tour';
 import { ToursBlockPhoto } from '@/widgets/tours-block-photo';
 export default function CatalogTours() {
-  const [rooms] = useState<IRoomCards[]>([
+  const [rooms, setRooms] = useState<IRoomCards[]>([
     {
       name: 'Standard Room',
       services: [
@@ -48,17 +49,15 @@ export default function CatalogTours() {
       coste: 240894,
     },
   ]);
-  const { data } = useGetOneTourQuery(0);
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
+  const { data } = useGetToursQuery({});
+  useEffect(() => {}, []);
   if (!data) {
     return <div className='pt-[40px] text-center text-[32px]'>Загрузка...!!!</div>;
   }
   return (
     <div className='container'>
       <Breadcrumbs></Breadcrumbs>
+      <SearchTour type={'Туры'}></SearchTour>
       <ToursBlockPhoto />
       <section className='mb-10 mt-10'>
         <OtherTours />
@@ -82,6 +81,9 @@ export default function CatalogTours() {
             type='submit'
             className='mt-2 xl:mt-0'
             style={{ gridArea: 'btnSubmit' }}
+            onClick={() => {
+              setRooms(rooms.concat(rooms));
+            }}
           >
             <Typography variant='l-bold'>Показать ещё</Typography>
           </ButtonCustom>

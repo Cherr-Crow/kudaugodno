@@ -1,29 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { Modal } from '@/shared/modal';
 import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { ModalTours } from '@/shared/ui/modal-tours';
-import { hotels } from '@/temp/hotel-mock';
 
-import { IToursBlockPhoto } from './ToursBlockPhoto.types';
-
-export function ToursBlockPhoto({}: IToursBlockPhoto) {
+export function ToursBlockPhoto() {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const { data: hotels } = useGetOneHotelQuery(1);
+  useEffect(() => {
+    console.log([hotels]);
+  }, [hotels]);
+  if (!hotels) {
+    return <></>;
+  }
   return (
     <>
       <div className='lg:p-4 lg:pl-4 lg:pr-4'>
-        {hotels.slice(0, 1).map((hotel) => (
+        {[hotels].map((hotel) => (
           <div key={hotel.id}>
             <div className='grid py-4'>
-              {/* <SearchForm
-                className={
-                  'order-2 max-w-[1000px] border-solid shadow-lg xl:order-1'
-                }
-                tabClick={tabClick}
-              /> */}
               <div className='order-1 xl:order-2'>
                 <div className='lg:flex-fow flex flex-col xl:mt-6'>
                   <Typography
@@ -189,7 +188,7 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
                     backgroundPosition: '10% 10%',
                   }}
                 >
-                  <div className='bg-blue-light m-auto flex items-center justify-center gap-1 rounded-3xl p-3 pl-6 pr-6'>
+                  <div className='relative m-auto flex items-center justify-center gap-1 rounded-3xl bg-blue-200 p-3 pl-6 pr-6'>
                     <SvgSprite name='location' width={24} />
                     <Typography
                       variant='s-bold'
@@ -226,7 +225,7 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
       </div>
       {
         <Modal getState={setIsOpenModal} isOpen={isOpenModal}>
-          <ModalTours type={'comfort'} />
+          <ModalTours type={'trip'} />
         </Modal>
       }
     </>
