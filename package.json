@@ -15,6 +15,7 @@
     "page": "generate-react component --type=page"
   },
   "dependencies": {
+    "@pbe/react-yandex-maps": "^1.2.5",
     "@reduxjs/toolkit": "^2.5.0",
     "axios": "^1.7.9",
     "generate-react-cli": "^8.4.9",
