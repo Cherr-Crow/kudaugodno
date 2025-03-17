@@ -1,22 +1,5 @@
-export interface IFlightSegment {
-  airline?: string;
-  flightDuration?: string;
-  departure?: {
-    time: string;
-    location: string;
-  };
-  arrival?: {
-    time: string;
-    location: string;
-  };
-  layover?: string;
-}
+import { IFlight } from '@/types/flight-type';
 
 export interface ITourFlightCard {
-  flights: {
-    route: string;
-    duration: string;
-    baggage: string[];
-    segments: IFlightSegment[];
-  }[];
+  flights: IFlight[];
 }

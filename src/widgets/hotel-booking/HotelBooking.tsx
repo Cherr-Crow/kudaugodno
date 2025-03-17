@@ -14,63 +14,81 @@ const userMock = {
   document: 'паспорт РФ',
 };
 
-export function HotelBooking({}: IHotelBooking) {
-  const hotel = hotels[0];
+export function HotelBooking({ hotelId }: IHotelBooking) {
+  const hotel = hotels.find((h) => h.id === hotelId);
+  if (!hotel) {
+    return <div>Отель не найден</div>;
+  }
+
+  const mockData = {
+    dates: '1 ноября - 7 ноября',
+    guestsInfo: '2 взрослых на 6 ночей',
+    paymentInfo: 'Необходимо оплатить при заселении',
+    resortFee: 'Курортный сбор до 100 ₽ с человека за ночь',
+    flightInfo: {
+      flightType: 'Чартерный рейс',
+      flightDetails:
+        'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
+    },
+  };
+
   return (
     <div className='container mx-auto mb-5'>
       <div className='flex flex-col md:flex-row'>
         {/* {left side content} */}
         <div className='flex w-full flex-col gap-4 p-4 md:w-2/3'>
           <div className='rounded-lg bg-white p-4 shadow-lg'>
-            <div className='hotel-info'>
-              <div className='flex flex-row justify-between'>
-                <div className='flex flex-col gap-4 lg:gap-1'>
-                  <Rating category={hotel.star_category} starSize={16} gap={1} />
+            <div className='rounded-lg bg-white p-4 shadow-lg'>
+              <div className='hotel-info'>
+                <div className='flex flex-row justify-between'>
+                  <div className='flex flex-col gap-4 lg:gap-1'>
+                    <Rating category={hotel.star_category} starSize={16} gap={1} />
+                    <Typography
+                      variant='l'
+                      className='font-bold text-blue-950 md:text-lg'
+                    >
+                      {hotel.name}
+                    </Typography>
+                    <Typography variant='l' className='text-blue-950 md:text-sm'>
+                      {hotel.city}
+                    </Typography>
+                  </div>
+                  <div className='flex h-[65px] w-[130px] md:h-full md:w-[25%]'>
+                    <img
+                      src='Novotel-Nairobi-Westlands-photo-1.png'
+                      alt='Image of Novotel Nairobi Westlands hotel with a pool and palm trees'
+                      className='mx-auto rounded-2xl'
+                    />
+                  </div>
+                </div>
+                <div className='mb-3 grid grid-cols-3 gap-2'>
+                  {hotel.amenities_common.map((amenity, amenityIndex) => (
+                    <Typography
+                      key={`amenity-${amenityIndex}`}
+                      variant='l-bold'
+                      className='rounded-xl bg-grey-50 p-1 text-xs text-grey-800 md:text-base'
+                    >
+                      {amenity}
+                    </Typography>
+                  ))}
+                </div>
+                <div className='flex flex-col gap-2 rounded-lg bg-blue-100 p-4'>
                   <Typography
                     variant='l'
-                    className='font-bold text-blue-950 md:text-lg'
+                    className='text-[14px] font-bold text-blue-950'
                   >
-                    {hotel.name}
+                    {mockData.dates}
                   </Typography>
-                  <Typography variant='l' className='text-blue-950 md:text-sm'>
-                    {hotel.city}
+                  <Typography variant='m' className='text-blue-950'>
+                    {mockData.guestsInfo}
+                  </Typography>
+                  <Typography variant='l' className='font-bold text-blue-950'>
+                    {mockData.paymentInfo}
+                  </Typography>
+                  <Typography variant='m' className='text-blue-950'>
+                    {mockData.resortFee}
                   </Typography>
                 </div>
-                <div className='flex h-[65px] w-[130px] md:h-full md:w-[25%]'>
-                  <img
-                    src='Novotel-Nairobi-Westlands-photo-1.png'
-                    alt='Image of Novotel Nairobi Westlands hotel with a pool and palm trees'
-                    className='mx-auto rounded-2xl'
-                  />
-                </div>
-              </div>
-              <div className='mb-3 grid grid-cols-3 gap-2'>
-                {hotel.amenities_common.map((amenity, amenityIndex) => (
-                  <Typography
-                    key={`amenity-${amenityIndex}`}
-                    variant='l-bold'
-                    className='rounded-xl bg-grey-50 p-1 text-xs text-grey-800 md:text-base'
-                  >
-                    {amenity}
-                  </Typography>
-                ))}
-              </div>
-              <div className='flex flex-col gap-2 rounded-lg bg-blue-100 p-4'>
-                <Typography
-                  variant='l'
-                  className='text-[14px] font-bold text-blue-950'
-                >
-                  1 ноября - 7 ноября
-                </Typography>
-                <Typography variant='m' className='text-blue-950'>
-                  2 взрослых на 6 ночей
-                </Typography>
-                <Typography variant='l' className='font-bold text-blue-950'>
-                  Необходимо оплатить при заселении
-                </Typography>
-                <Typography variant='m' className='text-blue-950'>
-                  Курортный сбор до 100 ₽ с человека за ночь
-                </Typography>
               </div>
             </div>
           </div>

@@ -10,7 +10,10 @@ export interface ITour {
   tour_operator: number;
   hotel: number;
   price: number;
+  document?: string;
   transfer: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 // стандартный договор с подчёркиванием вместо персональных данных - загрузка документа

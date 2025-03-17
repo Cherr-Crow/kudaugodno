@@ -8,8 +8,8 @@ export default function Egor() {
     <div className={`ml-5 mt-5 flex-col`}>
       <div className='container'>
         {/* <HotelCatalog /> */}
-        <HotelBooking />
-        <TourBooking />
+        <HotelBooking hotelId={1} />
+        <TourBooking tourId={1} />
       </div>
 
       {/* <div className={`mb-5`}>

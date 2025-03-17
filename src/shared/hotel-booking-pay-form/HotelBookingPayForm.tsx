@@ -2,14 +2,17 @@
 
 import React, { useState } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import { IHotelBookingPayForm } from './HotelBookingPayForm.types';
 import { HotelBookingModalCancel } from '../hotel-booking-modal-cancel';
-import { HotelBookingModalConfirm } from '../hotel-booking-modal-confirm';
 import { Typography } from '../typography';
 import { ButtonCustom } from '../ui/button-custom';
 import { NamedInput } from '../ui/named-input';
 
 export function HotelBookingPayForm({}: IHotelBookingPayForm) {
+  const router = useRouter();
+
   const bookingPrice = {
     stayPrice: 22765,
     taxes: 765,
@@ -18,8 +21,12 @@ export function HotelBookingPayForm({}: IHotelBookingPayForm) {
     totalPrice: 22765 + 765 - 765,
   };
 
-  const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
   const [isCancelModalOpen, setCancelModalOpen] = useState(false);
+
+  const handleCompleteBooking = () => {
+    const data = encodeURIComponent(JSON.stringify(bookingPrice));
+    router.push(`/hotelbookingcompleted?data=${data}`);
+  };
 
   return (
     <div className='rounded-lg bg-white p-4 shadow-lg'>
@@ -92,13 +99,13 @@ export function HotelBookingPayForm({}: IHotelBookingPayForm) {
         </div>
       </div>
 
-      {/* Кнопки подтверждения и отмены */}
+      {/* Кнопки */}
       <div className='flex flex-col justify-between gap-4'>
         <ButtonCustom
           variant='primary'
           className='bg-lime-400 hover:bg-lime-500 w-full rounded-full py-3 text-sm font-bold text-grey-950 shadow-md'
           size='s'
-          onClick={() => setConfirmModalOpen(true)}
+          onClick={handleCompleteBooking}
         >
           Завершить бронирование
         </ButtonCustom>
@@ -113,11 +120,6 @@ export function HotelBookingPayForm({}: IHotelBookingPayForm) {
         </ButtonCustom>
       </div>
 
-      {/* Модальные окна */}
-      <HotelBookingModalConfirm
-        isOpen={isConfirmModalOpen}
-        onClose={() => setConfirmModalOpen(false)}
-      />
       <HotelBookingModalCancel
         isOpen={isCancelModalOpen}
         onClose={() => setCancelModalOpen(false)}
