@@ -4,18 +4,12 @@ import React from 'react';
 
 import { nanoid } from 'nanoid';
 
-import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 
 import { IHotelAmenities } from './HotelAmenities.types';
 
-export function HotelAmenities({}: IHotelAmenities) {
-  const { data: hotel, isLoading, isError } = useGetOneHotelQuery(1);
-
-  if (isLoading) return <div>Загрузка...</div>;
-  if (isError) return <div>Ошибка</div>;
-
+export function HotelAmenities({ amenities }: IHotelAmenities) {
   return (
     <section>
       <div className='p-4'>
@@ -25,13 +19,13 @@ export function HotelAmenities({}: IHotelAmenities) {
         >
           Удобства
         </Typography>
-        <ul className='mb-5 grid grid-cols-2 gap-7 lg:flex lg:justify-between'>
+        <ul className='mb-5 grid grid-cols-1 gap-7 sm:grid-cols-2 lg:flex lg:justify-between'>
           <li>
             <p className='mb-3 block font-semibold text-blue-900 md:text-lg md:text-grey-950 lg:text-xl'>
               В номере
             </p>
             <ul>
-              {hotel?.amenities_in_the_room.map((item) => (
+              {amenities?.in_the_room.map((item) => (
                 <li key={nanoid()}>
                   <div className='mb-2 flex' key={nanoid()}>
                     <SvgSprite
@@ -52,7 +46,7 @@ export function HotelAmenities({}: IHotelAmenities) {
               Общие
             </p>
             <ul>
-              {hotel?.amenities_common.map((item) => (
+              {amenities?.common.map((item) => (
                 <li key={nanoid()}>
                   <div className='mb-2 flex' key={nanoid()}>
                     <SvgSprite
@@ -73,7 +67,7 @@ export function HotelAmenities({}: IHotelAmenities) {
               Спорт и отдых
             </p>
             <ul>
-              {hotel?.amenities_sports_and_recreation.map((item) => (
+              {amenities?.sports_and_recreation.map((item) => (
                 <li key={nanoid()}>
                   <div className='mb-2 flex' key={nanoid()}>
                     <SvgSprite
@@ -94,7 +88,7 @@ export function HotelAmenities({}: IHotelAmenities) {
               Для детей
             </p>
             <ul>
-              {hotel?.amenities_for_children.map((item) => (
+              {amenities?.children.map((item) => (
                 <li key={nanoid()}>
                   <div className='mb-2 flex' key={nanoid()}>
                     <SvgSprite

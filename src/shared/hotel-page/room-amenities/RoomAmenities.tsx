@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { SvgSprite } from '@/shared/svg-sprite';
+import { Typography } from '@/shared/typography';
 
 import { RoomAmenitiesProps } from './RoomAmenities.types';
 
@@ -11,7 +12,9 @@ const RoomAmenities: React.FC<RoomAmenitiesProps> = ({ amenities }) => {
         <div className='justify-center md:flex md:w-full md:items-center'>
           <SvgSprite name='icutlery_items' className='' />
         </div>
-        {amenities}
+        <Typography className='text-4 font-normal text-blue-950 md:text-[13px] lg:text-[16px]'>
+          {amenities}
+        </Typography>
       </div>
     </div>
   );

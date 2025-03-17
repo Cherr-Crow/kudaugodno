@@ -1,11 +1,11 @@
 import { RoomType } from '@/types/room';
 
-type rulesType = {
+export type rulesType = {
   name: string;
   description: string;
 };
 
-type photoType = {
+export type photoType = {
   id: number;
   photo: string;
   hotel: number;

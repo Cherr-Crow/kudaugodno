@@ -21,7 +21,13 @@ const RoomDescription: React.FC<RoomDescriptionProps> = ({ description }) => {
 
       <div className='mb-2 flex gap-2 md:text-xs lg:text-base'>
         <SvgSprite name='bed' className='' />
-        {description} Двухспальная кровать
+        {/* {description} Двухспальная кровать */}
+        <Typography className='text-4 font-normal text-blue-950 md:text-[13px] lg:text-[16px]'>
+          {description}{' '}
+          {+description === 1
+            ? 'двуспальная кровать'
+            : `двуспальных ${+description === 5 || +description === 0 ? 'кроватей' : 'кровати'}`}
+        </Typography>
       </div>
     </div>
   );
