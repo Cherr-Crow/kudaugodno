@@ -73,4 +73,6 @@ export type NameSvg =
   | 'yandex'
   | 'arrow-check'
   | 'airplane-tour'
-  | 'eat';
+  | 'eat'
+  | 'admin-panel-tourist-background'
+  | 'add-image';
