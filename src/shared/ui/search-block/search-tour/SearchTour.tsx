@@ -31,8 +31,8 @@ export function SearchTour({ type }: ISearchTour) {
   };
 
   return (
-    <>
-      <div className='hidden h-full w-full max-w-[800px] gap-2 rounded-full bg-white py-1 pl-12 pr-1 md:flex'>
+    <div className='md:flex md:justify-center'>
+      <div className='hidden h-full w-full max-w-[800px] gap-2 rounded-full border-solid bg-white py-1 pl-12 pr-1 shadow-lg md:flex md:justify-center'>
         {type === 'Туры' && (
           <InputForSearchBlock
             placeholder='Город вылета'
@@ -113,6 +113,6 @@ export function SearchTour({ type }: ISearchTour) {
           <Typography variant='m-bold'>Найти</Typography>
         </ButtonCustom>
       </div>
-    </>
+    </div>
   );
 }
