@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -123,6 +123,7 @@ export default function AdminPanelTouristPersonalData() {
   // Форма
   const {
     register,
+    setFocus,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(FormSchema),
@@ -134,6 +135,11 @@ export default function AdminPanelTouristPersonalData() {
 
   // INPUT для загрузки фото пользователя
   const inputImg = useRef<HTMLInputElement>(null);
+
+  // Фокус на инпут
+  useEffect(() => {
+    setFocus('firstName');
+  }, []);
 
   // Функция для обработки загруженного ползовательского фото для предварительного показа
   function previewFile() {
