@@ -2,58 +2,78 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { useSearchParams } from 'next/navigation';
-
 import { Typography } from '@/shared/typography';
 
 interface BookingData {
+  hotelName: string;
+  checkIn: string;
+  checkOut: string;
+  guests: number;
+  price: number;
   stayPrice: number;
   taxes: number;
   discount: number;
   bonuses: number;
   totalPrice: number;
+  promoCode: string;
+  phone: string;
+  email: string;
 }
 
 export default function HotelBookingCompleted() {
-  const searchParams = useSearchParams();
   const [bookingData, setBookingData] = useState<BookingData | null>(null);
 
   useEffect(() => {
-    const data = searchParams.get('data');
-    if (data) {
+    const storedData = localStorage.getItem('bookingData');
+    if (storedData) {
       try {
-        setBookingData(JSON.parse(decodeURIComponent(data)));
+        setBookingData(JSON.parse(storedData));
+        localStorage.removeItem('bookingData');
       } catch (error) {
-        console.error('Ошибка парсинга данных:', error);
+        console.error('Ошибка парсинга данных бронирования:', error);
       }
     }
-  }, [searchParams]);
+  }, []);
 
-  if (!bookingData) {
-    return <Typography variant='l'>Загрузка данных...</Typography>;
-  }
+  if (!bookingData) return <Typography variant='l'>Загрузка...</Typography>;
+
+  const safeToLocaleString = (value: number | undefined) =>
+    value ? value.toLocaleString() : 'Не указано';
 
   return (
     <div className='p-6'>
       <Typography variant='l' className='font-bold'>
         Бронирование завершено!
       </Typography>
-      <Typography variant='m'>Детали бронирования:</Typography>
+
+      <Typography variant='m'>Данные бронирования:</Typography>
       <ul className='mt-4 space-y-2'>
         <li>
-          <b>Проживание:</b> {bookingData.stayPrice.toLocaleString()} ₽
+          <b>Имя отеля:</b> {bookingData.hotelName}
         </li>
         <li>
-          <b>Налоги и сборы:</b> {bookingData.taxes.toLocaleString()} ₽
+          <b>Email:</b> {bookingData.email}
         </li>
         <li>
-          <b>Скидка:</b> -{bookingData.discount.toLocaleString()} ₽
+          <b>Телефон:</b> {bookingData.phone}
         </li>
         <li>
-          <b>Бонусы начислены:</b> {bookingData.bonuses.toLocaleString()}
+          <b>Проживание:</b> {safeToLocaleString(bookingData.stayPrice)} ₽
         </li>
         <li>
-          <b>Итого:</b> {bookingData.totalPrice.toLocaleString()} ₽
+          <b>Налоги и сборы:</b> {safeToLocaleString(bookingData.taxes)} ₽
+        </li>
+        <li>
+          <b>Скидка:</b> -{safeToLocaleString(bookingData.discount)} ₽
+        </li>
+        <li>
+          <b>Начисленные бонусы:</b> {safeToLocaleString(bookingData.bonuses)}
+        </li>
+        <li>
+          <b>Промокод:</b> {bookingData.promoCode || 'Не указан'}
+        </li>
+        <li>
+          <b>Итого:</b> {safeToLocaleString(bookingData.totalPrice)} ₽
         </li>
       </ul>
     </div>

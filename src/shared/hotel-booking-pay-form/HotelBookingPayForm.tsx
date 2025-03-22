@@ -10,9 +10,13 @@ import { Typography } from '../typography';
 import { ButtonCustom } from '../ui/button-custom';
 import { NamedInput } from '../ui/named-input';
 
-export function HotelBookingPayForm({}: IHotelBookingPayForm) {
+export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
   const router = useRouter();
 
+  const [promoCode, setPromoCode] = useState('');
+  const [isCancelModalOpen, setCancelModalOpen] = useState(false);
+
+  // Финальная сумма бронирования
   const bookingPrice = {
     stayPrice: 22765,
     taxes: 765,
@@ -21,11 +25,19 @@ export function HotelBookingPayForm({}: IHotelBookingPayForm) {
     totalPrice: 22765 + 765 - 765,
   };
 
-  const [isCancelModalOpen, setCancelModalOpen] = useState(false);
+  const finalBookingData = {
+    bookingData: data,
+    bookingPrice,
+    promoCode,
+  };
 
   const handleCompleteBooking = () => {
-    const data = encodeURIComponent(JSON.stringify(bookingPrice));
-    router.push(`/hotelbookingcompleted?data=${data}`);
+    localStorage.setItem('bookingData', JSON.stringify(finalBookingData));
+    router.push('/booking-completed');
+  };
+
+  const handlePromocode = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPromoCode(e.target.value);
   };
 
   return (
@@ -79,6 +91,8 @@ export function HotelBookingPayForm({}: IHotelBookingPayForm) {
               name='Введите промокод'
               type='text'
               placeholder='Введите промокод'
+              value={promoCode}
+              onChange={handlePromocode}
             />
           </div>
           <ButtonCustom variant='secondary' className='px-2 lg:px-4' size='s'>

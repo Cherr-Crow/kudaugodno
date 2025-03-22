@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 
 import { HotelBookingPayForm } from '@/shared/hotel-booking-pay-form';
 import { Rating } from '@/shared/rating';
@@ -14,22 +16,39 @@ const userMock = {
   document: 'паспорт РФ',
 };
 
+const mockData = {
+  dates: '1 ноября - 7 ноября',
+  guestsInfo: '2 взрослых на 6 ночей',
+  paymentInfo: 'Необходимо оплатить при заселении',
+  resortFee: 'Курортный сбор до 100 ₽ с человека за ночь',
+  flightInfo: {
+    flightType: 'Чартерный рейс',
+    flightDetails:
+      'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
+  },
+};
+
 export function HotelBooking({ hotelId }: IHotelBooking) {
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhone(e.target.value);
+  };
+
   const hotel = hotels.find((h) => h.id === hotelId);
   if (!hotel) {
     return <div>Отель не найден</div>;
   }
 
-  const mockData = {
-    dates: '1 ноября - 7 ноября',
-    guestsInfo: '2 взрослых на 6 ночей',
-    paymentInfo: 'Необходимо оплатить при заселении',
-    resortFee: 'Курортный сбор до 100 ₽ с человека за ночь',
-    flightInfo: {
-      flightType: 'Чартерный рейс',
-      flightDetails:
-        'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
-    },
+  const hotelData = {
+    ...mockData,
+    email,
+    phone,
   };
 
   return (
@@ -111,6 +130,8 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
                     id='email'
                     name='Email'
                     type='text'
+                    value={email}
+                    onChange={handleEmailChange}
                     placeholder='example@gmail.com'
                   />
                 </div>
@@ -122,6 +143,8 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
                     id='phone'
                     name='Телефон'
                     type='tel'
+                    value={phone}
+                    onChange={handlePhoneChange}
                     placeholder='+7 (999) 678-22-22'
                   />
                 </div>
@@ -231,7 +254,7 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
         </div>
         {/* {right side content} */}
         <div className='w-full p-4 md:w-1/3'>
-          <HotelBookingPayForm />
+          <HotelBookingPayForm data={hotelData} />
         </div>
       </div>
     </div>

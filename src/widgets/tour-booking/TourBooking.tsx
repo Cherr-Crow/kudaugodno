@@ -1,8 +1,6 @@
 'use client';
 
-// import React, { useState } from 'react';
-
-// import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 
 import { HotelBookingPayForm } from '@/shared/hotel-booking-pay-form';
 import { Rating } from '@/shared/rating';
@@ -53,22 +51,25 @@ const mockData = {
 };
 
 export function TourBooking({ tourId }: ITourBooking) {
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhone(e.target.value);
+  };
+
   const hotel = hotels.find((h) => h.id === tourId);
-  if (!hotel) {
-    return <div>Тур не найден</div>;
-  }
+  if (!hotel) return <div>Тур не найден</div>;
 
-  // const [email, setEmail] = useState('');
-  // const [phone, setPhone] = useState('');
-  // const router = useRouter();
-
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   router.push({
-  //     pathname: '/next-page',
-  //     query: { email, phone },
-  //   });
-  // };
+  const tourData = {
+    ...mockData,
+    email,
+    phone,
+  };
 
   return (
     <div className='container mx-auto mb-5'>
@@ -214,8 +215,8 @@ export function TourBooking({ tourId }: ITourBooking) {
                     id='email'
                     name='Email'
                     type='text'
-                    // value={email}
-                    // onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                    onChange={handleEmailChange}
                     placeholder='example@gmail.com'
                   />
                 </div>
@@ -227,8 +228,8 @@ export function TourBooking({ tourId }: ITourBooking) {
                     id='phone'
                     name='Телефон'
                     type='tel'
-                    // value={phone}
-                    // onChange={(e) => setPhone(e.target.value)}
+                    value={phone}
+                    onChange={handlePhoneChange}
                     placeholder='+7 (999) 678-22-22'
                   />
                 </div>
@@ -323,7 +324,7 @@ export function TourBooking({ tourId }: ITourBooking) {
         </div>
         {/* {right side content} */}
         <div className='w-full p-4 md:w-1/3'>
-          <HotelBookingPayForm />
+          <HotelBookingPayForm data={tourData} />
         </div>
       </div>
     </div>
