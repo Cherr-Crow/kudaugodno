@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://ku.mer1d1an.ru/api/v1/';
+export const BASE_URL = 'https://anywhere-test.god-it.ru/api/v1/';

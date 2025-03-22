@@ -28,7 +28,7 @@ export function RoomCards({
           {name}
         </Typography>
         <div className='flex place-content-between items-center'>
-          <div className='grid min-h-[72px] w-full gap-4 rounded-[20px] bg-[#EDEDED] p-5 lg:grid-cols-8'>
+          <div className='grid min-h-[72px] w-full gap-4 rounded-[20px] bg-[#EDEDED] p-5 align-middle lg:grid-cols-7'>
             {services.map((elem) => {
               return (
                 <div className='flex items-center justify-start' key={nanoid()}>

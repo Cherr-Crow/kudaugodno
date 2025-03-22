@@ -2,29 +2,103 @@ import React from 'react';
 
 import { nanoid } from 'nanoid';
 
+import { TourFlightCard } from '@/shared/tour-flight-card';
 import { Typography } from '@/shared/typography';
+import { hotels } from '@/temp/hotel-mock';
 
 import { IModalTours } from './ModalTours.types';
 
-const infoMock = [
-  {
-    title: 'Официальный сайт отеля',
-    text: 'https://all.accor.com/hotel/9332/index.en.shtml',
-  },
-  {
-    title: 'Рейс/вылет',
-    text: 'Регулярный рейс, арабская авиакомпания Air Arabia, (сайт авиакомпании https://www.airarabia.com/ru), рейс с пересадкой в ОАЭ в городе Шардже 2 ч, в стоимость авиабилета входит ручная кладь 10 кг и питание на борту самолета. Вылет и прилет аэропорт Домодедово. Трансфер',
-  },
-  {
-    title: 'В тур включен трансфер из аэропорта до отеля и из отеля до аэропорта.',
-    text: 'Туроператор',
-  },
-  { title: 'Fun&Sun', text: 'Комната' },
-  { title: 'Superior room', text: 'Питание' },
-  { title: 'BB', text: 'только завтраки' },
-];
-
 export function ModalTours({ type }: IModalTours) {
+  const hotel = hotels[0];
+  const flightData = {
+    flights: [
+      {
+        route: 'Москва — Найроби',
+        duration: '12ч 55м в пути',
+        baggage: ['Без багажа', 'Ручная кладь 1×10 кг'],
+        segments: [
+          {
+            airline: 'Air Arabia',
+            flightDuration: '5ч 50м в полете',
+            departure: {
+              time: '00:20',
+              location: 'Москва, Домодедово, DME',
+            },
+            arrival: {
+              time: '07:00',
+              location: 'Шарджа, Шарджа, SHJ',
+            },
+          },
+          {
+            layover: 'Пересадка в Шардже 2 ч',
+          },
+          {
+            airline: 'Air Arabia',
+            flightDuration: '5ч 50м в полете',
+            departure: {
+              time: '09:00',
+              location: 'Шарджа, Шарджа, SHJ',
+            },
+            arrival: {
+              time: '13:15',
+              location: 'Найроби, Джомо Кеньятта, NBO',
+            },
+          },
+        ],
+      },
+      {
+        route: 'Найроби — Москва',
+        duration: '12ч 5м в пути',
+        baggage: ['Без багажа', 'Ручная кладь 1×10 кг'],
+        segments: [
+          {
+            airline: 'Air Arabia',
+            flightDuration: '5ч 50м в полете',
+            departure: {
+              time: '14:02',
+              location: 'Найроби, Джомо Кеньятта, NBO',
+            },
+            arrival: {
+              time: '20:10',
+              location: 'Шарджа, Шарджа, SHJ',
+            },
+          },
+          {
+            layover: 'Пересадка в Шардже 1ч 15м',
+          },
+          {
+            airline: 'Air Arabia',
+            flightDuration: '5ч 50м в полете',
+            departure: {
+              time: '21:25',
+              location: 'Шарджа, Шарджа, SHJ',
+            },
+            arrival: {
+              time: '02:10',
+              location: 'Москва, Домодедово, DME',
+            },
+          },
+        ],
+      },
+    ],
+  };
+  const infoMock = [
+    {
+      title: 'Официальный сайт отеля',
+      text: 'https://all.accor.com/hotel/9332/index.en.shtml',
+    },
+    {
+      title: 'Рейс/вылет',
+      text: 'Регулярный рейс, арабская авиакомпания Air Arabia, (сайт авиакомпании https://www.airarabia.com/ru), рейс с пересадкой в ОАЭ в городе Шардже 2 ч, в стоимость авиабилета входит ручная кладь 10 кг и питание на борту самолета. Вылет и прилет аэропорт Домодедово. Трансфер',
+    },
+    {
+      title: 'В тур включен трансфер из аэропорта до отеля и из отеля до аэропорта.',
+      text: 'Туроператор',
+    },
+    { title: 'Fun&Sun', text: 'Комната' },
+    { title: 'Superior room', text: 'Питание' },
+    { title: 'BB', text: 'только завтраки' },
+  ];
   return (
     <div className='justify-beteen z-50 m-4 mx-auto grid h-auto max-h-[406px] gap-2 rounded-[20px] bg-[#FFFFFF] text-[#1A1F4C] lg:max-w-[761px]'>
       <Typography variant='l' className='mb-5 font-semibold leading-[30px]'>
@@ -46,6 +120,16 @@ export function ModalTours({ type }: IModalTours) {
               </div>
             );
           })}
+        </div>
+      )}{' '}
+      {type === 'trip' && (
+        <div className='flex w-full flex-col gap-4'>
+          <Typography variant='l' className='font-bold text-white md:text-lg'>
+            Тур с перелетом в {hotel.country}
+          </Typography>
+          <div className='rounded-lg bg-white shadow-lg'>
+            <TourFlightCard flights={flightData.flights} />
+          </div>
         </div>
       )}
     </div>

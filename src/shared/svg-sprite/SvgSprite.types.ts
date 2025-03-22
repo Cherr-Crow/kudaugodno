@@ -72,4 +72,11 @@ export type NameSvg =
   | 'vkontakte'
   | 'yandex'
   | 'arrow-check'
-  | 'airplane-tour';
+  | 'airplane-tour'
+  | 'eat'
+  | 'admin-panel-tourist-background'
+  | 'add-image'
+  | 'frog-on-chair'
+  | 'frog-on-suitcase'
+  | 'frog-with-purse'
+  | 'more';

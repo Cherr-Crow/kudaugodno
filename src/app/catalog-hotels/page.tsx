@@ -15,7 +15,6 @@ export default function CatalogHotels() {
   if (!hotel || hotel === undefined) {
     return <div className='pt-[40px] text-center text-[32px]'>Загрузка...!!!</div>;
   }
-  console.log(hotel);
 
   const rooms = hotel.rooms;
 

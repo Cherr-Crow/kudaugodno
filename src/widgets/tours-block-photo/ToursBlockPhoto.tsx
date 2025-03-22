@@ -1,29 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { Modal } from '@/shared/modal';
 import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { ModalTours } from '@/shared/ui/modal-tours';
-import { hotels } from '@/temp/hotel-mock';
 
-import { IToursBlockPhoto } from './ToursBlockPhoto.types';
-
-export function ToursBlockPhoto({}: IToursBlockPhoto) {
+export function ToursBlockPhoto() {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const { data: hotels } = useGetOneHotelQuery(1);
+  useEffect(() => {
+    console.log([hotels]);
+  }, [hotels]);
+  if (!hotels) {
+    return <></>;
+  }
   return (
     <>
       <div className='lg:p-4 lg:pl-4 lg:pr-4'>
-        {hotels.slice(0, 1).map((hotel) => (
+        {[hotels].map((hotel) => (
           <div key={hotel.id}>
             <div className='grid py-4'>
-              {/* <SearchForm
-                className={
-                  'order-2 max-w-[1000px] border-solid shadow-lg xl:order-1'
-                }
-                tabClick={tabClick}
-              /> */}
               <div className='order-1 xl:order-2'>
                 <div className='lg:flex-fow flex flex-col xl:mt-6'>
                   <Typography
@@ -85,7 +84,7 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
                     <SvgSprite name='image' width={24} />
                     <Typography
                       variant='s-bold'
-                      className='text-black text-sm font-bold'
+                      className='text-black cursor-pointer text-sm font-bold'
                     >
                       Все фотографии
                     </Typography>
@@ -114,7 +113,7 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
                     </Typography>
                   </div>
                   <div className='group flex items-center gap-0.5'>
-                    <Typography variant='l' className='text-blue-600'>
+                    <Typography variant='l' className='cursor-pointer text-blue-600'>
                       Ещё 27 удобств
                     </Typography>
                     <SvgSprite
@@ -141,7 +140,7 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
                     </Typography>
                   </div>
                   <div className='group flex items-center gap-0.5'>
-                    <Typography variant='l' className='text-blue-600'>
+                    <Typography variant='l' className='cursor-pointer text-blue-600'>
                       Все условия
                     </Typography>
                     <SvgSprite
@@ -170,7 +169,7 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
                     </Typography>
                   </div>
                   <div className='group flex items-center gap-0.5'>
-                    <Typography variant='l' className='text-blue-600'>
+                    <Typography variant='l' className='cursor-pointer text-blue-600'>
                       Подробнее
                     </Typography>
                     <SvgSprite
@@ -189,16 +188,19 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
                     backgroundPosition: '10% 10%',
                   }}
                 >
-                  <div className='bg-blue-light m-auto flex items-center justify-center gap-1 rounded-3xl p-3 pl-6 pr-6'>
+                  <div className='relative m-auto flex items-center justify-center gap-1 rounded-3xl bg-blue-200 p-3 pl-6 pr-6'>
                     <SvgSprite name='location' width={24} />
-                    <Typography variant='s-bold' className='text-black'>
+                    <Typography
+                      variant='s-bold'
+                      className='text-black cursor-pointer'
+                    >
                       Смотреть на карте
                     </Typography>
                   </div>
                 </div>
                 <div
                   onClick={() => setIsOpenModal(!isOpenModal)}
-                  className='flex h-44 flex-1 flex-col justify-center rounded-2xl p-6 shadow-md md:h-56 lg:col-span-3'
+                  className='flex h-44 flex-1 cursor-pointer flex-col justify-center rounded-2xl p-6 shadow-md md:h-56 lg:col-span-3'
                 >
                   <Typography variant='s-bold' className='text-black mb-1'>
                     Информация о туре
@@ -221,11 +223,11 @@ export function ToursBlockPhoto({}: IToursBlockPhoto) {
           </div>
         ))}
       </div>
-      {isOpenModal && (
-        <Modal getState={setIsOpenModal} isOpen={false}>
-          <ModalTours type={'comfort'} />
+      {
+        <Modal getState={setIsOpenModal} isOpen={isOpenModal}>
+          <ModalTours type={'trip'} />
         </Modal>
-      )}
+      }
     </>
   );
 }
