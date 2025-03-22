@@ -1,6 +1,5 @@
+import { LoyaltyProgram } from '@/widgets/admin-panel-tourist/loyalty-program';
 
-export default function LoyaltyProgramPage({ }) {
-
-  return <div className=''>LoyaltyProgramPage</div>;
-
+export default function LoyaltyProgramPage({}) {
+  return <LoyaltyProgram />;
 }

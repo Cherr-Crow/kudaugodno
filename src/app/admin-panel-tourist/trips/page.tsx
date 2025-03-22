@@ -1,7 +1,5 @@
-import { Trips } from "@/widgets/admin-panel-tourist/trips"
+import { Trips } from '@/widgets/admin-panel-tourist/trips';
 
-export default function TripsPage({ }) {
-
+export default function TripsPage({}) {
   return <Trips />;
-
 }

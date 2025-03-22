@@ -1,6 +1,3 @@
-
-export default function SimplifyBookingPage({ }) {
-
+export default function SimplifyBookingPage({}) {
   return <div className=''>SimplifyBookingPage</div>;
-
 }

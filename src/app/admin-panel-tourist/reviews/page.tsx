@@ -1,5 +1,3 @@
-export default function ReviewsPage({ }) {
-
-  return <div>ReviewsPage</div>
-
+export default function ReviewsPage({}) {
+  return <div>ReviewsPage</div>;
 }

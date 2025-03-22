@@ -1,27 +1,33 @@
-'use client'
-import { useState } from "react"
+'use client';
+import { useState } from 'react';
 
-import Link from "next/link"
+import Link from 'next/link';
 
-import { PopupWindow } from "@/shared/popup-window"
-import { Typography } from "@/shared/typography"
-import { ButtonCustom } from "@/shared/ui/button-custom"
+import { PopupWindow } from '@/shared/popup-window';
+import { Typography } from '@/shared/typography';
+import { ButtonCustom } from '@/shared/ui/button-custom';
 
 // Компонент для тестирования (навигирования) по личному кабинету пользователя-туриста. Далее можно убрать кнопку, оставить только выпадающее меню
 
-export function TestButton({ }) {
-
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
+export function TestButton({}) {
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   const toggleUserMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   return (
-    <div className="relative text-right">
-      <ButtonCustom variant="wzhuh" size="m" className="text-white" onClick={toggleUserMenu}><Typography variant="s-bold">Личный кабинет тест-меню</Typography></ButtonCustom >
+    <div className='relative text-right'>
+      <ButtonCustom
+        variant='wzhuh'
+        size='m'
+        className='text-white'
+        onClick={toggleUserMenu}
+      >
+        <Typography variant='s-bold'>Личный кабинет тест-меню</Typography>
+      </ButtonCustom>
       {isMenuOpen && (
-        <PopupWindow className='absolute right-0 flex flex-col gap-2 text-left text-nowrap py-2'>
+        <PopupWindow className='absolute right-0 flex flex-col gap-2 text-nowrap py-2 text-left'>
           <Link
             href='/admin-panel-tourist/trips'
             onClick={toggleUserMenu}
@@ -88,8 +94,5 @@ export function TestButton({ }) {
         </PopupWindow>
       )}
     </div>
-
-
-  )
-
+  );
 }

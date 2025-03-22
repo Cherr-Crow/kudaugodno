@@ -74,4 +74,9 @@ export type NameSvg =
   | 'arrow-check'
   | 'airplane-tour'
   | 'eat'
+  | 'admin-panel-tourist-background'
+  | 'add-image'
+  | 'frog-on-chair'
+  | 'frog-on-suitcase'
+  | 'frog-with-purse'
   | 'more';
