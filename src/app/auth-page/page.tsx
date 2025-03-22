@@ -2,6 +2,7 @@ import React from 'react';
 
 import { TestButton } from '@/widgets/admin-panel-tourist/test-button/TestButton';
 import { TestButton } from '@/widgets/admin-panel-tourist/test-button/TestButton';
+import { TestButton } from '@/widgets/admin-panel-tourist/test-button/TestButton';
 import { AuthForBusiness } from '@/widgets/auth-for-business';
 import { Authpage } from '@/widgets/authpage';
 
