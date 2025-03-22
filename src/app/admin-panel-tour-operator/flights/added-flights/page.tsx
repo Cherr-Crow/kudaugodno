@@ -38,6 +38,7 @@ export default function AddedFlights() {
   const [departureTime, setDepartureTime] = useState<string>('');
   const [arrivalDate, setArrivalDate] = useState<string>('');
   const [arrivalTime, setArrivalTime] = useState<string>('');
+  const [shortDescription, setShortDescription] = useState<string>('');
   const [price, setPrice] = useState<string>('');
   const [serviceClass, setServiceClass] = useState<string>('');
   const errors = useRef<{ name: string; description: string }[]>([]);
@@ -66,6 +67,9 @@ export default function AddedFlights() {
   };
   const handleArrivalTimeChange = (val: string) => {
     setArrivalTime(val);
+  };
+  const handleShortDescriptionChange = (val: string) => {
+    setShortDescription(val);
   };
   const handlePriceChange = (val: string) => {
     setPrice(val);
@@ -261,6 +265,16 @@ export default function AddedFlights() {
               value={arrivalTime}
             />
           </div>
+        </div>
+        <div className='flex flex-col gap-3'>
+          <Typography variant='l-bold'>Краткое описание</Typography>
+          <input
+            name='shortDescription'
+            id='shortDescription'
+            className='w-full rounded-md border border-blue-600 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
+            onChange={(e) => handleShortDescriptionChange(e.target.value)}
+            value={shortDescription}
+          />
         </div>
       </div>
       <div className={`mt-10 flex justify-end gap-4`}>

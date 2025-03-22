@@ -35,7 +35,7 @@ export function Modal({ children, isOpen, getState, err = false }: IModal) {
       ref={window}
     >
       <PopupWindow
-        className={`relative left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 p-10 ${err && 'bg-gradient-to-tl from-red-primary-400'}`}
+        className={`relative left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-y-scroll p-10 ${err && 'bg-gradient-to-tl from-red-primary-400'}`}
         ref={popap}
       >
         <SvgSprite
