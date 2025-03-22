@@ -73,4 +73,5 @@ export type NameSvg =
   | 'yandex'
   | 'arrow-check'
   | 'airplane-tour'
-  | 'eat';
+  | 'eat'
+  | 'more';
