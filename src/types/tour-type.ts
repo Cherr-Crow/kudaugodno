@@ -12,7 +12,7 @@ export interface ITour {
   price: number;
   transfer: string;
   created_at: string;
-  document: null;
+  document: string;
   updated_at: string;
 }
 // стандартный договор с подчёркиванием вместо персональных данных - загрузка документа
