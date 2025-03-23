@@ -6,12 +6,12 @@ import { SvgSprite } from '../svg-sprite';
 export function TourFlightCard({ flights }: ITourFlightCard) {
   return (
     <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
-      {flights.map((flight) => (
-        <div key={flight.id} className='flex flex-col gap-6 p-3'>
+      {flights.map((flight, flightIndex) => (
+        <div key={flightIndex} className='flex flex-col gap-6 p-3'>
           <div className='text-xl font-semibold'>{flight.route}</div>
           <div className='text-lg'>{flight.duration}</div>
           <div className='flex gap-4'>
-            {flight.baggage?.map((item, baggageIndex) => (
+            {flight.baggage.map((item, baggageIndex) => (
               <span
                 key={baggageIndex}
                 className='badge bg-gray-200 rounded-lg bg-green-100 px-3 py-1 text-sm'
@@ -21,7 +21,7 @@ export function TourFlightCard({ flights }: ITourFlightCard) {
             ))}
           </div>
           <div className='flex h-full flex-col gap-3 rounded-lg bg-blue-100 p-3 shadow-lg'>
-            {flight.segments?.map((segment, segmentIndex) =>
+            {flight.segments.map((segment, segmentIndex) =>
               segment.layover ? (
                 <div
                   key={segmentIndex}
