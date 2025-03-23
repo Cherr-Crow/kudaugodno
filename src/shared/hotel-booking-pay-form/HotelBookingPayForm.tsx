@@ -2,21 +2,14 @@
 
 import React, { useState } from 'react';
 
-import { useRouter } from 'next/navigation';
-
 import { IHotelBookingPayForm } from './HotelBookingPayForm.types';
 import { HotelBookingModalCancel } from '../hotel-booking-modal-cancel';
+import { HotelBookingModalConfirm } from '../hotel-booking-modal-confirm';
 import { Typography } from '../typography';
 import { ButtonCustom } from '../ui/button-custom';
 import { NamedInput } from '../ui/named-input';
 
-export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
-  const router = useRouter();
-
-  const [promoCode, setPromoCode] = useState('');
-  const [isCancelModalOpen, setCancelModalOpen] = useState(false);
-
-  // Финальная сумма бронирования
+export function HotelBookingPayForm({}: IHotelBookingPayForm) {
   const bookingPrice = {
     stayPrice: 22765,
     taxes: 765,
@@ -25,20 +18,8 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
     totalPrice: 22765 + 765 - 765,
   };
 
-  const finalBookingData = {
-    bookingData: data,
-    bookingPrice,
-    promoCode,
-  };
-
-  const handleCompleteBooking = () => {
-    localStorage.setItem('bookingData', JSON.stringify(finalBookingData));
-    router.push('/booking-completed');
-  };
-
-  const handlePromocode = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPromoCode(e.target.value);
-  };
+  const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [isCancelModalOpen, setCancelModalOpen] = useState(false);
 
   return (
     <div className='rounded-lg bg-white p-4 shadow-lg'>
@@ -91,8 +72,6 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
               name='Введите промокод'
               type='text'
               placeholder='Введите промокод'
-              value={promoCode}
-              onChange={handlePromocode}
             />
           </div>
           <ButtonCustom variant='secondary' className='px-2 lg:px-4' size='s'>
@@ -113,13 +92,13 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
         </div>
       </div>
 
-      {/* Кнопки */}
+      {/* Кнопки подтверждения и отмены */}
       <div className='flex flex-col justify-between gap-4'>
         <ButtonCustom
           variant='primary'
           className='bg-lime-400 hover:bg-lime-500 w-full rounded-full py-3 text-sm font-bold text-grey-950 shadow-md'
           size='s'
-          onClick={handleCompleteBooking}
+          onClick={() => setConfirmModalOpen(true)}
         >
           Завершить бронирование
         </ButtonCustom>
@@ -134,6 +113,11 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
         </ButtonCustom>
       </div>
 
+      {/* Модальные окна */}
+      <HotelBookingModalConfirm
+        isOpen={isConfirmModalOpen}
+        onClose={() => setConfirmModalOpen(false)}
+      />
       <HotelBookingModalCancel
         isOpen={isCancelModalOpen}
         onClose={() => setCancelModalOpen(false)}
