@@ -15,38 +15,6 @@ export const flights: IFlight[] = [
     service_class: 'Эконом',
     flight_type: 'Международный',
     description: 'Рейс Москва - Найроби с пересадкой в Шардже',
-    route: 'Москва — Найроби',
-    duration: '12ч 55м в пути',
-    baggage: ['Без багажа', 'Ручная кладь 1×10 кг'],
-    segments: [
-      {
-        airline: 'Air Arabia',
-        flightDuration: '5ч 50м в полете',
-        departure: {
-          time: '00:20',
-          location: 'Москва, Домодедово, DME',
-        },
-        arrival: {
-          time: '07:00',
-          location: 'Шарджа, Шарджа, SHJ',
-        },
-      },
-      {
-        layover: 'Пересадка в Шардже 2 ч',
-      },
-      {
-        airline: 'Air Arabia',
-        flightDuration: '5ч 50м в полете',
-        departure: {
-          time: '09:00',
-          location: 'Шарджа, Шарджа, SHJ',
-        },
-        arrival: {
-          time: '13:15',
-          location: 'Найроби, Джомо Кеньятта, NBO',
-        },
-      },
-    ],
   },
   {
     id: 1,
@@ -62,37 +30,5 @@ export const flights: IFlight[] = [
     service_class: 'Эконом',
     flight_type: 'Международный',
     description: 'Продолжение рейса Москва - Найроби',
-    route: 'Найроби — Москва',
-    duration: '12ч 5м в пути',
-    baggage: ['Без багажа', 'Ручная кладь 1×10 кг'],
-    segments: [
-      {
-        airline: 'Air Arabia',
-        flightDuration: '5ч 50м в полете',
-        departure: {
-          time: '14:02',
-          location: 'Найроби, Джомо Кеньятта, NBO',
-        },
-        arrival: {
-          time: '20:10',
-          location: 'Шарджа, Шарджа, SHJ',
-        },
-      },
-      {
-        layover: 'Пересадка в Шардже 1ч 15м',
-      },
-      {
-        airline: 'Air Arabia',
-        flightDuration: '5ч 50м в полете',
-        departure: {
-          time: '21:25',
-          location: 'Шарджа, Шарджа, SHJ',
-        },
-        arrival: {
-          time: '02:10',
-          location: 'Москва, Домодедово, DME',
-        },
-      },
-    ],
   },
 ];
