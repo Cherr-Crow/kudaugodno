@@ -13,7 +13,7 @@ export default function ApplicationsPage() {
         <Typography variant={'h4'} className={'mb-5 mt-5'}>
           Заявки
         </Typography>
-        <div className='mb-8 flex w-full flex-col-reverse gap-5 lg:flex-row lg:justify-between lg:gap-0'>
+        <div className='mb-8 flex w-full flex-col-reverse gap-5 align-middle lg:flex-row lg:justify-between lg:gap-0'>
           <FilterYear yearsArr={years}></FilterYear>
           <form
             action=''
