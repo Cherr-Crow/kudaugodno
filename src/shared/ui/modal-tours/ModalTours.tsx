@@ -28,35 +28,6 @@ export function ModalTours({ type }: IModalTours) {
         service_class: 'Economy',
         flight_type: 'Round-trip',
         description: 'Перелет Москва — Найроби, 12ч 55м в пути',
-        route: 'Москва — Найроби',
-        duration: '12ч 55м в пути',
-        baggage: ['Без багажа', 'Ручная кладь 1×10 кг'],
-        segments: [
-          {
-            airline: 'Air Arabia',
-            flightDuration: '5ч 50м в полете',
-            departure: {
-              time: '00:20',
-              location: 'Москва, Домодедово, DME',
-            },
-            arrival: {
-              time: '07:00',
-              location: 'Шарджа, Шарджа, SHJ',
-            },
-          },
-          {
-            airline: 'Air Arabia',
-            flightDuration: '5ч 50м в полете',
-            departure: {
-              time: '09:00',
-              location: 'Шарджа, Шарджа, SHJ',
-            },
-            arrival: {
-              time: '13:15',
-              location: 'Найроби, Джомо Кеньятта, NBO',
-            },
-          },
-        ],
       },
       {
         id: 2,
@@ -72,35 +43,6 @@ export function ModalTours({ type }: IModalTours) {
         service_class: 'Economy',
         flight_type: 'Round-trip',
         description: 'Перелет Найроби — Москва, 12ч 5м в пути',
-        route: 'Найроби — Москва',
-        duration: '12ч 5м в пути',
-        baggage: ['Без багажа', 'Ручная кладь 1×10 кг'],
-        segments: [
-          {
-            airline: 'Air Arabia',
-            flightDuration: '5ч 50м в полете',
-            departure: {
-              time: '14:02',
-              location: 'Найроби, Джомо Кеньятта, NBO',
-            },
-            arrival: {
-              time: '20:10',
-              location: 'Шарджа, Шарджа, SHJ',
-            },
-          },
-          {
-            airline: 'Air Arabia',
-            flightDuration: '5ч 50м в полете',
-            departure: {
-              time: '21:25',
-              location: 'Шарджа, Шарджа, SHJ',
-            },
-            arrival: {
-              time: '02:10',
-              location: 'Москва, Домодедово, DME',
-            },
-          },
-        ],
       },
     ],
   };
