@@ -6,13 +6,15 @@ import { Typography } from '@/shared/typography';
 import { IFilterYear } from './filterYear.types';
 
 export function FilterYear({ yearsArr }: IFilterYear) {
-  console.log(yearsArr);
   return (
-    <div className='years-container gap flex gap-3'>
+    <div className='mb-5 flex justify-start gap-3 align-middle'>
       {yearsArr.map((year: number) => {
         return (
-          <div key={year} className='p- rounded-full bg-[#4757EA] text-white'>
-            <Typography className={'subtle mb-1 ml-3 mr-3 mt-1'}>
+          <div
+            key={year}
+            className='flex w-20 items-center justify-center text-nowrap rounded-full bg-[#4757EA] text-white'
+          >
+            <Typography className={'pb-1 pl-3 pr-3 pt-1'} variant={'m'}>
               {year} г.
             </Typography>
           </div>
