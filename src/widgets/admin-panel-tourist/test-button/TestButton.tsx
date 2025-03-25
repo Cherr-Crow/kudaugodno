@@ -27,7 +27,7 @@ export function TestButton({}) {
         <Typography variant='s-bold'>Личный кабинет тест-меню</Typography>
       </ButtonCustom>
       {isMenuOpen && (
-        <PopupWindow className='absolute right-0 flex flex-col gap-2 text-nowrap py-2 text-left'>
+        <PopupWindow className='absolute right-0 flex min-w-[200px] flex-col gap-2 text-nowrap py-2 text-left'>
           <Link
             href='/admin-panel-tourist/trips'
             onClick={toggleUserMenu}

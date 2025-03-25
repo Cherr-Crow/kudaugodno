@@ -1,3 +1,5 @@
-export default function FavoritesPage({}) {
-  return <div>FavoritesPage</div>;
+import { Favorites } from '@/widgets/admin-panel-tourist/favorites';
+
+export default function FavoritesPage() {
+  return <Favorites />;
 }

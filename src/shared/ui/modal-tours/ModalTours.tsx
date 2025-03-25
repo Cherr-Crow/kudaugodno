@@ -5,14 +5,12 @@ import { nanoid } from 'nanoid';
 import { TourFlightCard } from '@/shared/tour-flight-card';
 import { Typography } from '@/shared/typography';
 import { hotels } from '@/temp/hotel-mock';
-import { IFlight } from '@/types/flight-type';
 
 import { IModalTours } from './ModalTours.types';
 
 export function ModalTours({ type }: IModalTours) {
   const hotel = hotels[0];
-
-  const flightData: { flights: IFlight[] } = {
+  const flightData = {
     flights: [
       {
         id: 1,
@@ -46,7 +44,6 @@ export function ModalTours({ type }: IModalTours) {
       },
     ],
   };
-
   const infoMock = [
     {
       title: 'Официальный сайт отеля',

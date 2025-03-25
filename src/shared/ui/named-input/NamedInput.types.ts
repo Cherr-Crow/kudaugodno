@@ -8,5 +8,4 @@ export interface INamedInput extends DivProps {
   type?: 'text' | 'time' | 'number' | 'email' | 'tel';
   startValue?: string | number;
   disabled?: boolean;
-  value?: string;
 }
