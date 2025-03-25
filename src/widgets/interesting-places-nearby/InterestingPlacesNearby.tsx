@@ -111,7 +111,7 @@ const mockDataFavorites = [
 ];
 
 interface InterestingPlacesNearbyProps {
-  type: string;
+  type: 'trips' | 'favorites';
 }
 
 export function InterestingPlacesNearby({ type }: InterestingPlacesNearbyProps) {
