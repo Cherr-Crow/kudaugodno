@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://anywhere-test.god-it.ru/api/v1/';
+export const BASE_URL = 'http://localhost/api/v1/';
