@@ -73,4 +73,13 @@ export type NameSvg =
   | 'yandex'
   | 'arrow-check'
   | 'airplane-tour'
-  | 'eat';
+  | 'eat'
+  | 'admin-panel-tourist-background'
+  | 'add-image'
+  | 'frog-on-chair'
+  | 'frog-on-suitcase'
+  | 'frog-with-purse'
+  | 'more'
+  | 'eye'
+  | 'admin-response'
+  | 'comments';

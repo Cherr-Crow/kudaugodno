@@ -11,8 +11,10 @@ export interface ITour {
   hotel: number;
   price: number;
   transfer: string;
+  created_at: string;
+  document: string;
+  updated_at: string;
 }
-
 // стандартный договор с подчёркиванием вместо персональных данных - загрузка документа
 // мед страховка - загрузка документа
 // страховка от не выезда - загрузка документа
