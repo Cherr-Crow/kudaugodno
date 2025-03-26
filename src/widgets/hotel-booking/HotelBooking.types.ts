@@ -1,3 +1,5 @@
 type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
-export interface IHotelBooking extends DivProps {}
+export interface IHotelBooking extends DivProps {
+  hotelId: number;
+}
