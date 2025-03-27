@@ -19,8 +19,7 @@ export const YandexMap: React.FC<YandexMapProps> = ({ coordinates, zoom = 12 }) 
           controls: [],
         }}
         width='100%'
-        height='400px'
-        // modules={['behavior']} // Подключаем модуль behavior
+        height='100%'
         options={{
           // Отключаем зум при наведении курсора
           suppressMapOpenBlock: true, // Отключаем блокировку карты
@@ -30,7 +29,6 @@ export const YandexMap: React.FC<YandexMapProps> = ({ coordinates, zoom = 12 }) 
         //   modules={['control.ZoomControl']} // Подключаем модуль управления зумом
       >
         <Placemark geometry={coordinates} />
-        {/* <ZoomControl options={{ float: "right" }} /> */}
       </Map>
     </YMaps>
   );
