@@ -20,12 +20,15 @@ const mockData = {
   dates: '1 ноября - 7 ноября',
   guestsInfo: '2 взрослых на 6 ночей',
   paymentInfo: 'Необходимо оплатить при заселении',
-  resortFee: 'Курортный сбор до 100 ₽ с человека за ночь',
+  resortFee: 100,
   flightInfo: {
     flightType: 'Чартерный рейс',
     flightDetails:
       'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
   },
+  checkIn: '1 ноября',
+  checkOut: '7 ноября',
+  guests: 2,
 };
 
 export function HotelBooking({ hotelId }: IHotelBooking) {
@@ -47,8 +50,8 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
 
   const hotelData = {
     ...mockData,
-    email,
-    phone,
+    hotelId: hotelId,
+    hotelName: hotel.name,
   };
 
   return (
@@ -74,7 +77,7 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
                   </div>
                   <div className='flex h-[65px] w-[130px] md:h-full md:w-[25%]'>
                     <img
-                      src='Novotel-Nairobi-Westlands-photo-1.png'
+                      src={hotel.photo?.[0]?.photo}
                       alt='Image of Novotel Nairobi Westlands hotel with a pool and palm trees'
                       className='mx-auto rounded-2xl'
                     />
@@ -105,7 +108,8 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
                     {mockData.paymentInfo}
                   </Typography>
                   <Typography variant='m' className='text-blue-950'>
-                    {mockData.resortFee}
+                    Необходимо оплатить при заселении {mockData.resortFee} ₽ с
+                    человека за ночь
                   </Typography>
                 </div>
               </div>
