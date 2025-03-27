@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { FilterYear } from '@/shared/filter-year';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
+import { ApplicationCard } from '@/shared/ui/application-card';
 
 export default function ApplicationsPage() {
   const [years] = useState<number[]>([2024, 2023, 2022]);
@@ -28,6 +29,7 @@ export default function ApplicationsPage() {
           </form>
         </div>
         <Typography variant={'h4'}>20 ноября, среда</Typography>
+        <ApplicationCard></ApplicationCard>
       </div>
     </div>
   );
