@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
+import { Modal } from '@/shared/modal';
 import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { YandexMap } from '@/widgets/ymap';
 
 import { IHotelBlockPhotosReview } from './HotelBlockPhotosReview.types';
 import { serviceNames } from './service';
@@ -24,6 +26,7 @@ export function HotelBlockPhotosReview({ hotel }: IHotelBlockPhotosReview) {
     {},
   );
   const reviewContainerRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   useEffect(() => {
     const amenitiesNew = [
@@ -81,6 +84,16 @@ export function HotelBlockPhotosReview({ hotel }: IHotelBlockPhotosReview) {
   const handleClickBackPhoto = () => {
     setShowAllPhoto(false);
   };
+
+  const handleCloseModal = () => {
+    setIsOpenModal(false);
+  };
+
+  const handleOpenModal = () => {
+    setIsOpenModal(true);
+  };
+
+  const coordinates: [number, number] = [-1.272749, 36.827872]; // Координаты для Москвы
 
   return (
     <>
@@ -284,6 +297,7 @@ export function HotelBlockPhotosReview({ hotel }: IHotelBlockPhotosReview) {
                 >
                   <div className='relative m-auto flex items-center justify-center gap-1 rounded-3xl bg-blue-200 p-3 pl-6 pr-6'>
                     <ButtonCustom
+                      onClick={handleOpenModal}
                       variant='tetriary'
                       size='m'
                       className='absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform items-center justify-center gap-1 rounded-3xl bg-blue-200 p-3 pl-4 pr-4 md:min-w-[195px]'
@@ -359,6 +373,11 @@ export function HotelBlockPhotosReview({ hotel }: IHotelBlockPhotosReview) {
                     </div>
                   )}
                 </div>
+                <Modal isOpen={isOpenModal} getState={handleCloseModal}>
+                  <div className='h-[500px] w-[270px] overflow-hidden rounded-2xl sm:h-[500px] sm:w-[500px] md:h-[550px] md:w-[600px]'>
+                    <YandexMap coordinates={coordinates} />
+                  </div>
+                </Modal>
               </div>
             </div>
           </div>
