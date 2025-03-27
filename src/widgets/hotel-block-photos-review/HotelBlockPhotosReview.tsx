@@ -10,7 +10,6 @@ import { ButtonCustom } from '@/shared/ui/button-custom';
 import { YandexMap } from '@/widgets/ymap';
 
 import { IHotelBlockPhotosReview } from './HotelBlockPhotosReview.types';
-import { serviceNames } from './service';
 
 export function HotelBlockPhotosReview({ hotel }: IHotelBlockPhotosReview) {
   const hotels = [hotel];
@@ -226,11 +225,7 @@ export function HotelBlockPhotosReview({ hotel }: IHotelBlockPhotosReview) {
                         key={nanoid()}
                         className='bg-gray-100 flex items-center justify-center gap-2 rounded-2xl px-4 py-4 shadow-md outline outline-1 outline-blue-bold'
                       >
-                        <SvgSprite
-                          name={serviceNames(amenity)}
-                          width={24}
-                          height={24}
-                        />
+                        <SvgSprite name='amenity-spa' width={24} height={24} />
                         <Typography variant='s' className='text-gray-700'>
                           {amenity}
                         </Typography>
