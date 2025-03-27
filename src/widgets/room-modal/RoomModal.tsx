@@ -17,48 +17,12 @@ import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 
-import { serviceNames } from '../hotel-block-photos-review/service';
-
 export function RoomModal({ room }: IRoomModal) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
-  const amenitiesContainerRef = useRef<HTMLDivElement | null>(null);
-  const [showAll, setShowAll] = useState(false);
-  const [amenities, setAmenities] = useState<string[]>([]);
-  const [visibleAmenities, setVisibleAmenities] = useState(3);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const swiperRef = useRef<any>(null);
-
-  useEffect(() => {
-    const amenitiesNew = [
-      ...room.amenities_common,
-      ...room.amenities_coffee,
-      ...room.amenities_bathroom,
-      ...room.amenities_view,
-    ];
-
-    setAmenities(amenitiesNew);
-  }, []);
-
-  useEffect(() => {
-    const updateVisibleAmenities = () => {
-      if (window.innerWidth >= 1024) {
-        setVisibleAmenities(5);
-      } else if (window.innerWidth >= 620) {
-        setVisibleAmenities(5);
-      } else {
-        setVisibleAmenities(3);
-      }
-    };
-
-    updateVisibleAmenities();
-    window.addEventListener('resize', updateVisibleAmenities);
-
-    return () => {
-      window.removeEventListener('resize', updateVisibleAmenities);
-    };
-  }, [amenities.length]);
 
   const [style, setStyle] = useState<{}>({});
 
@@ -86,15 +50,6 @@ export function RoomModal({ room }: IRoomModal) {
   const doubleBed = room.double_bed;
   const area = room.area;
   const amenitiel = room;
-
-  const toggleAmenities = () => {
-    setShowAll((prev) => {
-      if (prev && amenitiesContainerRef.current) {
-        amenitiesContainerRef.current.scrollTop = 0;
-      }
-      return !prev;
-    });
-  };
 
   const settings = {
     modules: [Navigation, Pagination],
@@ -249,7 +204,7 @@ export function RoomModal({ room }: IRoomModal) {
             </div>
           </div>
         </div>
-        <div className='relative flex w-[100%] flex-col gap-4'>
+        {/* <div className='relative flex w-[100%] flex-col gap-4'>
           <div
             ref={amenitiesContainerRef}
             className={`grid grid-cols-1 gap-4 overflow-hidden rounded-2xl p-0.5 sm:grid-cols-2 ${
@@ -291,7 +246,7 @@ export function RoomModal({ room }: IRoomModal) {
               </button>
             )}
           </div>
-        </div>
+        </div> */}
       </div>
       <div className='py-5 pb-0 lg:py-5'>
         <Typography
