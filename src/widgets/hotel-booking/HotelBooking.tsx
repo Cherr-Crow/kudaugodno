@@ -157,85 +157,69 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
           </div>
           <div className='flex flex-col gap-1'>
             <Typography variant='l' className='font-bold text-grey-950'>
-              Гости, 2 гостя
+              Гости, {mockData.guests}{' '}
+              {mockData.guests === 1
+                ? 'гость'
+                : mockData.guests < 5
+                  ? 'гостя'
+                  : 'гостей'}
             </Typography>
             <Typography variant='m' className='text-grey-800'>
               Данные всех гостей нужны для визы, либо если заселяетесь в разное время
             </Typography>
           </div>
-          <div className='rounded-lg bg-white shadow-lg'>
-            <div className='flex flex-col gap-2 p-6'>
-              <div className='bg-gray-100 flex flex-col gap-3 rounded-lg md:gap-4'>
-                <Typography variant='l' className='font-bold text-grey-950'>
-                  Гость. Взрослый, на которого оформляется номер
-                </Typography>
-                <div className='flex w-min flex-col rounded-2xl bg-green-50 p-3 outline outline-2 outline-green-200'>
-                  <Typography
-                    variant='m'
-                    className='text-nowrap font-bold text-grey-950'
-                  >
-                    {userMock.fullName}
+
+          {Array.from({ length: mockData.guests }).map((_, index) => (
+            <div key={index} className='rounded-lg bg-white shadow-lg'>
+              <div className='flex flex-col gap-2 p-6'>
+                <div className='bg-gray-100 flex flex-col gap-3 rounded-lg md:gap-4'>
+                  <Typography variant='l' className='font-bold text-grey-950'>
+                    Гость {index + 1}. Взрослый
+                    {index === 0 && ', на которого оформляется номер'}
                   </Typography>
-                  <Typography variant='m' className='text-blue-950'>
-                    {userMock.birthDate}, {userMock.document}
-                  </Typography>
-                </div>
-                <div className='flex flex-col gap-2 md:flex-row'>
-                  <div className='flex w-full flex-col gap-2 md:w-1/2 md:pr-2'>
-                    <Typography variant='l' className='font-bold text-grey-950'>
-                      Имя
-                    </Typography>
-                    <NamedInput
-                      id='firstName1'
-                      name='Имя'
-                      type='text'
-                      placeholder='Иван'
-                    />
-                  </div>
-                  <div className='flex w-full flex-col gap-2 md:mb-0 md:w-1/2 md:pl-2'>
-                    <Typography variant='l' className='font-bold text-grey-950'>
-                      Фамилия
-                    </Typography>
-                    <NamedInput
-                      id='lastName1'
-                      name='Фамилия'
-                      type='text'
-                      placeholder='Иванов'
-                    />
+
+                  {index === 0 && (
+                    <div className='flex w-min flex-col rounded-2xl bg-green-50 p-3 outline outline-2 outline-green-200'>
+                      <Typography
+                        variant='m'
+                        className='text-nowrap font-bold text-grey-950'
+                      >
+                        {userMock.fullName}
+                      </Typography>
+                      <Typography variant='m' className='text-blue-950'>
+                        {userMock.birthDate}, {userMock.document}
+                      </Typography>
+                    </div>
+                  )}
+
+                  <div className='flex flex-col gap-2 md:flex-row'>
+                    <div className='flex w-full flex-col gap-2 md:w-1/2 md:pr-2'>
+                      <Typography variant='l' className='font-bold text-grey-950'>
+                        Имя
+                      </Typography>
+                      <NamedInput
+                        id={`firstName${index}`}
+                        name='Имя'
+                        type='text'
+                        placeholder='Иван'
+                      />
+                    </div>
+                    <div className='flex w-full flex-col gap-2 md:w-1/2 md:pl-2'>
+                      <Typography variant='l' className='font-bold text-grey-950'>
+                        Фамилия
+                      </Typography>
+                      <NamedInput
+                        id={`lastName${index}`}
+                        name='Фамилия'
+                        type='text'
+                        placeholder='Иванов'
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className='bg-gray-100 flex flex-col gap-2 rounded-lg p-6 shadow-md'>
-            <Typography variant='l' className='font-bold text-grey-950'>
-              Второй гость. Взрослый
-            </Typography>
-            <div className='flex flex-col gap-2 md:flex-row'>
-              <div className='flex w-full flex-col gap-2 md:w-1/2 md:pr-2'>
-                <Typography variant='l' className='font-bold text-grey-950'>
-                  Имя
-                </Typography>
-                <NamedInput
-                  id='firstName2'
-                  name='Имя'
-                  type='text'
-                  placeholder='Петр'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-2 md:mb-0 md:w-1/2 md:pl-2'>
-                <Typography variant='l' className='font-bold text-grey-950'>
-                  Фамилия
-                </Typography>
-                <NamedInput
-                  id='lastName2'
-                  name='Фамилия'
-                  type='text'
-                  placeholder='Петров'
-                />
-              </div>
-            </div>
-          </div>
+          ))}
           <div className='flex flex-col gap-1'>
             <Typography variant='l' className='font-bold text-grey-950'>
               Пожелания

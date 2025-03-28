@@ -39,8 +39,8 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
     resortFee: data.resortFee,
     dates: data.dates,
     guestsInfo: data.guestsInfo,
-    tourId: data.tourId,
-    hotelId: data.hotelId,
+    tourId: data?.tourId,
+    hotelId: data?.hotelId,
   };
 
   const handleCompleteBooking = () => {
