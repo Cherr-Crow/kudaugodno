@@ -42,12 +42,15 @@ const mockData = {
   dates: '1 ноября - 7 ноября',
   guestsInfo: '2 взрослых на 6 ночей',
   paymentInfo: 'Необходимо оплатить при заселении',
-  resortFee: 'Курортный сбор до 100 ₽ с человека за ночь',
+  resortFee: 100,
   flightInfo: {
     flightType: 'Чартерный рейс',
     flightDetails:
       'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
   },
+  checkIn: '1 ноября',
+  checkOut: '7 ноября',
+  guests: 2,
 };
 
 export function TourBooking({ tourId }: ITourBooking) {
@@ -67,8 +70,8 @@ export function TourBooking({ tourId }: ITourBooking) {
 
   const tourData = {
     ...mockData,
-    email,
-    phone,
+    tourId: tourId,
+    hotelName: hotel.name,
   };
 
   return (
@@ -96,7 +99,7 @@ export function TourBooking({ tourId }: ITourBooking) {
                 </div>
                 <div className='flex h-[65px] w-[130px] md:h-full md:w-[25%]'>
                   <img
-                    src='Novotel-Nairobi-Westlands-photo-1.png'
+                    src={hotel.photo?.[0]?.photo}
                     alt='Image of Novotel Nairobi Westlands hotel with a pool and palm trees'
                     className='mx-auto rounded-2xl'
                   />
@@ -127,7 +130,8 @@ export function TourBooking({ tourId }: ITourBooking) {
                   {mockData.paymentInfo}
                 </Typography>
                 <Typography variant='m' className='text-blue-950'>
-                  {mockData.resortFee}
+                  Необходимо оплатить при заселении {mockData.resortFee} ₽ с человека
+                  за ночь
                 </Typography>
               </div>
             </div>
@@ -175,18 +179,18 @@ export function TourBooking({ tourId }: ITourBooking) {
                       <ButtonCustom
                         variant={'primary'}
                         size={'s'}
-                        className='flex h-6 flex-row gap-2 text-nowrap bg-white transition-transform'
+                        className='group flex h-6 flex-row gap-2 text-nowrap bg-white transition-transform'
                       >
                         Добавить в заказ{' '}
                         <SvgSprite
                           name={'cross'}
-                          width={14}
-                          className='transition-transform group-hover:hidden'
+                          width={10}
+                          className='rotate-45 transition-transform group-active:hidden'
                         />
                         <SvgSprite
                           name={'arrow'}
                           width={14}
-                          className='hidden transition-transform group-hover:block'
+                          className='hidden transition-transform group-active:block'
                         />
                       </ButtonCustom>
                     </div>
@@ -238,89 +242,97 @@ export function TourBooking({ tourId }: ITourBooking) {
           </div>
           <div className='flex flex-col gap-1'>
             <Typography variant='l' className='font-bold text-grey-950'>
-              Гости, 1 человек
+              Гости, {mockData.guests}{' '}
+              {mockData.guests === 1
+                ? 'гость'
+                : mockData.guests < 5
+                  ? 'гостя'
+                  : 'гостей'}
             </Typography>
             <Typography variant='m' className='text-grey-800'>
               Фамилию и имя укажите, как в загранпаспорте
             </Typography>
           </div>
-          <div className='rounded-lg bg-white shadow-lg'>
-            <div className='flex flex-col gap-2 p-6'>
-              <div className='bg-gray-100 flex flex-col gap-3 rounded-lg md:gap-4'>
-                <Typography variant='l' className='font-bold text-grey-950'>
-                  Гость. Взрослый, на которого оформляется номер
-                </Typography>
-                <div className='flex flex-col justify-start gap-6 md:grid md:grid-cols-2'>
-                  <div className='flex w-full flex-col gap-2'>
-                    <Typography variant='l' className='font-bold text-grey-950'>
-                      Имя
-                    </Typography>
-                    <NamedInput
-                      id='firstName1'
-                      name='Имя'
-                      type='text'
-                      placeholder='Ivan'
-                    />
-                  </div>
-                  <div className='flex w-full flex-col gap-2'>
-                    <Typography variant='l' className='font-bold text-grey-950'>
-                      Фамилия
-                    </Typography>
-                    <NamedInput
-                      id='lastName1'
-                      name='Фамилия'
-                      type='text'
-                      placeholder='Ivanov'
-                    />
-                  </div>
-                  <div className='flex w-full flex-col gap-2'>
-                    <Typography variant='l' className='font-bold text-grey-950'>
-                      День рождения
-                    </Typography>
-                    <NamedInput
-                      id='birthDate1'
-                      name='День рождения'
-                      type='text'
-                      placeholder='27.12.1989'
-                    />
-                  </div>
-                  <div className='flex w-full flex-col gap-2'>
-                    <Typography variant='l' className='font-bold text-grey-950'>
-                      Гражданство
-                    </Typography>
-                    <NamedInput
-                      id='citizenship1'
-                      name='Гражданство'
-                      type='text'
-                      placeholder='Russia'
-                    />
-                  </div>
-                  <div className='flex w-full flex-col gap-2'>
-                    <Typography variant='l' className='font-bold text-grey-950'>
-                      Серия и номер паспорта
-                    </Typography>
-                    <NamedInput
-                      id='passport1'
-                      name='Серия и номер паспорта'
-                      type='text'
-                      placeholder='2345 123456'
-                    />
-                  </div>
-                  <div className='flex w-full flex-col gap-2'>
-                    <Typography variant='l' className='font-bold text-grey-950'>
-                      Срок действия
-                    </Typography>
-                    <NamedInput
-                      id='validityPeriod1'
-                      name='Фамилия'
-                      type='text'
-                      placeholder='14.12.2026'
-                    />
+          {Array.from({ length: mockData.guests }).map((_, index) => (
+            <div key={index} className='rounded-lg bg-white shadow-lg'>
+              <div className='flex flex-col gap-2 p-6'>
+                <div className='bg-gray-100 flex flex-col gap-3 rounded-lg md:gap-4'>
+                  <Typography variant='l' className='font-bold text-grey-950'>
+                    Гость {index + 1}. Взрослый
+                    {index === 0 && ', на которого оформляется номер'}
+                  </Typography>
+                  <div className='flex flex-col justify-start gap-6 md:grid md:grid-cols-2'>
+                    <div className='flex w-full flex-col gap-2'>
+                      <Typography variant='l' className='font-bold text-grey-950'>
+                        Имя
+                      </Typography>
+                      <NamedInput
+                        id={`firstName${index}`}
+                        name='Имя'
+                        type='text'
+                        placeholder='Ivan'
+                      />
+                    </div>
+                    <div className='flex w-full flex-col gap-2'>
+                      <Typography variant='l' className='font-bold text-grey-950'>
+                        Фамилия
+                      </Typography>
+                      <NamedInput
+                        id={`lastName${index}`}
+                        name='Фамилия'
+                        type='text'
+                        placeholder='Ivanov'
+                      />
+                    </div>
+                    <div className='flex w-full flex-col gap-2'>
+                      <Typography variant='l' className='font-bold text-grey-950'>
+                        День рождения
+                      </Typography>
+                      <NamedInput
+                        id={`birthDate${index}`}
+                        name='День рождения'
+                        type='text'
+                        placeholder='27.12.1989'
+                      />
+                    </div>
+                    <div className='flex w-full flex-col gap-2'>
+                      <Typography variant='l' className='font-bold text-grey-950'>
+                        Гражданство
+                      </Typography>
+                      <NamedInput
+                        id={`citizenship${index}`}
+                        name='Гражданство'
+                        type='text'
+                        placeholder='Russia'
+                      />
+                    </div>
+                    <div className='flex w-full flex-col gap-2'>
+                      <Typography variant='l' className='font-bold text-grey-950'>
+                        Серия и номер паспорта
+                      </Typography>
+                      <NamedInput
+                        id={`passport${index}`}
+                        name='Серия и номер паспорта'
+                        type='text'
+                        placeholder='2345 123456'
+                      />
+                    </div>
+                    <div className='flex w-full flex-col gap-2'>
+                      <Typography variant='l' className='font-bold text-grey-950'>
+                        Срок действия
+                      </Typography>
+                      <NamedInput
+                        id={`validityPeriod${index}`}
+                        name='Срок действия'
+                        type='text'
+                        placeholder='14.12.2026'
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          ))}
         </div>
         {/* {right side content} */}
         <div className='w-full p-4 md:w-1/3'>

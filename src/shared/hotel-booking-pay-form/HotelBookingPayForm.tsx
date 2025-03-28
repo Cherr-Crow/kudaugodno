@@ -26,9 +26,21 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
   };
 
   const finalBookingData = {
-    bookingData: data,
-    bookingPrice,
-    promoCode,
+    hotelName: data.hotelName,
+    checkIn: data.checkIn,
+    checkOut: data.checkOut,
+    guests: data.guests,
+    price: bookingPrice.stayPrice,
+    stayPrice: bookingPrice.stayPrice,
+    taxes: bookingPrice.taxes,
+    discount: bookingPrice.discount,
+    bonuses: bookingPrice.bonuses,
+    totalPrice: bookingPrice.totalPrice,
+    resortFee: data.resortFee,
+    dates: data.dates,
+    guestsInfo: data.guestsInfo,
+    tourId: data?.tourId,
+    hotelId: data?.hotelId,
   };
 
   const handleCompleteBooking = () => {

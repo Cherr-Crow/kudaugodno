@@ -20,12 +20,15 @@ const mockData = {
   dates: '1 ноября - 7 ноября',
   guestsInfo: '2 взрослых на 6 ночей',
   paymentInfo: 'Необходимо оплатить при заселении',
-  resortFee: 'Курортный сбор до 100 ₽ с человека за ночь',
+  resortFee: 100,
   flightInfo: {
     flightType: 'Чартерный рейс',
     flightDetails:
       'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
   },
+  checkIn: '1 ноября',
+  checkOut: '7 ноября',
+  guests: 2,
 };
 
 export function HotelBooking({ hotelId }: IHotelBooking) {
@@ -47,8 +50,8 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
 
   const hotelData = {
     ...mockData,
-    email,
-    phone,
+    hotelId: hotelId,
+    hotelName: hotel.name,
   };
 
   return (
@@ -74,7 +77,7 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
                   </div>
                   <div className='flex h-[65px] w-[130px] md:h-full md:w-[25%]'>
                     <img
-                      src='Novotel-Nairobi-Westlands-photo-1.png'
+                      src={hotel.photo?.[0]?.photo}
                       alt='Image of Novotel Nairobi Westlands hotel with a pool and palm trees'
                       className='mx-auto rounded-2xl'
                     />
@@ -105,7 +108,8 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
                     {mockData.paymentInfo}
                   </Typography>
                   <Typography variant='m' className='text-blue-950'>
-                    {mockData.resortFee}
+                    Необходимо оплатить при заселении {mockData.resortFee} ₽ с
+                    человека за ночь
                   </Typography>
                 </div>
               </div>
@@ -153,85 +157,69 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
           </div>
           <div className='flex flex-col gap-1'>
             <Typography variant='l' className='font-bold text-grey-950'>
-              Гости, 2 гостя
+              Гости, {mockData.guests}{' '}
+              {mockData.guests === 1
+                ? 'гость'
+                : mockData.guests < 5
+                  ? 'гостя'
+                  : 'гостей'}
             </Typography>
             <Typography variant='m' className='text-grey-800'>
               Данные всех гостей нужны для визы, либо если заселяетесь в разное время
             </Typography>
           </div>
-          <div className='rounded-lg bg-white shadow-lg'>
-            <div className='flex flex-col gap-2 p-6'>
-              <div className='bg-gray-100 flex flex-col gap-3 rounded-lg md:gap-4'>
-                <Typography variant='l' className='font-bold text-grey-950'>
-                  Гость. Взрослый, на которого оформляется номер
-                </Typography>
-                <div className='flex w-min flex-col rounded-2xl bg-green-50 p-3 outline outline-2 outline-green-200'>
-                  <Typography
-                    variant='m'
-                    className='text-nowrap font-bold text-grey-950'
-                  >
-                    {userMock.fullName}
+
+          {Array.from({ length: mockData.guests }).map((_, index) => (
+            <div key={index} className='rounded-lg bg-white shadow-lg'>
+              <div className='flex flex-col gap-2 p-6'>
+                <div className='bg-gray-100 flex flex-col gap-3 rounded-lg md:gap-4'>
+                  <Typography variant='l' className='font-bold text-grey-950'>
+                    Гость {index + 1}. Взрослый
+                    {index === 0 && ', на которого оформляется номер'}
                   </Typography>
-                  <Typography variant='m' className='text-blue-950'>
-                    {userMock.birthDate}, {userMock.document}
-                  </Typography>
-                </div>
-                <div className='flex flex-col gap-2 md:flex-row'>
-                  <div className='flex w-full flex-col gap-2 md:w-1/2 md:pr-2'>
-                    <Typography variant='l' className='font-bold text-grey-950'>
-                      Имя
-                    </Typography>
-                    <NamedInput
-                      id='firstName1'
-                      name='Имя'
-                      type='text'
-                      placeholder='Иван'
-                    />
-                  </div>
-                  <div className='flex w-full flex-col gap-2 md:mb-0 md:w-1/2 md:pl-2'>
-                    <Typography variant='l' className='font-bold text-grey-950'>
-                      Фамилия
-                    </Typography>
-                    <NamedInput
-                      id='lastName1'
-                      name='Фамилия'
-                      type='text'
-                      placeholder='Иванов'
-                    />
+
+                  {index === 0 && (
+                    <div className='flex w-min flex-col rounded-2xl bg-green-50 p-3 outline outline-2 outline-green-200'>
+                      <Typography
+                        variant='m'
+                        className='text-nowrap font-bold text-grey-950'
+                      >
+                        {userMock.fullName}
+                      </Typography>
+                      <Typography variant='m' className='text-blue-950'>
+                        {userMock.birthDate}, {userMock.document}
+                      </Typography>
+                    </div>
+                  )}
+
+                  <div className='flex flex-col gap-2 md:flex-row'>
+                    <div className='flex w-full flex-col gap-2 md:w-1/2 md:pr-2'>
+                      <Typography variant='l' className='font-bold text-grey-950'>
+                        Имя
+                      </Typography>
+                      <NamedInput
+                        id={`firstName${index}`}
+                        name='Имя'
+                        type='text'
+                        placeholder='Иван'
+                      />
+                    </div>
+                    <div className='flex w-full flex-col gap-2 md:w-1/2 md:pl-2'>
+                      <Typography variant='l' className='font-bold text-grey-950'>
+                        Фамилия
+                      </Typography>
+                      <NamedInput
+                        id={`lastName${index}`}
+                        name='Фамилия'
+                        type='text'
+                        placeholder='Иванов'
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className='bg-gray-100 flex flex-col gap-2 rounded-lg p-6 shadow-md'>
-            <Typography variant='l' className='font-bold text-grey-950'>
-              Второй гость. Взрослый
-            </Typography>
-            <div className='flex flex-col gap-2 md:flex-row'>
-              <div className='flex w-full flex-col gap-2 md:w-1/2 md:pr-2'>
-                <Typography variant='l' className='font-bold text-grey-950'>
-                  Имя
-                </Typography>
-                <NamedInput
-                  id='firstName2'
-                  name='Имя'
-                  type='text'
-                  placeholder='Петр'
-                />
-              </div>
-              <div className='flex w-full flex-col gap-2 md:mb-0 md:w-1/2 md:pl-2'>
-                <Typography variant='l' className='font-bold text-grey-950'>
-                  Фамилия
-                </Typography>
-                <NamedInput
-                  id='lastName2'
-                  name='Фамилия'
-                  type='text'
-                  placeholder='Петров'
-                />
-              </div>
-            </div>
-          </div>
+          ))}
           <div className='flex flex-col gap-1'>
             <Typography variant='l' className='font-bold text-grey-950'>
               Пожелания
