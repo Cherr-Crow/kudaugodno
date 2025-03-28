@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SvgSprite } from '@/shared/svg-sprite';
+// import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 
 import { IApplicationCard } from './Application_card.types';
@@ -10,7 +10,7 @@ export function ApplicationCard({}: IApplicationCard) {
     <div className='mb-4 flex min-h-[194px] w-full flex-col rounded-[20px] border-e-grey-400 p-5 shadow-xl lg:justify-between'>
       <div className='flex w-full items-center justify-between'>
         <Typography variant='subtitle4'>Иванов Иван | Москва – Турция</Typography>
-        <SvgSprite className={'bg-[#F7F7F7]'} name={'ellipsisVertical'}></SvgSprite>
+        {/*<SvgSprite className={'bg-[#F7F7F7]'} name={'ellipsisVertical'}></SvgSprite>*/}
       </div>
       <Typography variant={'m'}>№123456789</Typography>
       <div className={'gap-4 bg-[#EEF5FF] p-5'}>

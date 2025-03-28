@@ -30,6 +30,10 @@ export default function ApplicationsPage() {
         </div>
         <Typography variant={'h4'}>20 ноября, среда</Typography>
         <ApplicationCard></ApplicationCard>
+        <ApplicationCard></ApplicationCard>
+        <Typography variant={'h4'}>21 ноября, четверг</Typography>
+        <ApplicationCard></ApplicationCard>
+        <ApplicationCard></ApplicationCard>
       </div>
     </div>
   );
