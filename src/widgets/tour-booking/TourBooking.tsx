@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { HotelBookingPayForm } from '@/shared/hotel-booking-pay-form';
 import { Rating } from '@/shared/rating';
@@ -38,24 +38,59 @@ const insuranceData = [
   },
 ];
 
-const mockData = {
-  dates: '1 ноября - 7 ноября',
-  guestsInfo: '2 взрослых на 6 ночей',
-  paymentInfo: 'Необходимо оплатить при заселении',
-  resortFee: 100,
-  flightInfo: {
-    flightType: 'Чартерный рейс',
-    flightDetails:
-      'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
-  },
-  checkIn: '1 ноября',
-  checkOut: '7 ноября',
-  guests: 2,
+const extractNumber = (text: string): number => {
+  const match = text.match(/\d+/);
+  return match ? parseInt(match[0], 10) : 0;
+};
+
+const calculateNights = (checkIn: string, checkOut: string) => {
+  if (!checkIn || !checkOut) return 1;
+  const formattedCheckIn = checkIn.split('.').reverse().join('-');
+  const formattedCheckOut = checkOut.split('.').reverse().join('-');
+  const inDate = new Date(formattedCheckIn);
+  const outDate = new Date(formattedCheckOut);
+  if (isNaN(inDate.getTime()) || isNaN(outDate.getTime())) {
+    console.error('Некорректные даты:', checkIn, checkOut);
+    return 1;
+  }
+  const diffTime = outDate.getTime() - inDate.getTime();
+  return Math.max(Math.ceil(diffTime / (1000 * 60 * 60 * 24)), 1);
 };
 
 export function TourBooking({ tourId }: ITourBooking) {
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState(localStorage.getItem('email') || '');
+  const [phone, setPhone] = useState(localStorage.getItem('phone') || '');
+  const [searchData, setSearchData] = useState(() => {
+    const storedData = localStorage.getItem('searchData');
+    return storedData
+      ? JSON.parse(storedData)
+      : {
+          departureCity: '',
+          where: '',
+          checkInDate: '',
+          checkOutDate: '',
+          guests: '',
+        };
+  });
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedEmail = localStorage.getItem('email');
+      const storedPhone = localStorage.getItem('phone');
+      const storedSearchData = localStorage.getItem('searchData');
+      if (storedEmail) setEmail(storedEmail);
+      if (storedPhone) setPhone(storedPhone);
+      if (storedSearchData) setSearchData(JSON.parse(storedSearchData));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('email', email);
+      localStorage.setItem('phone', phone);
+      localStorage.setItem('searchData', JSON.stringify(searchData));
+    }
+  }, [email, phone, searchData]);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -63,6 +98,23 @@ export function TourBooking({ tourId }: ITourBooking) {
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPhone(e.target.value);
+  };
+
+  const nights = calculateNights(searchData.checkInDate, searchData.checkOutDate);
+
+  const mockData = {
+    dates: `${searchData.checkInDate} - ${searchData.checkOutDate}`,
+    guestsInfo: `${extractNumber(searchData.guests)} гостей на ${nights} ночей`,
+    paymentInfo: 'Необходимо оплатить при заселении',
+    resortFee: 100,
+    flightInfo: {
+      flightType: 'Чартерный рейс',
+      flightDetails:
+        'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
+    },
+    checkIn: searchData.checkInDate,
+    checkOut: searchData.checkOutDate,
+    guests: extractNumber(searchData.guests),
   };
 
   const hotel = hotels.find((h) => h.id === tourId);

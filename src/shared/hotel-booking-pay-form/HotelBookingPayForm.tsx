@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -15,6 +15,7 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
 
   const [promoCode, setPromoCode] = useState('');
   const [isCancelModalOpen, setCancelModalOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   // Финальная сумма бронирования
   const bookingPrice = {
@@ -43,9 +44,15 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
     hotelId: data?.hotelId,
   };
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   const handleCompleteBooking = () => {
-    localStorage.setItem('bookingData', JSON.stringify(finalBookingData));
-    router.push('/booking-completed');
+    if (isClient) {
+      localStorage.setItem('bookingData', JSON.stringify(finalBookingData));
+      router.push('/booking-completed');
+    }
   };
 
   const handlePromocode = (e: React.ChangeEvent<HTMLInputElement>) => {

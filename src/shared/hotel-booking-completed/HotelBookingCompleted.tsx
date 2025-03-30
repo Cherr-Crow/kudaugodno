@@ -32,19 +32,23 @@ export default function HotelBookingCompleted() {
   const [isCancelModalOpen, setCancelModalOpen] = useState(false);
 
   useEffect(() => {
-    const storedData = localStorage.getItem('bookingData');
-    console.log('Stored Data:', storedData); // Логируем перед парсингом
-    if (storedData) {
-      try {
-        setBookingData(JSON.parse(storedData));
-      } catch (error) {
-        console.error('Ошибка парсинга данных бронирования:', error);
+    if (typeof window !== 'undefined') {
+      const storedData = localStorage.getItem('bookingData');
+      console.log('Stored Data:', storedData);
+      if (storedData) {
+        try {
+          setBookingData(JSON.parse(storedData));
+        } catch (error) {
+          console.error('Ошибка парсинга данных бронирования:', error);
+        }
       }
     }
   }, []);
 
   const handleBookingCompletion = () => {
-    localStorage.removeItem('bookingData');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('bookingData');
+    }
     setCancelModalOpen(false);
   };
 
@@ -63,7 +67,7 @@ export default function HotelBookingCompleted() {
 
   return (
     <section className='relative mb-10'>
-      {/* Фон (фиксирован) */}
+      {/* Фон */}
       <div
         className={`absolute left-0 top-0 z-0 h-full w-full rounded-bl-[20px] rounded-br-[20px] bg-blue-600 bg-[url("/plain.svg")] bg-no-repeat md:h-[90%] md:rounded-bl-[100px] md:rounded-br-[100px]`}
       ></div>

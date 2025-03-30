@@ -19,7 +19,8 @@ export function Select({
   size = 'medium',
   id,
   startValue,
-}: ISelect) {
+  onSelect,
+}: ISelect & { onSelect?: (value: string) => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(startValue ?? options[0]);
   const screen = useScreen();
@@ -33,7 +34,7 @@ export function Select({
   enum Size {
     'small' = 'rounded-md py-2 px-4',
     'medium' = 'rounded-full p-4',
-    'mobile' = 'rounded-full  w-20 h-7',
+    'mobile' = 'rounded-full w-20 h-7',
   }
 
   const handleToggle = () => {
@@ -43,6 +44,7 @@ export function Select({
   const handleOptionClick = (option: string) => {
     setSelectedOption(option);
     setIsOpen(false);
+    onSelect?.(option);
   };
 
   const handleOutsideClick = (event: MouseEvent) => {
@@ -64,27 +66,29 @@ export function Select({
   }, [startValue]);
 
   useEffect(() => {
-    getValue && getValue(selectedOption);
+    getValue?.(selectedOption);
   }, [selectedOption]);
 
   return (
     <div className={`relative w-fit cursor-pointer ${className}`} ref={dropdownRef}>
       <div
-        className={`flex items-center justify-between ${Size[size]} ${color ? Background[color] : 'bg-transparent'} `}
+        className={`flex items-center justify-between ${Size[size]} ${color ? Background[color] : 'bg-transparent'}`}
         onClick={handleToggle}
       >
         <input
           type='text'
           value={selectedOption}
-          onChange={() => {}}
-          className={`pointer-events-none w-4/5 cursor-pointer bg-transparent outline-none`}
+          readOnly
+          className='pointer-events-none w-4/5 cursor-pointer bg-transparent outline-none'
           id={id}
           name='select'
         />
         <SvgSprite
           name='arrow'
           width={20}
-          className={`cursor-pointer ${isOpen ? '-rotate-90' : 'rotate-90'} ${screen?.width < 1280 && arrowHidden && 'hidden'}`}
+          className={`cursor-pointer ${isOpen ? '-rotate-90' : 'rotate-90'} ${
+            screen?.width < 1280 && arrowHidden && 'hidden'
+          }`}
         />
       </div>
       {isOpen && (

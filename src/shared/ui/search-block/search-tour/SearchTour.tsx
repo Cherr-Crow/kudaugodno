@@ -1,4 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
+import { useRouter } from 'next/navigation';
 
 import { SelectForSearchBlock } from '@/shared/select-for-search-block';
 import { Typography } from '@/shared/typography';
@@ -9,10 +11,19 @@ import { InputForSearchBlock } from '@/shared/ui/search-block/input-for-search-b
 import { ISearchTour } from './SearchTour.types';
 
 export function SearchTour({ type }: ISearchTour) {
+  const router = useRouter();
+
   const departureCity = useRef<string>('');
   const where = useRef<string>('');
   const checkInDate = useRef<string>('');
   const checkOutDate = useRef<string>('');
+  const guests = useRef<string>('Гостей');
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleSetDepartureCity = (event: string) => {
     departureCity.current = event;
@@ -28,6 +39,27 @@ export function SearchTour({ type }: ISearchTour) {
 
   const handleSetCheckOutDate = (event: string) => {
     checkOutDate.current = event;
+  };
+
+  const handleSetGuests = (event: string) => {
+    guests.current = event;
+  };
+
+  const handleSearch = () => {
+    const searchData = {
+      departureCity: departureCity.current,
+      where: where.current,
+      checkInDate: checkInDate.current,
+      checkOutDate: checkOutDate.current,
+      guests: guests.current,
+    };
+
+    if (isClient) {
+      localStorage.setItem('searchData', JSON.stringify(searchData));
+    }
+
+    const url = type === 'Туры' ? '/tour-booking' : '/hotel-booking';
+    router.push(url);
   };
 
   return (
@@ -55,20 +87,12 @@ export function SearchTour({ type }: ISearchTour) {
           className='border-r-2 border-grey-400'
           getValue={handleSetCheckOutDate}
         />
-        <SelectForSearchBlock />
+        <SelectForSearchBlock
+          className='border-r-2 border-grey-400'
+          getValue={handleSetGuests}
+        />
         <div className='flex items-center'>
-          <ButtonCustom
-            variant='primary'
-            size='m'
-            onClick={() =>
-              console.log(
-                departureCity.current,
-                where.current,
-                checkInDate.current,
-                checkOutDate.current,
-              )
-            }
-          >
+          <ButtonCustom variant='primary' size='m' onClick={handleSearch}>
             <Typography variant='m-bold'>Найти</Typography>
           </ButtonCustom>
         </div>
@@ -86,7 +110,10 @@ export function SearchTour({ type }: ISearchTour) {
           getValue={handleSetWhere}
           className='col-span-2 w-full rounded-lg bg-white p-4'
         />
-        <SelectForSearchBlock className='col-span-2 w-full rounded-lg bg-white px-4' />
+        <SelectForSearchBlock
+          className='col-span-2 w-full rounded-lg bg-white px-4'
+          getValue={handleSetGuests}
+        />
         <InputDateForSearchBlock
           placeholder='Дата заезда'
           className='w-full rounded-lg bg-white p-4'
@@ -100,14 +127,7 @@ export function SearchTour({ type }: ISearchTour) {
         <ButtonCustom
           variant='primary'
           size='m'
-          onClick={() =>
-            console.log(
-              departureCity.current,
-              where.current,
-              checkInDate.current,
-              checkOutDate.current,
-            )
-          }
+          onClick={handleSearch}
           className='col-span-2 w-full'
         >
           <Typography variant='m-bold'>Найти</Typography>
