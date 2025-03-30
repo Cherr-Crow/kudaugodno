@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import { useGetToursQuery } from '@/servicesApi/toursApi';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
@@ -11,7 +13,10 @@ import { TableForTours } from '@/widgets/admin-panel/table-for-tours';
 
 export default function ToursPage() {
   const { data } = useGetToursQuery({});
-  const handleAddTour = () => {};
+  const router = useRouter();
+  const handleAddTour = () => {
+    router.push('/admin-panel-tour-operator/tours-page/added-tour');
+  };
 
   return (
     <div className='w-full'>
