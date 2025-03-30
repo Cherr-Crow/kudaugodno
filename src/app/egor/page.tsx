@@ -1,15 +1,26 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 
 import { HotelBooking } from '@/widgets/hotel-booking';
 import { TourBooking } from '@/widgets/tour-booking';
 
 export default function Egor() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <div className={`ml-5 mt-5 flex-col`}>
       <div className='container'>
         {/* <HotelCatalog /> */}
-        <HotelBooking hotelId={1} />
-        <TourBooking tourId={1} />
+        {isClient && (
+          <>
+            <HotelBooking hotelId={1} />
+            <TourBooking tourId={1} />
+          </>
+        )}
       </div>
 
       {/* <div className={`mb-5`}>

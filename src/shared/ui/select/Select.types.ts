@@ -1,11 +1,11 @@
-type DivProps = React.ComponentPropsWithoutRef<'div'>;
-
-export interface ISelect extends DivProps {
+export interface ISelect {
   className?: string;
   options: string[];
   getValue?: (value: string) => void;
   color?: 'blue' | 'green';
   arrowHidden?: boolean;
   size?: 'small' | 'medium' | 'mobile';
+  id?: string;
   startValue?: string;
+  onSelect?: (value: string) => void;
 }
