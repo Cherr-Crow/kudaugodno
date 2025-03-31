@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Typography } from '@/shared/typography';
 
@@ -9,40 +9,56 @@ export const HotelBookingModalConfirm: React.FC<IHotelBookingModalConfirm> = ({
   isOpen,
   onClose,
 }) => {
-  if (!isOpen) return null;
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShowModal(true);
+    } else {
+      const timeout = setTimeout(() => setShowModal(false), 300);
+      return () => clearTimeout(timeout);
+    }
+  }, [isOpen]);
+
+  if (!showModal) return null;
 
   return (
-    <div className='bg-black fixed inset-0 flex flex-col items-center justify-center bg-opacity-50'>
-      <div className='relative h-[30%] w-[60%] overflow-hidden rounded-lg bg-blue-100 p-6 shadow-lg'>
-        <img
-          src='plain.svg'
-          alt='plain'
-          className='absolute -left-[50px] top-1/4 w-[25%] opacity-20'
-        />
-        <div className='flex flex-col justify-center gap-4 align-middle'>
-          <button className='absolute right-3 top-3 text-xl' onClick={onClose}>
-            &times;
-          </button>
-          <Typography variant='l' className='text-center font-bold'>
-            Бронирование успешно завершено
-          </Typography>
-          <Typography variant='m' className='text-gray-700 text-center'>
-            Подтверждение бронирования отправлено на почту example@gmail.com
-          </Typography>
-          <div className='flex justify-center'>
-            <img src='happy_jumping_frog.png' alt='happy_jumping_frog' />
-          </div>
-          <div className='mt-4 flex justify-center'>
-            <ButtonCustom
-              variant='primary'
-              className='hover:bg-lime-500 h-[10%] w-full rounded-full bg-white py-3 text-sm font-bold text-grey-950 shadow-md'
-              size={'s'}
-            >
-              Посмотреть бронирование
-            </ButtonCustom>
+    <>
+      <div className='bg-black fixed inset-0 z-10 bg-opacity-50' />
+      <div className='fixed inset-0 flex flex-col items-center justify-center'>
+        <div
+          className={`relative h-[30%] w-[60%] transform overflow-hidden rounded-lg bg-blue-100 p-6 shadow-lg transition-all duration-500 ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+        >
+          <img
+            src='plain.svg'
+            alt='plain'
+            className='absolute -left-[50px] top-1/4 w-[25%] opacity-20'
+          />
+          <div className='flex flex-col justify-center gap-4 align-middle'>
+            <button className='absolute right-3 top-3 text-xl' onClick={onClose}>
+              &times;
+            </button>
+            <Typography variant='l' className='text-center font-bold'>
+              Бронирование успешно завершено
+            </Typography>
+            <Typography variant='m' className='text-gray-700 text-center'>
+              Подтверждение бронирования отправлено на почту example@gmail.com
+            </Typography>
+            <div className='flex justify-center'>
+              <img src='happy_jumping_frog.png' alt='happy_jumping_frog' />
+            </div>
+            <div className='mt-4 flex justify-center'>
+              <ButtonCustom
+                variant='primary'
+                className='hover:bg-lime-500 h-[10%] w-full rounded-full bg-white py-3 text-sm font-bold text-grey-950 shadow-md'
+                size={'s'}
+              >
+                Посмотреть бронирование
+              </ButtonCustom>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

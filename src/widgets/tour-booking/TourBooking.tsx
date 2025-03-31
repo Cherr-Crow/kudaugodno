@@ -112,8 +112,16 @@ export function TourBooking({ tourId }: ITourBooking) {
       flightDetails:
         'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
     },
-    checkIn: searchData.checkInDate,
-    checkOut: searchData.checkOutDate,
+    checkInDate: searchData.checkInDate,
+    checkOutDate: searchData.checkOutDate,
+    tourOperator: 'Teztur',
+    tourOperatorPhoneNumber: '+7(971) 079–27–45',
+    tourOperatorEmail: 'example@mail.com',
+    airCompany: 'Air Arabia',
+    cancellationPolicy:
+      'Отменить тур можно связавшись с туроператором. В случае аннулирования тура от Вас потребуют возмещения понесённых расходов. Точный размер штрафа уточнит менеджер туроператора.',
+    flightFrom: searchData.departureCity,
+    flightTo: searchData.where,
     guests: extractNumber(searchData.guests),
   };
 

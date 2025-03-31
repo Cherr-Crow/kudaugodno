@@ -28,8 +28,8 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
 
   const finalBookingData = {
     hotelName: data.hotelName,
-    checkIn: data.checkIn,
-    checkOut: data.checkOut,
+    checkInDate: data.checkInDate,
+    checkOutDate: data.checkOutDate,
     guests: data.guests,
     price: bookingPrice.stayPrice,
     stayPrice: bookingPrice.stayPrice,
@@ -40,6 +40,17 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
     resortFee: data.resortFee,
     dates: data.dates,
     guestsInfo: data.guestsInfo,
+    hotelAdress: data?.hotelAdress,
+    hotelPhoneNumber: data?.hotelPhoneNumber,
+    hotelEmail: data?.hotelEmail,
+    tourOperator: data?.tourOperator,
+    tourOperatorPhoneNumber: data?.tourOperatorPhoneNumber,
+    tourOperatorEmail: data?.tourOperatorEmail,
+    flightFrom: data?.flightFrom,
+    flightTo: data?.flightTo,
+    airCompany: data?.airCompany,
+    cancellationPolicy: data?.cancellationPolicy,
+    insurance: data?.insurance,
     tourId: data?.tourId,
     hotelId: data?.hotelId,
   };

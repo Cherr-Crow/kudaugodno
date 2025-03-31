@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Typography } from '@/shared/typography';
 
@@ -10,12 +10,53 @@ export const HotelBookingModalCancel: React.FC<IHotelBookingModalCancel> = ({
   onClose,
 }) => {
   const [isCancelled, setIsCancelled] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    let overlay: HTMLDivElement | null = null;
+    if (isOpen) {
+      setShowModal(true);
+      overlay = document.createElement('div');
+      overlay.id = 'modal-overlay';
+      overlay.style.position = 'fixed';
+      overlay.style.top = '0';
+      overlay.style.left = '0';
+      overlay.style.width = '100%';
+      overlay.style.height = '100%';
+      overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+      overlay.style.zIndex = '40';
+      overlay.style.pointerEvents = 'none';
+      overlay.style.transition = 'background-color 0.3s ease-in-out';
+      document.documentElement.appendChild(overlay);
+      requestAnimationFrame(() => {
+        if (overlay) overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+      });
+    } else {
+      const timeout = setTimeout(() => setShowModal(false), 300);
+      return () => clearTimeout(timeout);
+    }
+
+    return () => {
+      if (overlay) {
+        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+        setTimeout(() => {
+          if (overlay && overlay.parentElement) {
+            overlay.parentElement.removeChild(overlay);
+          }
+        }, 300);
+      }
+    };
+  }, [isOpen]);
+
+  if (!showModal) return null;
 
   return (
-    <div className='bg-black fixed inset-0 flex flex-col items-center justify-center bg-opacity-50'>
-      <div className='relative h-[30%] w-[60%] overflow-hidden rounded-lg bg-blue-100 p-6 shadow-lg'>
+    <div className='fixed inset-0 z-50 flex items-center justify-center'>
+      <div
+        className={`relative h-[30%] w-[60%] rounded-lg bg-blue-100 p-6 shadow-lg transition-opacity duration-300 ease-in-out ${
+          isOpen ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
         <button className='absolute right-3 top-3 text-xl' onClick={onClose}>
           &times;
         </button>
@@ -28,7 +69,7 @@ export const HotelBookingModalCancel: React.FC<IHotelBookingModalCancel> = ({
 
             <ButtonCustom
               variant='primary'
-              className='hover:bg-lime-500 w-full rounded-full bg-white py-3 text-sm font-bold text-grey-950 shadow-md'
+              className='w-full rounded-full bg-white py-3 text-sm font-bold text-grey-950 shadow-md'
               size='s'
               onClick={onClose}
             >
@@ -40,7 +81,7 @@ export const HotelBookingModalCancel: React.FC<IHotelBookingModalCancel> = ({
             </div>
           </div>
         ) : (
-          <div className='flex flex-col justify-center gap-4 align-middle'>
+          <div className='flex flex-col justify-center gap-4'>
             <Typography variant='l' className='text-center font-bold'>
               Отмена бронирования
             </Typography>
@@ -52,7 +93,7 @@ export const HotelBookingModalCancel: React.FC<IHotelBookingModalCancel> = ({
             <div className='flex flex-row justify-center gap-4'>
               <ButtonCustom
                 variant='primary'
-                className='hover:bg-lime-500 h-[10%] w-full rounded-full bg-white py-3 text-sm font-bold text-grey-950 shadow-md'
+                className='h-[10%] w-full rounded-full bg-white py-3 text-sm font-bold text-grey-950 shadow-md'
                 size='s'
                 onClick={onClose}
               >
@@ -61,7 +102,7 @@ export const HotelBookingModalCancel: React.FC<IHotelBookingModalCancel> = ({
 
               <ButtonCustom
                 variant='primary'
-                className='hover:bg-lime-500 bg-lime-400 h-[10%] w-full rounded-full py-3 text-sm font-bold text-grey-950 shadow-md'
+                className='bg-lime-400 h-[10%] w-full rounded-full py-3 text-sm font-bold text-grey-950 shadow-md'
                 size='s'
                 onClick={() => setIsCancelled(true)}
               >
