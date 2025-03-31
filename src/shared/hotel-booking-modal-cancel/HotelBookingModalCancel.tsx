@@ -24,7 +24,8 @@ export const HotelBookingModalCancel: React.FC<IHotelBookingModalCancel> = ({
       overlay.style.width = '100%';
       overlay.style.height = '100%';
       overlay.style.backgroundColor = 'rgba(0, 0, 0, 0)';
-      overlay.style.zIndex = '10';
+      overlay.style.zIndex = '40';
+      overlay.style.pointerEvents = 'none';
       overlay.style.transition = 'background-color 0.3s ease-in-out';
       document.documentElement.appendChild(overlay);
       requestAnimationFrame(() => {
@@ -50,7 +51,7 @@ export const HotelBookingModalCancel: React.FC<IHotelBookingModalCancel> = ({
   if (!showModal) return null;
 
   return (
-    <div className='fixed inset-0 z-20 flex items-center justify-center'>
+    <div className='fixed inset-0 z-50 flex items-center justify-center'>
       <div
         className={`relative h-[30%] w-[60%] rounded-lg bg-blue-100 p-6 shadow-lg transition-opacity duration-300 ease-in-out ${
           isOpen ? 'opacity-100' : 'opacity-0'

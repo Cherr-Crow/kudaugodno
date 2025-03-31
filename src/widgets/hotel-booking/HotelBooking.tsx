@@ -90,8 +90,11 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
       flightDetails:
         'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
     },
-    checkIn: searchData.checkInDate,
-    checkOut: searchData.checkOutDate,
+    hotelAdress: 'Краснодарский край, пос. Сириус, Континентальный проспект д. 6',
+    hotelPhoneNumber: '+7 (571) 079–27–45',
+    hotelEmail: 'example@mail.com',
+    checkInDate: searchData.checkInDate,
+    checkOutDate: searchData.checkOutDate,
     guests: extractNumber(searchData.guests),
   };
 
