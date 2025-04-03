@@ -9,7 +9,8 @@ export interface IFlight {
   arrival_date: string;
   arrival_time: string;
   price: string;
+  price_for_child?: string;
   service_class: string;
   flight_type: string;
-  description: string;
+  description?: string;
 }

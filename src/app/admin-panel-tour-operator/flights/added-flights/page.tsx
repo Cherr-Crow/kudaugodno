@@ -15,7 +15,6 @@ import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
-import { InputDateForSearchBlock } from '@/shared/ui/search-block/input-date-for-search-block';
 import { Select } from '@/shared/ui/select';
 import { airports } from '@/temp/airports-mock';
 import { IFlight } from '@/types/flight-type';
@@ -38,9 +37,13 @@ export default function AddedFlights() {
   const [departureTime, setDepartureTime] = useState<string>('');
   const [arrivalDate, setArrivalDate] = useState<string>('');
   const [arrivalTime, setArrivalTime] = useState<string>('');
+  const [departureDateTime, setDepartureDateTime] = useState<string>('');
+  const [arrivalDateTime, setArrivalDateTime] = useState<string>('');
   const [shortDescription, setShortDescription] = useState<string>('');
   const [price, setPrice] = useState<string>('');
+  const [priceForChild, setPriceForChild] = useState<string | undefined>(undefined);
   const [serviceClass, setServiceClass] = useState<string>('');
+  const [flightType, setFlightType] = useState<string>('');
   const errors = useRef<{ name: string; description: string }[]>([]);
   const [errModal, setErrModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
@@ -56,17 +59,17 @@ export default function AddedFlights() {
   const handleArrivalAirportChange = (val: string) => {
     setArrivalAirport(val);
   };
-  const handleDepartureDateChange = (val: string) => {
-    setDepartureDate(val.replaceAll('.', '-'));
+  const handleDepartureDateTimeChange = (val: string) => {
+    setDepartureDateTime(val);
+    const [date, time] = val.split('T');
+    setDepartureDate(date);
+    setDepartureTime(time);
   };
-  const handleDepartureTimeChange = (val: string) => {
-    setDepartureTime(val);
-  };
-  const handleArrivalDateChange = (val: string) => {
-    setArrivalDate(val.replaceAll('.', '-'));
-  };
-  const handleArrivalTimeChange = (val: string) => {
-    setArrivalTime(val);
+  const handleArrivalDateTimeChange = (val: string) => {
+    setArrivalDateTime(val);
+    const [date, time] = val.split('T');
+    setArrivalDate(date);
+    setArrivalTime(time);
   };
   const handleShortDescriptionChange = (val: string) => {
     setShortDescription(val);
@@ -74,8 +77,14 @@ export default function AddedFlights() {
   const handlePriceChange = (val: string) => {
     setPrice(val);
   };
+  const handlePriceForChildChange = (val: string | undefined) => {
+    setPriceForChild(val);
+  };
   const handleServiceClassChange = (val: string) => {
     setServiceClass(val);
+  };
+  const handleFlightTypeChange = (val: string) => {
+    setFlightType(val);
   };
   const handleBack = () => {
     router.back();
@@ -91,8 +100,9 @@ export default function AddedFlights() {
       arrival_date: arrivalDate,
       arrival_time: arrivalTime,
       price,
+      price_for_child: priceForChild,
       service_class: serviceClass,
-      flight_type: 'Регулярный',
+      flight_type: flightType || 'Регулярный',
       description: 'string',
     };
     if (!idFlight) {
@@ -159,6 +169,8 @@ export default function AddedFlights() {
     setArrivalTime(data.arrival_time);
     setPrice(data.price);
     setServiceClass(data.service_class);
+    setPriceForChild(data.price_for_child);
+    setFlightType(data.flight_type);
   }, [data]);
 
   return (
@@ -170,7 +182,7 @@ export default function AddedFlights() {
         <SvgSprite name='arrow' width={20} height={20} className='rotate-180' />
       </div>
       <div className='flex flex-col gap-5 rounded-2xl border border-grey-100 p-10 shadow-md'>
-        <div className='flex gap-5'>
+        <div className='flex flex-col gap-5'>
           <div className='flex w-full flex-col gap-3'>
             <Typography variant='l-bold'>Авиакомпания</Typography>
             <Select
@@ -194,12 +206,20 @@ export default function AddedFlights() {
             />
           </div>
           <NamedInput
-            name='Цена билета'
-            title='Цена билета'
+            name='Цена билета для взрослого'
+            title='Цена билета для взрослого'
             placeholder='100 ₽'
             getValue={(val) => handlePriceChange(val as string)}
             startValue={price}
           />
+          <NamedInput
+            name='Цена для ребенка'
+            title='Цена для ребенка'
+            placeholder='100 ₽'
+            getValue={(val) => handlePriceForChildChange(val as string)}
+            startValue={priceForChild}
+          />
+
           <NamedInput
             name='Номер рейса'
             title='Номер рейса'
@@ -208,7 +228,18 @@ export default function AddedFlights() {
             startValue={flightNumber}
           />
         </div>
-        <div className='grid grid-cols-3 items-center gap-5'>
+        <div className='flex w-full flex-col gap-3'>
+          <Typography variant='l-bold'>Тип рейса</Typography>
+          <Select
+            options={['Регулярный', 'Чартерный']}
+            color='blue'
+            size='small'
+            className='w-full'
+            getValue={handleFlightTypeChange}
+            startValue={flightType}
+          />
+        </div>
+        <div className='grid grid-cols-2 items-center gap-5'>
           <NamedInput
             name='Аэропорт вылета'
             title='Аэропорт вылета'
@@ -217,27 +248,18 @@ export default function AddedFlights() {
             startValue={departureAirport}
           />
           <div className='flex flex-col gap-3'>
-            <Typography variant='l-bold'>Дата вылета</Typography>
-            <InputDateForSearchBlock
-              placeholder='Дата вылета'
-              getValue={handleDepartureDateChange}
-              className='rounded-md border border-blue-600 py-5'
-              startValue={departureDate}
-            />
-          </div>
-          <div className='flex flex-col gap-3'>
-            <Typography variant='l-bold'>Время вылета</Typography>
+            <Typography variant='l-bold'>Дата и время вылета</Typography>
             <input
-              type='time'
-              name='timeStart'
-              id='timeStart'
+              type='datetime-local'
+              name='departureDateTime'
+              id='departureDateTime'
               className='w-full rounded-md border border-blue-600 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
-              onChange={(e) => handleDepartureTimeChange(e.target.value)}
-              value={departureTime}
+              onChange={(e) => handleDepartureDateTimeChange(e.target.value)}
+              value={departureDateTime}
             />
           </div>
         </div>
-        <div className='grid grid-cols-3 items-center gap-5'>
+        <div className='grid grid-cols-2 items-center gap-5'>
           <NamedInput
             name='Аэропорт прилёта'
             title='Аэропорт прилёта'
@@ -246,23 +268,14 @@ export default function AddedFlights() {
             startValue={arrivalAirport}
           />
           <div className='flex flex-col gap-3'>
-            <Typography variant='l-bold'>Дата прилёта</Typography>
-            <InputDateForSearchBlock
-              placeholder='Дата прилёта'
-              getValue={handleArrivalDateChange}
-              className='rounded-md border border-blue-600 py-5'
-              startValue={arrivalDate}
-            />
-          </div>
-          <div className='flex flex-col gap-3'>
-            <Typography variant='l-bold'>Время прилёта</Typography>
+            <Typography variant='l-bold'>Дата и время прилёта</Typography>
             <input
-              type='time'
-              name='timeEnd'
-              id='timeEnd'
+              type='datetime-local'
+              name='arrivalDateTime'
+              id='arrivalDateTime'
               className='w-full rounded-md border border-blue-600 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
-              onChange={(e) => handleArrivalTimeChange(e.target.value)}
-              value={arrivalTime}
+              onChange={(e) => handleArrivalDateTimeChange(e.target.value)}
+              value={arrivalDateTime}
             />
           </div>
         </div>
