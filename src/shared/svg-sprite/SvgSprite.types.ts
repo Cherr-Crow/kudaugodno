@@ -80,4 +80,5 @@ export type NameSvg =
   | 'frog-on-suitcase'
   | 'frog-with-purse'
   | 'more'
-  | 'ellipsisVertical';
+  | 'ellipsisVertical'
+  | 'greenCircle';
