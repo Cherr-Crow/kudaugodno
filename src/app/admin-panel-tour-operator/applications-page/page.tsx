@@ -7,7 +7,7 @@ import { Typography } from '@/shared/typography';
 import { ApplicationCard } from '@/shared/ui/application-card';
 
 export default function ApplicationsPage() {
-  const [years] = useState<number[]>([2024, 2023, 2022]);
+  const [years] = useState<string[]>(['2024', '2023', '2022']);
   return (
     <div className='w-full'>
       <div className='flex flex-col'>
