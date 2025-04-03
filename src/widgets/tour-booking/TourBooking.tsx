@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
 
 import { HotelBookingPayForm } from '@/shared/hotel-booking-pay-form';
 import { Rating } from '@/shared/rating';
@@ -7,81 +9,10 @@ import { TourFlightCard } from '@/shared/tour-flight-card';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
+import { flightData } from '@/temp/flight-mock';
 import { hotels } from '@/temp/hotel-mock';
 
 import { ITourBooking } from './TourBooking.types';
-const flightData = {
-  flights: [
-    {
-      route: 'Москва — Найроби',
-      duration: '12ч 55м в пути',
-      baggage: ['Без багажа', 'Ручная кладь 1×10 кг'],
-      segments: [
-        {
-          airline: 'Air Arabia',
-          flightDuration: '5ч 50м в полете',
-          departure: {
-            time: '00:20',
-            location: 'Москва, Домодедово, DME',
-          },
-          arrival: {
-            time: '07:00',
-            location: 'Шарджа, Шарджа, SHJ',
-          },
-        },
-        {
-          layover: 'Пересадка в Шардже 2 ч',
-        },
-        {
-          airline: 'Air Arabia',
-          flightDuration: '5ч 50м в полете',
-          departure: {
-            time: '09:00',
-            location: 'Шарджа, Шарджа, SHJ',
-          },
-          arrival: {
-            time: '13:15',
-            location: 'Найроби, Джомо Кеньятта, NBO',
-          },
-        },
-      ],
-    },
-    {
-      route: 'Найроби — Москва',
-      duration: '12ч 5м в пути',
-      baggage: ['Без багажа', 'Ручная кладь 1×10 кг'],
-      segments: [
-        {
-          airline: 'Air Arabia',
-          flightDuration: '5ч 50м в полете',
-          departure: {
-            time: '14:02',
-            location: 'Найроби, Джомо Кеньятта, NBO',
-          },
-          arrival: {
-            time: '20:10',
-            location: 'Шарджа, Шарджа, SHJ',
-          },
-        },
-        {
-          layover: 'Пересадка в Шардже 1ч 15м',
-        },
-        {
-          airline: 'Air Arabia',
-          flightDuration: '5ч 50м в полете',
-          departure: {
-            time: '21:25',
-            location: 'Шарджа, Шарджа, SHJ',
-          },
-          arrival: {
-            time: '02:10',
-            location: 'Москва, Домодедово, DME',
-          },
-        },
-      ],
-    },
-  ],
-};
 
 const insuranceData = [
   {
@@ -107,8 +38,42 @@ const insuranceData = [
   },
 ];
 
-export function TourBooking({}: ITourBooking) {
-  const hotel = hotels[0];
+const mockData = {
+  dates: '1 ноября - 7 ноября',
+  guestsInfo: '2 взрослых на 6 ночей',
+  paymentInfo: 'Необходимо оплатить при заселении',
+  resortFee: 100,
+  flightInfo: {
+    flightType: 'Чартерный рейс',
+    flightDetails:
+      'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
+  },
+  checkIn: '1 ноября',
+  checkOut: '7 ноября',
+  guests: 2,
+};
+
+export function TourBooking({ tourId }: ITourBooking) {
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhone(e.target.value);
+  };
+
+  const hotel = hotels.find((h) => h.id === tourId);
+  if (!hotel) return <div>Тур не найден</div>;
+
+  const tourData = {
+    ...mockData,
+    tourId: tourId,
+    hotelName: hotel.name,
+  };
+
   return (
     <div className='container mx-auto mb-5'>
       <div className='flex flex-col md:flex-row'>
@@ -134,7 +99,7 @@ export function TourBooking({}: ITourBooking) {
                 </div>
                 <div className='flex h-[65px] w-[130px] md:h-full md:w-[25%]'>
                   <img
-                    src='Novotel-Nairobi-Westlands-photo-1.png'
+                    src={hotel.photo?.[0]?.photo}
                     alt='Image of Novotel Nairobi Westlands hotel with a pool and palm trees'
                     className='mx-auto rounded-2xl'
                   />
@@ -156,16 +121,17 @@ export function TourBooking({}: ITourBooking) {
                   variant='l'
                   className='text-[14px] font-bold text-blue-950'
                 >
-                  1 ноября - 7 ноября
+                  {mockData.dates}
                 </Typography>
                 <Typography variant='m' className='text-blue-950'>
-                  2 взрослых на 6 ночей
+                  {mockData.guestsInfo}
                 </Typography>
                 <Typography variant='l' className='font-bold text-blue-950'>
-                  Необходимо оплатить при заселении
+                  {mockData.paymentInfo}
                 </Typography>
                 <Typography variant='m' className='text-blue-950'>
-                  Курортный сбор до 100 ₽ с человека за ночь
+                  Необходимо оплатить при заселении {mockData.resortFee} ₽ с человека
+                  за ночь
                 </Typography>
               </div>
             </div>
@@ -179,12 +145,10 @@ export function TourBooking({}: ITourBooking) {
                 variant='l'
                 className='text-[14px] font-bold text-blue-950'
               >
-                Чартерный рейс
+                {mockData.flightInfo.flightType}
               </Typography>
               <Typography variant='m' className='text-blue-950'>
-                Туроператор может изменить полётную программу. Например, может
-                поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если
-                что-то изменится.
+                {mockData.flightInfo.flightDetails}
               </Typography>
             </div>
           </div>
@@ -215,18 +179,18 @@ export function TourBooking({}: ITourBooking) {
                       <ButtonCustom
                         variant={'primary'}
                         size={'s'}
-                        className='flex h-6 flex-row gap-2 text-nowrap bg-white transition-transform'
+                        className='group flex h-6 flex-row gap-2 text-nowrap bg-white transition-transform'
                       >
                         Добавить в заказ{' '}
                         <SvgSprite
                           name={'cross'}
-                          width={14}
-                          className='transition-transform group-hover:hidden'
+                          width={10}
+                          className='rotate-45 transition-transform group-active:hidden'
                         />
                         <SvgSprite
                           name={'arrow'}
                           width={14}
-                          className='hidden transition-transform group-hover:block'
+                          className='hidden transition-transform group-active:block'
                         />
                       </ButtonCustom>
                     </div>
@@ -255,6 +219,8 @@ export function TourBooking({}: ITourBooking) {
                     id='email'
                     name='Email'
                     type='text'
+                    value={email}
+                    onChange={handleEmailChange}
                     placeholder='example@gmail.com'
                   />
                 </div>
@@ -266,6 +232,8 @@ export function TourBooking({}: ITourBooking) {
                     id='phone'
                     name='Телефон'
                     type='tel'
+                    value={phone}
+                    onChange={handlePhoneChange}
                     placeholder='+7 (999) 678-22-22'
                   />
                 </div>
@@ -368,7 +336,7 @@ export function TourBooking({}: ITourBooking) {
         </div>
         {/* {right side content} */}
         <div className='w-full p-4 md:w-1/3'>
-          <HotelBookingPayForm />
+          <HotelBookingPayForm data={tourData} />
         </div>
       </div>
     </div>
