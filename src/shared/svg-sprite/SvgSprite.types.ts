@@ -82,4 +82,6 @@ export type NameSvg =
   | 'more'
   | 'eye'
   | 'admin-response'
-  | 'comments';
+  | 'comments'
+  | 'ellipsisVertical'
+  | 'greenCircle';
