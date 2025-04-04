@@ -22,6 +22,14 @@ export function InputDateForSearchBlock({
     }
   };
 
+  const handleClickDiv = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    const inputElement = e.currentTarget.querySelector('input') as HTMLInputElement;
+    if (inputElement) {
+      inputElement.showPicker();
+    }
+  };
+
   useEffect(() => {
     if (!startValue) return;
     setValue(startValue);
@@ -30,7 +38,8 @@ export function InputDateForSearchBlock({
   return (
     <>
       <div
-        className={`relative hidden w-full min-w-[120px] flex-col justify-center md:flex ${className ?? ''}`}
+        className={`relative flex w-full min-w-[120px] flex-col justify-center md:flex ${className ?? ''}`}
+        onClick={handleClickDiv}
       >
         {value && (
           <Typography className='absolute top-0 pl-3'>{placeholder}</Typography>
@@ -42,15 +51,16 @@ export function InputDateForSearchBlock({
         </Typography>
         <input
           type='date'
-          className={`absolute top-1/2 w-full -translate-y-1/2 bg-transparent outline-none`}
+          className='w-1/10 absolute top-1/2 -translate-y-1/2 cursor-pointer bg-transparent outline-none'
           placeholder={placeholder}
-          value={''}
+          value={value ?? ''}
           onChange={handleChangeInput}
         />
       </div>
 
       <div
         className={`relative flex h-14 w-full flex-col justify-center md:hidden ${className ?? ''}`}
+        onClick={handleClickDiv}
       >
         {value && <Typography className='absolute top-0'>{placeholder}</Typography>}
         <Typography
@@ -60,7 +70,7 @@ export function InputDateForSearchBlock({
         </Typography>
         <input
           type='date'
-          className={`absolute top-1/2 w-5/6 -translate-y-1/2 bg-transparent outline-none`}
+          className='w-1/10 absolute top-1/2 -translate-y-1/2 cursor-pointer bg-transparent outline-none'
           placeholder={placeholder}
           value={value ?? ''}
           onChange={handleChangeInput}
