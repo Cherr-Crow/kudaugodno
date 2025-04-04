@@ -1,5 +1,5 @@
 type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
 export interface IFilterYear extends DivProps {
-  yearsArr: string[];
+  yearsArr: number[];
 }
