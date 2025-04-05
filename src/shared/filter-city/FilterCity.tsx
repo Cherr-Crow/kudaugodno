@@ -14,7 +14,7 @@ export const FilterCity = ({ selectedCities, onCityChange }: IFilterCity) => {
     'Санкт-Петербург',
     'Нижний Новгород',
     'Казань',
-    'Найроби',
+    'Наироби',
   ];
 
   const toggleCollapse = () => {

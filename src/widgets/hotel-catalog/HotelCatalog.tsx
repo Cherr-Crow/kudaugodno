@@ -1,5 +1,9 @@
+/* eslint-disable no-commented-code/no-commented-code */
 'use client';
-import React, { useMemo, useRef, useState } from 'react';
+
+import React, { useEffect, useMemo, useState } from 'react';
+
+import { useRouter } from 'next/navigation';
 
 import { FilterAirportDistance } from '@/shared/filter-airport-distance';
 import { FilterAmenities } from '@/shared/filter-amenities';
@@ -17,38 +21,42 @@ import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
-import { hotels } from '@/temp/hotel-mock';
+import { Hotel } from '@/types/hotel';
 
-export function HotelCatalog() {
+interface Props {
+  hotels: Hotel[];
+}
+
+export function HotelCatalog({ hotels }: Props) {
   {
     /* Отзывы*/
   }
 
-  const [reviewStates, setReviewStates] = useState<{
-    [hotelId: number]: { showAllReviews: boolean };
-  }>(
-    hotels.reduce((acc: { [key: number]: { showAllReviews: boolean } }, hotel) => {
-      acc[hotel.id] = { showAllReviews: false };
-      return acc;
-    }, {}),
-  );
+  // const [reviewStates, setReviewStates] = useState<{
+  //   [hotelId: number]: { showAllReviews: boolean };
+  // }>(
+  //   hotels.reduce((acc: { [key: number]: { showAllReviews: boolean } }, hotel) => {
+  //     acc[hotel.id] = { showAllReviews: false };
+  //     return acc;
+  //   }, {}),
+  // );
 
-  const reviewsContainerRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
-  const toggleReviews = (hotelId: number) => {
-    setReviewStates((prevState) => {
-      const newState = {
-        ...prevState,
-        [hotelId]: { showAllReviews: !prevState[hotelId].showAllReviews },
-      };
-      if (
-        !newState[hotelId].showAllReviews &&
-        reviewsContainerRefs.current[hotelId]
-      ) {
-        reviewsContainerRefs.current[hotelId]!.scrollTop = 0;
-      }
-      return newState;
-    });
-  };
+  // const reviewsContainerRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
+  // const toggleReviews = (hotelId: number) => {
+  //   setReviewStates((prevState) => {
+  //     const newState = {
+  //       ...prevState,
+  //       [hotelId]: { showAllReviews: !prevState[hotelId].showAllReviews },
+  //     };
+  //     if (
+  //       !newState[hotelId].showAllReviews &&
+  //       reviewsContainerRefs.current[hotelId]
+  //     ) {
+  //       reviewsContainerRefs.current[hotelId]!.scrollTop = 0;
+  //     }
+  //     return newState;
+  //   });
+  // };
 
   {
     /* Фильтры*/
@@ -84,51 +92,55 @@ export function HotelCatalog() {
     setFiltersVisible((prevState) => !prevState);
   };
 
-  const filterHotels = () => {
-    return hotels.filter((hotel) => {
+  const filterHotels = () =>
+    hotels.filter((hotel) => {
       return (
-        (selectedCities.length === 0 || selectedCities.includes(hotel.city)) &&
-        (recreationType.length === 0 ||
-          recreationType.includes(hotel.type_of_rest)) &&
-        (placeType.length === 0 || placeType.includes(hotel.place)) &&
-        ((price[0] === 0 && price[1] === 0) ||
-          hotel.rooms.some(
-            (room) => room.price >= price[0] && room.price <= price[1],
-          )) &&
-        ((rating[0] === 0 && rating[1] === 0) ||
-          (hotel.user_rating >= rating[0] && hotel.user_rating <= rating[1])) &&
-        (starCategory.length === 0 || starCategory.includes(hotel.star_category)) &&
-        (mealType.length === 0 ||
-          hotel.rooms.some((room) => mealType.includes(room.type_of_meals))) &&
-        (amenities.length === 0 ||
-          amenities.every((amenity) =>
-            hotel.amenities_common.some((cat) => cat.includes(amenity)),
-          ))
-        // (airportDistance === 'Любое' ||
-        //   hotel.distance_to_the_sea.some(
-        //     (d) =>
-        //       d.location === 'airport' &&
-        //       ((airportDistance === 'До 15 км' && d.distance <= 15) ||
-        //         (airportDistance === 'До 50 км' && d.distance <= 50) ||
-        //         (airportDistance === 'До 75 км' && d.distance <= 75) ||
-        //         (airportDistance === 'До 100 км' && d.distance <= 100)),
-        //   ))
-        //   &&
-        // (tourOperators.length === 0 || tourOperators.includes(hotel.tour_operator))
+        ((airportDistance === 'Любое' ||
+          (hotel.distance_to_the_airport !== null &&
+            ((airportDistance === 'До 15 км' &&
+              hotel.distance_to_the_airport <= 15000) ||
+              (airportDistance === 'До 50 км' &&
+                hotel.distance_to_the_airport <= 50000) ||
+              (airportDistance === 'До 75 км' &&
+                hotel.distance_to_the_airport <= 75000) ||
+              (airportDistance === 'До 100 км' &&
+                hotel.distance_to_the_airport <= 100000)))) &&
+          (selectedCities.length === 0 || selectedCities.includes(hotel.city)) &&
+          (recreationType.length === 0 ||
+            recreationType.includes(hotel.type_of_rest)) &&
+          (placeType.length === 0 || placeType.includes(hotel.place)) &&
+          price[0] === 0 &&
+          price[1] === 0) ||
+        (hotel.rooms.some(
+          (room) => room.price >= price[0] && room.price <= price[1],
+        ) &&
+          ((rating[0] === 0 && rating[1] === 0) ||
+            (hotel.user_rating >= rating[0] && hotel.user_rating <= rating[1])) &&
+          (starCategory.length === 0 ||
+            starCategory.includes(hotel.star_category)) &&
+          (mealType.length === 0 ||
+            hotel.rooms.some((room) => mealType.includes(room.type_of_meals))) &&
+          (amenities.length === 0 ||
+            amenities.every((amenity) =>
+              hotel.amenities_common.some((cat) => cat.includes(amenity)),
+            )))
       );
     });
-  };
 
-  const filteredHotels = useMemo(filterHotels, [
-    selectedCities,
-    recreationType,
-    placeType,
-    price,
-    rating,
-    starCategory,
-    mealType,
-    amenities,
-  ]);
+  const filteredHotels = useMemo(
+    () => filterHotels(),
+    [
+      selectedCities,
+      recreationType,
+      placeType,
+      price,
+      rating,
+      starCategory,
+      mealType,
+      amenities,
+      airportDistance,
+    ],
+  );
 
   {
     /* Сортировка*/
@@ -153,11 +165,33 @@ export function HotelCatalog() {
   const [isMapVisible, setIsMapVisible] = useState(false);
 
   {
+    /* Роутинг*/
+  }
+
+  const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const handleViewHotelPage = (hotelId: number, hotelName: string) => {
+    localStorage.setItem('selectedHotelId', hotelId.toString());
+    localStorage.setItem('selectedHotelName', hotelName);
+    const encodedName = encodeURIComponent(hotelName);
+    router.push(`/hotel-page?name=${encodedName}`);
+  };
+
+  if (!isClient) {
+    return null;
+  }
+
+  {
     /* Компонент каталога*/
   }
 
   return (
-    <div className='hotel-catalog-page flex justify-center'>
+    <div className='hotel-catalog-page container flex justify-center'>
       <div className='flex flex-col md:flex-row'>
         <aside
           className={`w-full p-4 md:w-1/4 ${filtersVisible ? 'block' : 'hidden'} lg:block`}
@@ -315,7 +349,7 @@ export function HotelCatalog() {
             <HotelComponentMap />
           ) : (
             <div className='hotels-list grid gap-6 md:grid-cols-1'>
-              {filteredHotels.length > 0 ? (
+              {sortedHotels.length > 0 ? (
                 <>
                   {sortedHotels.map((hotel, index) => (
                     <div key={hotel.id}>
@@ -330,7 +364,11 @@ export function HotelCatalog() {
                           <HotelComponentPhotoSlider hotel={hotel} />
                         </div>
 
-                        <div className='hotel-info relative z-10 w-full rounded-lg p-4 md:ml-[-16px] md:w-3/5'>
+                        <div
+                          onClick={() => handleViewHotelPage(hotel.id, hotel.name)}
+                          style={{ cursor: 'pointer' }}
+                          className='hotel-info relative z-10 w-full rounded-lg p-4 md:ml-[-16px] md:w-3/5'
+                        >
                           {/* Рейтинг и информация */}
                           <div className='mb-2 flex gap-2'>
                             <Rating
@@ -339,23 +377,23 @@ export function HotelCatalog() {
                               gap={1}
                             />
                             {/* Кнопка "Показать отзывы" */}
-                            {hotel.reviews && hotel.reviews.length > 0 && (
-                              <div className='group ml-auto flex items-center justify-end gap-0.5'>
-                                <button
-                                  className='flex items-center gap-1 text-blue-600 hover:underline'
-                                  onClick={() => toggleReviews(hotel.id)}
-                                >
-                                  <Typography
-                                    variant='m'
-                                    className='text-xs md:text-base'
+                            {/* {hotel.reviews && hotel.reviews.length > 0 && (
+                                <div className='group ml-auto flex items-center justify-end gap-0.5'>
+                                  <button
+                                    className='flex items-center gap-1 text-blue-600 hover:underline'
+                                    onClick={() => toggleReviews(hotel.id)}
                                   >
-                                    {reviewStates[hotel.id]?.showAllReviews
-                                      ? 'Скрыть отзывы'
-                                      : `Еще ${hotel.reviews.length} отзывов`}
-                                  </Typography>
-                                </button>
-                              </div>
-                            )}
+                                    <Typography
+                                      variant='m'
+                                      className='text-xs md:text-base'
+                                    >
+                                      {reviewStates[hotel.id]?.showAllReviews
+                                        ? 'Скрыть отзывы'
+                                        : `Еще ${hotel.reviews.length} отзывов`}
+                                    </Typography>
+                                  </button>
+                                </div>
+                              )} */}
 
                             <div className='flex items-center gap-2'>
                               <Typography
@@ -415,50 +453,50 @@ export function HotelCatalog() {
 
                           {/* Отзывы */}
                           <div className='mt-4 flex flex-col'>
-                            <div
-                              ref={(el) => {
-                                reviewsContainerRefs.current[hotel.id] = el;
-                              }}
-                              className={`transition-max-height overflow-hidden duration-300 ${reviewStates[hotel.id]?.showAllReviews ? 'max-h-[220px] overflow-y-scroll' : 'max-h-0'}`}
-                            >
-                              {hotel.reviews.map((review) => (
-                                <div
-                                  key={`review-${review.id}`}
-                                  className='mb-4 border-b pb-4'
-                                >
-                                  <div className='mb-2 flex items-center gap-3'>
-                                    <img
-                                      src={review.userPhoto}
-                                      alt={review.username}
-                                      className='h-8 w-8 rounded-full'
-                                    />
-                                    <div>
-                                      <Typography
-                                        variant='s'
-                                        className='font-semibold'
-                                      >
-                                        {review.username}
-                                      </Typography>
+                            {/* <div
+                                ref={(el) => {
+                                  reviewsContainerRefs.current[hotel.id] = el;
+                                }}
+                                className={`transition-max-height overflow-hidden duration-300 ${reviewStates[hotel.id]?.showAllReviews ? 'max-h-[220px] overflow-y-scroll' : 'max-h-0'}`}
+                              >
+                                {hotel.reviews.map((review) => (
+                                  <div
+                                    key={`review-${review.id}`}
+                                    className='mb-4 border-b pb-4'
+                                  >
+                                    <div className='mb-2 flex items-center gap-3'>
+                                      <img
+                                        src={review.userPhoto}
+                                        alt={review.username}
+                                        className='h-8 w-8 rounded-full'
+                                      />
+                                      <div>
+                                        <Typography
+                                          variant='s'
+                                          className='font-semibold'
+                                        >
+                                          {review.username}
+                                        </Typography>
+                                      </div>
+                                      <div className='ml-auto rounded-lg bg-green-300 px-2 py-1 text-sm font-medium md:px-3 md:py-2'>
+                                        {review.rating}
+                                      </div>
                                     </div>
-                                    <div className='ml-auto rounded-lg bg-green-300 px-2 py-1 text-sm font-medium md:px-3 md:py-2'>
-                                      {review.rating}
-                                    </div>
+                                    <Typography
+                                      variant='xs'
+                                      className='mb-2 mr-2 text-blue-950'
+                                    >
+                                      {review.date}
+                                    </Typography>
+                                    <Typography
+                                      variant='s'
+                                      className='mb-2 text-blue-950'
+                                    >
+                                      {review.text}
+                                    </Typography>
                                   </div>
-                                  <Typography
-                                    variant='xs'
-                                    className='mb-2 mr-2 text-blue-950'
-                                  >
-                                    {review.date}
-                                  </Typography>
-                                  <Typography
-                                    variant='s'
-                                    className='mb-2 text-blue-950'
-                                  >
-                                    {review.text}
-                                  </Typography>
-                                </div>
-                              ))}
-                            </div>
+                                ))} 
+                              </div>*/}
                           </div>
                         </div>
                       </div>
