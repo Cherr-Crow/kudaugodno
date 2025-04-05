@@ -47,7 +47,7 @@ export default function HotelPage() {
   };
 
   const rules = {
-    rules: [...hotel.rules],
+    rules: Array.isArray(hotel.rules) ? hotel.rules : [],
   };
 
   return (

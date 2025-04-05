@@ -95,7 +95,7 @@ export function HotelCatalog({ hotels }: Props) {
   const filterHotels = () =>
     hotels.filter((hotel) => {
       return (
-        (airportDistance === 'Любое' ||
+        ((airportDistance === 'Любое' ||
           (hotel.distance_to_the_airport !== null &&
             ((airportDistance === 'До 15 км' &&
               hotel.distance_to_the_airport <= 15000) ||
@@ -105,21 +105,25 @@ export function HotelCatalog({ hotels }: Props) {
                 hotel.distance_to_the_airport <= 75000) ||
               (airportDistance === 'До 100 км' &&
                 hotel.distance_to_the_airport <= 100000)))) &&
-        (selectedCities.length === 0 || selectedCities.includes(hotel.city)) &&
-        (recreationType.length === 0 ||
-          recreationType.includes(hotel.type_of_rest)) &&
-        (placeType.length === 0 || placeType.includes(hotel.place)) &&
-        // (price[0] === 0 && price[1] === 0) ||
-        // hotel.rooms.some((room) => room.price >= price[0] && room.price <= price[1]) &&
-        ((rating[0] === 0 && rating[1] === 0) ||
-          (hotel.user_rating >= rating[0] && hotel.user_rating <= rating[1])) &&
-        (starCategory.length === 0 || starCategory.includes(hotel.star_category)) &&
-        (mealType.length === 0 ||
-          hotel.rooms.some((room) => mealType.includes(room.type_of_meals))) &&
-        (amenities.length === 0 ||
-          amenities.every((amenity) =>
-            hotel.amenities_common.some((cat) => cat.includes(amenity)),
-          ))
+          (selectedCities.length === 0 || selectedCities.includes(hotel.city)) &&
+          (recreationType.length === 0 ||
+            recreationType.includes(hotel.type_of_rest)) &&
+          (placeType.length === 0 || placeType.includes(hotel.place)) &&
+          price[0] === 0 &&
+          price[1] === 0) ||
+        (hotel.rooms.some(
+          (room) => room.price >= price[0] && room.price <= price[1],
+        ) &&
+          ((rating[0] === 0 && rating[1] === 0) ||
+            (hotel.user_rating >= rating[0] && hotel.user_rating <= rating[1])) &&
+          (starCategory.length === 0 ||
+            starCategory.includes(hotel.star_category)) &&
+          (mealType.length === 0 ||
+            hotel.rooms.some((room) => mealType.includes(room.type_of_meals))) &&
+          (amenities.length === 0 ||
+            amenities.every((amenity) =>
+              hotel.amenities_common.some((cat) => cat.includes(amenity)),
+            )))
       );
     });
 
@@ -187,7 +191,7 @@ export function HotelCatalog({ hotels }: Props) {
   }
 
   return (
-    <div className='hotel-catalog-page flex justify-center'>
+    <div className='hotel-catalog-page container flex justify-center'>
       <div className='flex flex-col md:flex-row'>
         <aside
           className={`w-full p-4 md:w-1/4 ${filtersVisible ? 'block' : 'hidden'} lg:block`}
@@ -351,8 +355,6 @@ export function HotelCatalog({ hotels }: Props) {
                     <div key={hotel.id}>
                       <div
                         key={`hotel-${hotel.id}`}
-                        onClick={() => handleViewHotelPage(hotel.id, hotel.name)}
-                        style={{ cursor: 'pointer' }}
                         className='hotel-card relative flex flex-col rounded-lg bg-white text-blue-950 shadow-xl md:flex-row'
                       >
                         <div className='hotel-image relative z-0 mb-4 w-full overflow-hidden md:mb-0 md:mr-4 md:w-2/5'>
@@ -362,7 +364,11 @@ export function HotelCatalog({ hotels }: Props) {
                           <HotelComponentPhotoSlider hotel={hotel} />
                         </div>
 
-                        <div className='hotel-info relative z-10 w-full rounded-lg p-4 md:ml-[-16px] md:w-3/5'>
+                        <div
+                          onClick={() => handleViewHotelPage(hotel.id, hotel.name)}
+                          style={{ cursor: 'pointer' }}
+                          className='hotel-info relative z-10 w-full rounded-lg p-4 md:ml-[-16px] md:w-3/5'
+                        >
                           {/* Рейтинг и информация */}
                           <div className='mb-2 flex gap-2'>
                             <Rating
@@ -433,17 +439,17 @@ export function HotelCatalog({ hotels }: Props) {
                           </div>
 
                           {/* Цена */}
-                          {/* <div className='hotel-price flex items-center justify-between rounded-xl bg-blue-50 p-2'>
-                              <Typography variant='l-bold' className='mb-2 text-xs'>
-                                Питание: {hotel.rooms[0]?.type_of_meals}
-                              </Typography>
-                              <Typography
-                                variant='h4'
-                                className='text-[16px] text-blue-600 md:text-lg'
-                              >
-                                {hotel.rooms[0].price} ₽
-                              </Typography>
-                            </div> */}
+                          <div className='hotel-price flex items-center justify-between rounded-xl bg-blue-50 p-2'>
+                            <Typography variant='l-bold' className='mb-2 text-xs'>
+                              Питание: {hotel.rooms[0]?.type_of_meals}
+                            </Typography>
+                            <Typography
+                              variant='h4'
+                              className='text-[16px] text-blue-600 md:text-lg'
+                            >
+                              {hotel.rooms[0].price} ₽
+                            </Typography>
+                          </div>
 
                           {/* Отзывы */}
                           <div className='mt-4 flex flex-col'>
