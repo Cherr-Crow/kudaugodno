@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -13,12 +13,12 @@ import { ISearchTour } from './SearchTour.types';
 export function SearchTour({ type }: ISearchTour) {
   const router = useRouter();
 
-  const departureCity = useRef<string>('');
-  const where = useRef<string>('');
-  const checkInDate = useRef<string>('');
-  const checkOutDate = useRef<string>('');
-  const guests = useRef<string>('Гостей');
-
+  const [departureCity, setDepartureCity] = useState('');
+  const [where, setWhere] = useState('');
+  const [checkInDate, setCheckInDate] = useState('');
+  const [checkOutDate, setCheckOutDate] = useState('');
+  const [guests, setGuests] = useState('Гостей');
+  const [isFormValid, setIsFormValid] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -26,32 +26,32 @@ export function SearchTour({ type }: ISearchTour) {
   }, []);
 
   const handleSetDepartureCity = (event: string) => {
-    departureCity.current = event;
+    setDepartureCity(event);
   };
 
   const handleSetWhere = (event: string) => {
-    where.current = event;
+    setWhere(event);
   };
 
   const handleSetCheckInDate = (event: string) => {
-    checkInDate.current = event;
+    setCheckInDate(event);
   };
 
   const handleSetCheckOutDate = (event: string) => {
-    checkOutDate.current = event;
+    setCheckOutDate(event);
   };
 
   const handleSetGuests = (event: string) => {
-    guests.current = event;
+    setGuests(event === 'Гостей' ? '' : event);
   };
 
   const handleSearch = () => {
     const searchData = {
-      departureCity: departureCity.current,
-      where: where.current,
-      checkInDate: checkInDate.current,
-      checkOutDate: checkOutDate.current,
-      guests: guests.current,
+      departureCity,
+      where,
+      checkInDate,
+      checkOutDate,
+      guests,
     };
 
     if (isClient) {
@@ -61,6 +61,27 @@ export function SearchTour({ type }: ISearchTour) {
     const url = type === 'Туры' ? '/tour-booking' : '/hotel-booking';
     router.push(url);
   };
+
+  const checkFormValidity = () => {
+    const checkInDateValid = checkInDate.trim() !== '';
+    const checkOutDateValid = checkOutDate.trim() !== '';
+    const guestsValid = guests !== '';
+
+    const valid =
+      where.trim() !== '' &&
+      checkInDateValid &&
+      checkOutDateValid &&
+      guestsValid &&
+      (type !== 'Туры' || departureCity.trim() !== '');
+
+    setIsFormValid(valid);
+    return valid;
+  };
+
+  useEffect(() => {
+    const isValid = checkFormValidity();
+    console.log('Form validity:', isValid);
+  }, [checkInDate, checkOutDate, guests, where, departureCity]);
 
   return (
     <div className='md:flex md:justify-center'>
@@ -117,17 +138,20 @@ export function SearchTour({ type }: ISearchTour) {
         <InputDateForSearchBlock
           placeholder='Дата заезда'
           className='w-full rounded-lg bg-white p-4'
+          min={new Date().toISOString().split('T')[0]}
           getValue={handleSetCheckInDate}
         />
         <InputDateForSearchBlock
           placeholder='Дата выезда'
           className='w-full rounded-lg bg-white p-4'
+          min={new Date().toISOString().split('T')[0]}
           getValue={handleSetCheckOutDate}
         />
         <ButtonCustom
           variant='primary'
           size='m'
           onClick={handleSearch}
+          disabled={!isFormValid}
           className='col-span-2 w-full'
         >
           <Typography variant='m-bold'>Найти</Typography>

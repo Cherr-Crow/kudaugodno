@@ -26,9 +26,13 @@ export const FilterCity = ({ selectedCities, onCityChange }: IFilterCity) => {
   );
 
   const handleCityChange = (city: string) => {
-    const newSelectedCities = selectedCities.includes(city)
-      ? selectedCities.filter((item) => item !== city)
-      : [...selectedCities, city];
+    const cityLowerCase = city.toLowerCase();
+    const newSelectedCities = selectedCities.some(
+      (item) => item.toLowerCase() === cityLowerCase,
+    )
+      ? selectedCities.filter((item) => item.toLowerCase() !== cityLowerCase)
+      : [...selectedCities, cityLowerCase];
+
     onCityChange(newSelectedCities);
   };
 

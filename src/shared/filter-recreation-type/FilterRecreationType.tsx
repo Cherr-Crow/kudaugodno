@@ -14,9 +14,13 @@ export function FilterRecreationType({
   const recreationTypes = ['Пляжный', 'Городской'];
 
   const toggleSelection = (type: string) => {
-    const updatedTypes = selectedTypes.includes(type)
-      ? selectedTypes.filter((item) => item !== type)
-      : [...selectedTypes, type];
+    const typeLowerCase = type.toLowerCase();
+    const updatedTypes = selectedTypes.some(
+      (item) => item.toLowerCase() === typeLowerCase,
+    )
+      ? selectedTypes.filter((item) => item.toLowerCase() !== typeLowerCase)
+      : [...selectedTypes, typeLowerCase];
+
     onTypeChange(updatedTypes);
   };
 

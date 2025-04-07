@@ -1,40 +1,15 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-import { ITour } from '@/types/tour-type';
-import { HotelBooking } from '@/widgets/hotel-booking';
-import { TourBooking } from '@/widgets/tour-booking';
+import { hotels } from '@/temp/hotel-mock';
+import { HotelCatalog } from '@/widgets/hotel-catalog';
 
 export default function Egor() {
   const [isClient, setIsClient] = useState(false);
-  const [tours, setTours] = useState<ITour[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    fetch('http://localhost:8000/api/v1/tours/')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Ошибка: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setTours(data.results || data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setLoading(false);
-      });
-  }, []);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
-
-  if (loading) return <p>Загрузка...</p>;
-  if (error) return <p>Ошибка: {error}</p>;
 
   return (
     <div className={`ml-5 mt-5 flex-col`}>
@@ -42,15 +17,9 @@ export default function Egor() {
         {/* <HotelCatalog /> */}
         {isClient && (
           <>
-            <ul>
-              {tours.map((tour) => (
-                <li key={tour.id}>
-                  <strong>{tour.hotel}</strong> — {tour.start_date}, {tour.end_date}
-                </li>
-              ))}
-            </ul>
-            <HotelBooking hotelId={1} />
-            <TourBooking tourId={1} />
+            {/* <HotelBooking hotelId={1} />
+            <TourBooking tourId={1} /> */}
+            <HotelCatalog hotels={hotels} />
           </>
         )}
       </div>

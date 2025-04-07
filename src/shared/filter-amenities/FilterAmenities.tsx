@@ -24,9 +24,12 @@ export function FilterAmenities({
   ];
 
   const toggleAmenity = (amenity: string) => {
-    const updatedAmenities = selectedAmenities.includes(amenity)
-      ? selectedAmenities.filter((item) => item !== amenity)
-      : [...selectedAmenities, amenity];
+    const amenityLowerCase = amenity.toLowerCase();
+    const updatedAmenities = selectedAmenities.some(
+      (item) => item === amenityLowerCase,
+    )
+      ? selectedAmenities.filter((item) => item !== amenityLowerCase)
+      : [...selectedAmenities, amenityLowerCase];
 
     onAmenitiesChange(updatedAmenities);
   };

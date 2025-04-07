@@ -15,9 +15,12 @@ export function FilterTourOperator({
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleOperator = (operator: string) => {
-    const updatedOperators = selectedOperators.includes(operator)
-      ? selectedOperators.filter((item) => item !== operator)
-      : [...selectedOperators, operator];
+    const operatorLowerCase = operator.toLowerCase();
+    const updatedOperators = selectedOperators.some(
+      (item) => item.toLowerCase() === operatorLowerCase,
+    )
+      ? selectedOperators.filter((item) => item.toLowerCase() !== operatorLowerCase)
+      : [...selectedOperators, operatorLowerCase];
 
     onOperatorsChange(updatedOperators);
   };

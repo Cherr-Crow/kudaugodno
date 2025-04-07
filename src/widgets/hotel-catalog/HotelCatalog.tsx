@@ -65,7 +65,7 @@ export function HotelCatalog({ hotels }: Props) {
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [recreationType, setRecreationType] = useState<string[]>([]);
   const [placeType, setPlaceType] = useState<string[]>([]);
-  const [price, setPrice] = useState<[number, number]>([500, 20000]);
+  const [price, setPrice] = useState<[number, number]>([1000, 1000000]);
   const [rating, setRating] = useState<[number, number]>([1, 10]);
   const [starCategory, setStarCategory] = useState<number[]>([]);
   const [mealType, setMealType] = useState<string[]>([]);
@@ -77,7 +77,7 @@ export function HotelCatalog({ hotels }: Props) {
     setSelectedCities([]);
     setRecreationType([]);
     setPlaceType([]);
-    setPrice([500, 20000]);
+    setPrice([1000, 1000000]);
     setRating([1, 10]);
     setStarCategory([]);
     setMealType([]);
@@ -94,6 +94,10 @@ export function HotelCatalog({ hotels }: Props) {
 
   const filterHotels = () =>
     hotels.filter((hotel) => {
+      const hotelCityLower = hotel.city.toLowerCase();
+      const hotelRestTypeLower = hotel.type_of_rest.toLowerCase();
+      const hotelPlaceLower = hotel.place.toLowerCase();
+
       return (
         ((airportDistance === 'Любое' ||
           (hotel.distance_to_the_airport !== null &&
@@ -105,10 +109,14 @@ export function HotelCatalog({ hotels }: Props) {
                 hotel.distance_to_the_airport <= 75000) ||
               (airportDistance === 'До 100 км' &&
                 hotel.distance_to_the_airport <= 100000)))) &&
-          (selectedCities.length === 0 || selectedCities.includes(hotel.city)) &&
+          (selectedCities.length === 0 ||
+            selectedCities.some((city) => city.toLowerCase() === hotelCityLower)) &&
           (recreationType.length === 0 ||
-            recreationType.includes(hotel.type_of_rest)) &&
-          (placeType.length === 0 || placeType.includes(hotel.place)) &&
+            recreationType.some(
+              (type) => type.toLowerCase() === hotelRestTypeLower,
+            )) &&
+          (placeType.length === 0 ||
+            placeType.some((type) => type.toLowerCase() === hotelPlaceLower)) &&
           price[0] === 0 &&
           price[1] === 0) ||
         (hotel.rooms.some(
@@ -119,10 +127,16 @@ export function HotelCatalog({ hotels }: Props) {
           (starCategory.length === 0 ||
             starCategory.includes(hotel.star_category)) &&
           (mealType.length === 0 ||
-            hotel.rooms.some((room) => mealType.includes(room.type_of_meals))) &&
+            hotel.rooms.some((room) =>
+              mealType.some(
+                (meal) => meal.toLowerCase() === room.type_of_meals.toLowerCase(),
+              ),
+            )) &&
           (amenities.length === 0 ||
             amenities.every((amenity) =>
-              hotel.amenities_common.some((cat) => cat.includes(amenity)),
+              hotel.amenities_common.some((cat) =>
+                cat.toLowerCase().includes(amenity.toLowerCase()),
+              ),
             )))
       );
     });
