@@ -4,4 +4,5 @@ export interface IInputDateForSearchBlock extends DivProps {
   placeholder: string;
   getValue(value: string): void;
   startValue?: string;
+  min?: string;
 }

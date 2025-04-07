@@ -26,7 +26,7 @@ export function FilterStarCategory({
       {/* Заголовок */}
       <div className='mb-4 flex items-center justify-between'>
         <Typography variant='l' className='text-blue-950'>
-          Категория звезд
+          Категория отеля
         </Typography>
         <button
           onClick={toggleCollapse}

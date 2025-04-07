@@ -22,8 +22,11 @@ export function FilterTypeOfMeals({
   ];
 
   const toggleMealSelection = (meal: string) => {
-    const updatedMeals = selectedMeals.includes(meal)
-      ? selectedMeals.filter((item) => item !== meal)
+    const mealLowerCase = meal.toLowerCase();
+    const updatedMeals = selectedMeals.some(
+      (item) => item.toLowerCase() === mealLowerCase,
+    )
+      ? selectedMeals.filter((item) => item.toLowerCase() !== mealLowerCase)
       : [...selectedMeals, meal];
 
     onMealChange(updatedMeals);
@@ -36,7 +39,7 @@ export function FilterTypeOfMeals({
       {/* Заголовок */}
       <div className='mb-4 flex items-center justify-between'>
         <Typography variant='l' className='text-blue-950'>
-          Тип питания
+          Питание
         </Typography>
         <button
           onClick={toggleCollapse}

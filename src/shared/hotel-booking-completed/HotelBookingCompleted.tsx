@@ -6,6 +6,7 @@ import { Typography } from '@/shared/typography';
 import { hotels } from '@/temp/hotel-mock';
 
 import { HotelBookingModalCancel } from '../hotel-booking-modal-cancel';
+import { HotelBookingModalConfirm } from '../hotel-booking-modal-confirm';
 import { Rating } from '../rating';
 import { ButtonCustom } from '../ui/button-custom';
 
@@ -42,6 +43,7 @@ interface BookingData {
 export default function HotelBookingCompleted() {
   const [bookingData, setBookingData] = useState<BookingData | null>(null);
   const [isCancelModalOpen, setCancelModalOpen] = useState(false);
+  const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -49,7 +51,7 @@ export default function HotelBookingCompleted() {
       if (storedData) {
         try {
           const parsedData = JSON.parse(storedData);
-
+          setConfirmModalOpen(true);
           const type = parsedData.hotelId
             ? 'hotel'
             : parsedData.tourId
@@ -93,6 +95,10 @@ export default function HotelBookingCompleted() {
       <HotelBookingModalCancel
         isOpen={isCancelModalOpen}
         onClose={() => setCancelModalOpen(false)}
+      />
+      <HotelBookingModalConfirm
+        isOpen={isConfirmModalOpen}
+        onClose={() => setConfirmModalOpen(false)}
       />
       <div className='container relative z-10'>
         <div className='relative translate-y-10 rounded-lg bg-white p-4 shadow-lg'>
