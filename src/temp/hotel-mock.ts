@@ -111,7 +111,7 @@ export const hotels: Hotel[] = [
     type_of_meals_only_breakfast: null,
     is_active: true,
     room_categories: [],
-    width: '-1.272749',
-    longitude: '36.827872',
+    width: '-1.272748',
+    longitude: '36.827871',
   },
 ];
