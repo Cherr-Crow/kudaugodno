@@ -43,8 +43,8 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
   const [country, setCountry] = useState(data?.country || ''); // страна
   const [city, setCity] = useState(data?.city || ''); // город
   const [address, setAddress] = useState(data?.address || ''); // адрес
-  const [latitude, setLatitude] = useState(''); // широта
-  const [longitude, setLongitude] = useState(''); // долгота
+  const [latitude, setLatitude] = useState(data?.width || ''); // широта
+  const [longitude, setLongitude] = useState(data?.longitude || ''); // долгота
   const [distanceToTheStation, setDstanceToTheStation] = useState(
     data?.distance_to_the_station || null,
   ); // расстояние до вокзала
@@ -141,6 +141,8 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
       rules,
       is_active: isActive,
       room_categories: ['Стандарт', 'Полулюкс', 'Люкс', 'Апартаменты', 'Студия'],
+      width: latitude,
+      longitude: longitude,
     };
 
     changeHotel({ body: _obj, id: hotelId });

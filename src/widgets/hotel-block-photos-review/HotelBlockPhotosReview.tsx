@@ -92,7 +92,10 @@ export function HotelBlockPhotosReview({ hotel }: IHotelBlockPhotosReview) {
     setIsOpenModal(true);
   };
 
-  const coordinates: [number, number] = [-1.272749, 36.827872]; // Координаты для Москвы
+  const coordinates: [number, number] = [
+    Number(hotel.width),
+    Number(hotel.longitude),
+  ];
 
   return (
     <>

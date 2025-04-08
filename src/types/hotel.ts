@@ -47,6 +47,8 @@ export type Hotel = {
   type_of_meals_only_breakfast: number | null;
   user_rating: number;
   type_of_rest: string;
+  width: string;
+  longitude: string;
   rules: rulesType[];
   is_active: boolean;
   room_categories: string[];
