@@ -8,15 +8,31 @@ import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { ModalTours } from '@/shared/ui/modal-tours';
 
+import { YandexMap } from '../ymap';
+
 export function ToursBlockPhoto() {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [isOpenModalMap, setIsOpenModalMap] = useState(false);
   const { data: hotels } = useGetOneHotelQuery(1);
+
+  const handleCloseModalMap = () => {
+    setIsOpenModalMap(false);
+  };
+  const handleOpenModalMap = () => {
+    setIsOpenModalMap(true);
+  };
+
   useEffect(() => {
     console.log([hotels]);
   }, [hotels]);
   if (!hotels) {
     return <></>;
   }
+  let coordinates: [number, number] = [55.751574, 37.573856]; // Москва
+  if (hotels.width && hotels.longitude) {
+    coordinates = [Number(hotels.width), Number(hotels.longitude)];
+  }
+
   return (
     <>
       <div className='lg:p-4 lg:pl-4 lg:pr-4'>
@@ -182,22 +198,29 @@ export function ToursBlockPhoto() {
                 </div>
 
                 <div
-                  className='order-last flex min-h-40 items-center rounded-2xl bg-cover bg-center p-2 shadow-md lg:order-none'
+                  className='relative order-last flex min-h-40 items-center rounded-2xl bg-cover bg-center p-2 shadow-md lg:order-none'
                   style={{
                     backgroundImage: "url('map.png')",
                     backgroundPosition: '10% 10%',
                   }}
                 >
-                  <div className='relative m-auto flex items-center justify-center gap-1 rounded-3xl bg-blue-200 p-3 pl-6 pr-6'>
-                    <SvgSprite name='location' width={24} />
-                    <Typography
-                      variant='s-bold'
-                      className='text-black cursor-pointer'
-                    >
-                      Смотреть на карте
-                    </Typography>
-                  </div>
+                  <ButtonCustom
+                    onClick={handleOpenModalMap}
+                    variant='tetriary'
+                    size='m'
+                    className='absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform items-center justify-center gap-1 rounded-3xl bg-blue-200 p-3 pl-4 pr-4 md:min-w-[195px]'
+                  >
+                    <div className='flex items-center gap-3'>
+                      <SvgSprite name='location' width={24} />
+                      <Typography variant='m-bold'>Смотреть на карте</Typography>
+                    </div>
+                  </ButtonCustom>
                 </div>
+                <Modal isOpen={isOpenModalMap} getState={handleCloseModalMap}>
+                  <div className='h-[500px] w-[270px] overflow-hidden rounded-2xl sm:h-[500px] sm:w-[500px] md:h-[550px] md:w-[600px]'>
+                    <YandexMap coordinates={coordinates} />
+                  </div>
+                </Modal>
                 <div
                   onClick={() => setIsOpenModal(!isOpenModal)}
                   className='flex h-44 flex-1 cursor-pointer flex-col justify-center rounded-2xl p-6 shadow-md md:h-56 lg:col-span-3'
