@@ -94,50 +94,58 @@ export function HotelCatalog({ hotels }: Props) {
 
   const filterHotels = () =>
     hotels.filter((hotel) => {
-      const hotelCityLower = hotel.city.toLowerCase();
-      const hotelRestTypeLower = hotel.type_of_rest.toLowerCase();
-      const hotelPlaceLower = hotel.place.toLowerCase();
+      const isWithinAirportDistance =
+        airportDistance === 'Любое' ||
+        (hotel.distance_to_the_airport !== null &&
+          ((airportDistance === 'До 15 км' &&
+            hotel.distance_to_the_airport <= 15000) ||
+            (airportDistance === 'До 50 км' &&
+              hotel.distance_to_the_airport <= 50000) ||
+            (airportDistance === 'До 75 км' &&
+              hotel.distance_to_the_airport <= 75000) ||
+            (airportDistance === 'До 100 км' &&
+              hotel.distance_to_the_airport <= 100000)));
+
+      const isWithinPriceRange =
+        (price[0] !== 0 || price[1] !== 0) &&
+        hotel.rooms.some((room) => room.price >= price[0] && room.price <= price[1]);
+
+      const isCitySelected =
+        selectedCities.length === 0 || selectedCities.includes(hotel.city);
+
+      const isRecreationTypeSelected =
+        recreationType.length === 0 || recreationType.includes(hotel.type_of_rest);
+
+      const isPlaceTypeSelected =
+        placeType.length === 0 || placeType.includes(hotel.place);
+
+      const isWithinRatingRange =
+        (rating[0] === 0 && rating[1] === 0) ||
+        (hotel.user_rating >= rating[0] && hotel.user_rating <= rating[1]);
+
+      const isStarCategorySelected =
+        starCategory.length === 0 || starCategory.includes(hotel.star_category);
+
+      const isMealTypeSelected =
+        mealType.length === 0 ||
+        hotel.rooms.some((room) => mealType.includes(room.type_of_meals));
+
+      const isAmenitiesSelected =
+        amenities.length === 0 ||
+        amenities.every((amenity) =>
+          hotel.amenities_common.some((cat) => cat.includes(amenity)),
+        );
 
       return (
-        ((airportDistance === 'Любое' ||
-          (hotel.distance_to_the_airport !== null &&
-            ((airportDistance === 'До 15 км' &&
-              hotel.distance_to_the_airport <= 15000) ||
-              (airportDistance === 'До 50 км' &&
-                hotel.distance_to_the_airport <= 50000) ||
-              (airportDistance === 'До 75 км' &&
-                hotel.distance_to_the_airport <= 75000) ||
-              (airportDistance === 'До 100 км' &&
-                hotel.distance_to_the_airport <= 100000)))) &&
-          (selectedCities.length === 0 ||
-            selectedCities.some((city) => city.toLowerCase() === hotelCityLower)) &&
-          (recreationType.length === 0 ||
-            recreationType.some(
-              (type) => type.toLowerCase() === hotelRestTypeLower,
-            )) &&
-          (placeType.length === 0 ||
-            placeType.some((type) => type.toLowerCase() === hotelPlaceLower)) &&
-          price[0] === 0 &&
-          price[1] === 0) ||
-        (hotel.rooms.some(
-          (room) => room.price >= price[0] && room.price <= price[1],
-        ) &&
-          ((rating[0] === 0 && rating[1] === 0) ||
-            (hotel.user_rating >= rating[0] && hotel.user_rating <= rating[1])) &&
-          (starCategory.length === 0 ||
-            starCategory.includes(hotel.star_category)) &&
-          (mealType.length === 0 ||
-            hotel.rooms.some((room) =>
-              mealType.some(
-                (meal) => meal.toLowerCase() === room.type_of_meals.toLowerCase(),
-              ),
-            )) &&
-          (amenities.length === 0 ||
-            amenities.every((amenity) =>
-              hotel.amenities_common.some((cat) =>
-                cat.toLowerCase().includes(amenity.toLowerCase()),
-              ),
-            )))
+        isWithinAirportDistance &&
+        isCitySelected &&
+        isRecreationTypeSelected &&
+        isPlaceTypeSelected &&
+        isWithinPriceRange &&
+        isWithinRatingRange &&
+        isStarCategorySelected &&
+        isMealTypeSelected &&
+        isAmenitiesSelected
       );
     });
 

@@ -46,6 +46,8 @@ export function SearchTour({ type }: ISearchTour) {
   };
 
   const handleSearch = () => {
+    if (!isFormValid) return;
+
     const searchData = {
       departureCity,
       where,
@@ -65,7 +67,7 @@ export function SearchTour({ type }: ISearchTour) {
   const checkFormValidity = () => {
     const checkInDateValid = checkInDate.trim() !== '';
     const checkOutDateValid = checkOutDate.trim() !== '';
-    const guestsValid = guests !== '';
+    const guestsValid = guests.trim() !== '' && guests !== 'Гостей';
 
     const valid =
       where.trim() !== '' &&
@@ -79,8 +81,7 @@ export function SearchTour({ type }: ISearchTour) {
   };
 
   useEffect(() => {
-    const isValid = checkFormValidity();
-    console.log('Form validity:', isValid);
+    checkFormValidity();
   }, [checkInDate, checkOutDate, guests, where, departureCity]);
 
   return (
