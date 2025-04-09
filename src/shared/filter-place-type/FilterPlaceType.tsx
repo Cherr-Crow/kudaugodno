@@ -21,11 +21,10 @@ export function FilterPlaceType({
   ];
 
   const toggleSelection = (type: string) => {
-    const typeLowerCase = type.toLowerCase();
     onPlaceTypeChange(
-      selectedPlaceTypes.some((item) => item.toLowerCase() === typeLowerCase)
-        ? selectedPlaceTypes.filter((item) => item.toLowerCase() !== typeLowerCase)
-        : [...selectedPlaceTypes, typeLowerCase],
+      selectedPlaceTypes.includes(type)
+        ? selectedPlaceTypes.filter((item) => item !== type)
+        : [...selectedPlaceTypes, type],
     );
   };
 

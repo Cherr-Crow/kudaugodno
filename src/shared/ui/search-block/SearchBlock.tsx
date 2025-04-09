@@ -19,6 +19,7 @@ export function SearchBlock({}: ISearchBlock) {
       <TabBar
         tabs={['Туры', 'Отели']}
         svgTab={['airplane', 'sofa']}
+        setTab={tab}
         getActiveTab={handelTab}
         variant='secondary'
       />
