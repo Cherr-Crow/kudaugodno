@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { nanoid } from 'nanoid';
+
 import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { Modal } from '@/shared/modal';
 import { Rating } from '@/shared/rating';
@@ -13,7 +15,17 @@ import { YandexMap } from '../ymap';
 export function ToursBlockPhoto() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenModalMap, setIsOpenModalMap] = useState(false);
-  const { data: hotels } = useGetOneHotelQuery(1);
+  const [showAllPhoto, setShowAllPhoto] = useState<boolean>(false);
+
+  const { data: hotels } = useGetOneHotelQuery(2);
+
+  const handleClickAllPhoto = () => {
+    setShowAllPhoto(true);
+  };
+
+  const handleClickBackPhoto = () => {
+    setShowAllPhoto(false);
+  };
 
   const handleCloseModalMap = () => {
     setIsOpenModalMap(false);
@@ -64,50 +76,92 @@ export function ToursBlockPhoto() {
               </div>
             </div>
 
-            <div className='grid h-[182px] grid-cols-1 gap-4 py-4 md:h-auto lg:grid-cols-2'>
-              <img
-                src={hotel.photo[0]?.photo}
-                alt={`Hotel ${hotel.name} hotel-photo`}
-                className='hidden h-full w-full rounded-lg object-cover shadow-md lg:block'
-              />
-
-              <div className='flex gap-4 overflow-x-auto md:grid md:grid-cols-2'>
+            {!showAllPhoto ? (
+              <div className='grid h-[182px] grid-cols-1 gap-4 py-4 md:h-auto lg:grid-cols-2'>
                 <img
-                  src={hotel.photo[1]?.photo}
+                  src={hotel.photo[0]?.photo}
                   alt={`Hotel ${hotel.name} hotel-photo`}
-                  className='flex-shrink-0 rounded-lg object-cover shadow-md md:w-full'
-                />
-                <img
-                  src={hotel.photo[2]?.photo}
-                  alt={`Hotel ${hotel.name} hotel-photo`}
-                  className='flex-shrink-0 rounded-lg object-cover shadow-md md:w-full'
-                />
-                <img
-                  src={hotel.photo[3]?.photo}
-                  alt={`Hotel ${hotel.name} hotel-photo`}
-                  className='flex-shrink-0 rounded-lg object-cover shadow-md md:w-full'
+                  className='hidden h-full w-full rounded-3xl object-cover shadow-md lg:block'
                 />
 
-                <div className='z-1 relative w-48 flex-shrink-0 rounded-lg p-2 shadow-md md:w-full'>
-                  <div
-                    className='absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transform bg-cover bg-center'
-                    style={{
-                      backgroundImage: `url(${hotel.photo[4]?.photo})`,
-                      opacity: 0.6,
-                    }}
+                <div className='flex gap-4 overflow-x-auto md:grid md:grid-cols-2'>
+                  <img
+                    src={hotel.photo[1]?.photo}
+                    alt={`Hotel ${hotel.name} hotel-photo`}
+                    className='flex-shrink-0 rounded-3xl object-cover shadow-md md:w-full'
                   />
-                  <div className='bg-blue-light absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform items-center justify-center gap-1 rounded-3xl p-3 pl-4 pr-4 md:min-w-40'>
-                    <SvgSprite name='image' width={24} />
-                    <Typography
-                      variant='s-bold'
-                      className='text-black cursor-pointer text-sm font-bold'
+                  <img
+                    src={hotel.photo[2]?.photo}
+                    alt={`Hotel ${hotel.name} hotel-photo`}
+                    className='flex-shrink-0 rounded-3xl object-cover shadow-md md:w-full'
+                  />
+                  <img
+                    src={hotel.photo[3]?.photo}
+                    alt={`Hotel ${hotel.name} hotel-photo`}
+                    className='flex-shrink-0 rounded-3xl object-cover shadow-md md:w-full'
+                  />
+
+                  <div className='relative w-48 flex-shrink-0 rounded-3xl p-2 shadow-md md:w-full'>
+                    <div
+                      className='absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transform bg-cover bg-center'
+                      style={{
+                        backgroundImage: `url(${hotel.photo[4]?.photo})`,
+                        opacity: 0.6,
+                      }}
+                    />
+
+                    <ButtonCustom
+                      onClick={handleClickAllPhoto}
+                      variant='tetriary'
+                      size='m'
+                      className='absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform items-center justify-center gap-1 rounded-3xl bg-blue-200 p-3 pl-4 pr-4 md:min-w-[180px]'
                     >
-                      Все фотографии
-                    </Typography>
+                      <div className='flex items-center gap-3'>
+                        <SvgSprite name='image' width={20} />
+                        <Typography variant='m-bold'>Все фотографии</Typography>
+                      </div>
+                    </ButtonCustom>
                   </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className='py-4'>
+                <ul className='grid h-[480px] gap-4 overflow-y-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+                  {hotel.photo.map((photo) => (
+                    <li key={nanoid()}>
+                      <img
+                        src={photo.photo}
+                        alt={`Hotel ${hotel.name} hotel-photo`}
+                        className='h-[230px] w-[300px] rounded-3xl object-cover shadow-md lg:block'
+                      />
+                    </li>
+                  ))}
+                  <li
+                    key={nanoid()}
+                    className='relative h-[230px] w-[300px] flex-shrink-0 rounded-3xl p-2 shadow-md md:w-full'
+                  >
+                    <div
+                      className='absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transform rounded-3xl bg-cover bg-center'
+                      style={{
+                        backgroundImage: `url(${hotel.photo[0]?.photo})`,
+                        opacity: 0.6,
+                      }}
+                    />
+                    <ButtonCustom
+                      onClick={handleClickBackPhoto}
+                      variant='tetriary'
+                      size='m'
+                      className='absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform cursor-pointer items-center justify-center gap-1 rounded-3xl bg-blue-200 p-3 pl-4 pr-4 md:min-w-40'
+                    >
+                      <div className='flex items-center gap-3'>
+                        <SvgSprite name='cross' width={15} />
+                        <Typography variant='m-bold'>Назад</Typography>
+                      </div>
+                    </ButtonCustom>
+                  </li>
+                </ul>
+              </div>
+            )}
 
             <div className='grid grid-cols-1 gap-4 py-4 lg:grid-cols-1'>
               <div className='grid grid-cols-1 gap-4 lg:grid-cols-4'>
