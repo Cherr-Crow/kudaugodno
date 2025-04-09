@@ -17,7 +17,7 @@ export function ToursBlockPhoto() {
   const [isOpenModalMap, setIsOpenModalMap] = useState(false);
   const [showAllPhoto, setShowAllPhoto] = useState<boolean>(false);
 
-  const { data: hotels } = useGetOneHotelQuery(2);
+  const { data: hotels } = useGetOneHotelQuery(1);
 
   const handleClickAllPhoto = () => {
     setShowAllPhoto(true);
