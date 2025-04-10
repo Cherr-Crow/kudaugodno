@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import Link from 'next/link';
 
+import { useCreateNewCompanyMutation } from '@/servicesApi/userApi';
 import { Modal } from '@/shared/modal';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
@@ -14,10 +15,12 @@ import { timeForComponent } from '@/shared/ui/time-for-component/time';
 import { IAuthForBusiness } from './AuthForBusiness.types';
 
 export function AuthForBusiness({}: IAuthForBusiness) {
-  const [file, setFile] = useState<string>('');
+  const [file, setFile] = useState<FileList | null>(null);
   const [buttonText, setButtonText] = useState<string | null>('Загрузить');
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isFormValid, setIsFormValid] = useState<boolean>(true);
+
+  const [role, setRole] = useState<string>('');
 
   const [hotelName, setHotelName] = useState<string>('');
   const [isHotelNameValid, setIsHotelNameValid] = useState<boolean>(true);
@@ -35,6 +38,8 @@ export function AuthForBusiness({}: IAuthForBusiness) {
 
   const [startTimer, setStartTimer] = useState<boolean>(false);
   const [seconds, setSeconds] = useState<number>(15);
+
+  const [registerCompany] = useCreateNewCompanyMutation();
 
   useEffect(() => {
     if (!startTimer) return;
@@ -105,7 +110,8 @@ export function AuthForBusiness({}: IAuthForBusiness) {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setFile(() => e.target.value);
+    console.log(e.target.files);
+    setFile(() => e.target.files);
 
     if (e.target.value !== '' && e.target.value !== null) {
       if (!e.target.files || e.target.files.length === 0) {
@@ -117,14 +123,14 @@ export function AuthForBusiness({}: IAuthForBusiness) {
   };
 
   const handleButtonDelete = () => {
-    setFile('');
+    setFile(null);
   };
 
   const handleCloseModal = () => {
     setIsOpenModal(false);
   };
 
-  const handleOpenModal = () => {
+  const handleOpenModal = async () => {
     if (
       isHotelNameValid &&
       hotelName !== '' &&
@@ -136,23 +142,50 @@ export function AuthForBusiness({}: IAuthForBusiness) {
       email !== '' &&
       phone.length == 18
     ) {
-      setIsOpenModal(true);
-      setStartTimer(true);
-      setSeconds(15);
+      const data = {
+        role: role,
+        first_name: name,
+        last_name: lastName,
+        email: email,
+        phone_number: phone,
+        company_name: hotelName,
+      };
 
-      setHotelName('');
-      setName('');
-      setLastName('');
-      setEmail('');
-      setPhone('');
-      setFile('');
-      setIsFormValid(true);
+      const formData = new FormData();
+      if (file !== null) {
+        formData.append('documents', file[0]);
+      }
+
+      for (const [key, value] of Object.entries(data)) {
+        formData.append(key, value);
+      }
+
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+
+      console.log(formData instanceof FormData);
+
+      try {
+        await registerCompany(formData).unwrap();
+        setIsOpenModal(true);
+        setStartTimer(true);
+        setSeconds(15);
+
+        setHotelName('');
+        setName('');
+        setLastName('');
+        setEmail('');
+        setPhone('');
+        setFile(null);
+        setIsFormValid(true);
+      } catch {}
     } else {
       setIsFormValid(false);
     }
   };
 
-  if (file == '') {
+  if (file == null) {
     contentButton = (
       <div>
         <label
@@ -177,6 +210,7 @@ export function AuthForBusiness({}: IAuthForBusiness) {
             id='file'
             name='file_arr[]'
             type='file'
+            accept='image/*,.jpg,.png,.jpeg'
           />
         </label>
       </div>
@@ -207,13 +241,27 @@ export function AuthForBusiness({}: IAuthForBusiness) {
             <Typography className='mb-7 w-[80%] text-center text-[32px]/[110%] font-black text-grey-950 md:mb-11 md:w-[100%] md:text-[48px] md:font-semibold'>
               Заявка на подключение
             </Typography>
-            <form className='mb-[25px] w-full md:mb-[30px]' method='post'>
+            <form
+              className='mb-[25px] w-full md:mb-[30px]'
+              method='post'
+              encType='multipart/form-data'
+            >
               <Typography className='mb-2 block text-[21px] font-semibold text-grey-950'>
                 Выберите тип
               </Typography>
               <div className='mb-3 flex'>
-                <Checkbox label='Туроператор' className='my-1 mr-7' />
-                <Checkbox label='Отельер' className='my-1' />
+                <Checkbox
+                  label='Туроператор'
+                  onChange={() => setRole('TOUR_OPERATOR')}
+                  isChecked={role === 'TOUR_OPERATOR'}
+                  className='my-1 mr-7'
+                />
+                <Checkbox
+                  label='Отельер'
+                  onChange={() => setRole('HOTELIER')}
+                  isChecked={role === 'HOTELIER'}
+                  className='my-1'
+                />
               </div>
 
               <label htmlFor='hotelName' className='mb-[17px] block'>

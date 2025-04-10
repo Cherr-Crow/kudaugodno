@@ -3,7 +3,10 @@
 import React, { useState } from 'react';
 
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
 
+import { selectUserId } from '@/rtk/userSlice';
+import { useGetUserDataQuery } from '@/servicesApi/userApi';
 import { PopupWindow } from '@/shared/popup-window';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
@@ -11,7 +14,11 @@ import { Typography } from '@/shared/typography';
 import { IHeader } from './Header.types';
 
 export function Header({ className }: IHeader) {
+  const userId = useSelector(selectUserId);
+
   const [openUser, setOpenUser] = useState(false);
+
+  const { data: user } = useGetUserDataQuery(undefined, { skip: !userId });
 
   const toggleUserMenu = () => {
     setOpenUser(!openUser);
@@ -48,6 +55,13 @@ export function Header({ className }: IHeader) {
               Поддержка
             </Typography>
           </div>
+          <a
+            href='/company-registration'
+            className='hidden items-center gap-1 rounded-lg text-[#4757EA] transition hover:shadow-md focus:shadow-md focus:outline-none focus-visible:shadow-md active:text-grey-950 md:flex'
+          >
+            <SvgSprite name='for-business' width={24} color='currentColor' />
+            <Typography variant='l'>Бизнесу</Typography>
+          </a>
           <SvgSprite
             name='bell'
             width={20}
@@ -56,10 +70,16 @@ export function Header({ className }: IHeader) {
           />
           <div className='relative'>
             <div
-              className='flex w-fit cursor-pointer items-center justify-center rounded-full border border-grey-950 p-1'
+              className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-grey-950 p-1`}
+              style={{
+                backgroundImage: user?.avatar ? `url('${user.avatar}')` : undefined,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+              }}
               onClick={toggleUserMenu}
             >
-              <SvgSprite name='user' width={24} color='#1a1f4c' />
+              {!user?.avatar && <SvgSprite name='user' width={24} color='#1a1f4c' />}
             </div>
             {openUser && (
               <PopupWindow className='absolute right-full flex flex-col gap-2 text-nowrap py-2'>

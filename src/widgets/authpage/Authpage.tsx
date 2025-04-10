@@ -2,6 +2,11 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+
+import { setUserEmail } from '@/rtk/userSlice';
+import { useGetCodeMutation, useConfirmCodeMutation } from '@/servicesApi/authApi';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
@@ -9,7 +14,45 @@ import { timeForComponent } from '@/shared/ui/time-for-component/time';
 
 import { IAuthpage } from './Authpage.types';
 
+function isRegisterError(
+  err: unknown,
+): err is { status: number; data: { error: string; register: boolean } } {
+  return (
+    typeof err === 'object' &&
+    err !== null &&
+    'status' in err &&
+    typeof err.status === 'number' &&
+    'data' in err &&
+    typeof err.data === 'object' &&
+    err.data !== null &&
+    'register' in err.data &&
+    typeof err.data.register === 'boolean' &&
+    'error' in err.data &&
+    typeof err.data.error === 'string'
+  );
+}
+
+function isRespFields(
+  resp: unknown,
+): resp is { role: string; id: number; refresh: string; access: string } {
+  return (
+    typeof resp === 'object' &&
+    resp !== null &&
+    'role' in resp &&
+    typeof resp.role === 'string' &&
+    'id' in resp &&
+    typeof resp.id === 'number' &&
+    'refresh' in resp &&
+    typeof resp.refresh === 'string' &&
+    'access' in resp &&
+    typeof resp.access === 'string'
+  );
+}
+
 export function Authpage({}: IAuthpage) {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const [showCodePanel, setShowCodePanel] = useState<boolean>(false);
   const [showBackArrow, setShowBackArrow] = useState<boolean>(false);
   const [seconds, setSeconds] = useState<number>(45);
@@ -28,12 +71,27 @@ export function Authpage({}: IAuthpage) {
   const inputRef3 = useRef<HTMLInputElement>(null);
   const inputRef4 = useRef<HTMLInputElement>(null);
 
-  const handleClick = () => {
+  const [getCode, { error }] = useGetCodeMutation();
+  const [confirmCode] = useConfirmCodeMutation();
+
+  const handleClick = async () => {
     if (isEmailValid && email !== '') {
-      setShowCodePanel(true);
-      setShowBackArrow(true);
-      setStartTimer(true);
-      setSeconds(45);
+      try {
+        await getCode({ email: email }).unwrap();
+        setShowCodePanel(true);
+        setShowBackArrow(true);
+        setStartTimer(true);
+        setSeconds(45);
+      } catch (err) {
+        if (isRegisterError(err)) {
+          const { register, error } = err.data;
+
+          if (register === false && error === 'Пользователь не найден') {
+            dispatch(setUserEmail(email));
+            return;
+          }
+        }
+      }
     }
   };
 
@@ -57,10 +115,25 @@ export function Authpage({}: IAuthpage) {
     };
   }, [startTimer, seconds]);
 
-  const handleSentNewCode = () => {
-    console.log('Прислать новый код');
-    setSeconds(45);
-    setStartTimer(true);
+  const handleSentNewCode = async () => {
+    try {
+      await getCode({ email: email }).unwrap();
+      setSeconds(45);
+      setStartTimer(true);
+    } catch (err) {
+      if (isRegisterError(err)) {
+        const { register, error } = err.data;
+
+        if (register === false && error === 'Пользователь не найден') {
+          dispatch(setUserEmail(email));
+          return;
+        }
+      }
+    }
+  };
+
+  const handleRegistration = () => {
+    router.push('/tourist-registration');
   };
 
   function emailValid(email: string) {
@@ -101,8 +174,6 @@ export function Authpage({}: IAuthpage) {
     input4,
   };
 
-  const codeForAuthArr = [+input1, +input2, input3, input4];
-
   useEffect(() => {
     if (input1 !== '' && input2 !== '' && input3 !== '' && input4 !== '') {
       setTimeout(() => {
@@ -111,8 +182,24 @@ export function Authpage({}: IAuthpage) {
           setInput2('');
           setInput3('');
           setInput4('');
-          console.log('Поехали! на сервер объектом:', codeForAuth);
-          console.log('Поехали! на сервер массивом:', codeForAuthArr);
+
+          const handleConfirmCode = async () => {
+            try {
+              const resp = await confirmCode({
+                email: email,
+                code: `${input1 + input2 + input3 + input4}`,
+              }).unwrap();
+              console.log('handle', resp);
+              if (isRespFields(resp)) {
+                if (resp.role === 'USER') {
+                  router.push('/admin-panel-tourist');
+                } else {
+                  router.push('/admin-panel-tour-operator');
+                }
+              }
+            } catch {}
+          };
+          handleConfirmCode();
         }
       }, 500);
     }
@@ -148,11 +235,10 @@ export function Authpage({}: IAuthpage) {
               <SvgSprite name='back-arrow' width={44} height={44} className='' />
             </button>
           )}
-
           {!showCodePanel ? (
             <div className='mx-auto flex h-[468px] max-w-[540px] flex-col items-center md:pt-[75px] lg:max-w-[580px] lg:pt-[55px]'>
               <Typography className='font-grey-950 mb-[30px] block text-[2rem] text-blue-900 md:mb-[36px] md:text-[40px] md:font-semibold md:text-grey-950 lg:mb-[56px] lg:text-[48px]'>
-                Добро пожаловать !
+                Добро пожаловать!
               </Typography>
               <form className='mb-[25px] w-full md:mb-[30px]'>
                 <Typography className='text-nowrap text-lg font-semibold text-grey-950 md:mb-[7px] md:block lg:text-[20px]'>
@@ -180,18 +266,42 @@ export function Authpage({}: IAuthpage) {
                     Некорректный адрес почты
                   </Typography>
                 )}
-                {!startTimer ? (
-                  <ButtonCustom
-                    type='button'
-                    onClick={handleClick}
-                    variant='primary'
-                    size='m'
-                    className='h-[70px] w-full px-[35px] py-[7px] md:mx-auto md:block md:w-auto md:px-[30px] md:py-[11px] lg:py-[20px]'
+                {error && isEmailValid && (
+                  <Typography
+                    variant='l-bold'
+                    className='mb-4 mt-[-16px] block text-wrap text-center text-[19px] font-normal text-red-primary-800 md:text-[18px] lg:text-[20px]'
                   >
-                    <Typography className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'>
-                      Получить код
-                    </Typography>
-                  </ButtonCustom>
+                    Пожалуйста, проверьте корректность введенного email или
+                    зарегистрируйтесь.
+                  </Typography>
+                )}
+                {!startTimer ? (
+                  <div className='flex justify-center gap-4'>
+                    <ButtonCustom
+                      type='button'
+                      onClick={handleClick}
+                      variant='primary'
+                      size='m'
+                      className='h-[70px] w-full px-[35px] py-[7px] md:block md:w-auto md:px-[30px] md:py-[11px] lg:py-[20px]'
+                    >
+                      <Typography className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'>
+                        Получить код
+                      </Typography>
+                    </ButtonCustom>
+                    {error && isEmailValid && (
+                      <ButtonCustom
+                        type='button'
+                        onClick={handleRegistration}
+                        variant='primary'
+                        size='m'
+                        className='h-[70px] w-full px-[35px] py-[7px] md:block md:w-auto md:px-[30px] md:py-[11px] lg:py-[20px]'
+                      >
+                        <Typography className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'>
+                          Зарегистрироваться
+                        </Typography>
+                      </ButtonCustom>
+                    )}
+                  </div>
                 ) : (
                   <Typography className='mb-[15px] block text-nowrap text-[20px] font-normal text-grey-700 md:mb-[21px] md:text-[18px] lg:mb-[28px] lg:text-[20px]'>
                     Запросить новый код через {timeForComponent(seconds)}
