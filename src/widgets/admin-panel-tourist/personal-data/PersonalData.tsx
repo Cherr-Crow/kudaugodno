@@ -2,9 +2,18 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import { z } from 'zod';
 
+import { selectUserId } from '@/rtk/userSlice';
+import {
+  useDeleteUserMutation,
+  useGetAllUsersDataQuery,
+  useUpdateUserMutation,
+} from '@/servicesApi/userApi';
+import { useGetUserDataQuery } from '@/servicesApi/userApi';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
@@ -118,16 +127,24 @@ type FormData = z.infer<typeof FormSchema>;
 
 export function PersonalData() {
   // Текст для инпута с датой рождения
+  const router = useRouter();
+  const userId = useSelector(selectUserId);
   const [birthDateText, setbirthDateText] = useState<string>('');
+
+  const { data: user } = useGetUserDataQuery(undefined, { skip: !userId });
+  const { data: users } = useGetAllUsersDataQuery(undefined, { skip: !userId });
+  const [changeTouristProfile] = useUpdateUserMutation();
+  const [deleteTouristProfile] = useDeleteUserMutation();
 
   // Форма
   const {
     register,
     setFocus,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(FormSchema),
-    defaultValues: { phone: '+7' },
   });
 
   // DIV, на фоне которого будет отображаться загруженное фото пользователя
@@ -141,8 +158,25 @@ export function PersonalData() {
     setFocus('firstName');
   }, []);
 
-  // Функция для обработки загруженного ползовательского фото для предварительного показа
-  function previewFile() {
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (users) {
+      console.log(users);
+    }
+  }, [users]);
+
+  // Функция для обработки загруженного пользовательского фото для предварительного показа
+  function previewFile(event: React.ChangeEvent<HTMLInputElement>) {
+    if (event.target.files) {
+      const avatar = event.target.files[0];
+      setValue('image', avatar);
+    }
+
     const preview = containerImg.current;
     const file = inputImg.current?.files?.[0];
     const reader = new FileReader();
@@ -161,6 +195,48 @@ export function PersonalData() {
     }
   }
 
+  const handleChangeProfile = async () => {
+    const values = getValues();
+    console.log(values);
+    const data = {
+      first_name: values.firstName ? values.firstName : user?.first_name,
+      last_name: values.lastName ? values.lastName : user?.last_name,
+      phone_number: values.phone ? values.phone : user?.phone_number,
+      email: values.email ? values.email : user?.email,
+      avatar: values.image ? values.image : user?.avatar,
+      birth_date: values.birthDate ? values.birthDate : user?.birth_date,
+    };
+
+    const formData = new FormData();
+
+    for (const [key, value] of Object.entries(data)) {
+      if (value !== undefined) {
+        formData.append(key, value);
+      }
+    }
+
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    try {
+      await changeTouristProfile(formData).unwrap();
+    } catch {}
+  };
+
+  const handleDeleteProfile = async () => {
+    try {
+      await deleteTouristProfile().unwrap();
+      router.push('/auth-page');
+    } catch {}
+  };
+
+  if (!user) {
+    return (
+      <div className='text-gray-500 py-10 text-center'>Загрузка профиля...</div>
+    );
+  }
+
   return (
     <section className='relative overflow-hidden pb-24 pt-11 md:static md:pb-36 md:pt-8 xl:pb-20 xl:pt-12'>
       <div className='absolute left-0 top-0 z-[-1] h-[213px] w-full rounded-bl-2xl rounded-br-2xl bg-[url("/admin-panel-tourist-bg375.svg")] bg-cover bg-no-repeat md:h-[427px] md:rounded-bl-[100px] md:rounded-br-none md:bg-[url("/admin-panel-tourist-bg960.svg")] xl:md:rounded-br-[100px] xl:bg-[url("/admin-panel-tourist-bg1446.svg")]'></div>
@@ -175,13 +251,19 @@ export function PersonalData() {
           <div className='mb-5 flex w-full flex-col md:flex-row md:items-center md:justify-between'>
             <div
               ref={containerImg}
-              className='mb-5 ml-auto mr-auto flex h-44 w-44 items-center justify-center rounded-full bg-[#C5DAFF] md:m-0 md:h-56 md:w-56'
+              className='mb-5 ml-auto mr-auto flex h-44 w-44 cursor-pointer items-center justify-center rounded-full bg-[#C5DAFF] md:m-0 md:h-56 md:w-56'
+              style={{
+                backgroundImage: user?.avatar ? `url('${user.avatar}')` : undefined,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+              }}
             >
               <label htmlFor='image'>
                 <input
                   {...register('image')}
-                  onChange={() => {
-                    previewFile();
+                  onChange={(e) => {
+                    previewFile(e);
                   }}
                   ref={inputImg}
                   type='file'
@@ -190,7 +272,7 @@ export function PersonalData() {
                   accept='image/*'
                   multiple={false}
                 />
-                <SvgSprite name='add-image' />
+                <SvgSprite name='add-image' className='cursor-pointer' />
               </label>
             </div>
             {errors.image && (
@@ -208,7 +290,7 @@ export function PersonalData() {
                   id='firstName'
                   className='border-neutral-500/[1] w-full rounded-lg border p-3 text-base font-normal leading-6'
                   type='text'
-                  placeholder='Иван'
+                  placeholder={`${user ? user.first_name : 'Иван'}`}
                 />
                 {errors.firstName && (
                   <Typography variant='s' className='text-red-primary-800'>
@@ -225,7 +307,7 @@ export function PersonalData() {
                   id='lastName'
                   className='border-neutral-500/[1] w-full rounded-lg border p-3 text-base font-normal leading-6'
                   type='text'
-                  placeholder='Иванов'
+                  placeholder={`${user ? user.last_name : 'Иванов'}`}
                 />
                 {errors.lastName && (
                   <Typography variant='s' className='text-red-primary-800'>
@@ -239,7 +321,11 @@ export function PersonalData() {
                 </Typography>
                 <div className='relative'>
                   <Typography className='text-neutral-500/[1] absolute left-[0.75rem] top-1/2 -translate-y-1/2 text-base font-normal leading-6'>
-                    {birthDateText}
+                    {user
+                      ? user.birth_date?.split('-').reverse().join('.')
+                      : birthDateText
+                        ? birthDateText
+                        : '01.08.1990'}
                   </Typography>
                   <input
                     {...register('birthDate')}
@@ -271,7 +357,7 @@ export function PersonalData() {
                   id='email'
                   className='border-neutral-500/[1] w-full rounded-lg border p-3 text-base font-normal leading-6'
                   type='text'
-                  placeholder='example@gmail.com'
+                  placeholder={`${user ? user.email : 'example@gmail.com'}`}
                 />
                 {errors.email && (
                   <Typography variant='s' className='text-red-primary-800'>
@@ -288,7 +374,7 @@ export function PersonalData() {
                   id='phone'
                   className='border-neutral-500/[1] w-full rounded-lg border p-3 text-base font-normal leading-6'
                   type='text'
-                  placeholder='+7(***)*******'
+                  placeholder={`${user ? `${user.phone_number}` : '+7(***)*******'}`}
                   autoComplete='off'
                 />
                 {errors.phone && (
@@ -299,15 +385,31 @@ export function PersonalData() {
               </label>
             </div>
           </div>
-          <ButtonCustom
-            className='w-full md:max-w-[9.50rem] md:px-7 md:py-3 xl:px-7 xl:py-5'
-            variant='primary'
-            size='s'
-            type='submit'
-          >
-            Сохранить
-          </ButtonCustom>
-          <div className='hidden md:absolute md:-bottom-28 md:left-16 md:block xl:hidden'>
+          <div className='w-full text-center md:flex md:flex-row-reverse md:justify-between'>
+            <ButtonCustom
+              className='mb-4 w-full md:max-w-[9.50rem] md:px-7 md:py-3 xl:px-7 xl:py-5'
+              variant='primary'
+              size='s'
+              type='button'
+              onClick={handleChangeProfile}
+            >
+              Сохранить
+            </ButtonCustom>
+            <button
+              className='text-[#E94C4C] transition hover:text-red-primary-800 focus:text-red-primary-800 focus-visible:text-red-primary-800 active:text-red-primary-400'
+              onClick={handleDeleteProfile}
+              type='button'
+            >
+              <Typography
+                variant='s-bold'
+                className='text-lg font-normal lg:text-xl'
+              >
+                Удалить профиль
+              </Typography>
+            </button>
+          </div>
+
+          <div className='hidden md:absolute md:-bottom-28 md:right-[28%] md:block xl:hidden'>
             <SvgSprite name='frog-on-chair' />
           </div>
           <div className='hidden xl:absolute xl:-bottom-[5.50rem] xl:-left-[3.38rem] xl:block'>

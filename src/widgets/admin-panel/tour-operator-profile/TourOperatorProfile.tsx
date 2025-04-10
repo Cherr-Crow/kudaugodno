@@ -1,12 +1,161 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
+import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
+
+import { selectUserId } from '@/rtk/userSlice';
+import { useLogoutMutation } from '@/servicesApi/authApi';
+import {
+  useDeleteUserMutation,
+  useGetAllUsersDataQuery,
+  useGetUserDataQuery,
+  useUpdateUserMutation,
+} from '@/servicesApi/userApi';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { Checkbox } from '@/shared/ui/checkbox';
+import { ICompany, ITourist } from '@/types/users';
+
+function isCompany(user: ITourist | ICompany): user is ICompany {
+  return 'company_name' in user;
+}
 
 export function TourOperatorProfile() {
+  const userId = useSelector(selectUserId);
+  const router = useRouter();
+
   const [isMenuVisible, setIsVisible] = useState<boolean>(false);
+  const [companyName, setCompanyName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [avatar, setAvatar] = useState<FileList | null>(null);
+
+  const [emailPlaceholder, setEmailPlaceholder] = useState('example@gmail.com');
+  const [bgStyle, setBgStyle] = useState<React.CSSProperties>({});
+
+  const containerImg = useRef<HTMLDivElement>(null);
+  const inputImg = useRef<HTMLInputElement>(null);
+
+  const { data: user } = useGetUserDataQuery(undefined, { skip: !userId });
+  const { data: users } = useGetAllUsersDataQuery(undefined, { skip: !userId });
+  const [changeCompanyData] = useUpdateUserMutation();
+  const [logout] = useLogoutMutation();
+  const [deleteCompanyProfile] = useDeleteUserMutation();
+
+  const handleEditProfile = async () => {
+    setIsVisible(false);
+    console.log(companyName, email, phone);
+
+    let companyNameFromUser;
+
+    if (
+      user &&
+      isCompany(user) &&
+      user.company_name &&
+      (user.role === 'TOUR_OPERATOR' || user.role === 'HOTELIER')
+    ) {
+      companyNameFromUser = user.company_name;
+    }
+
+    const data = {
+      first_name: user?.first_name,
+      last_name: user?.last_name,
+      phone_number: phone ? phone : user?.phone_number,
+      email: email ? email : user?.email,
+      company_name: companyName ? companyName : companyNameFromUser,
+      // avatar: avatar ? avatar[0] : user?.avatar,
+    };
+
+    const formData = new FormData();
+
+    if (avatar) {
+      formData.append('avatar', avatar[0]);
+    }
+
+    for (const [key, value] of Object.entries(data)) {
+      if (value !== undefined && value !== null) {
+        formData.append(key, value as string | Blob);
+      }
+    }
+    console.log(formData);
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+    console.log(formData instanceof FormData);
+    if (user?.id) {
+      try {
+        await changeCompanyData(formData).unwrap();
+      } catch {}
+    }
+  };
+
+  const handleDeleteCompany = async () => {
+    if (user?.id) {
+      try {
+        await deleteCompanyProfile().unwrap();
+        router.push('/auth-page');
+      } catch {}
+    }
+  };
+
+  function previewFile() {
+    const preview = containerImg.current;
+    const file = inputImg.current?.files?.[0];
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (typeof reader.result === 'string' && preview) {
+        preview.style.backgroundImage = `url(${reader.result as string})`;
+        preview.style.backgroundPosition = 'center';
+        preview.style.backgroundSize = 'cover';
+        preview.style.backgroundRepeat = 'no-repeat';
+      }
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      logout();
+      router.push('/auth-page');
+    } catch {}
+  };
+
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (users) {
+      console.log(users);
+    }
+  }, [users]);
+
+  useEffect(() => {
+    if (user?.email) {
+      setEmailPlaceholder(user.email);
+    }
+    if (user?.avatar) {
+      setBgStyle({
+        backgroundImage: `url('${user.avatar}')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      });
+    }
+  }, [user]);
+
+  if (!user) {
+    return (
+      <div className='text-gray-500 py-10 text-center'>Загрузка профиля...</div>
+    );
+  }
 
   return (
     <div className='mx-auto md:mx-0 md:w-full'>
@@ -37,91 +186,124 @@ export function TourOperatorProfile() {
             <SvgSprite name='more' className='' />
           </button>
           {isMenuVisible && (
-            <div className='z-1 absolute right-0 top-11 rounded-[20px] border-2 border-grey-50 bg-white shadow-lg md:top-[3.75rem]'>
-              <button className='rounded-[20px] px-4 py-2 text-left hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'>
+            <div className='z-1 absolute right-0 top-11 flex flex-col rounded-[20px] border-2 border-grey-50 bg-white shadow-lg md:top-[3.75rem]'>
+              <button
+                className='rounded-[20px] px-4 py-2 text-left hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
+                onClick={handleEditProfile}
+              >
                 Редактировать
+              </button>
+              <button
+                className='rounded-[20px] px-4 py-2 text-left text-red-primary-800 hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
+                onClick={handleLogout}
+              >
+                Выйти
+              </button>
+              <button
+                className='rounded-[20px] px-4 py-2 text-left text-red-primary-800 hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
+                onClick={handleDeleteCompany}
+              >
+                Удалить профиль
               </button>
             </div>
           )}
         </div>
         <form
           id='tour-operator-data'
-          className='flex flex-col md:flex-row md:flex-wrap'
+          className='flex flex-col md:flex-row md:justify-between'
           action='PUT'
         >
-          <div className='mb-4 w-full md:mr-[18px] md:w-[calc((100%-18px)/2)]'>
-            <label
-              className='mb-2 inline-block text-[20px] font-medium md:mb-1'
-              htmlFor='name'
-            >
-              Название туроператора
+          <div
+            ref={containerImg}
+            className='mb-5 ml-auto mr-auto flex h-44 w-44 cursor-pointer items-center justify-center rounded-full bg-[#C5DAFF] md:m-0 md:h-[140px] md:w-[140px]'
+            style={bgStyle}
+          >
+            <label htmlFor='image'>
+              <input
+                onChange={(e) => {
+                  previewFile();
+                  setAvatar(e.target.files);
+                }}
+                ref={inputImg}
+                type='file'
+                id='image'
+                className='hidden'
+                accept='image/*'
+                multiple={false}
+              />
+              <SvgSprite name='add-image' className='cursor-pointer' />
             </label>
-            <input
-              id='tour-operator-name'
-              className='transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none md:pt-3'
-              type='text'
-              name='name'
-              placeholder='Введите название туроператора'
-            />
           </div>
-          <div className='mb-4 w-full md:w-[calc((100%-18px)/2)]'>
-            <label
-              className='mb-2 inline-block text-[20px] font-medium md:mb-1'
-              htmlFor='address'
-            >
-              Адрес
-            </label>
-            <input
-              id='tour-operator-address'
-              className='transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none md:pt-3'
-              type='text'
-              name='address'
-              placeholder='Введите адрес туроператора'
-            />
-          </div>
-          <div className='mb-4 w-full md:mr-[18px] md:w-[calc((100%-18px)/2)]'>
-            <label
-              className='mb-2 block text-[20px] font-medium md:mb-1'
-              htmlFor='email'
-            >
-              Email
-            </label>
-            <input
-              id='tour-operator-email'
-              className='transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none md:pt-3'
-              type='email'
-              name='email'
-              placeholder='example@gmail.com'
-            />
-          </div>
-          <div className='mb-4 w-full md:w-[calc((100%-18px)/2)]'>
-            <label
-              className='mb-2 block text-[20px] font-medium md:mb-1'
-              htmlFor='phone'
-            >
-              Телефон
-            </label>
-            <input
-              id='tour-operator-phone'
-              className='transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none md:pt-3'
-              type='phone'
-              name='phone'
-              placeholder='+7(9**)*******'
-            />
-          </div>
-          <div className='w-full'>
-            <label
-              className='mb-2 block text-[20px] font-medium md:mb-1'
-              htmlFor='descr'
-            >
-              Краткое описание
-            </label>
-            <textarea
-              id='tour-operator-descr'
-              className='transition-border block min-h-[87px] w-full rounded-[8px] border border-grey-700 px-3 pb-3 pt-3 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none md:pt-3'
-              name='descr'
-              placeholder='Здесь можете ввести описание'
-            ></textarea>
+          <div className='w-full md:w-[70%] lg:w-[80%]'>
+            <div className='mb-4 w-full'>
+              <label
+                className='mb-2 inline-block text-[20px] font-medium md:mb-1'
+                htmlFor='name'
+              >
+                Название туроператора
+              </label>
+              <input
+                id='tour-operator-name'
+                className='transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none md:pt-3'
+                onChange={(e) => {
+                  setCompanyName(e.target.value);
+                }}
+                type='text'
+                name='name'
+                placeholder={`${user && isCompany(user) ? user.company_name : 'Название туроператора'}`}
+              />
+            </div>
+            <div className='mb-4 w-full'>
+              <label
+                className='mb-2 inline-block text-[20px] font-medium md:mb-1'
+                htmlFor='address'
+              >
+                Адрес
+              </label>
+              <input
+                id='tour-operator-address'
+                className='transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none md:pt-3'
+                type='text'
+                name='address'
+                placeholder='Введите адрес туроператора'
+              />
+            </div>
+            <div className='mb-4 w-full'>
+              <label
+                className='mb-2 block text-[20px] font-medium md:mb-1'
+                htmlFor='email'
+              >
+                Email
+              </label>
+              <input
+                id='tour-operator-email'
+                className='transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none md:pt-3'
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                type='email'
+                name='email'
+                placeholder={emailPlaceholder}
+              />
+            </div>
+            <div className='mb-4 w-full'>
+              <label
+                className='mb-2 block text-[20px] font-medium md:mb-1'
+                htmlFor='phone'
+              >
+                Телефон
+              </label>
+              <input
+                id='tour-operator-phone'
+                className='transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none md:pt-3'
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                }}
+                type='phone'
+                name='phone'
+                placeholder={`${user ? user.phone_number : '+7(9**)*******'}`}
+              />
+            </div>
           </div>
         </form>
       </div>

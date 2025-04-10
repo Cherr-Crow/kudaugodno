@@ -84,4 +84,5 @@ export type NameSvg =
   | 'admin-response'
   | 'comments'
   | 'ellipsisVertical'
-  | 'greenCircle';
+  | 'greenCircle'
+  | 'for-business';
