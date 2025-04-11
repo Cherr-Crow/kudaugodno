@@ -29,6 +29,10 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
       setTitle('Добавить отель');
       setOpenTabsAddHotel(true);
       return;
+    } else if (patch.includes('insurance')) {
+      setTitle('Страховки');
+      setOpenTabsAddHotel(false);
+      return;
     } else {
       setTitle('Личный кабинет туроператора');
       setOpenTabsAddHotel(false);

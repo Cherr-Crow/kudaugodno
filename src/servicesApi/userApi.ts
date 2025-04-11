@@ -21,7 +21,6 @@ export const userApi = createApi({
         const role = getRoleFromStore();
         const id = getUserIdFromStore();
         const token = getAccessToken();
-        // console.log(id, role)
 
         return {
           url: `${role}/${id}/`,
