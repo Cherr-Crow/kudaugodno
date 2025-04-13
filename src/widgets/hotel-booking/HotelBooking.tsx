@@ -36,8 +36,8 @@ const calculateNights = (checkIn: string, checkOut: string) => {
 };
 
 export function HotelBooking({ hotelId }: IHotelBooking) {
-  const [email, setEmail] = useState(localStorage.getItem('email') || '');
-  const [phone, setPhone] = useState(localStorage.getItem('phone') || '');
+  //  Загрузка дынных из блока поиска
+
   const [searchData, setSearchData] = useState(() => {
     const storedData = localStorage.getItem('searchData');
     return storedData
@@ -53,34 +53,22 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const storedEmail = localStorage.getItem('email');
-      const storedPhone = localStorage.getItem('phone');
       const storedSearchData = localStorage.getItem('searchData');
-      if (storedEmail) setEmail(storedEmail);
-      if (storedPhone) setPhone(storedPhone);
       if (storedSearchData) setSearchData(JSON.parse(storedSearchData));
     }
   }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem('email', email);
-      localStorage.setItem('phone', phone);
       localStorage.setItem('searchData', JSON.stringify(searchData));
     }
-  }, [email, phone, searchData]);
+  }, [searchData]);
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhone(e.target.value);
-  };
+  // Данные
 
   const nights = calculateNights(searchData.checkInDate, searchData.checkOutDate);
 
-  const mockData = {
+  const [mockData, setMockData] = useState({
     dates: `${searchData.checkInDate} - ${searchData.checkOutDate}`,
     guestsInfo: `${searchData.guests} ${searchData.guests === 1 ? 'гость' : searchData.guests < 5 ? 'взрослых' : 'взрослых'} на ${nights} ${nights === 1 ? 'ночь' : nights < 5 ? 'ночи' : 'ночей'}`,
     paymentInfo: 'Необходимо оплатить при заселении',
@@ -96,8 +84,61 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
     checkInDate: searchData.checkInDate,
     checkOutDate: searchData.checkOutDate,
     guests: extractNumber(searchData.guests),
+    phone: '',
+    email: '',
+    wishes: '',
+    guestsDetails: Array.from(
+      { length: extractNumber(searchData.guests) },
+      (_, index) => ({
+        pk: index,
+        firstname: '',
+        lastname: '',
+      }),
+    ),
+  });
+
+  // Контакты
+
+  const handleContactChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
+    setMockData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
+  // Гости
+
+  const handleGuestChange = (
+    index: number,
+    field: 'firstname' | 'lastname',
+    value: string,
+  ) => {
+    setMockData((prevState) => {
+      const updatedGuests = [...prevState.guestsDetails];
+      updatedGuests[index] = {
+        ...updatedGuests[index],
+        [field]: value,
+      };
+      return {
+        ...prevState,
+        guestsDetails: updatedGuests,
+      };
+    });
+  };
+
+  // Дополнительные пожелания
+
+  const handleWishesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const updatedWishes = event.target.value;
+    setMockData((prevState) => ({
+      ...prevState,
+      wishes: updatedWishes,
+    }));
+  };
+
+  // Поиск отеля по hotelId
   const hotel = hotels.find((h) => h.id === hotelId);
   if (!hotel) {
     return <div>Отель не найден</div>;
@@ -187,10 +228,10 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
                   </Typography>
                   <NamedInput
                     id='email'
-                    name='Email'
+                    name='email'
                     type='text'
-                    value={email}
-                    onChange={handleEmailChange}
+                    value={mockData.email}
+                    onChange={handleContactChange}
                     placeholder='example@gmail.com'
                   />
                 </div>
@@ -200,10 +241,10 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
                   </Typography>
                   <NamedInput
                     id='phone'
-                    name='Телефон'
+                    name='phone'
                     type='tel'
-                    value={phone}
-                    onChange={handlePhoneChange}
+                    value={mockData.phone}
+                    onChange={handleContactChange}
                     placeholder='+7 (999) 678-22-22'
                   />
                 </div>
@@ -248,6 +289,7 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
                   )}
 
                   <div className='flex flex-col gap-2 md:flex-row'>
+                    {/* Имя */}
                     <div className='flex w-full flex-col gap-2 md:w-1/2 md:pr-2'>
                       <Typography variant='l' className='font-bold text-grey-950'>
                         Имя
@@ -257,8 +299,14 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
                         name='Имя'
                         type='text'
                         placeholder='Иван'
+                        value={mockData.guestsDetails[index]?.firstname || ''}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          handleGuestChange(index, 'firstname', e.target.value)
+                        }
                       />
                     </div>
+
+                    {/* Фамилия */}
                     <div className='flex w-full flex-col gap-2 md:w-1/2 md:pl-2'>
                       <Typography variant='l' className='font-bold text-grey-950'>
                         Фамилия
@@ -268,6 +316,10 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
                         name='Фамилия'
                         type='text'
                         placeholder='Иванов'
+                        value={mockData.guestsDetails[index]?.lastname || ''}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          handleGuestChange(index, 'lastname', e.target.value)
+                        }
                       />
                     </div>
                   </div>
@@ -292,6 +344,8 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
               className='border-gray-300 w-full rounded-md border border-blue-600 p-2 px-4 py-2 text-grey-800 focus:outline-none focus:ring-1 focus:ring-blue-500'
               placeholder='Здесь можно написать свои пожелания'
               rows={3}
+              value={mockData.wishes || ''}
+              onChange={handleWishesChange}
             />
           </div>
         </div>

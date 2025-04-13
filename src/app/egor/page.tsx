@@ -1,16 +1,20 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
+import { useGetApplicationsQuery } from '@/servicesApi/applicationsApi';
 import { hotels } from '@/temp/hotel-mock';
 import { HotelCatalog } from '@/widgets/hotel-catalog';
 
 export default function Egor() {
   const [isClient, setIsClient] = useState(false);
-
+  const { data } = useGetApplicationsQuery({
+    limit: 10,
+    offset: 0,
+  });
   useEffect(() => {
     setIsClient(true);
   }, []);
-
+  console.log(data);
   return (
     <div className={`ml-5 mt-5 flex-col`}>
       <div className='container'>

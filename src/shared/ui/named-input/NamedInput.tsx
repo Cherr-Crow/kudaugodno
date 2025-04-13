@@ -16,12 +16,14 @@ export function NamedInput(props: INamedInput) {
     type = 'text',
     startValue,
     disabled,
+    onChange,
   } = props;
   const [value, setValue] = useState(startValue ?? '');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (disabled) return;
     setValue(event.target.value);
+    onChange?.(event);
   };
 
   const handlePushValue = () => {

@@ -214,7 +214,7 @@ export function HotelCatalog({ hotels }: Props) {
 
   return (
     <div className='hotel-catalog-page container flex justify-center'>
-      <div className='flex flex-col md:flex-row'>
+      <div className='flex w-full flex-col md:flex-row'>
         <aside
           className={`w-full p-4 md:w-1/4 ${filtersVisible ? 'block' : 'hidden'} lg:block`}
         >

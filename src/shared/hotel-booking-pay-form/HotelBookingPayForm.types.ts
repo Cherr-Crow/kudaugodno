@@ -27,5 +27,20 @@ export interface IHotelBookingPayForm extends DivProps {
     insurance?: string;
     tourId?: number;
     hotelId?: number;
+    phone?: string;
+    email?: string;
+    wishes?: string;
+    med_insurance?: boolean;
+    visa?: boolean;
+    cancellation_insurance?: boolean;
+    guestsDetails?: {
+      pk: number;
+      firstname: string;
+      lastname: string;
+      date_born?: string;
+      citizenship?: string;
+      international_passport_no?: string;
+      validity_international_passport?: string;
+    }[];
   };
 }
