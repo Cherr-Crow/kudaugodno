@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import { applicationsApi } from '@/servicesApi/applicationsApi';
 import { authApi } from '@/servicesApi/authApi';
 import { flightsApi } from '@/servicesApi/flightsApi';
 import { hotelsApi } from '@/servicesApi/hotelsApi';
@@ -16,6 +17,7 @@ export const store = configureStore({
     [hotelsApi.reducerPath]: hotelsApi.reducer,
     [flightsApi.reducerPath]: flightsApi.reducer,
     [toursApi.reducerPath]: toursApi.reducer,
+    [applicationsApi.reducerPath]: applicationsApi.reducer,
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware().concat(
@@ -24,6 +26,7 @@ export const store = configureStore({
       hotelsApi.middleware,
       flightsApi.middleware,
       toursApi.middleware,
+      applicationsApi.middleware,
     ),
 });
 

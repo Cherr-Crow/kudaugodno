@@ -2,8 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 
+import { useAddApplicationMutation } from '@/servicesApi/applicationsApi';
 import { Typography } from '@/shared/typography';
 import { hotels } from '@/temp/hotel-mock';
+import { IGuest } from '@/types/guest';
 
 import { HotelBookingModalCancel } from '../hotel-booking-modal-cancel';
 import { HotelBookingModalConfirm } from '../hotel-booking-modal-confirm';
@@ -38,12 +40,64 @@ interface BookingData {
   tourId?: number;
   hotelId?: number;
   type: 'hotel' | 'tour';
+  phone: string;
+  email: string;
+  wishes: string;
+  med_insurance?: boolean;
+  visa?: boolean;
+  cancellation_insurance?: boolean;
+  guestsDetails: {
+    pk: number;
+    firstname: string;
+    lastname: string;
+    date_born: string;
+    citizenship: string;
+    international_passport_no: string;
+    validity_international_passport: string;
+  }[];
 }
+
+const useAutoSubmitApplication = () => {
+  const [addApplication, { isLoading, isSuccess, isError, error }] =
+    useAddApplicationMutation();
+
+  useEffect(() => {
+    const raw = localStorage.getItem('bookingData');
+    if (!raw) return;
+
+    const data = JSON.parse(raw);
+
+    if (!data || !data.tourId || data.submitted) return;
+
+    const requestData = {
+      tour: data.tourId,
+      email: data.email,
+      phone_number: data.phone_number,
+      visa: data.visa,
+      med_insurance: data.med_insurance,
+      cancellation_insurance: data.cancellation_insurance,
+      wishes: data.wishes,
+      quantity_guests: Array.isArray(data.guests)
+        ? data.guests.map((guest: IGuest) => guest.pk)
+        : [],
+    };
+
+    addApplication({ body: requestData });
+
+    localStorage.setItem(
+      'bookingData',
+      JSON.stringify({ ...data, submitted: true }),
+    );
+  }, []);
+
+  return { isLoading, isSuccess, isError, error };
+};
 
 export default function HotelBookingCompleted() {
   const [bookingData, setBookingData] = useState<BookingData | null>(null);
   const [isCancelModalOpen, setCancelModalOpen] = useState(false);
   const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+  useAutoSubmitApplication();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
