@@ -1,7 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { useSelector } from 'react-redux';
+
+import { selectUserId } from '@/rtk/userSlice';
+import {
+  useGetInsuranceDataQuery,
+  useUpdateInsurancesMutation,
+} from '@/servicesApi/insurancesApi';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
@@ -9,13 +16,72 @@ import { Select } from '@/shared/ui/select';
 
 import { IInsurance } from './Insurance.types';
 
+const insuranceCompanies = [
+  'Т-Страхование',
+  'Совкомбанк Страхование',
+  'Сбербанк Страхование',
+  'ВСК Страхование',
+  'Росгорстрах',
+  'РЕСО Страхование',
+  'Согласие',
+  'СОГАЗ',
+  'Альфа Страхование',
+  'Ренессанс Страхование',
+  'Ингострах',
+  'INTOUCH',
+];
+
 export function Insurance({}: IInsurance) {
-  // Видимость блока со страховкой от невыезда
-  const [visibleDeparture, setVisibleDeparture] = useState(false);
+  const userId = useSelector(selectUserId);
+
+  const [visibleDeparture, setVisibleDeparture] = useState<boolean>(false);
+  const [medicalCompany, setMedicalCompany] = useState<string>('');
+  const [departureCompany, setDepartureCompany] = useState<string>('');
+
+  const { data: insurance } = useGetInsuranceDataQuery(undefined, { skip: !userId });
+  const [changeInsurances] = useUpdateInsurancesMutation();
+
+  useEffect(() => {
+    if (insurance) {
+      if (insurance.medical) {
+        setMedicalCompany(insurance.medical);
+      }
+      if (insurance.not_leaving) {
+        setDepartureCompany(insurance.not_leaving);
+        if (insurance.not_leaving === 'Не выбрано') {
+          setVisibleDeparture(false);
+        } else {
+          setVisibleDeparture(true);
+        }
+      }
+    }
+  }, [insurance]);
+
+  const handleChangeInsurances = async () => {
+    const changeData = {
+      medical: medicalCompany ? medicalCompany : '',
+      not_leaving: departureCompany ? departureCompany : '',
+    };
+    changeInsurances(changeData);
+  };
+
+  const handleCancel = () => {
+    if (insurance) {
+      setMedicalCompany(insurance.medical);
+      if (insurance.not_leaving) {
+        setDepartureCompany(insurance.not_leaving);
+        setVisibleDeparture(true);
+      }
+    }
+  };
+
+  if (!insurance) {
+    return <div className='text-gray-500 py-10 text-center'>Загрузка...</div>;
+  }
 
   return (
-    <section className='w-full'>
-      <form className='flex flex-col gap-[20px]'>
+    <section className='w-full lg:min-w-[352px]'>
+      <form className='flex flex-col gap-[20px] lg:h-full'>
         <div className='flex flex-col gap-[20px]'>
           <Typography variant='h5' className='text-[16px] leading-[24px]'>
             Медицинская
@@ -25,21 +91,32 @@ export function Insurance({}: IInsurance) {
               <Typography variant='h5' className='text-[16px] leading-[24px]'>
                 Страховая компания
               </Typography>
-              <Select
-                options={['123']}
-                color='blue'
-                size='small'
-                className='w-full'
-              />
+              {medicalCompany !== '' && (
+                <Select
+                  options={[...insuranceCompanies, 'Не выбрано']}
+                  color='blue'
+                  size='small'
+                  className='w-full'
+                  getValue={(e) => setMedicalCompany(e)}
+                  startValue={medicalCompany !== '' ? medicalCompany : 'Не выбрано'}
+                />
+              )}
             </div>
           </div>
         </div>
         <div className='flex flex-col gap-[20px]'>
           <div
-            onClick={() => setVisibleDeparture(!visibleDeparture)}
+            onClick={() => {
+              setVisibleDeparture(!visibleDeparture);
+              setDepartureCompany('Не выбрано');
+            }}
             className='w-fit'
           >
-            <Checkbox label='От невыезда' />
+            <Checkbox
+              label='От невыезда'
+              isChecked={visibleDeparture}
+              onChange={() => setVisibleDeparture(!visibleDeparture)}
+            />
           </div>
           {visibleDeparture && (
             <div className='flex w-full flex-col gap-[20px]'>
@@ -47,21 +124,39 @@ export function Insurance({}: IInsurance) {
                 <Typography variant='h5' className='text-[16px] leading-[24px]'>
                   Страховая компания
                 </Typography>
-                <Select
-                  options={['123']}
-                  color='blue'
-                  size='small'
-                  className='w-full'
-                />
+                {medicalCompany !== '' && (
+                  <Select
+                    options={[...insuranceCompanies, 'Не выбрано']}
+                    color='blue'
+                    size='small'
+                    className='w-full'
+                    getValue={(e) => setDepartureCompany(e)}
+                    startValue={
+                      departureCompany !== '' ? departureCompany : 'Не выбрано'
+                    }
+                  />
+                )}
               </div>
             </div>
           )}
         </div>
-        <div className={'mt-[8px] flex gap-4 sm:mt-[12px] sm:justify-end'}>
-          <ButtonCustom variant='secondary' size='s'>
+        <div
+          className={'mt-[8px] flex gap-4 sm:mt-[12px] sm:justify-end lg:mt-auto'}
+        >
+          <ButtonCustom
+            variant='secondary'
+            size='s'
+            type='button'
+            onClick={handleCancel}
+          >
             <Typography variant='l-bold'>Отменить</Typography>
           </ButtonCustom>
-          <ButtonCustom variant='primary' size='s'>
+          <ButtonCustom
+            variant='primary'
+            size='s'
+            onClick={handleChangeInsurances}
+            type='button'
+          >
             <Typography variant='l-bold'>Сохранить</Typography>
           </ButtonCustom>
         </div>
