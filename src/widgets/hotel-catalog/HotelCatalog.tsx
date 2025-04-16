@@ -5,6 +5,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
+import { useGetHotelsQuery } from '@/servicesApi/hotelsApi';
+import { useGetToursQuery } from '@/servicesApi/toursApi';
 import { FilterAirportDistance } from '@/shared/filter-airport-distance';
 import { FilterAmenities } from '@/shared/filter-amenities';
 import { FilterCity } from '@/shared/filter-city';
@@ -21,13 +23,11 @@ import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { SearchBlock } from '@/shared/ui/search-block';
 import { Hotel } from '@/types/hotel';
+import { ITour } from '@/types/tour-type';
 
-interface Props {
-  hotels: Hotel[];
-}
-
-export function HotelCatalog({ hotels }: Props) {
+export function HotelCatalog() {
   {
     /* Отзывы*/
   }
@@ -72,6 +72,38 @@ export function HotelCatalog({ hotels }: Props) {
   const [amenities, setAmenities] = useState<string[]>([]);
   const [airportDistance, setAirportDistance] = useState<string>('Любое');
   const [tourOperators, setTourOperators] = useState<string[]>([]);
+  const [tab, setTab] = useState<'Туры' | 'Отели'>('Отели');
+  const { data: hotelData, refetch: refetchHotels } = useGetHotelsQuery(
+    { limit: 10, offset: 0 },
+    { skip: tab !== 'Отели' },
+  );
+  const { data: tourData, refetch: refetchTours } = useGetToursQuery(
+    { limit: 10, offset: 0 },
+    { skip: tab !== 'Туры' },
+  );
+
+  const hotels = useMemo<Hotel[]>(() => {
+    if (tab === 'Отели') {
+      return hotelData?.results || [];
+    }
+
+    if (tab === 'Туры' && tourData?.length && hotelData?.results?.length) {
+      const hotelMap = new Map(hotelData.results.map((h) => [h.id, h]));
+
+      return tourData
+        .map((tour) => {
+          const hotel = hotelMap.get(tour.hotel);
+          if (!hotel) return null;
+          return {
+            ...hotel,
+            tourInfo: tour,
+          };
+        })
+        .filter((h): h is Hotel & { tourInfo: ITour } => h !== null);
+    }
+
+    return [];
+  }, [tab, hotelData, tourData]);
 
   const handleFiltersReset = () => {
     setSelectedCities([]);
@@ -152,6 +184,7 @@ export function HotelCatalog({ hotels }: Props) {
   const filteredHotels = useMemo(
     () => filterHotels(),
     [
+      hotels,
       selectedCities,
       recreationType,
       placeType,
@@ -175,7 +208,8 @@ export function HotelCatalog({ hotels }: Props) {
         ? a.user_rating - b.user_rating
         : b.user_rating - a.user_rating,
     );
-  }, [filteredHotels, sortOrder]);
+  }, [filteredHotels, sortOrder, tab]);
+
   const toggleSortOrder = () => {
     setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
   };
@@ -197,6 +231,14 @@ export function HotelCatalog({ hotels }: Props) {
     setIsClient(true);
   }, []);
 
+  useEffect(() => {
+    if (tab === 'Отели') {
+      refetchHotels();
+    } else if (tab === 'Туры') {
+      refetchTours();
+    }
+  }, [tab, refetchHotels, refetchTours]);
+
   const handleViewHotelPage = (hotelId: number, hotelName: string) => {
     localStorage.setItem('selectedHotelId', hotelId.toString());
     localStorage.setItem('selectedHotelName', hotelName);
@@ -213,7 +255,12 @@ export function HotelCatalog({ hotels }: Props) {
   }
 
   return (
-    <div className='hotel-catalog-page container flex justify-center'>
+    <div className='hotel-catalog-page container flex flex-col justify-center'>
+      <div
+        className={`mb-[10px] flex w-full rounded-bl-[20px] rounded-br-[20px] bg-blue-600 p-10 md:h-[90%] md:rounded-bl-[100px] md:rounded-br-[100px]`}
+      >
+        <SearchBlock tab={tab} setTab={setTab} />
+      </div>
       <div className='flex w-full flex-col md:flex-row'>
         <aside
           className={`w-full p-4 md:w-1/4 ${filtersVisible ? 'block' : 'hidden'} lg:block`}
@@ -252,10 +299,12 @@ export function HotelCatalog({ hotels }: Props) {
               selectedDistance={airportDistance}
               onDistanceChange={setAirportDistance}
             />
-            <FilterTourOperator
-              selectedOperators={tourOperators}
-              onOperatorsChange={setTourOperators}
-            />
+            {tab === 'Туры' && (
+              <FilterTourOperator
+                selectedOperators={tourOperators}
+                onOperatorsChange={setTourOperators}
+              />
+            )}
           </div>
         </aside>
 
@@ -297,10 +346,12 @@ export function HotelCatalog({ hotels }: Props) {
               selectedDistance={airportDistance}
               onDistanceChange={setAirportDistance}
             />
-            <FilterTourOperator
-              selectedOperators={tourOperators}
-              onOperatorsChange={setTourOperators}
-            />
+            {tab === 'Туры' && (
+              <FilterTourOperator
+                selectedOperators={tourOperators}
+                onOperatorsChange={setTourOperators}
+              />
+            )}
           </div>
           <button
             className='text-secondary absolute right-4 top-4'
@@ -374,7 +425,13 @@ export function HotelCatalog({ hotels }: Props) {
               {sortedHotels.length > 0 ? (
                 <>
                   {sortedHotels.map((hotel, index) => (
-                    <div key={hotel.id}>
+                    <div
+                      key={
+                        hotel.tourInfo
+                          ? `tour-${hotel.tourInfo.id}`
+                          : `hotel-${hotel.id}`
+                      }
+                    >
                       <div
                         key={`hotel-${hotel.id}`}
                         className='hotel-card relative flex flex-col rounded-lg bg-white text-blue-950 shadow-xl md:flex-row'

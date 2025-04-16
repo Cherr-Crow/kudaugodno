@@ -7,12 +7,15 @@ import { TabBar } from '@/shared/ui/tab-bar';
 
 import { ISearchBlock } from './SearchBlock.types';
 
-export function SearchBlock({}: ISearchBlock) {
-  const [tab, setTab] = useState<'Туры' | 'Отели'>('Туры');
+export function SearchBlock({ tab: initialTab, setTab }: ISearchBlock) {
+  const [tab, setTabState] = useState<'Туры' | 'Отели'>(initialTab ?? 'Туры');
 
-  function handelTab(tab: 'Туры' | 'Отели'): void {
-    setTab(tab);
-  }
+  const handleTabChange = (newTab: 'Туры' | 'Отели') => {
+    setTabState(newTab);
+    if (setTab) {
+      setTab(newTab);
+    }
+  };
 
   return (
     <div className='flex w-full flex-col items-center gap-3'>
@@ -20,7 +23,7 @@ export function SearchBlock({}: ISearchBlock) {
         tabs={['Туры', 'Отели']}
         svgTab={['airplane', 'sofa']}
         setTab={tab}
-        getActiveTab={handelTab}
+        getActiveTab={handleTabChange}
         variant='secondary'
       />
       <SearchTour type={tab} />
