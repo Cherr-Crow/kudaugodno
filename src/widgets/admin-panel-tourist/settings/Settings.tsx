@@ -157,7 +157,6 @@ export function Settings() {
             {userSettings && (
               <Switcher
                 className=''
-                key={String(notifications)}
                 isActive={notifications}
                 onToggle={(val: boolean) => {
                   if (typeof val === 'boolean') setNotifications(val);
