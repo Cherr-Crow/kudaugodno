@@ -100,6 +100,8 @@ export default function AddedFlights() {
     const _flight: Omit<IFlight, 'id'> = {
       flight_number: flightNumber,
       airline,
+      departure_city: departureCity,
+      arrival_city: arrivalCity,
       departure_airport: departureAirport,
       arrival_airport: arrivalAirport,
       departure_date: departureDate,
