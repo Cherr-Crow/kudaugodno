@@ -24,7 +24,5 @@ export default function CatalogHotels() {
     );
   }
 
-  return (
-    <div className='pt-6'>{isClient && <HotelCatalog hotels={data.results} />}</div>
-  );
+  return <div>{isClient && <HotelCatalog />}</div>;
 }

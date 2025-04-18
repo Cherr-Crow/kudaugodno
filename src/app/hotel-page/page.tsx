@@ -53,11 +53,12 @@ export default function HotelPage() {
   return (
     <section className='container rounded-bl-[20px] rounded-br-[20px] xl:rounded-bl-[100px] xl:rounded-br-[100px]'>
       <Breadcrumbs />
+
       {/* <SearchTour
          className={'mb-[40px] border-solid shadow-lg xl:mb-[313px]'}
          tabClick='Туры'
         /> */}
-      <SearchTour type={'Туры'} />
+      <SearchTour type={'Отели'} />
       <HotelBlockPhotosReview hotel={hotel} />
       <HotelRomsList rooms={rooms} />
       <HotelAmenities amenities={amenities} />

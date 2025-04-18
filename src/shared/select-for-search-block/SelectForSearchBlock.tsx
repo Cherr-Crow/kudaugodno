@@ -30,7 +30,7 @@ export function SelectForSearchBlock({
       <Select
         options={numberOfGuests}
         onSelect={handleSelectChange}
-        className='w-full'
+        className='z-50 w-full'
       />
     </div>
   );

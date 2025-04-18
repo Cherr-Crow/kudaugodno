@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
+import { Modal } from '@/shared/modal';
 import { SelectForSearchBlock } from '@/shared/select-for-search-block';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
@@ -20,6 +21,8 @@ export function SearchTour({ type }: ISearchTour) {
   const [guests, setGuests] = useState('Гостей');
   const [isFormValid, setIsFormValid] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [errModal, setErrModal] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -46,7 +49,23 @@ export function SearchTour({ type }: ISearchTour) {
   };
 
   const handleSearch = () => {
-    if (!isFormValid) return;
+    const isValid = checkFormValidity();
+
+    if (!isValid) {
+      if (
+        new Date(checkInDate).setHours(0, 0, 0, 0) >=
+        new Date(checkOutDate).setHours(0, 0, 0, 0)
+      ) {
+        setErrorMessage('Дата прибытия не может быть позже даты отправления');
+      } else {
+        setErrorMessage('Пожалуйста, заполните все поля формы');
+      }
+      setErrModal(true);
+      return;
+    }
+
+    setErrorMessage('');
+    setErrModal(false);
 
     const searchData = {
       departureCity,
@@ -69,12 +88,17 @@ export function SearchTour({ type }: ISearchTour) {
     const checkOutDateValid = checkOutDate.trim() !== '';
     const guestsValid = guests.trim() !== '' && guests !== 'Гостей';
 
+    const isValidDates =
+      new Date(checkInDate).setHours(0, 0, 0, 0) <
+      new Date(checkOutDate).setHours(0, 0, 0, 0);
+
     const valid =
       where.trim() !== '' &&
       checkInDateValid &&
       checkOutDateValid &&
       guestsValid &&
-      (type !== 'Туры' || departureCity.trim() !== '');
+      (type !== 'Туры' || departureCity.trim() !== '') &&
+      isValidDates;
 
     setIsFormValid(valid);
     return valid;
@@ -158,6 +182,13 @@ export function SearchTour({ type }: ISearchTour) {
           <Typography variant='m-bold'>Найти</Typography>
         </ButtonCustom>
       </div>
+      <Modal isOpen={errModal} getState={setErrModal} err>
+        <ul>
+          <li>
+            <Typography>{errorMessage}</Typography>
+          </li>
+        </ul>
+      </Modal>
     </div>
   );
 }

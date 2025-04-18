@@ -81,7 +81,7 @@ export function FilterPrice({ price, onPriceChange }: IFilterPrice) {
   const histogramData = calculateHistogramData();
 
   return (
-    <div className='filter-price rounded-lg bg-white p-2 shadow-md'>
+    <div className='filter-price rounded-lg bg-white p-4 shadow-md'>
       {/* Заголовок */}
       <div className='mb-4 flex items-center justify-between'>
         <Typography variant='l' className='text-blue-950'>

@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { useGetApplicationsQuery } from '@/servicesApi/applicationsApi';
-import { hotels } from '@/temp/hotel-mock';
 import { HotelCatalog } from '@/widgets/hotel-catalog';
 
 export default function Egor() {
@@ -23,7 +22,7 @@ export default function Egor() {
           <>
             {/* <HotelBooking hotelId={1} />
             <TourBooking tourId={1} /> */}
-            <HotelCatalog hotels={hotels} />
+            <HotelCatalog />
           </>
         )}
       </div>

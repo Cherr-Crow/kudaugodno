@@ -1,5 +1,7 @@
 import { RoomType } from '@/types/room';
 
+import { ITour } from './tour-type';
+
 export type rulesType = {
   name: string;
   description: string;
@@ -55,4 +57,5 @@ export type Hotel = {
   photo: photoType[];
   rooms: RoomType[];
   reviews: reviewsType[];
+  tourInfo?: ITour;
 };

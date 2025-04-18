@@ -73,7 +73,7 @@ export function FilterRating({ rating, onRatingChange }: IFilterRating) {
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
   return (
-    <div className='filter-rating rounded-lg bg-white p-2 shadow-md'>
+    <div className='filter-rating rounded-lg bg-white p-4 shadow-md'>
       {/* Заголовок */}
       <div className='mb-4 flex items-center justify-between'>
         <Typography variant='l' className='text-blue-950'>
