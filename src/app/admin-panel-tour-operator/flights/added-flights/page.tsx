@@ -20,6 +20,24 @@ import { Select } from '@/shared/ui/select';
 import { airports } from '@/temp/airports-mock';
 import { IFlight } from '@/types/flight-type';
 
+type IFlightForm = {
+  flightNumber: string;
+  airline: string;
+  departureCity: string;
+  arrivalCity: string;
+  departureAirport: string;
+  arrivalAirport: string;
+  departureDate: string;
+  departureTime: string;
+  arrivalDate: string;
+  arrivalTime: string;
+  shortDescription: string;
+  price: string;
+  priceForChild?: string;
+  serviceClass: string;
+  flightType: string;
+};
+
 export default function AddedFlights() {
   const router = useRouter();
   const idFlight = useSearchParams().get('id');
@@ -30,106 +48,81 @@ export default function AddedFlights() {
   const [addFlight, { error: queryErr, isError }] = useAddFlightMutation();
   const airportsName = airports.map((airport) => airport.name);
 
-  const [flightNumber, setFlightNumber] = useState<string>('');
-  const [airline, setAirline] = useState<string>(airportsName[0]);
-  const [departureCity, setDepartureCity] = useState<string>('');
-  const [arrivalCity, setArrivalCity] = useState<string>('');
-  const [departureAirport, setDepartureAirport] = useState<string>('');
-  const [arrivalAirport, setArrivalAirport] = useState<string>('');
-  const [departureDate, setDepartureDate] = useState<string>('');
-  const [departureTime, setDepartureTime] = useState<string>('');
-  const [arrivalDate, setArrivalDate] = useState<string>('');
-  const [arrivalTime, setArrivalTime] = useState<string>('');
-  const [shortDescription, setShortDescription] = useState<string>('');
-  const [price, setPrice] = useState<string>('');
-  const [priceForChild, setPriceForChild] = useState<string | undefined>(undefined);
-  const [serviceClass, setServiceClass] = useState<string>('Эконом');
-  const [flightType, setFlightType] = useState<string>('Регулярный');
   const errors = useRef<{ name: string; description: string }[]>([]);
   const [errModal, setErrModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
 
+  const [formData, setFormData] = useState<IFlightForm>({
+    flightNumber: '',
+    airline: airportsName[0],
+    departureCity: '',
+    arrivalCity: '',
+    departureAirport: '',
+    arrivalAirport: '',
+    departureDate: '',
+    departureTime: '',
+    arrivalDate: '',
+    arrivalTime: '',
+    shortDescription: '',
+    price: '',
+    priceForChild: undefined,
+    serviceClass: 'Эконом',
+    flightType: 'Регулярный',
+  });
+
+  const updateFields = (updates: Partial<IFlightForm>) => {
+    setFormData((prev) => ({ ...prev, ...updates }));
+  };
+
   const handleAirlineChange = (val: string) => {
-    setAirline(val);
-    const _airCode = airports.filter((airport) => airport.name === val)[0].code;
-    setFlightNumber(_airCode + ' ' + (Date.now() % 10000));
+    const airport = airports.find((airport) => airport.name === val);
+    const airCode = airport?.code || '';
+    updateFields({
+      airline: val,
+      flightNumber: `${airCode} ${Date.now() % 10000}`,
+    });
   };
-  const handleDepartureCityChange = (val: string) => {
-    setDepartureCity(val);
-  };
-  const handleArrivalCityChange = (val: string) => {
-    setArrivalCity(val);
-  };
-  const handleDepartureAirportChange = (val: string) => {
-    setDepartureAirport(val);
-  };
-  const handleArrivalAirportChange = (val: string) => {
-    setArrivalAirport(val);
-  };
-  const handleDepartureDateChange = (val: string) => {
-    setDepartureDate(val.replaceAll('.', '-'));
-  };
-  const handleDepartureTimeChange = (val: string) => {
-    setDepartureTime(val);
-  };
-  const handleArrivalDateChange = (val: string) => {
-    setArrivalDate(val.replaceAll('.', '-'));
-  };
-  const handleArrivalTimeChange = (val: string) => {
-    setArrivalTime(val);
-  };
-  const handleShortDescriptionChange = (val: string) => {
-    setShortDescription(val);
-  };
-  const handlePriceChange = (val: string) => {
-    setPrice(val);
-  };
-  const handlePriceForChildChange = (val: string | undefined) => {
-    setPriceForChild(val);
-  };
-  const handleServiceClassChange = (val: string) => {
-    setServiceClass(val);
-  };
-  const handleFlightTypeChange = (val: string) => {
-    setFlightType(val);
-  };
+
+  const handleDateChange =
+    (field: 'arrivalDate' | 'departureDate') => (val: string) => {
+      updateFields({ [field]: val.replaceAll('.', '-') });
+    };
+
   const handleBack = () => {
     router.back();
   };
+
   const handleSave = async () => {
     const _flight: Omit<IFlight, 'id'> = {
-      flight_number: flightNumber,
-      airline,
-      departure_city: departureCity,
-      arrival_city: arrivalCity,
-      departure_airport: departureAirport,
-      arrival_airport: arrivalAirport,
-      departure_date: departureDate,
-      departure_time: departureTime,
-      arrival_date: arrivalDate,
-      arrival_time: arrivalTime,
-      price,
-      price_for_child: priceForChild,
-      service_class: serviceClass,
-      flight_type: flightType || 'Регулярный',
+      flight_number: formData.flightNumber,
+      airline: formData.airline,
+      departure_city: formData.departureCity,
+      arrival_city: formData.arrivalCity,
+      departure_airport: formData.departureAirport,
+      arrival_airport: formData.arrivalAirport,
+      departure_date: formData.departureDate,
+      departure_time: formData.departureTime,
+      arrival_date: formData.arrivalDate,
+      arrival_time: formData.arrivalTime,
+      price: formData.price,
+      price_for_child: formData.priceForChild,
+      service_class: formData.serviceClass,
+      flight_type: formData.flightType || 'Регулярный',
       description: 'string',
     };
-    if (!idFlight) {
-      try {
+
+    try {
+      if (!idFlight) {
         await addFlight(_flight).unwrap();
-        setSuccessModal(true);
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      try {
+      } else {
         await changeFlight({ body: _flight, id: +idFlight }).unwrap();
-        setSuccessModal(true);
-      } catch (error) {
-        console.error(error);
       }
+      setSuccessModal(true);
+    } catch (error) {
+      console.error(error);
     }
   };
+
   const closeErrModal = () => {
     setErrModal(false);
     errors.current = [];
@@ -168,18 +161,23 @@ export default function AddedFlights() {
 
   useEffect(() => {
     if (!data) return;
-    setFlightNumber(data.flight_number);
-    setAirline(data.airline);
-    setDepartureAirport(data.departure_airport);
-    setArrivalAirport(data.arrival_airport);
-    setDepartureDate(data.departure_date);
-    setDepartureTime(data.departure_time);
-    setArrivalDate(data.arrival_date);
-    setArrivalTime(data.arrival_time);
-    setPrice(data.price);
-    setServiceClass(data.service_class);
-    setPriceForChild(data.price_for_child);
-    setFlightType(data.flight_type);
+    setFormData({
+      flightNumber: data.flight_number,
+      airline: data.airline,
+      departureCity: data.departure_city,
+      arrivalCity: data.arrival_city,
+      departureAirport: data.departure_airport,
+      arrivalAirport: data.arrival_airport,
+      departureDate: data.departure_date,
+      departureTime: data.departure_time,
+      arrivalDate: data.arrival_date,
+      arrivalTime: data.arrival_time,
+      price: data.price,
+      priceForChild: data.price_for_child,
+      serviceClass: data.service_class,
+      flightType: data.flight_type,
+      shortDescription: '',
+    });
   }, [data]);
 
   return (
@@ -199,8 +197,8 @@ export default function AddedFlights() {
               color='blue'
               size='small'
               className='w-full'
-              getValue={handleAirlineChange}
-              startValue={airline}
+              getValue={(val) => handleAirlineChange(val)}
+              startValue={formData.airline}
             />
           </div>
           <div className='flex w-full flex-col gap-3'>
@@ -210,23 +208,23 @@ export default function AddedFlights() {
               color='blue'
               size='small'
               className='w-full'
-              getValue={handleServiceClassChange}
-              startValue={serviceClass}
+              getValue={(val) => updateFields({ serviceClass: val })}
+              startValue={formData.serviceClass}
             />
           </div>
           <NamedInput
             name='Цена билета для взрослого'
             title='Цена билета для взрослого'
             placeholder='6 500 ₽'
-            getValue={(val) => handlePriceChange(val as string)}
-            startValue={price}
+            getValue={(val) => updateFields({ price: val as string })}
+            startValue={formData.price}
           />
           <NamedInput
             name='Цена для ребенка'
             title='Цена для ребенка'
             placeholder='6 500 ₽'
-            getValue={(val) => handlePriceForChildChange(val as string)}
-            startValue={priceForChild}
+            getValue={(val) => updateFields({ priceForChild: val as string })}
+            startValue={formData.priceForChild}
           />
 
           <NamedInput
@@ -234,7 +232,7 @@ export default function AddedFlights() {
             title='Номер рейса'
             placeholder='SU-12345'
             disabled
-            startValue={flightNumber}
+            startValue={formData.flightNumber}
           />
         </div>
         <div className='flex w-full flex-col gap-3'>
@@ -244,8 +242,8 @@ export default function AddedFlights() {
             color='blue'
             size='small'
             className='w-full'
-            getValue={handleFlightTypeChange}
-            startValue={flightType}
+            getValue={(val) => updateFields({ flightType: val })}
+            startValue={formData.flightType}
           />
         </div>
         <div className='grid grid-cols-1 items-center gap-5 md:grid-cols-2'>
@@ -253,23 +251,23 @@ export default function AddedFlights() {
             name='Город вылета'
             title='Город вылета'
             placeholder='Москва'
-            getValue={(val) => handleDepartureCityChange(val as string)}
-            startValue={departureCity}
+            getValue={(val) => updateFields({ departureCity: val as string })}
+            startValue={formData.departureCity}
           />
           <NamedInput
             name='Аэропорт вылета'
             title='Аэропорт вылета'
             placeholder='Домодедово, DME'
-            getValue={(val) => handleDepartureAirportChange(val as string)}
-            startValue={departureAirport}
+            getValue={(val) => updateFields({ departureAirport: val as string })}
+            startValue={formData.departureAirport}
           />
           <div className='flex flex-col gap-3'>
             <Typography variant='l-bold'>Дата вылета</Typography>
             <InputDateForSearchBlock
               placeholder='Дата вылета'
-              getValue={handleDepartureDateChange}
+              getValue={handleDateChange('departureDate')}
               className='rounded-md border border-blue-600 py-5'
-              startValue={departureDate}
+              startValue={formData.departureDate}
             />
           </div>
           <div className='flex flex-col gap-3'>
@@ -280,8 +278,8 @@ export default function AddedFlights() {
               id='timeStart'
               placeholder='12:50'
               className='w-full rounded-md border border-blue-600 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
-              onChange={(e) => handleDepartureTimeChange(e.target.value)}
-              value={departureTime}
+              onChange={(e) => updateFields({ departureTime: e.target.value })}
+              value={formData.departureTime}
             />
           </div>
         </div>
@@ -290,23 +288,23 @@ export default function AddedFlights() {
             name='Город прилёта'
             title='Город прилёта'
             placeholder='Шарм-Эль-Шейх'
-            getValue={(val) => handleArrivalCityChange(val as string)}
-            startValue={arrivalCity}
+            getValue={(val) => updateFields({ arrivalCity: val as string })}
+            startValue={formData.arrivalCity}
           />
           <NamedInput
             name='Аэропорт прилёта'
             title='Аэропорт прилёта'
             placeholder='Sharm-El-Sheikh, SSH'
-            getValue={(val) => handleArrivalAirportChange(val as string)}
-            startValue={arrivalAirport}
+            getValue={(val) => updateFields({ arrivalAirport: val as string })}
+            startValue={formData.arrivalAirport}
           />
           <div className='flex flex-col gap-3'>
             <Typography variant='l-bold'>Дата прилёта</Typography>
             <InputDateForSearchBlock
               placeholder='Дата прилёта'
-              getValue={handleArrivalDateChange}
+              getValue={handleDateChange('arrivalDate')}
               className='rounded-md border border-blue-600 py-5'
-              startValue={arrivalDate}
+              startValue={formData.arrivalDate}
             />
           </div>
           <div className='flex flex-col gap-3'>
@@ -316,8 +314,8 @@ export default function AddedFlights() {
               name='timeEnd'
               id='timeEnd'
               className='w-full rounded-md border border-blue-600 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
-              onChange={(e) => handleArrivalTimeChange(e.target.value)}
-              value={arrivalTime}
+              onChange={(e) => updateFields({ arrivalTime: e.target.value })}
+              value={formData.arrivalTime}
             />
           </div>
         </div>
@@ -327,8 +325,8 @@ export default function AddedFlights() {
             name='shortDescription'
             id='shortDescription'
             className='w-full rounded-md border border-blue-600 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
-            onChange={(e) => handleShortDescriptionChange(e.target.value)}
-            value={shortDescription}
+            onChange={(e) => updateFields({ shortDescription: e.target.value })}
+            value={formData.shortDescription}
           />
         </div>
         <div className='flex w-full'>
