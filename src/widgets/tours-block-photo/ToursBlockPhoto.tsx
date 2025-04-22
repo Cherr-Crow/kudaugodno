@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
@@ -12,12 +12,19 @@ import { ModalTours } from '@/shared/ui/modal-tours';
 
 import { YandexMap } from '../ymap';
 
-export function ToursBlockPhoto() {
+interface ToursBlockPhotoProps {
+  hotelId?: number | null;
+}
+
+export function ToursBlockPhoto({ hotelId }: ToursBlockPhotoProps) {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenModalMap, setIsOpenModalMap] = useState(false);
   const [showAllPhoto, setShowAllPhoto] = useState<boolean>(false);
+  const { data: hotels, isLoading, error } = useGetOneHotelQuery(hotelId || null);
 
-  const { data: hotels } = useGetOneHotelQuery(1);
+  if (isLoading) return <div>Загрузка...</div>;
+  if (error) return <div>Ошибка в загрузке данных отеля.</div>;
+  if (!hotels) return <div>Информация об отеле отсутствует.</div>;
 
   const handleClickAllPhoto = () => {
     setShowAllPhoto(true);
@@ -34,14 +41,8 @@ export function ToursBlockPhoto() {
     setIsOpenModalMap(true);
   };
 
-  useEffect(() => {
-    console.log([hotels]);
-  }, [hotels]);
-  if (!hotels) {
-    return <></>;
-  }
   let coordinates: [number, number] = [55.751574, 37.573856]; // Москва
-  if (hotels.width && hotels.longitude) {
+  if (hotels?.width && hotels.longitude) {
     coordinates = [Number(hotels.width), Number(hotels.longitude)];
   }
 

@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { nanoid } from 'nanoid';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
@@ -9,18 +11,38 @@ import { IRoomCards } from './RoomCards.types';
 import { ButtonCustom } from '../button-custom';
 
 export function RoomCards({
+  tourId,
   name,
   services,
-  there,
-  back,
-  tourOperator,
-  coste,
+  start_date,
+  end_date,
+  tour_operator,
+  price,
+  flight_to,
+  flight_from,
 }: IRoomCards) {
-  const options: Intl.DateTimeFormatOptions = {
-    month: 'short',
-    day: 'numeric',
-    weekday: 'short',
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const handleBooking = () => {
+    const searchData = {
+      tourId: String(tourId) || '',
+      name: name || '',
+      startDate: start_date || '',
+      endDate: end_date || '',
+      tourOperator: tour_operator || 'Без оператора',
+      price: price ? String(price) : '',
+      flightTo: flight_to || '',
+      flightFrom: flight_from || '',
+      guests: searchParams.get('guests') || '',
+      checkInDate: start_date || '',
+      checkOutDate: end_date || '',
+    };
+    localStorage.setItem('searchData', JSON.stringify(searchData));
+    const url = '/tour-booking';
+    router.push(`${url}?${new URLSearchParams(searchData).toString()}`);
   };
+
   return (
     <div className='mb-4 flex min-h-[194px] flex-col rounded-[20px] p-4 shadow-xl lg:flex-row lg:justify-between'>
       <div className='flex flex-col'>
@@ -42,10 +64,10 @@ export function RoomCards({
           </div>
         </div>
         <div className='mt-3 grid grid-cols-2 lg:flex'>
-          <Typography className='mr-5'>{`Туда ${there.toLocaleDateString('ru-RU', options)}`}</Typography>
-          <Typography className='mr-5'>{`Обратно ${back.toLocaleDateString('ru-RU', options)}`}</Typography>
-          <Typography className='mr-5'>{`Туроператор ${tourOperator}`}</Typography>
-          <Typography className='mr-5'>{`На сколько ${(back.getTime() - there.getTime()) / (1000 * 60 * 60 * 24)}`}</Typography>
+          <Typography className='mr-5'>{`Туда ${start_date}`}</Typography>
+          <Typography className='mr-5'>{`Обратно ${end_date}`}</Typography>
+          <Typography className='mr-5'>{`Туроператор ${tour_operator}`}</Typography>
+          <Typography className='mr-5'>{`На сколько ${(new Date(end_date).getTime() - new Date(start_date).getTime()) / (1000 * 60 * 60 * 24)}`}</Typography>
         </div>
       </div>
       <div className='h-x[72px] grid rounded-[20px]'>
@@ -56,8 +78,9 @@ export function RoomCards({
             type='submit'
             className='mt-2 w-full xl:mt-0'
             style={{ gridArea: 'btnSubmit' }}
+            onClick={handleBooking}
           >
-            <Typography variant='s-bold'>{`${coste}₽ за 2- х`}</Typography>
+            <Typography variant='s-bold'>{`${price}₽ за 2- х`}</Typography>
           </ButtonCustom>
         </div>
       </div>

@@ -16,6 +16,10 @@ export interface IHotelBookingPayForm extends DivProps {
     };
     flightFrom?: string;
     flightTo?: string;
+    departureCountry?: string;
+    departureCity?: string;
+    arrivalCountry?: string;
+    arrivalCity?: string;
     hotelAdress?: string;
     hotelPhoneNumber?: string;
     hotelEmail?: string;
@@ -25,8 +29,8 @@ export interface IHotelBookingPayForm extends DivProps {
     airCompany?: string;
     cancellationPolicy?: string;
     insurance?: string;
-    tourId?: number;
-    hotelId?: number;
+    tourId?: number | null;
+    hotelId?: number | null;
     phone?: string;
     email?: string;
     wishes?: string;

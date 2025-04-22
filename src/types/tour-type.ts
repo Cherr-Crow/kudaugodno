@@ -2,19 +2,25 @@ export interface ITour {
   id: number;
   start_date: string;
   end_date: string;
-  flight_to: number;
-  flight_from: number;
+  flight_to: string;
+  flight_from: string;
+  departure_country: string;
   departure_city: string;
-  number_of_adults: number;
-  number_of_children: number;
-  tour_operator: number;
-  hotel: number;
-  price: number;
-  transfer: string;
+  arrival_country: string;
+  arrival_city: string;
+  number_of_adults?: number;
+  number_of_children?: number;
+  tour_operator: string | null;
+  hotel: string;
+  room: string;
+  transfer: boolean;
+  price: string;
+  document: string | null;
   created_at: string;
-  document: string;
   updated_at: string;
+  is_active: boolean;
 }
+
 // стандартный договор с подчёркиванием вместо персональных данных - загрузка документа
 // мед страховка - загрузка документа
 // страховка от не выезда - загрузка документа

@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from 'react';
 
 import { Typography } from '@/shared/typography';
-import { formatToDisplay } from '@/shared/utils';
 
 import { IInputDateForSearchBlock } from './InputDateForSearchBlock.types';
+import { isoToDateFormat } from '../../utils/isoToDateFormat';
 
 export function InputDateForSearchBlock({
   placeholder,
@@ -46,7 +46,7 @@ export function InputDateForSearchBlock({
         <Typography
           className={`absolute pl-0 md:pl-3 ${value ? 'top-2/3 -translate-y-1/3' : 'top-1/2 -translate-y-1/2 text-grey-400'}`}
         >
-          {value ? formatToDisplay(value) : placeholder}
+          {value ? isoToDateFormat(value) : placeholder}
         </Typography>
         <input
           type='date'

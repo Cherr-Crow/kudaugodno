@@ -3,10 +3,9 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { useGetHotelsQuery } from '@/servicesApi/hotelsApi';
-import { useGetToursQuery } from '@/servicesApi/toursApi';
 import { FilterAirportDistance } from '@/shared/filter-airport-distance';
 import { FilterAmenities } from '@/shared/filter-amenities';
 import { FilterCity } from '@/shared/filter-city';
@@ -25,7 +24,6 @@ import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SearchBlock } from '@/shared/ui/search-block';
 import { Hotel } from '@/types/hotel';
-import { ITour } from '@/types/tour-type';
 
 export function HotelCatalog() {
   {
@@ -72,38 +70,39 @@ export function HotelCatalog() {
   const [amenities, setAmenities] = useState<string[]>([]);
   const [airportDistance, setAirportDistance] = useState<string>('Любое');
   const [tourOperators, setTourOperators] = useState<string[]>([]);
+  const [guests, setGuests] = useState<string | undefined>();
+
   const [tab, setTab] = useState<'Туры' | 'Отели'>('Отели');
-  const { data: hotelData, refetch: refetchHotels } = useGetHotelsQuery(
-    { limit: 10, offset: 0 },
-    { skip: tab !== 'Отели' },
-  );
-  const { data: tourData, refetch: refetchTours } = useGetToursQuery(
-    { limit: 10, offset: 0 },
-    { skip: tab !== 'Туры' },
-  );
+
+  // Load data to filter from URL
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const selectedCitiesParam = searchParams.get('where');
+    const guestsParam = searchParams.get('guests');
+
+    if (selectedCitiesParam) {
+      setSelectedCities(selectedCitiesParam.split(','));
+    } else {
+      setSelectedCities([]);
+    }
+    if (guestsParam) {
+      setGuests(guestsParam);
+    } else {
+      setGuests('Гостей');
+    }
+  }, [searchParams]);
+
+  // Load hotel data from query
+
+  const { data: hotelData } = useGetHotelsQuery({});
 
   const hotels = useMemo<Hotel[]>(() => {
-    if (tab === 'Отели') {
-      return hotelData?.results || [];
-    }
+    return tab === 'Отели' ? hotelData?.results || [] : [];
+  }, [hotelData]);
 
-    if (tab === 'Туры' && tourData?.length && hotelData?.results?.length) {
-      const hotelMap = new Map(hotelData.results.map((h) => [h.id, h]));
-
-      return tourData
-        .map((tour) => {
-          const hotel = hotelMap.get(tour.hotel);
-          if (!hotel) return null;
-          return {
-            ...hotel,
-            tourInfo: tour,
-          };
-        })
-        .filter((h): h is Hotel & { tourInfo: ITour } => h !== null);
-    }
-
-    return [];
-  }, [tab, hotelData, tourData]);
+  // Filters reset
 
   const handleFiltersReset = () => {
     setSelectedCities([]);
@@ -116,13 +115,18 @@ export function HotelCatalog() {
     setAmenities([]);
     setAirportDistance('Любое');
     setTourOperators([]);
+    setGuests('Гостей');
   };
+
+  // Filters visibility
 
   const [filtersVisible, setFiltersVisible] = useState(false);
 
   const handleToggleFilters = () => {
     setFiltersVisible((prevState) => !prevState);
   };
+
+  //Filtering hotels
 
   const filterHotels = () =>
     hotels.filter((hotel) => {
@@ -168,6 +172,16 @@ export function HotelCatalog() {
           hotel.amenities_common.some((cat) => cat.includes(amenity)),
         );
 
+      const isGuestsSelected =
+        guests === 'Гостей' ||
+        guests === undefined ||
+        hotel.rooms.some((room) => {
+          const totalGuests =
+            (room.number_of_adults || 0) + (room.number_of_children || 0);
+          const guestsNumber = guests === 'Любое' ? 0 : parseInt(guests || '0', 10);
+          return totalGuests >= guestsNumber;
+        });
+
       return (
         isWithinAirportDistance &&
         isCitySelected &&
@@ -177,7 +191,8 @@ export function HotelCatalog() {
         isWithinRatingRange &&
         isStarCategorySelected &&
         isMealTypeSelected &&
-        isAmenitiesSelected
+        isAmenitiesSelected &&
+        isGuestsSelected
       );
     });
 
@@ -194,8 +209,128 @@ export function HotelCatalog() {
       mealType,
       amenities,
       airportDistance,
+      guests,
     ],
   );
+
+  // Filter Component
+
+  const filterComponents = useMemo(() => {
+    const allFilters = [
+      {
+        component: (
+          <FilterCity
+            key='city'
+            selectedCities={selectedCities}
+            onCityChange={setSelectedCities}
+          />
+        ),
+        isActive: selectedCities.length > 0,
+      },
+      {
+        component: (
+          <FilterRecreationType
+            key='recreation'
+            selectedTypes={recreationType}
+            onTypeChange={setRecreationType}
+          />
+        ),
+        isActive: recreationType.length > 0,
+      },
+      {
+        component: (
+          <FilterPlaceType
+            key='place'
+            selectedPlaceTypes={placeType}
+            onPlaceTypeChange={setPlaceType}
+          />
+        ),
+        isActive: placeType.length > 0,
+      },
+      {
+        component: (
+          <FilterPrice key='price' price={price} onPriceChange={setPrice} />
+        ),
+        isActive: price[0] !== 1000 || price[1] !== 1000000,
+      },
+      {
+        component: (
+          <FilterRating key='rating' rating={rating} onRatingChange={setRating} />
+        ),
+        isActive: rating[0] !== 1 || rating[1] !== 10,
+      },
+      {
+        component: (
+          <FilterStarCategory
+            key='star'
+            starCategory={starCategory}
+            onStarCategoryChange={setStarCategory}
+          />
+        ),
+        isActive: starCategory.length > 0,
+      },
+      {
+        component: (
+          <FilterTypeOfMeals
+            key='meals'
+            selectedMeals={mealType}
+            onMealChange={setMealType}
+          />
+        ),
+        isActive: mealType.length > 0,
+      },
+      {
+        component: (
+          <FilterAmenities
+            key='amenities'
+            selectedAmenities={amenities}
+            onAmenitiesChange={setAmenities}
+          />
+        ),
+        isActive: amenities.length > 0,
+      },
+      {
+        component: (
+          <FilterAirportDistance
+            key='airport'
+            selectedDistance={airportDistance}
+            onDistanceChange={setAirportDistance}
+          />
+        ),
+        isActive: airportDistance !== 'Любое',
+      },
+      ...(tab === 'Туры'
+        ? [
+            {
+              component: (
+                <FilterTourOperator
+                  key='operator'
+                  selectedOperators={tourOperators}
+                  onOperatorsChange={setTourOperators}
+                />
+              ),
+              isActive: tourOperators.length > 0,
+            },
+          ]
+        : []),
+    ];
+
+    return allFilters.sort((a, b) =>
+      a.isActive === b.isActive ? 0 : a.isActive ? -1 : 1,
+    );
+  }, [
+    selectedCities,
+    recreationType,
+    placeType,
+    price,
+    rating,
+    starCategory,
+    mealType,
+    amenities,
+    airportDistance,
+    tourOperators,
+    tab,
+  ]);
 
   {
     /* Сортировка*/
@@ -231,19 +366,16 @@ export function HotelCatalog() {
     setIsClient(true);
   }, []);
 
-  useEffect(() => {
-    if (tab === 'Отели') {
-      refetchHotels();
-    } else if (tab === 'Туры') {
-      refetchTours();
-    }
-  }, [tab, refetchHotels, refetchTours]);
-
-  const handleViewHotelPage = (hotelId: number, hotelName: string) => {
+  const handleRouting = (hotelId: number, hotelName: string, tab: string) => {
     localStorage.setItem('selectedHotelId', hotelId.toString());
     localStorage.setItem('selectedHotelName', hotelName);
     const encodedName = encodeURIComponent(hotelName);
-    router.push(`/hotel-page?name=${encodedName}`);
+
+    if (tab === 'Туры') {
+      router.push(`/tour-page?name=${encodedName}`);
+    } else {
+      router.push(`/hotel-page?name=${encodedName}`);
+    }
   };
 
   if (!isClient) {
@@ -272,39 +404,9 @@ export function HotelCatalog() {
                 Сбросить все
               </button>
             </div>
-            <FilterCity
-              selectedCities={selectedCities}
-              onCityChange={setSelectedCities}
-            />
-            <FilterRecreationType
-              selectedTypes={recreationType}
-              onTypeChange={setRecreationType}
-            />
-            <FilterPlaceType
-              selectedPlaceTypes={placeType}
-              onPlaceTypeChange={setPlaceType}
-            />
-            <FilterPrice price={price} onPriceChange={setPrice} />
-            <FilterRating rating={rating} onRatingChange={setRating} />
-            <FilterStarCategory
-              starCategory={starCategory}
-              onStarCategoryChange={setStarCategory}
-            />
-            <FilterTypeOfMeals selectedMeals={mealType} onMealChange={setMealType} />
-            <FilterAmenities
-              selectedAmenities={amenities}
-              onAmenitiesChange={setAmenities}
-            />
-            <FilterAirportDistance
-              selectedDistance={airportDistance}
-              onDistanceChange={setAirportDistance}
-            />
-            {tab === 'Туры' && (
-              <FilterTourOperator
-                selectedOperators={tourOperators}
-                onOperatorsChange={setTourOperators}
-              />
-            )}
+            {filterComponents.map((f) => (
+              <div key={f.component.key}>{f.component}</div>
+            ))}
           </div>
         </aside>
 
@@ -319,39 +421,9 @@ export function HotelCatalog() {
             >
               Сбросить все
             </button>
-            <FilterCity
-              selectedCities={selectedCities}
-              onCityChange={setSelectedCities}
-            />
-            <FilterRecreationType
-              selectedTypes={recreationType}
-              onTypeChange={setRecreationType}
-            />
-            <FilterPlaceType
-              selectedPlaceTypes={placeType}
-              onPlaceTypeChange={setPlaceType}
-            />
-            <FilterPrice price={price} onPriceChange={setPrice} />
-            <FilterRating rating={rating} onRatingChange={setRating} />
-            <FilterStarCategory
-              starCategory={starCategory}
-              onStarCategoryChange={setStarCategory}
-            />
-            <FilterTypeOfMeals selectedMeals={mealType} onMealChange={setMealType} />
-            <FilterAmenities
-              selectedAmenities={amenities}
-              onAmenitiesChange={setAmenities}
-            />
-            <FilterAirportDistance
-              selectedDistance={airportDistance}
-              onDistanceChange={setAirportDistance}
-            />
-            {tab === 'Туры' && (
-              <FilterTourOperator
-                selectedOperators={tourOperators}
-                onOperatorsChange={setTourOperators}
-              />
-            )}
+            {filterComponents.map((f) => (
+              <div key={f.component.key}>{f.component}</div>
+            ))}
           </div>
           <button
             className='text-secondary absolute right-4 top-4'
@@ -444,7 +516,7 @@ export function HotelCatalog() {
                         </div>
 
                         <div
-                          onClick={() => handleViewHotelPage(hotel.id, hotel.name)}
+                          onClick={() => handleRouting(hotel.id, hotel.name, tab)}
                           style={{ cursor: 'pointer' }}
                           className='hotel-info relative z-10 w-full rounded-lg p-4 md:ml-[-16px] md:w-3/5'
                         >

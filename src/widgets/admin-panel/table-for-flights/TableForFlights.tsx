@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { useDeleteFlightMutation } from '@/servicesApi/flightsApi';
 import { ContextMenu } from '@/shared/ui/context-menu';
-import { formatToDisplay } from '@/shared/utils';
+import { isoToDateFormat } from '@/shared/ui/utils/isoToDateFormat';
 
 import { ITableForFlights } from './TableForFlights.types';
 
@@ -75,8 +75,8 @@ export function TableForFlights({ flights }: ITableForFlights) {
               <td>{flight.departure_airport}</td>
               <td>{flight.arrival_airport}</td>
               <td>{flight.airline}</td>
-              <td className=''>{formatToDisplay(flight.departure_date)}</td>
-              <td>{formatToDisplay(flight.arrival_date)}</td>
+              <td className=''>{isoToDateFormat(flight.departure_date)}</td>
+              <td>{isoToDateFormat(flight.arrival_date)}</td>
               <td className='pr-2'>{parseInt(flight.price)} ₽</td>
             </tr>
           ))}

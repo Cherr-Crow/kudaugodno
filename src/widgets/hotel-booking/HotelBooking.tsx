@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
+import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { HotelBookingPayForm } from '@/shared/hotel-booking-pay-form';
 import { Rating } from '@/shared/rating';
 import { Typography } from '@/shared/typography';
 import { NamedInput } from '@/shared/ui/named-input';
-import { hotels } from '@/temp/hotel-mock';
+import { Hotel } from '@/types/hotel';
 
 import { IHotelBooking } from './HotelBooking.types';
 
@@ -43,6 +44,7 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
     return storedData
       ? JSON.parse(storedData)
       : {
+          type: '',
           departureCity: '',
           where: '',
           checkInDate: '',
@@ -138,8 +140,18 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
     }));
   };
 
+  // Загрузка данных об отелях
+
+  const { data } = useGetOneHotelQuery(hotelId, {
+    skip: hotelId === null,
+  });
+
+  const hotel = useMemo<Hotel | null>(() => {
+    return data ?? null;
+  }, [data]);
+
   // Поиск отеля по hotelId
-  const hotel = hotels.find((h) => h.id === hotelId);
+
   if (!hotel) {
     return <div>Отель не найден</div>;
   }
@@ -184,7 +196,7 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
                     <Typography
                       key={`amenity-${amenityIndex}`}
                       variant='l-bold'
-                      className='rounded-xl bg-grey-50 p-1 text-xs text-grey-800 md:text-base'
+                      className='rounded-xl bg-grey-50 p-1 text-xs text-grey-950 md:text-base'
                     >
                       {amenity}
                     </Typography>

@@ -1,22 +1,27 @@
 'use client';
-import { useEffect, useState } from 'react';
+
+import { useEffect, useState, Suspense } from 'react';
+
+import { useSearchParams } from 'next/navigation';
 
 import { HotelBooking } from '@/widgets/hotel-booking';
 
-export default function HotelBookingPage() {
-  const [isClient, setIsClient] = useState(false);
+function HotelBookingWithParams() {
+  const searchParams = useSearchParams();
+  const [hotelId, setHotelId] = useState<number | null>(null);
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
+    const hotelIdParam = searchParams.get('hotelId');
+    setHotelId(hotelIdParam ? Number(hotelIdParam) : null);
+  }, [searchParams]);
 
+  return <HotelBooking hotelId={hotelId} />;
+}
+
+export default function HotelBookingPage() {
   return (
-    <>
-      {isClient && (
-        <>
-          <HotelBooking hotelId={1} />
-        </>
-      )}
-    </>
+    <Suspense fallback={<div>Загрузка страницы бронирования...</div>}>
+      <HotelBookingWithParams />
+    </Suspense>
   );
 }

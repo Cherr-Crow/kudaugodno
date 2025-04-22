@@ -53,7 +53,9 @@ export function FilterTourOperator({
               <Checkbox
                 id={`checkbox-${index}`}
                 label={operator}
-                isChecked={selectedOperators.includes(operator)}
+                isChecked={selectedOperators.some(
+                  (item) => item.toLowerCase() === operator.toLowerCase(),
+                )}
                 onChange={() => toggleOperator(operator)}
                 className='text-blue-950'
               />

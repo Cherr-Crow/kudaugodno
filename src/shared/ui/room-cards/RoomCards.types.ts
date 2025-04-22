@@ -2,6 +2,21 @@ type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
 export interface IRoomCards extends DivProps {
   name: string;
+  tourId?: number;
+  start_date: string;
+  end_date: string;
+  flight_to?: string;
+  flight_from?: string;
+  departure_country?: string;
+  departure_city?: string;
+  arrival_country?: string;
+  arrival_city?: string;
+  tour_operator: string;
+  hotel?: string;
+  room?: string;
+  transfer?: boolean;
+  price: string;
+  document?: string | null;
   services: {
     type:
       | 'entertainment'
@@ -56,10 +71,6 @@ export interface IRoomCards extends DivProps {
       | 'eat';
     text: string;
   }[];
-  there: Date;
-  back: Date;
-  tourOperator: string;
-  coste: number;
 }
 export interface IDateTimeFormatOptions {
   year?: 'numeric' | '2-digit';

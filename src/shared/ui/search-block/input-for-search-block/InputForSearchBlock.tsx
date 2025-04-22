@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
@@ -9,34 +9,35 @@ export function InputForSearchBlock({
   placeholder,
   getValue,
   className,
+  value,
 }: IInputForSearchBlock) {
-  const [value, setValue] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     getValue(e.target.value);
   };
 
   const handleReset = () => {
-    setValue('');
+    getValue('');
+    inputRef.current?.focus();
   };
-
   return (
     <div
       className={`flex w-fit min-w-[120px] items-center gap-3 pr-2 ${className ?? ''}`}
     >
       <div className='flex flex-col'>
-        {!!value && <Typography className=''>{placeholder}</Typography>}
+        {value && <Typography>{placeholder}</Typography>}
         <input
+          ref={inputRef}
           type='text'
           className='w-full bg-transparent font-bold outline-none placeholder:font-normal'
           placeholder={placeholder}
           value={value}
-          onChange={handleChangeInput}
+          onChange={handleChange}
           name={placeholder}
         />
       </div>
-      {!!value && (
+      {value && (
         <SvgSprite
           name='cross'
           width={20}

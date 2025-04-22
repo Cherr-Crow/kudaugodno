@@ -1,5 +1,5 @@
 type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
 export interface ITourBooking extends DivProps {
-  tourId: number;
+  tourId: number | null;
 }

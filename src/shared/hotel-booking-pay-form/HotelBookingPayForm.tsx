@@ -27,6 +27,8 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
   };
 
   const finalBookingData = {
+    tourId: data?.tourId,
+    hotelId: data?.hotelId,
     hotelName: data.hotelName,
     checkInDate: data.checkInDate,
     checkOutDate: data.checkOutDate,
@@ -55,11 +57,13 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
     tourOperatorEmail: data?.tourOperatorEmail,
     flightFrom: data?.flightFrom,
     flightTo: data?.flightTo,
+    departureCountry: data?.departureCountry,
+    departureCity: data?.departureCity,
+    arrivalCountry: data?.arrivalCountry,
+    arrivalCity: data?.arrivalCity,
     airCompany: data?.airCompany,
     cancellationPolicy: data?.cancellationPolicy,
     insurance: data?.insurance,
-    tourId: data?.tourId,
-    hotelId: data?.hotelId,
   };
 
   useEffect(() => {

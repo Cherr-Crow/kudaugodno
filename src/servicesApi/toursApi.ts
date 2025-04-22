@@ -23,6 +23,23 @@ export const toursApi = createApi({
             ]
           : [{ type: 'Tours', id: 'LIST' }],
     }),
+    getToursByHotel: build.query<
+      ITour[],
+      { hotelName: string; limit?: number; offset?: number }
+    >({
+      query: ({ hotelName, limit, offset }) =>
+        `tours/?hotel=${hotelName}${limit ? `&limit=${limit}` : ''}${offset ? `&offset=${offset}` : ''}`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }: { id: number }) => ({
+                type: 'Tours' as const,
+                id,
+              })),
+              { type: 'Tours', id: 'LIST' },
+            ]
+          : [{ type: 'Tours', id: 'LIST' }],
+    }),
     addTour: build.mutation<IFlight, Omit<IFlight, 'id'>>({
       query: (body) => ({
         url: 'tours/',
@@ -69,6 +86,7 @@ export const toursApi = createApi({
 
 export const {
   useGetToursQuery,
+  useGetToursByHotelQuery,
   useAddTourMutation,
   useGetOneTourQuery,
   useChangeTourMutation,

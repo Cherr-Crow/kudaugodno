@@ -70,6 +70,10 @@ export function FilterRating({ rating, onRatingChange }: IFilterRating) {
     };
   }, []);
 
+  useEffect(() => {
+    setRatingRange(rating);
+  }, [rating]);
+
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
 
   return (
