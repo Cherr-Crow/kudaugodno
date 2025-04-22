@@ -3,13 +3,9 @@
 import React, { useEffect, useState } from 'react';
 
 import { Typography } from '@/shared/typography';
+import { formatToDisplay } from '@/shared/utils';
 
 import { IInputDateForSearchBlock } from './InputDateForSearchBlock.types';
-
-export function formatToDisplay(isoDate: string): string {
-  const [year, month, day] = isoDate.split('-');
-  return `${day}.${month}.${year}`;
-}
 
 export function InputDateForSearchBlock({
   placeholder,

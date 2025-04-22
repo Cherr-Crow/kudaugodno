@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { useDeleteFlightMutation } from '@/servicesApi/flightsApi';
 import { ContextMenu } from '@/shared/ui/context-menu';
-import { formatToDisplay } from '@/shared/ui/search-block/input-date-for-search-block/InputDateForSearchBlock';
+import { formatToDisplay } from '@/shared/utils';
 
 import { ITableForFlights } from './TableForFlights.types';
 
