@@ -8,7 +8,7 @@ import { ButtonCustom } from '@/shared/ui/button-custom';
 
 import { HotelRomsListProps } from './HotelRomsList.types';
 
-const HotelRomsList: React.FC<HotelRomsListProps> = ({ rooms }) => {
+const HotelRomsList: React.FC<HotelRomsListProps> = ({ rooms, hotelId }) => {
   const [count, setCount] = useState<number>(1);
   const [bottonShowMore, setBottonShowMore] = useState<boolean>(true);
 
@@ -33,7 +33,7 @@ const HotelRomsList: React.FC<HotelRomsListProps> = ({ rooms }) => {
     <div className='hotel-rooms-list'>
       {rooms.slice(0, count).map((room) => (
         <div key={room.id}>
-          <RoomCard key={room.id} room={room} />
+          <RoomCard key={room.id} hotelId={hotelId} room={room} />
         </div>
       ))}
       {bottonShowMore ? (

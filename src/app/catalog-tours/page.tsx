@@ -21,10 +21,10 @@ export default function CatalogTours() {
         { type: 'eat', text: 'Завтраки' },
         { type: 'airplane', text: 'С перелетом' },
       ],
-      there: new Date(2025, 7, 7),
-      back: new Date(2025, 7, 12),
-      tourOperator: 'Fun&Sun',
-      coste: 240894,
+      start_date: '2025-04-10',
+      end_date: '2025-07-12',
+      tour_operator: 'Fun&Sun',
+      price: '240894',
     },
     {
       name: 'Standard Room',
@@ -32,10 +32,10 @@ export default function CatalogTours() {
         { type: 'eat', text: 'Завтраки' },
         { type: 'airplane', text: 'С перелетом' },
       ],
-      there: new Date(2025, 7, 7),
-      back: new Date(2025, 7, 12),
-      tourOperator: 'Fun&Sun',
-      coste: 240894,
+      start_date: '2025-04-10',
+      end_date: '2025-07-12',
+      tour_operator: 'Fun&Sun',
+      price: '240894',
     },
     {
       name: 'Standard Room',
@@ -43,10 +43,10 @@ export default function CatalogTours() {
         { type: 'eat', text: 'Завтраки' },
         { type: 'airplane', text: 'С перелетом' },
       ],
-      there: new Date(2025, 7, 7),
-      back: new Date(2025, 7, 12),
-      tourOperator: 'Fun&Sun',
-      coste: 240894,
+      start_date: '2025-04-10',
+      end_date: '2025-07-12',
+      tour_operator: 'Fun&Sun',
+      price: '240894',
     },
   ]);
   const { data } = useGetToursQuery({});
@@ -66,10 +66,10 @@ export default function CatalogTours() {
             <RoomCards
               name={elem.name}
               services={elem.services}
-              there={elem.there}
-              back={elem.back}
-              tourOperator={elem.tourOperator}
-              coste={elem.coste}
+              start_date={elem.start_date}
+              end_date={elem.end_date}
+              tour_operator={elem.tour_operator}
+              price={elem.price}
               key={nanoid()}
             />
           );

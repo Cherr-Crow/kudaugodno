@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { useAddApplicationMutation } from '@/servicesApi/applicationsApi';
+import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { Typography } from '@/shared/typography';
-import { hotels } from '@/temp/hotel-mock';
 import { IGuest } from '@/types/guest';
+import { Hotel } from '@/types/hotel';
 
 import { HotelBookingModalCancel } from '../hotel-booking-modal-cancel';
 import { HotelBookingModalConfirm } from '../hotel-booking-modal-confirm';
@@ -126,15 +127,25 @@ export default function HotelBookingCompleted() {
     setCancelModalOpen(false);
   };
 
-  if (!bookingData) return <Typography variant='l'>Загрузка...</Typography>;
-
   const safeToLocaleString = (value: number | undefined) =>
     value ? value.toLocaleString() : 'Не указано';
 
-  const hotel =
-    bookingData.type === 'hotel'
-      ? hotels.find((h) => h.id === bookingData.hotelId)
-      : hotels.find((h) => h.id === bookingData.tourId);
+  // Загрузка данных об отелях в зависимости от типа hotel/tour
+
+  const isHotelType = bookingData?.type === 'hotel';
+  const queryId = isHotelType ? bookingData?.hotelId : bookingData?.tourId;
+
+  const { data: hotelData } = useGetOneHotelQuery(queryId!, {
+    skip: !queryId,
+  });
+
+  const hotel = useMemo<Hotel | null>(() => {
+    return hotelData ?? null;
+  }, [hotelData]);
+
+  if (!bookingData) {
+    return <Typography variant='l'>Загрузка...</Typography>;
+  }
 
   if (!hotel) {
     return <Typography variant='l'>Ошибка в загрузке данных</Typography>;
@@ -180,7 +191,7 @@ export default function HotelBookingCompleted() {
               <Typography
                 key={`amenity-${amenityIndex}`}
                 variant='l-bold'
-                className='rounded-xl bg-grey-50 p-1 text-xs text-grey-800 md:text-base'
+                className='rounded-xl bg-grey-50 p-1 text-xs text-grey-950 md:text-base'
               >
                 {amenity}
               </Typography>

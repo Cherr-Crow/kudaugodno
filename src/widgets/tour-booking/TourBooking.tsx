@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
+import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { HotelBookingPayForm } from '@/shared/hotel-booking-pay-form';
 import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
@@ -10,7 +11,7 @@ import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
 import { flightData } from '@/temp/flight-mock';
-import { hotels } from '@/temp/hotel-mock';
+import { Hotel } from '@/types/hotel';
 
 import { ITourBooking } from './TourBooking.types';
 
@@ -41,6 +42,7 @@ export function TourBooking({ tourId }: ITourBooking) {
     return storedData
       ? JSON.parse(storedData)
       : {
+          type: '',
           departureCity: '',
           where: '',
           checkInDate: '',
@@ -71,6 +73,7 @@ export function TourBooking({ tourId }: ITourBooking) {
     guestsInfo: `${extractNumber(searchData.guests)} гостей на ${nights} ночей`,
     paymentInfo: 'Необходимо оплатить при заселении',
     resortFee: 100,
+    price: searchData.price,
     flightInfo: {
       flightType: 'Чартерный рейс',
       flightDetails:
@@ -84,8 +87,12 @@ export function TourBooking({ tourId }: ITourBooking) {
     airCompany: 'Air Arabia',
     cancellationPolicy:
       'Отменить тур можно связавшись с туроператором. В случае аннулирования тура от Вас потребуют возмещения понесённых расходов. Точный размер штрафа уточнит менеджер туроператора.',
-    flightFrom: searchData.departureCity,
-    flightTo: searchData.where,
+    flightTo: searchData.flight_to,
+    flightFrom: searchData.flight_from,
+    departureCountry: searchData.departure_country,
+    departureCity: searchData.departure_city,
+    arrivalCountry: searchData.arrival_country,
+    arrivalCity: searchData.arrival_city,
     guests: extractNumber(searchData.guests),
     phone: '',
     email: '',
@@ -193,9 +200,16 @@ export function TourBooking({ tourId }: ITourBooking) {
     }));
   };
 
+  const { data } = useGetOneHotelQuery(tourId, {
+    skip: tourId === null,
+  });
+
+  const hotel = useMemo<Hotel | null>(() => {
+    return data ?? null;
+  }, [data]);
+
   // Поиск отеля по tourId
 
-  const hotel = hotels.find((h) => h.id === tourId);
   if (!hotel) return <div>Тур не найден</div>;
 
   const tourData = {
@@ -240,7 +254,7 @@ export function TourBooking({ tourId }: ITourBooking) {
                   <Typography
                     key={`amenity-${amenityIndex}`}
                     variant='l-bold'
-                    className='rounded-xl bg-grey-50 p-1 text-xs text-grey-800 md:text-base'
+                    className='rounded-xl bg-grey-50 p-1 text-xs text-grey-950 md:text-base'
                   >
                     {amenity}
                   </Typography>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Modal } from '@/shared/modal';
 import { SelectForSearchBlock } from '@/shared/select-for-search-block';
@@ -11,11 +11,13 @@ import { InputForSearchBlock } from '@/shared/ui/search-block/input-for-search-b
 
 import { ISearchTour } from './SearchTour.types';
 
-export function SearchTour({ type }: ISearchTour) {
+export function SearchTour({ type, hotel }: ISearchTour) {
   const router = useRouter();
 
-  const [departureCity, setDepartureCity] = useState('');
-  const [where, setWhere] = useState('');
+  const searchParams = useSearchParams();
+
+  const [departureCity, setDepartureCity] = useState<string>('');
+  const [where, setWhere] = useState<string>('');
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
   const [guests, setGuests] = useState('Гостей');
@@ -66,22 +68,9 @@ export function SearchTour({ type }: ISearchTour) {
 
     setErrorMessage('');
     setErrModal(false);
-
-    const searchData = {
-      departureCity,
-      where,
-      checkInDate,
-      checkOutDate,
-      guests,
-    };
-
-    if (isClient) {
-      localStorage.setItem('searchData', JSON.stringify(searchData));
-    }
-
-    const url = type === 'Туры' ? '/tour-booking' : '/hotel-booking';
-    router.push(url);
   };
+
+  // Check validity
 
   const checkFormValidity = () => {
     const checkInDateValid = checkInDate.trim() !== '';
@@ -104,6 +93,93 @@ export function SearchTour({ type }: ISearchTour) {
     return valid;
   };
 
+  // Fill URL with search data
+
+  useEffect(() => {
+    setDepartureCity(searchParams.get('departureCity') || '');
+    setWhere(searchParams.get('where') || '');
+    setCheckInDate(searchParams.get('checkInDate') || '');
+    setCheckOutDate(searchParams.get('checkOutDate') || '');
+    setGuests(searchParams.get('guests') || 'Гостей');
+  }, [searchParams]);
+
+  // Auto Update URL
+
+  useEffect(() => {
+    if (!isClient) return;
+
+    const params = new URLSearchParams();
+    if (type) params.set('type', type);
+    if (hotel?.id) params.set('hotelId', String(hotel.id));
+    if (hotel?.name) params.set('name', hotel.name);
+    if (departureCity) params.set('departureCity', departureCity);
+    if (where) params.set('where', where);
+    if (checkInDate) params.set('checkInDate', checkInDate);
+    if (checkOutDate) params.set('checkOutDate', checkOutDate);
+
+    const guestsCount = parseInt(guests);
+    if (!isNaN(guestsCount) && guestsCount > 0) {
+      params.set('guests', String(guestsCount));
+    }
+
+    const query = params.toString();
+    const path = `${window.location.pathname}?${query}`;
+
+    router.replace(path);
+  }, [
+    type,
+    hotel?.id,
+    hotel?.name,
+    departureCity,
+    where,
+    checkInDate,
+    checkOutDate,
+    guests,
+    isClient,
+  ]);
+
+  // Delete ULR data when inputs are empty
+
+  useEffect(() => {
+    if (!departureCity) {
+      setDepartureCity('');
+    }
+  }, [departureCity]);
+
+  useEffect(() => {
+    if (!where) {
+      setWhere('');
+    }
+  }, [where]);
+
+  useEffect(() => {
+    if (!checkInDate) {
+      setCheckInDate('');
+    }
+  }, [checkInDate]);
+
+  useEffect(() => {
+    if (!checkOutDate) {
+      setCheckOutDate('');
+    }
+  }, [checkOutDate]);
+
+  useEffect(() => {
+    if (guests === 'Гостей') {
+      setGuests('Гостей');
+    }
+  }, [guests]);
+
+  // Update SearchBlock, URL from hotel data
+
+  useEffect(() => {
+    if (hotel) {
+      setWhere(hotel.city);
+    }
+  }, [hotel]);
+
+  // Check validity
+
   useEffect(() => {
     checkFormValidity();
   }, [checkInDate, checkOutDate, guests, where, departureCity]);
@@ -120,6 +196,7 @@ export function SearchTour({ type }: ISearchTour) {
         )}
         <InputForSearchBlock
           placeholder='Куда'
+          value={where}
           getValue={handleSetWhere}
           className='border-r-2 border-grey-400'
         />

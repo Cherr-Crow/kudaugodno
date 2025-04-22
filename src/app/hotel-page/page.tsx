@@ -58,9 +58,9 @@ export default function HotelPage() {
          className={'mb-[40px] border-solid shadow-lg xl:mb-[313px]'}
          tabClick='Туры'
         /> */}
-      <SearchTour type={'Отели'} />
+      <SearchTour type={'Отели'} hotel={hotel} />
       <HotelBlockPhotosReview hotel={hotel} />
-      <HotelRomsList rooms={rooms} />
+      <HotelRomsList hotelId={hotel.id} rooms={rooms} />
       <HotelAmenities amenities={amenities} />
       <HotelRules rules={rules} />
     </section>

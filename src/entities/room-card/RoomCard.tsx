@@ -1,5 +1,7 @@
 /* eslint-disable react/no-children-prop */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { ImageSlider } from '@/shared/hotel-page/image-slider';
 import { RoomAmenities } from '@/shared/hotel-page/room-amenities';
@@ -16,10 +18,11 @@ import { RoomModal } from '@/widgets/room-modal';
 interface IRoomCardProps {
   room: RoomType;
   key: number;
+  hotelId?: number | null;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const RoomCard: React.FC<IRoomCardProps> = ({ room }) => {
+const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
   const arrNumbersForSelect = [];
   for (let i = room.quantity_rooms; i > 0; i--) {
     arrNumbersForSelect.unshift(String(i));
@@ -33,6 +36,42 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room }) => {
 
   const handleOpenModal = () => {
     setIsOpenModal(true);
+  };
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [type, setType] = useState<string>('');
+
+  const [departureCity, setDepartureCity] = useState<string>('');
+  const [where, setWhere] = useState<string>('');
+  const [checkInDate, setCheckInDate] = useState('');
+  const [checkOutDate, setCheckOutDate] = useState('');
+  const [guests, setGuests] = useState('Гостей');
+
+  useEffect(() => {
+    setType(searchParams.get('type') || '');
+    setDepartureCity(searchParams.get('departureCity') || '');
+    setWhere(searchParams.get('where') || '');
+    setCheckInDate(searchParams.get('checkInDate') || '');
+    setCheckOutDate(searchParams.get('checkOutDate') || '');
+    setGuests(searchParams.get('guests') || 'Гостей');
+  }, [searchParams]);
+
+  const handleBooking = () => {
+    const searchData = {
+      hotelId: hotelId ? hotelId.toString() : '',
+      type,
+      departureCity,
+      where,
+      checkInDate,
+      checkOutDate,
+      guests,
+    };
+    localStorage.setItem('searchData', JSON.stringify(searchData));
+
+    const url = type === 'Туры' ? '/tour-booking' : '/hotel-booking';
+    router.push(`${url}?${new URLSearchParams(searchData).toString()}`);
   };
 
   return (
@@ -163,7 +202,12 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room }) => {
               <RoomPricing price={room.price} />
             </div>
             <div className='flex justify-center sm:items-center'>
-              <ButtonCustom variant='primary' size='s' className=' '>
+              <ButtonCustom
+                variant='primary'
+                size='s'
+                className=''
+                onClick={handleBooking}
+              >
                 <div className='flex w-full items-center justify-center'>
                   <Typography variant='m-bold' children='Бронировать ' />
                 </div>
