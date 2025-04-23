@@ -4,70 +4,106 @@ import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
+import { useGetFlightsQuery } from '@/servicesApi/flightsApi';
+import { useGetHotelsQuery } from '@/servicesApi/hotelsApi';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
-import { AddedButton } from '@/shared/ui/added-button';
 import { ButtonCustom } from '@/shared/ui/button-custom';
-import { NamedInput } from '@/shared/ui/named-input';
+import { Checkbox } from '@/shared/ui/checkbox';
 import { InputDateForSearchBlock } from '@/shared/ui/search-block/input-date-for-search-block';
 import { Select } from '@/shared/ui/select';
 
 export default function AddTourPage() {
   const router = useRouter();
-  const [addFlight, setAddFlight] = useState(false);
-  const [addHotel, setAddHotel] = useState(false);
-  const [dateOfArrived, setdateOfArrived] = useState<string>('');
-  const [dateOfLeaving, setdateOfLeaving] = useState<string>('');
-  const [countryOfArrived, setCountryOfArrived] = useState<string>('Египет');
-  const [cityOfArrived, setCityOfArrived] = useState<string>('Шарм-Эль-Шейх');
-  const [choseFlight, setChoseFlight] = useState<string>(
-    'SU-12345 Аэрофлот, Москва, DME - Шарм-Эль-Шейх, SSH',
-  );
-  const [sumOfTickets, setSumOfTickets] = useState<string>('');
-  const [choseHotel, setChoseHotel] = useState<string>('The Westist Hotel & Spa');
-  const [choseCategory, setChoseCategory] = useState<string>('Standart');
-  const [sumOfHotelRooms, setSumOFHotelRooms] = useState<string>('');
+  const { data: FlightData } = useGetFlightsQuery({});
+  console.log(FlightData);
+  const { data: HotelData } = useGetHotelsQuery({});
+  // console.log(HotelData?.results.map((i) => i.city));
+  // const [addHotel, setAddHotel] = useState(false);
+  const [startDate, setStartDate] = useState<string>('12.12.2024');
+  const [endDate, setEndDate] = useState<string>('12.12.2024');
+  // const [flightTo, setFlightTo] = useState<string>('Москва');
+  // const [flightFrom, setFlightFrom] = useState<string>('Египет');
+  const [departureCountry, setDepartureCountry] = useState<string>('Россия');
+  const [departureCity, setDepartureCity] = useState<string>('Москва');
+  const [arrivalCountry, setArrivalCountry] = useState<string>('Египет');
+  const [arrivalCity, setArrivalCity] = useState<string>('Шарм-Эль-Шейх');
+  // const [choseFlight, setChoseFlight] = useState(data);
+  // const [choseCategory, setChoseCategory] = useState<string>('Standart');
 
-  const handleAddFlight = () => {
-    setAddFlight(true);
+  // const handleDeleteHotel = () => {
+  //   setAddHotel(false);
+  // };
+  const handleStartDate = (val: string) => {
+    setStartDate(val);
   };
-  const handleAddHotel = () => {
-    setAddHotel(true);
+  const handleEndDate = (val: string) => {
+    setEndDate(val);
   };
-  const handleDeleteHotel = () => {
-    setAddHotel(false);
+  const handleDepartureCountry = (val: string) => {
+    setDepartureCountry(val);
   };
-  const handleDateOfArrived = (val: string) => {
-    setdateOfArrived(val);
+  const handleDepartureCity = (val: string) => {
+    setDepartureCity(val);
   };
-  const handleDateOfLeaving = (val: string) => {
-    setdateOfLeaving(val);
+  const handleArrivalCountry = (val: string) => {
+    setArrivalCountry(val);
   };
-  const handleCountryOfArrived = (val: string) => {
-    setCountryOfArrived(val);
+  const handleArrivalCity = (val: string) => {
+    setArrivalCity(val);
   };
-  const handleCityOfArrived = (val: string) => {
-    setCityOfArrived(val);
-  };
-  const handleChoseFlight = (val: string) => {
-    setChoseFlight(val);
-  };
-  const handleSumOfTickets = (val: string) => {
-    setSumOfTickets(val);
-  };
-  const handleChoseHotel = (val: string) => {
-    setChoseHotel(val);
-  };
-  const handleChoseCategory = (val: string) => {
-    setChoseCategory(val);
-  };
-  const handleSumOfHotelRooms = (val: string) => {
-    setSumOFHotelRooms(val);
-  };
+  // const handleChoseFlight = (val: any) => {
+  //   setChoseFlight(val);
+  // };
+  // const handleChoseHotel = (val: string) => {
+  //   setChoseHotel(val);
+  // };
+  // const handleChoseCategory = (val: string) => {
+  //   setChoseCategory(val);
+  // };
+  // const handleSumOfHotelRooms = (val: string) => {
+  //   setSumOFHotelRooms(val);
+  // };
   const handleBack = () => {
     router.back();
   };
   const handleSave = async () => {};
+
+  const hotelOptions =
+    HotelData?.results.map((hotel) => {
+      const { name } = hotel;
+      return `${name}`;
+    }) || [];
+
+  const hotelCategories =
+    HotelData?.results.flatMap((hotel) => {
+      const categories = hotel.rooms.map((room) => {
+        const { category } = room;
+        return `${category}`;
+      });
+      return categories;
+    }) || [];
+
+  const formatTime = (timeString: string) => {
+    return timeString.slice(0, 5);
+  };
+
+  const flightOptions =
+    FlightData?.map((flight) => {
+      const {
+        departure_time,
+        arrival_time,
+        flight_type,
+        flight_number,
+        airline,
+        departure_city,
+        departure_airport,
+        arrival_city,
+        arrival_airport,
+      } = flight;
+
+      return `${formatTime(departure_time)} — ${formatTime(arrival_time)}, ${flight_type}, ${flight_number} ${airline}, ${departure_city}, ${departure_airport} - ${arrival_city}, ${arrival_airport}`;
+    }) || [];
 
   return (
     <div className='w-full'>
@@ -77,34 +113,69 @@ export default function AddTourPage() {
             Тур #999
           </Typography>
           <div className='mb-6 mt-5 rounded-2xl border border-grey-100 p-10 shadow-lg'>
-            <div className='grid grid-cols-2 grid-rows-2 gap-5'>
-              <div className='flex flex-col gap-3'>
-                <Typography variant='l-bold'>Дата отъезда</Typography>
-                <InputDateForSearchBlock
-                  placeholder='12.12.2024'
-                  getValue={(val) => handleDateOfLeaving(val as string)}
-                  className='rounded-md border border-grey-700 py-5'
-                  startValue={dateOfLeaving}
-                />
-              </div>
-              <div className='flex flex-col gap-3'>
-                <Typography variant='l-bold'>Дата приезда</Typography>
-                <InputDateForSearchBlock
-                  placeholder='12.12.2024'
-                  getValue={(val) => handleDateOfArrived(val as string)}
-                  className='rounded-md border border-grey-700 py-5'
-                  startValue={dateOfArrived}
+            <div className='mb-5 flex flex-col gap-3'>
+              <Typography variant='l-bold'>Дата отъезда</Typography>
+              <InputDateForSearchBlock
+                placeholder='12.12.2024'
+                getValue={(val) => handleStartDate(val as string)}
+                className='rounded-md border border-grey-700 py-5'
+                startValue={startDate}
+              />
+            </div>
+            <div className='mb-5 grid grid-cols-2 grid-rows-1 gap-5'>
+              <div className='flex w-full flex-col gap-3'>
+                <Typography variant='l'>Страна отправления</Typography>
+                <Select
+                  size='small'
+                  color='blue'
+                  options={['Россия']}
+                  className='w-full'
+                  getValue={handleDepartureCountry}
+                  startValue={departureCountry}
                 />
               </div>
               <div className='flex w-full flex-col gap-3'>
-                <Typography variant='l'>Страна прибытия</Typography>
+                <Typography variant='l'>Город</Typography>
+                <Select
+                  size='small'
+                  color='blue'
+                  options={['Москва']}
+                  className='w-full'
+                  getValue={handleDepartureCity}
+                  startValue={departureCity}
+                />
+              </div>
+            </div>
+            <div className='mb-5 flex w-full flex-col gap-3'>
+              <Typography variant='l'>Рейсы отправления</Typography>
+              <Select
+                size='small'
+                color='blue'
+                options={flightOptions}
+                className='w-full'
+                // getValue={(val) => handleChoseFlight(val as string)}
+                // startValue={choseFlight?.[0].airline}
+              />
+            </div>
+            <div className='mb-5 flex flex-col gap-3'>
+              <Typography variant='l-bold'>Дата приезда</Typography>
+              <InputDateForSearchBlock
+                placeholder='12.12.2024'
+                getValue={(val) => handleEndDate(val as string)}
+                className='rounded-md border border-grey-700 py-5'
+                startValue={endDate}
+              />
+            </div>
+            <div className='mb-5 grid grid-cols-2 grid-rows-1 gap-5'>
+              <div className='flex w-full flex-col gap-3'>
+                <Typography variant='l'>Страна приезда</Typography>
                 <Select
                   size='small'
                   color='blue'
                   options={['Египет']}
                   className='w-full'
-                  getValue={handleCountryOfArrived}
-                  startValue={countryOfArrived}
+                  getValue={handleArrivalCountry}
+                  startValue={arrivalCountry}
                 />
               </div>
               <div className='flex w-full flex-col gap-3'>
@@ -114,84 +185,64 @@ export default function AddTourPage() {
                   color='blue'
                   options={['Шарм-Эль-Шейх']}
                   className='w-full'
-                  getValue={handleCityOfArrived}
-                  startValue={cityOfArrived}
+                  getValue={handleArrivalCity}
+                  startValue={arrivalCity}
                 />
               </div>
             </div>
-            <div className='mt-5'>
-              <Typography variant='l'>Рейсы</Typography>
-              {addFlight && (
-                <div className='grid grid-cols-5 grid-rows-1 items-center gap-5'>
-                  <Select
-                    size='small'
-                    color='blue'
-                    options={[
-                      'SU-12345 Аэрофлот, Москва, DME - Шарм-Эль-Шейх, SSH  ',
-                    ]}
-                    className='col-span-3 w-full'
-                    getValue={handleChoseFlight}
-                    startValue={choseFlight}
-                  />
-                  <NamedInput
-                    name='Билеты'
-                    title='Количество билетов'
-                    placeholder='0'
-                    className='col-span-2'
-                    getValue={(val) => handleSumOfTickets(val as string)}
-                    startValue={sumOfTickets}
-                  />
-                </div>
-              )}
-              <AddedButton
-                className='mt-2'
-                text='Добавить рейс'
-                onClick={handleAddFlight}
+            <div className='flex w-full flex-col gap-3'>
+              <Typography variant='l'>Рейсы отправления</Typography>
+              <Select
+                size='small'
+                color='blue'
+                options={flightOptions}
+                className='w-full'
+                // getValue={handleCityOfArrived}
+                // startValue={cityOfArrived}
               />
             </div>
           </div>
-          {addHotel && (
-            <div className='mb-6 mt-5 gap-5 rounded-2xl border border-grey-100 p-10 shadow-lg'>
-              <div
-                className='flex w-fit cursor-pointer justify-self-end'
-                onClick={handleDeleteHotel}
-              >
-                <SvgSprite name='trash-light' width={21} height={21} />
-              </div>
-              <div className='flex w-full flex-col gap-3'>
-                <Typography variant='l'>Отель</Typography>
-                <Select
-                  size='small'
-                  color='blue'
-                  options={['The Westist Hotel & Spa']}
-                  className='w-full'
-                  getValue={handleChoseHotel}
-                  startValue={choseHotel}
-                />
-              </div>
-              <div className='mt-5 grid grid-cols-2 grid-rows-1 gap-5'>
-                <div className='flex w-full flex-col gap-3'>
-                  <Typography variant='l'>Категория номера</Typography>
-                  <Select
-                    size='small'
-                    color='blue'
-                    options={['Standart']}
-                    className='w-full'
-                    getValue={handleChoseCategory}
-                    startValue={choseCategory}
-                  />
-                </div>
-                <NamedInput
-                  name='Номера'
-                  title='Количество номеров'
-                  placeholder='0'
-                  getValue={(val) => handleSumOfHotelRooms(val as string)}
-                  startValue={sumOfHotelRooms}
-                />
-              </div>
+          <div className='mb-6 mt-5 gap-5 rounded-2xl border border-grey-100 p-10 shadow-lg'>
+            <div
+              className='flex w-fit cursor-pointer justify-self-end'
+              // onClick={handleDeleteHotel}
+            >
+              <SvgSprite name='trash-light' width={21} height={21} />
             </div>
-          )}
-          <AddedButton text='Добавить отель' onClick={handleAddHotel} />
+            <div className='flex w-full flex-col gap-3'>
+              <Typography variant='l'>Отель</Typography>
+              <Select
+                size='small'
+                color='blue'
+                options={hotelOptions}
+                className='mb-5 w-full'
+                // getValue={handleChoseHotel}
+                // startValue={hotelOptions}
+              />
+            </div>
+            <div className='mb-3 mb-5 flex'>
+              <Checkbox id='' />
+              <label className='text-[16px]' htmlFor=''>
+                Доступен трансфер
+              </label>
+            </div>
+            <div className='flex w-full flex-col gap-3'>
+              <Typography variant='l'>Категория номера</Typography>
+              <Select
+                size='small'
+                color='blue'
+                options={hotelCategories}
+                className='w-full'
+                // getValue={handleChoseCategory}
+                // startValue={choseCategory}
+              />
+            </div>
+          </div>
+          <div className='mb-6 mt-5 gap-5 rounded-2xl border border-grey-100 p-10 shadow-lg'>
+            <Typography variant='l'>Итоговая сумма тура</Typography>
+            <Typography variant='l'>взрослый: 133 500 ₽</Typography>
+            <Typography variant='l'>ребенок: 133 500 ₽</Typography>
+          </div>
           <div className='mt-6 flex gap-4 justify-self-end'>
             <ButtonCustom variant='secondary' size='l' onClick={handleBack}>
               <Typography variant='l-bold'>Отменить</Typography>

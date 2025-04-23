@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { BASE_URL } from '@/temp/domen_nikita';
-import { IFlight } from '@/types/flight-type';
 import { ITour } from '@/types/tour-type';
 
 export const toursApi = createApi({
@@ -40,7 +39,7 @@ export const toursApi = createApi({
             ]
           : [{ type: 'Tours', id: 'LIST' }],
     }),
-    addTour: build.mutation<IFlight, Omit<IFlight, 'id'>>({
+    addTour: build.mutation<ITour, Omit<ITour, 'id'>>({
       query: (body) => ({
         url: 'tours/',
         method: 'POST',
@@ -52,20 +51,35 @@ export const toursApi = createApi({
       }),
       invalidatesTags: [{ type: 'Tours', id: 'LIST' }],
     }),
-    getOneTour: build.query<IFlight, number | void>({
+    getOneTour: build.query<ITour, number | void>({
       query: (id) => `tours/${id ?? ''}`,
       providesTags: [{ type: 'Tours', id: 'LIST' }],
     }),
     changeTour: build.mutation<
-      IFlight,
+      ITour,
       {
-        body: Omit<IFlight, 'id'>;
+        body: Omit<ITour, 'id'>;
         id: number;
       }
     >({
       query: ({ body, id }) => ({
         url: `tours/${id}/`,
         method: 'PUT',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+      invalidatesTags: [{ type: 'Tours', id: 'LIST' }],
+    }),
+    patchTour: build.mutation<
+      ITour,
+      { id: number; body: Partial<Omit<ITour, 'id'>> }
+    >({
+      query: ({ id, body }) => ({
+        url: `tours/${id}/`,
+        method: 'PATCH',
         headers: {
           accept: 'application/json',
           'Content-Type': 'application/json',
@@ -91,4 +105,5 @@ export const {
   useGetOneTourQuery,
   useChangeTourMutation,
   useDeleteTourMutation,
+  usePatchTourMutation,
 } = toursApi;

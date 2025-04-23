@@ -12,6 +12,7 @@ import { ITableForFlights } from './TableForFlights.types';
 export function TableForFlights({ flights }: ITableForFlights) {
   const route = useRouter();
   const [deleteFlight] = useDeleteFlightMutation();
+  console.log(flights);
 
   const [isVisible, setIsVisible] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
