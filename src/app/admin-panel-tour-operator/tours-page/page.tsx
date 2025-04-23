@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -17,6 +17,23 @@ export default function ToursPage() {
   const handleAddTour = () => {
     router.push('/admin-panel-tour-operator/tours-page/added-tour');
   };
+  const [search, setSearch] = useState('');
+  const [showArchived, setShowArchived] = useState(false);
+
+  const filteredTours = (data ?? []).filter((tour) => {
+    const matchesSearch = search.trim()
+      ? tour.id.toString().includes(search.toLowerCase()) ||
+        (tour.hotel?.toLowerCase() || '').includes(search.toLowerCase()) ||
+        (tour.arrival_country?.toLowerCase() || '').includes(search.toLowerCase()) ||
+        (tour.arrival_city?.toLowerCase() || '').includes(search.toLowerCase())
+      : true;
+
+    const matchesArchive = showArchived
+      ? tour.is_active === false
+      : tour.is_active !== false;
+
+    return matchesSearch && matchesArchive;
+  });
 
   return (
     <div className='w-full'>
@@ -28,20 +45,27 @@ export default function ToursPage() {
           <SvgSprite name='search' width={24} />
           <input
             type='text'
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className='w-full outline-none'
-            placeholder='Введите идентификатор тура, или его название'
+            placeholder='Введите идентификатор отеля, название отеля или страну'
           />
         </form>
         <ButtonCustom variant='secondary' size='m' onClick={handleAddTour}>
           <Typography className='text-nowrap'>Добавить тур</Typography>
         </ButtonCustom>
       </div>
-      <Checkbox label='Показать архивные туры' className='my-5' />
-      {data && <TableForTours tours={data} />}
+      <Checkbox
+        label='Показать архивные туры'
+        isChecked={showArchived}
+        onChange={() => setShowArchived((prev) => !prev)}
+        className='my-5'
+      />
+      {data && <TableForTours tours={filteredTours} />}
 
-      <button className='' popoverTarget='myPopover' popoverTargetAction='toggle'>
+      {/* <button className='' popoverTarget='myPopover' popoverTargetAction='toggle'>
         kjhkjhkjh
-      </button>
+      </button> */}
 
       <div
         className='bg-grey-50 px-10 backdrop-blur backdrop:bg-grey-400'
