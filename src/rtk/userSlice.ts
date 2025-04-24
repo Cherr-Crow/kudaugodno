@@ -9,7 +9,7 @@ interface CurrentUserState {
 
 const initialState: CurrentUserState = {
   id: 0,
-  role: '',
+  role: 'norole',
 };
 
 export const userSlice = createSlice({

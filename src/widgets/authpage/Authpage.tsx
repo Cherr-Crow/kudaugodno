@@ -74,30 +74,43 @@ export function Authpage({}: IAuthpage) {
   const [getCode, { error }] = useGetCodeMutation();
   const [confirmCode] = useConfirmCodeMutation();
 
-  const handleClick = async () => {
-    if (isEmailValid && email !== '') {
-      try {
-        await getCode({ email: email }).unwrap();
-        setShowCodePanel(true);
-        setShowBackArrow(true);
-        setStartTimer(true);
-        setSeconds(45);
-      } catch (err) {
-        if (isRegisterError(err)) {
-          const { register, error } = err.data;
+  const launchTimer = () => {
+    setSeconds(45);
+    setStartTimer(true);
+  };
 
-          if (register === false && error === 'Пользователь не найден') {
-            dispatch(setUserEmail(email));
-            return;
-          }
+  const showCodeState = (state: boolean) => {
+    setShowCodePanel(state);
+    setShowBackArrow(state);
+  };
+
+  const fetchAuthCode = async (isRepeated: boolean) => {
+    try {
+      await getCode({ email: email }).unwrap();
+      if (isRepeated === false) {
+        showCodeState(true);
+      }
+      launchTimer();
+    } catch (err) {
+      if (isRegisterError(err)) {
+        const { register, error } = err.data;
+        if (register === false && error === 'Пользователь не найден') {
+          // если при попытке получить код для входа пользователь получает ошибку "Пользователь не найден" и одновременно статус register=false, то диспатчится email, так как в таком случае появляется кнопка "Зарегистрироваться", по которой пользователь ожидаемо пройдет для регистрации, а в форме регистрации нет поля email, так как его мы запомнили.
+          dispatch(setUserEmail(email));
+          return;
         }
       }
     }
   };
 
+  const handleClick = async () => {
+    if (isEmailValid && email !== '') {
+      fetchAuthCode(false);
+    }
+  };
+
   const handleClickBack = () => {
-    setShowCodePanel(false);
-    setShowBackArrow(false);
+    showCodeState(false);
   };
 
   useEffect(() => {
@@ -116,20 +129,7 @@ export function Authpage({}: IAuthpage) {
   }, [startTimer, seconds]);
 
   const handleSentNewCode = async () => {
-    try {
-      await getCode({ email: email }).unwrap();
-      setSeconds(45);
-      setStartTimer(true);
-    } catch (err) {
-      if (isRegisterError(err)) {
-        const { register, error } = err.data;
-
-        if (register === false && error === 'Пользователь не найден') {
-          dispatch(setUserEmail(email));
-          return;
-        }
-      }
-    }
+    fetchAuthCode(true);
   };
 
   const handleRegistration = () => {
@@ -146,19 +146,19 @@ export function Authpage({}: IAuthpage) {
   }
 
   const handleFocusForInput2 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (onlyNumberForFocusChenge(e.target.value)) {
+    if (onlyNumberForFocusChange(e.target.value)) {
       setInput1(onlyNumber(e.target.value));
       inputRef2.current?.focus();
     }
   };
   const handleFocusForInput3 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (onlyNumberForFocusChenge(e.target.value)) {
+    if (onlyNumberForFocusChange(e.target.value)) {
       setInput2(onlyNumber(e.target.value));
       inputRef3.current?.focus();
     }
   };
   const handleFocusForInput4 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (onlyNumberForFocusChenge(e.target.value)) {
+    if (onlyNumberForFocusChange(e.target.value)) {
       setInput3(onlyNumber(e.target.value));
       inputRef4.current?.focus();
     }
@@ -214,7 +214,7 @@ export function Authpage({}: IAuthpage) {
     }
   }
 
-  function onlyNumberForFocusChenge(text: string) {
+  function onlyNumberForFocusChange(text: string) {
     const regex = new RegExp('^[0-9]$');
     if (regex.test(text) || text === '') {
       return true;

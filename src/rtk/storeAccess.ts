@@ -3,15 +3,16 @@ import { RootState } from '@/rtk/store';
 
 export const getRoleFromStore = (): string => {
   const role = (store.getState() as RootState).currentUser.role;
-  let result;
-  if (role === 'USER') {
-    result = 'users';
-  } else if (role === 'TOUR_OPERATOR' || role === 'HOTELIER') {
-    result = 'companies';
-  } else {
-    result = 'norole';
+
+  switch (role) {
+    case 'USER':
+      return 'users';
+    case 'TOUR_OPERATOR':
+    case 'HOTELIER':
+      return 'companies';
+    default:
+      return 'norole';
   }
-  return result;
 };
 
 export const getUserIdFromStore = (): number => {
