@@ -9,13 +9,13 @@ import { useAddHotelMutation, useGetHotelsQuery } from '@/servicesApi/hotelsApi'
 import { PopupWindow } from '@/shared/popup-window';
 import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
-import { Hotel } from '@/types/hotel';
+import { IHotel } from '@/types/hotel';
 
 export default function AddedHotel() {
   const [addHotel, { data: newHotelResponce }] = useAddHotelMutation();
   const { data } = useGetHotelsQuery({});
   const router = useRouter();
-  const [listOfMatches, setListOfMatches] = useState<Hotel[]>([] as Hotel[]);
+  const [listOfMatches, setListOfMatches] = useState<IHotel[]>([] as IHotel[]);
   const [value, setValue] = useState('');
   const [openDropdown, setOpenDropdown] = useState(false);
 
@@ -25,7 +25,7 @@ export default function AddedHotel() {
     setListOfMatches(
       data?.results.filter((el) =>
         el.name.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase()),
-      ) || ([] as Hotel[]),
+      ) || ([] as IHotel[]),
     );
 
     if (e.target.value.length > 1) {
@@ -65,7 +65,7 @@ export default function AddedHotel() {
           <PopupWindow className='top-[110%] flex flex-col gap-2 px-5 py-4'>
             {!!listOfMatches.length ? (
               <ul>
-                {listOfMatches.map((item: Hotel) => (
+                {listOfMatches.map((item: IHotel) => (
                   <li key={nanoid()}>
                     <Typography>{item.name}</Typography>
                   </li>

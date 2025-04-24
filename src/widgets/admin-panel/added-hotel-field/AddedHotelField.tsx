@@ -15,7 +15,7 @@ import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
 import { Select } from '@/shared/ui/select';
-import { Hotel } from '@/types/hotel';
+import { IHotel } from '@/types/hotel';
 import {
   accommodationType,
   amenities_common,
@@ -112,7 +112,7 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
   };
 
   const handleSaved = () => {
-    const _obj: Omit<Hotel, 'rooms' | 'id' | 'reviews' | 'photo'> = {
+    const _obj: Omit<IHotel, 'rooms' | 'id' | 'reviews' | 'photo'> = {
       name,
       star_category: starCategory,
       place,

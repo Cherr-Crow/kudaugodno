@@ -15,12 +15,12 @@ import { ReviewsTours } from '@/shared/ui/reviews-tours';
 import { RoomCards } from '@/shared/ui/room-cards';
 import { IRoomCards } from '@/shared/ui/room-cards/RoomCards.types';
 import { SearchTour } from '@/shared/ui/search-block/search-tour';
-import { Hotel } from '@/types/hotel';
+import { IHotel } from '@/types/hotel';
 import { ToursBlockPhoto } from '@/widgets/tours-block-photo';
 
 function CatalogToursContent() {
   const [rooms, setRooms] = useState<IRoomCards[]>([]);
-  const [hotel, setHotel] = useState<Hotel | null>(null);
+  const [hotel, setHotel] = useState<IHotel | null>(null);
 
   const searchParams = useSearchParams();
   const hotelName = searchParams.get('hotel') ?? '';

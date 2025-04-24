@@ -10,7 +10,8 @@ export type rulesType = {
 export type photoType = {
   id: number;
   photo: string;
-  hotel: number;
+  hotel?: number;
+  room?: number;
 };
 
 type reviewsType = {
@@ -22,7 +23,7 @@ type reviewsType = {
   text: string;
 };
 
-export type Hotel = {
+export type IHotel = {
   id: number;
   name: string;
   star_category: number;

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import { Hotel } from '@/types/hotel';
+import { IHotel } from '@/types/hotel';
 
 import { SvgSprite } from '../svg-sprite';
 
 interface HotelComponentPhotoSliderProps {
-  hotel: Hotel;
+  hotel: IHotel;
 }
 
 export function HotelComponentPhotoSlider({

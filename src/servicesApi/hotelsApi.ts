@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { BASE_URL } from '@/temp/domen_nikita';
-import { Hotel } from '@/types/hotel';
+import { IHotel } from '@/types/hotel';
 import { PhotoHotel } from '@/types/photo_hotel';
 import { RoomType } from '@/types/room';
 
@@ -9,7 +9,7 @@ interface IResponceListHotels {
   count: number;
   next: null;
   previous: null;
-  results: Hotel[];
+  results: IHotel[];
 }
 
 export const hotelsApi = createApi({
@@ -33,7 +33,7 @@ export const hotelsApi = createApi({
             : [{ type: 'Hotels', id: 'LIST' }],
       },
     ),
-    getOneHotel: build.query<Hotel, number | null>({
+    getOneHotel: build.query<IHotel, number | null>({
       query: (id) => `hotels/${id ?? ''}`,
       providesTags: [{ type: 'Hotels', id: 'LIST' }],
     }),
@@ -50,9 +50,9 @@ export const hotelsApi = createApi({
       invalidatesTags: [{ type: 'Hotels', id: 'LIST' }],
     }),
     changeHotel: build.mutation<
-      Hotel,
+      IHotel,
       {
-        body: Omit<Hotel, 'rooms' | 'id' | 'reviews' | 'photo'>;
+        body: Omit<IHotel, 'rooms' | 'id' | 'reviews' | 'photo'>;
         id: number;
       }
     >({

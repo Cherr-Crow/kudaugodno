@@ -2,11 +2,9 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { useAddApplicationMutation } from '@/servicesApi/applicationsApi';
 import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { Typography } from '@/shared/typography';
-import { IGuest } from '@/types/guest';
-import { Hotel } from '@/types/hotel';
+import { IHotel } from '@/types/hotel';
 
 import { HotelBookingModalCancel } from '../hotel-booking-modal-cancel';
 import { HotelBookingModalConfirm } from '../hotel-booking-modal-confirm';
@@ -58,47 +56,10 @@ interface BookingData {
   }[];
 }
 
-const useAutoSubmitApplication = () => {
-  const [addApplication, { isLoading, isSuccess, isError, error }] =
-    useAddApplicationMutation();
-
-  useEffect(() => {
-    const raw = localStorage.getItem('bookingData');
-    if (!raw) return;
-
-    const data = JSON.parse(raw);
-
-    if (!data || !data.tourId || data.submitted) return;
-
-    const requestData = {
-      tour: data.tourId,
-      email: data.email,
-      phone_number: data.phone_number,
-      visa: data.visa,
-      med_insurance: data.med_insurance,
-      cancellation_insurance: data.cancellation_insurance,
-      wishes: data.wishes,
-      quantity_guests: Array.isArray(data.guests)
-        ? data.guests.map((guest: IGuest) => guest.pk)
-        : [],
-    };
-
-    addApplication({ body: requestData });
-
-    localStorage.setItem(
-      'bookingData',
-      JSON.stringify({ ...data, submitted: true }),
-    );
-  }, []);
-
-  return { isLoading, isSuccess, isError, error };
-};
-
 export default function HotelBookingCompleted() {
   const [bookingData, setBookingData] = useState<BookingData | null>(null);
   const [isCancelModalOpen, setCancelModalOpen] = useState(false);
   const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
-  useAutoSubmitApplication();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -107,11 +68,13 @@ export default function HotelBookingCompleted() {
         try {
           const parsedData = JSON.parse(storedData);
           setConfirmModalOpen(true);
-          const type = parsedData.hotelId
-            ? 'hotel'
-            : parsedData.tourId
-              ? 'tour'
-              : null;
+
+          let type = null;
+          if (parsedData.tourId) {
+            type = 'tour';
+          } else if (parsedData.hotelId) {
+            type = 'hotel';
+          }
 
           setBookingData({ ...parsedData, type });
         } catch (error) {
@@ -120,6 +83,7 @@ export default function HotelBookingCompleted() {
       }
     }
   }, []);
+
   const handleBookingCompletion = () => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('bookingData');
@@ -139,7 +103,7 @@ export default function HotelBookingCompleted() {
     skip: !queryId,
   });
 
-  const hotel = useMemo<Hotel | null>(() => {
+  const hotel = useMemo<IHotel | null>(() => {
     return hotelData ?? null;
   }, [hotelData]);
 

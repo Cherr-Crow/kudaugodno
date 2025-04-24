@@ -1,8 +1,10 @@
+import { IHotel } from '@/types/hotel';
+import { ITour } from '@/types/tour-type';
+
 type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
 export interface IHotelBookingPayForm extends DivProps {
   data: {
-    hotelName: string;
     checkInDate: string;
     checkOutDate: string;
     guests: number;
@@ -46,5 +48,7 @@ export interface IHotelBookingPayForm extends DivProps {
       international_passport_no?: string;
       validity_international_passport?: string;
     }[];
+    hotel?: IHotel | null;
+    tour?: ITour | null;
   };
 }

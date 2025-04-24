@@ -7,7 +7,7 @@ import { HotelBookingPayForm } from '@/shared/hotel-booking-pay-form';
 import { Rating } from '@/shared/rating';
 import { Typography } from '@/shared/typography';
 import { NamedInput } from '@/shared/ui/named-input';
-import { Hotel } from '@/types/hotel';
+import { IHotel } from '@/types/hotel';
 
 import { IHotelBooking } from './HotelBooking.types';
 
@@ -146,7 +146,7 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
     skip: hotelId === null,
   });
 
-  const hotel = useMemo<Hotel | null>(() => {
+  const hotel = useMemo<IHotel | null>(() => {
     return data ?? null;
   }, [data]);
 
@@ -158,8 +158,7 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
 
   const hotelData = {
     ...mockData,
-    hotelId: hotelId,
-    hotelName: hotel.name,
+    hotel: hotel,
   };
 
   return (

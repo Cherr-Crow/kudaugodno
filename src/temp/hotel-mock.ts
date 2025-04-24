@@ -1,6 +1,6 @@
-import { Hotel } from '@/types/hotel';
+import { IHotel } from '@/types/hotel';
 
-export const hotels: Hotel[] = [
+export const hotels: IHotel[] = [
   {
     id: 1,
     name: 'Novotel Nairobi Westlands',

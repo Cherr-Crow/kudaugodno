@@ -22,7 +22,7 @@ export default function Rooms() {
 
   useEffect(() => {
     if (!hotel || !roomsList) return;
-    hotel.room_categories.map((nameCategory) => {
+    hotel.room_categories.map((nameCategory: string) => {
       switch (nameCategory) {
         case 'Стандарт':
           setRoomsListOne(

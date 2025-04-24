@@ -9,12 +9,12 @@ import { useScreen } from 'usehooks-ts';
 import { HotelCard } from '@/entities/hotel-card';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
-import { Hotel } from '@/types/hotel';
+import { IHotel } from '@/types/hotel';
 
 import { IHotOffer } from './HotOffer.types';
 
 export function HotOffer({ className, title, link, array, type }: IHotOffer) {
-  const [workArr, setWorkArr] = useState<Hotel[]>(array);
+  const [workArr, setWorkArr] = useState<IHotel[]>(array);
   const screen = useScreen();
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { useDeleteFlightMutation } from '@/servicesApi/flightsApi';
 import { ContextMenu } from '@/shared/ui/context-menu';
-import { isoToDateFormat } from '@/shared/ui/utils/isoToDateFormat';
+import { isoToDateFormat } from '@/shared/utils/isoToDateFormat';
 
 import { ITableForFlights } from './TableForFlights.types';
 
