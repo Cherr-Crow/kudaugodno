@@ -39,13 +39,13 @@ export function TourOperatorProfile() {
 
   const { data: user } = useGetUserDataQuery(undefined, { skip: !userId });
   const { data: users } = useGetAllUsersDataQuery(undefined, { skip: !userId });
+  ({ users });
   const [changeCompanyData] = useUpdateUserMutation();
   const [logout] = useLogoutMutation();
   const [deleteCompanyProfile] = useDeleteUserMutation();
 
   const handleEditProfile = async () => {
     setIsVisible(false);
-    console.log(companyName, email, phone);
 
     let companyNameFromUser;
 
@@ -78,11 +78,7 @@ export function TourOperatorProfile() {
         formData.append(key, value as string | Blob);
       }
     }
-    console.log(formData);
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-    console.log(formData instanceof FormData);
+
     if (user?.id) {
       try {
         await changeCompanyData(formData).unwrap();
@@ -124,18 +120,6 @@ export function TourOperatorProfile() {
       router.push('/auth-page');
     } catch {}
   };
-
-  useEffect(() => {
-    if (user) {
-      console.log(user);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (users) {
-      console.log(users);
-    }
-  }, [users]);
 
   useEffect(() => {
     if (user?.email) {

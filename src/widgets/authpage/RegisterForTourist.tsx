@@ -1,8 +1,11 @@
 'use client';
 import { useState } from 'react';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import { z } from 'zod';
 
 import { selectEmail } from '@/rtk/userSlice';
 import { useCreateNewTouristMutation } from '@/servicesApi/userApi';
@@ -11,30 +14,88 @@ import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { ITourist } from '@/types/users';
 
+const nameRegex = /^[a-zA-Zа-яА-ЯёЁ'-]+$/;
+const phoneRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+
+const FormSchema = z.object({
+  firstName: z
+    .string()
+    .trim()
+    .nonempty({ message: 'Введите имя' })
+    .min(2, { message: 'Имя слишком короткое' })
+    .max(20, { message: 'Имя слишком длинное' })
+    .regex(nameRegex, { message: 'Недопустимые символы' })
+    .refine((val) => !val.includes(' '), {
+      message: 'Имя не должно содержать пробелы',
+    }),
+  lastName: z
+    .string()
+    .trim()
+    .nonempty({ message: 'Введите фамилию' })
+    .min(3, { message: 'Фамилия слишком короткая' })
+    .max(20, { message: 'Фамилия слишком длинная' })
+    .regex(nameRegex, { message: 'Недопустимые символы' })
+    .refine((val) => !val.includes(' '), {
+      message: 'Фамилия не должна содержать пробелы',
+    }),
+  birthDate: z
+    .string()
+    .date('Выберите дату рождения')
+    .refine((val) => new Date(val) <= new Date(), {
+      message: 'Выберите корректную дату рождения',
+    }),
+  email: z
+    .string()
+    .trim()
+    .nonempty({ message: 'Введите Email' })
+    .email({ message: 'Некорректный формат Email' })
+    .refine((val) => !val.includes(' '), {
+      message: 'Email не должен содержать пробелы',
+    }),
+  phone: z
+    .string()
+    .trim()
+    .nonempty({ message: 'Введите номер телефона' })
+    .startsWith('+7', { message: 'Номер телефона должен начинаться с +7' })
+    .regex(phoneRegex, {
+      message: 'Номер должен быть в формате +7 (999) 999-99-99',
+    }),
+});
+
+// Тип формы исходя из схемы ZOD
+type FormData = z.infer<typeof FormSchema>;
+
 export function RegisterForTourist() {
-  const [name, setName] = useState<string>('');
-  const [surname, setSurname] = useState<string>('');
-  const [birthDate, setbirthDate] = useState<string>('');
   const [birthDateText, setbirthDateText] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
 
   const [createTourist] = useCreateNewTouristMutation();
 
   const router = useRouter();
   const email = useSelector(selectEmail);
 
+  const {
+    register,
+    setValue,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(FormSchema),
+  });
+
   const handleCreateNewUser = async () => {
-    console.log(name, surname, birthDateText, phone);
+    const values = getValues();
+    console.log(values);
 
     if (!email) {
       console.error('Email отсутствует');
       return;
     }
     const data: ITourist = {
-      first_name: name,
-      last_name: surname,
-      phone_number: phone,
-      birth_date: birthDate,
+      first_name: values.firstName,
+      last_name: values.lastName,
+      phone_number: values.phone,
+      birth_date: values.birthDate,
       email: email,
     };
 
@@ -43,11 +104,7 @@ export function RegisterForTourist() {
     for (const [key, value] of Object.entries(data)) {
       formData.append(key, value);
     }
-    console.log(formData);
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-    console.log(formData instanceof FormData);
+
     try {
       await createTourist(formData).unwrap();
       router.push('/auth-page');
@@ -77,7 +134,7 @@ export function RegisterForTourist() {
       formatted += `-${cleaned.substring(9, 11)}`;
     }
 
-    setPhone(formatted);
+    setValue('phone', formatted);
   };
 
   return (
@@ -96,36 +153,44 @@ export function RegisterForTourist() {
             <Typography className='font-grey-950 mb-[30px] block text-[2rem] text-blue-900 md:mb-[36px] md:text-[40px] md:font-medium md:text-grey-950 lg:mb-[56px] lg:text-[48px]'>
               Добро пожаловать!
             </Typography>
-            <form className='w-full' action='PUT'>
+            <form
+              className='w-full'
+              action='PUT'
+              onSubmit={handleSubmit(handleCreateNewUser)}
+            >
               <div className='mb-5 flex w-full flex-col'>
-                <label className='mb-1' htmlFor='name'>
+                <label className='mb-1' htmlFor='firstName'>
                   <Typography variant='l-bold'>Имя</Typography>
                 </label>
                 <input
+                  {...register('firstName')}
                   className='transition-border w-full rounded-lg border border-grey-700 bg-transparent px-3 py-2 hover:border-blue-600 focus:border-blue-600 focus:outline-none'
-                  onChange={(e) => {
-                    setName(e.target.value);
-                  }}
-                  value={name}
+                  id='firstName'
                   type='text'
-                  name='name'
                   placeholder='Иван'
                 />
+                {errors.firstName && (
+                  <Typography variant='s' className='text-red-primary-800'>
+                    {errors.firstName.message}
+                  </Typography>
+                )}
               </div>
               <div className='mb-5 flex w-full flex-col'>
-                <label className='mb-1' htmlFor='surname'>
+                <label className='mb-1' htmlFor='lastName'>
                   <Typography variant='l-bold'>Фамилия</Typography>
                 </label>
                 <input
+                  {...register('lastName')}
                   className='transition-border w-full rounded-lg border border-grey-700 bg-transparent px-3 py-2 hover:border-blue-600 focus:border-blue-600 focus:outline-none'
-                  onChange={(e) => {
-                    setSurname(e.target.value);
-                  }}
-                  value={surname}
+                  id='lastName'
                   type='text'
-                  name='surname'
                   placeholder='Иванов'
                 />
+                {errors.lastName && (
+                  <Typography variant='s' className='text-red-primary-800'>
+                    {errors.lastName.message}
+                  </Typography>
+                )}
               </div>
               <label htmlFor='birthDate' className='mb-5 flex flex-col gap-1'>
                 <Typography className='text-xl font-medium leading-8'>
@@ -133,13 +198,13 @@ export function RegisterForTourist() {
                 </Typography>
                 <div className='relative'>
                   <Typography
-                    className={`${birthDateText ? 'black' : 'text-grey-500'} absolute left-[0.75rem] top-1/2 -translate-y-1/2 text-base font-normal leading-6`}
+                    className={`${birthDateText ? 'black' : 'text-grey-500'} absolute left-[0.75rem] ${errors.birthDate?.message ? 'top-[16%]' : 'top-[26%]'} text-base font-normal leading-6`}
                   >
                     {birthDateText ? birthDateText : '01.08.1990'}
                   </Typography>
                   <input
+                    {...register('birthDate')}
                     onChange={(e) => {
-                      setbirthDate(e.target.value);
                       setbirthDateText(
                         e.target.value.split('-').reverse().join('.'),
                       );
@@ -149,6 +214,11 @@ export function RegisterForTourist() {
                     type='date'
                     placeholder='01.08.1990'
                   />
+                  {errors.birthDate && (
+                    <Typography variant='s' className='text-red-primary-800'>
+                      {errors.birthDate.message}
+                    </Typography>
+                  )}
                 </div>
               </label>
               <div className='mb-10 flex w-full flex-col'>
@@ -156,20 +226,25 @@ export function RegisterForTourist() {
                   <Typography variant='l-bold'>Телефон</Typography>
                 </label>
                 <input
+                  {...register('phone')}
                   className='transition-border w-full rounded-lg border border-grey-700 bg-transparent px-3 py-2 hover:border-blue-600 focus:border-blue-600 focus:outline-none'
                   onChange={handleInputChange}
-                  value={phone}
+                  id='phone'
                   type='phone'
-                  name='phone'
                   placeholder='+7 (999) 678-22-22'
                 />
+                {errors.phone && (
+                  <Typography variant='s' className='text-red-primary-800'>
+                    {errors.phone.message}
+                  </Typography>
+                )}
               </div>
               <ButtonCustom
-                type='button'
+                type='submit'
                 variant='primary'
                 size='m'
                 className='h-[70px] w-full px-[35px] py-[7px] md:mx-auto md:block md:w-auto md:px-[30px] md:py-[11px] lg:py-[20px]'
-                onClick={handleCreateNewUser}
+                // onClick={handleCreateNewUser}
               >
                 <Typography className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'>
                   Зарегистрироваться
