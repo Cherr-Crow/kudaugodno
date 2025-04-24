@@ -1,4 +1,5 @@
 export interface ITour {
+  hotel_id: number;
   id: number;
   start_date: string;
   end_date: string;
@@ -15,7 +16,6 @@ export interface ITour {
   room: string;
   transfer: boolean;
   price: string;
-  document: string | null;
   created_at: string;
   updated_at: string;
   is_active: boolean;

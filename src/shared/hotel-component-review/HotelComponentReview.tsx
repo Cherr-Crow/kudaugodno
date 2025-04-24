@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Hotel } from '@/types/hotel';
+import { IHotel } from '@/types/hotel';
 
 import { Typography } from '../typography';
 
 interface HotelComponentReviewProps {
-  hotel: Hotel;
+  hotel: IHotel;
   showAllReviews: boolean;
 }
 

@@ -23,7 +23,7 @@ import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SearchBlock } from '@/shared/ui/search-block';
-import { Hotel } from '@/types/hotel';
+import { IHotel } from '@/types/hotel';
 
 export function HotelCatalog() {
   {
@@ -98,7 +98,7 @@ export function HotelCatalog() {
 
   const { data: hotelData } = useGetHotelsQuery({});
 
-  const hotels = useMemo<Hotel[]>(() => {
+  const hotels = useMemo<IHotel[]>(() => {
     return tab === 'Отели' ? hotelData?.results || [] : [];
   }, [hotelData]);
 
@@ -366,11 +366,8 @@ export function HotelCatalog() {
     setIsClient(true);
   }, []);
 
-  const handleRouting = (hotelId: number, hotelName: string, tab: string) => {
-    localStorage.setItem('selectedHotelId', hotelId.toString());
-    localStorage.setItem('selectedHotelName', hotelName);
+  const handleRouting = (hotelName: string, tab: string) => {
     const encodedName = encodeURIComponent(hotelName);
-
     if (tab === 'Туры') {
       router.push(`/tour-page?name=${encodedName}`);
     } else {
@@ -516,7 +513,7 @@ export function HotelCatalog() {
                         </div>
 
                         <div
-                          onClick={() => handleRouting(hotel.id, hotel.name, tab)}
+                          onClick={() => handleRouting(hotel.name, tab)}
                           style={{ cursor: 'pointer' }}
                           className='hotel-info relative z-10 w-full rounded-lg p-4 md:ml-[-16px] md:w-3/5'
                         >

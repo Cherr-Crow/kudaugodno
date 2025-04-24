@@ -40,20 +40,18 @@ export const applicationsApi = createApi({
       providesTags: [{ type: 'Applications', id: 'LIST' }],
     }),
 
-    addApplication: build.mutation<IApplication, { body: Omit<IApplication, 'id'> }>(
-      {
-        query: (body) => ({
-          url: 'applications/',
-          method: 'POST',
-          headers: {
-            accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body,
-        }),
-        invalidatesTags: [{ type: 'Applications', id: 'LIST' }],
-      },
-    ),
+    addApplication: build.mutation<IApplication, Omit<IApplication, 'id'>>({
+      query: (applicationData) => ({
+        url: 'applications/',
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: applicationData,
+      }),
+      invalidatesTags: [{ type: 'Applications', id: 'LIST' }],
+    }),
 
     changeApplication: build.mutation<
       IApplication,

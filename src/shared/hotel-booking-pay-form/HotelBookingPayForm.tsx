@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
+import { useAddApplicationMutation } from '@/servicesApi/applicationsApi';
+
 import { IHotelBookingPayForm } from './HotelBookingPayForm.types';
 import { HotelBookingModalCancel } from '../hotel-booking-modal-cancel';
 import { Typography } from '../typography';
@@ -16,6 +18,7 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
   const [promoCode, setPromoCode] = useState('');
   const [isCancelModalOpen, setCancelModalOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [addApplication] = useAddApplicationMutation();
 
   // Финальная сумма бронирования
   const bookingPrice = {
@@ -27,9 +30,8 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
   };
 
   const finalBookingData = {
-    tourId: data?.tourId,
-    hotelId: data?.hotelId,
-    hotelName: data.hotelName,
+    tourId: data?.tour?.id,
+    hotelId: data?.hotel?.id,
     checkInDate: data.checkInDate,
     checkOutDate: data.checkOutDate,
     guests: data.guests,
@@ -66,14 +68,31 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
     insurance: data?.insurance,
   };
 
+  const applicationData = {
+    tour: data?.tour?.id ?? 1,
+    email: data?.email || 'user@example.com',
+    phone_number: data?.phone || '+7 999 978 22 22',
+    quantity_guests: [data?.guests || 1],
+    visa: Boolean(data?.visa),
+    med_insurance: Boolean(data?.med_insurance),
+    cancellation_insurance: Boolean(data?.cancellation_insurance),
+    wishes: data?.wishes || 'Без пожеланий',
+  };
+
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const handleCompleteBooking = () => {
+  const handleCompleteBooking = async () => {
     if (isClient) {
-      localStorage.setItem('bookingData', JSON.stringify(finalBookingData));
-      router.push('/booking-completed');
+      try {
+        const response = await addApplication(applicationData).unwrap();
+        console.log('Заявка успешно создана:', response);
+        localStorage.setItem('bookingData', JSON.stringify(finalBookingData));
+        router.push('/booking-completed');
+      } catch (error) {
+        console.error('Ошибка при создании заявки:', error);
+      }
     }
   };
 

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { Typography } from '@/shared/typography';
 
 import { IInputDateForSearchBlock } from './InputDateForSearchBlock.types';
-import { isoToDateFormat } from '../../utils/isoToDateFormat';
+import { isoToDateFormat } from '../../../utils/isoToDateFormat';
 
 export function InputDateForSearchBlock({
   placeholder,

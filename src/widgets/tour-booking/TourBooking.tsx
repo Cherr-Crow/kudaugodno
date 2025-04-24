@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
+import { useGetOneTourQuery } from '@/servicesApi/toursApi';
 import { HotelBookingPayForm } from '@/shared/hotel-booking-pay-form';
 import { Rating } from '@/shared/rating';
 import { SvgSprite } from '@/shared/svg-sprite';
@@ -11,7 +12,7 @@ import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
 import { flightData } from '@/temp/flight-mock';
-import { Hotel } from '@/types/hotel';
+import { ITour } from '@/types/tour-type';
 
 import { ITourBooking } from './TourBooking.types';
 
@@ -81,7 +82,6 @@ export function TourBooking({ tourId }: ITourBooking) {
     },
     checkInDate: searchData.checkInDate,
     checkOutDate: searchData.checkOutDate,
-    tourOperator: 'Teztur',
     tourOperatorPhoneNumber: '+7(971) 079–27–45',
     tourOperatorEmail: 'example@mail.com',
     airCompany: 'Air Arabia',
@@ -200,22 +200,23 @@ export function TourBooking({ tourId }: ITourBooking) {
     }));
   };
 
-  const { data } = useGetOneHotelQuery(tourId, {
+  // Поиск отеля по tourId
+  const { data } = useGetOneTourQuery(tourId as number, {
     skip: tourId === null,
   });
 
-  const hotel = useMemo<Hotel | null>(() => {
+  const tour = useMemo<ITour | null>(() => {
     return data ?? null;
   }, [data]);
 
-  // Поиск отеля по tourId
+  const { data: hotel } = useGetOneHotelQuery(Number(tour?.hotel_id));
 
   if (!hotel) return <div>Тур не найден</div>;
 
   const tourData = {
     ...mockData,
-    tourId: tourId,
-    hotelName: hotel.name,
+    tour: tour,
+    hotel: hotel,
   };
 
   return (
@@ -250,15 +251,17 @@ export function TourBooking({ tourId }: ITourBooking) {
                 </div>
               </div>
               <div className='mb-3 grid grid-cols-3 gap-2'>
-                {hotel.amenities_common.map((amenity, amenityIndex) => (
-                  <Typography
-                    key={`amenity-${amenityIndex}`}
-                    variant='l-bold'
-                    className='rounded-xl bg-grey-50 p-1 text-xs text-grey-950 md:text-base'
-                  >
-                    {amenity}
-                  </Typography>
-                ))}
+                {hotel.amenities_common.map(
+                  (amenity: string, amenityIndex: number) => (
+                    <Typography
+                      key={`amenity-${amenityIndex}`}
+                      variant='l-bold'
+                      className='rounded-xl bg-grey-50 p-1 text-xs text-grey-950 md:text-base'
+                    >
+                      {amenity}
+                    </Typography>
+                  ),
+                )}
               </div>
               <div className='flex flex-col gap-2 rounded-lg bg-blue-100 p-4'>
                 <Typography

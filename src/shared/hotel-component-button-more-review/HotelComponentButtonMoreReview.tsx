@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
-import { Hotel } from '@/types/hotel';
+import { IHotel } from '@/types/hotel';
 
 import { HotelComponentReview } from '../hotel-component-review';
 import { Typography } from '../typography';
 
 interface HotelComponentButtonMoreReviewProps {
-  hotel: Hotel;
+  hotel: IHotel;
 }
 
 export function HotelComponentButtonMoreReview({
