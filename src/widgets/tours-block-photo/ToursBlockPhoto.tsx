@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
@@ -12,19 +13,27 @@ import { ModalTours } from '@/shared/ui/modal-tours';
 
 import { YandexMap } from '../ymap';
 
-interface ToursBlockPhotoProps {
-  hotelId?: number | null;
-}
-
-export function ToursBlockPhoto({ hotelId }: ToursBlockPhotoProps) {
+export function ToursBlockPhoto() {
+  const [hotelId, setHotelId] = useState<number | null>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenModalMap, setIsOpenModalMap] = useState(false);
   const [showAllPhoto, setShowAllPhoto] = useState<boolean>(false);
-  const { data: hotels, isLoading, error } = useGetOneHotelQuery(hotelId || null);
+  const {
+    data: hotel,
+    isLoading,
+    error,
+  } = useGetOneHotelQuery(hotelId!, {
+    skip: hotelId === null,
+  });
 
-  if (isLoading) return <div>Загрузка...</div>;
-  if (error) return <div>Ошибка в загрузке данных отеля.</div>;
-  if (!hotels) return <div>Информация об отеле отсутствует.</div>;
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedId = localStorage.getItem('selectedHotelId');
+      if (storedId) {
+        setHotelId(Number(storedId));
+      }
+    }
+  }, []);
 
   const handleClickAllPhoto = () => {
     setShowAllPhoto(true);
@@ -42,15 +51,19 @@ export function ToursBlockPhoto({ hotelId }: ToursBlockPhotoProps) {
   };
 
   let coordinates: [number, number] = [55.751574, 37.573856]; // Москва
-  if (hotels?.width && hotels.longitude) {
-    coordinates = [Number(hotels.width), Number(hotels.longitude)];
+  if (hotel?.width && hotel.longitude) {
+    coordinates = [Number(hotel.width), Number(hotel.longitude)];
   }
+
+  if (isLoading) return <div>Загрузка...</div>;
+  if (error) return <div>Ошибка при загрузке данных отеля.</div>;
+  if (!hotel) return <div>Информация об отеле отсутствует.</div>;
 
   return (
     <>
-      <div className='lg:p-4 lg:pl-4 lg:pr-4'>
-        {[hotels].map((hotel) => (
-          <div key={hotel.id}>
+      {hotel && (
+        <div className='lg:p-4 lg:pl-4 lg:pr-4'>
+          <div key={hotel.id + nanoid()}>
             <div className='grid py-4'>
               <div className='order-1 xl:order-2'>
                 <div className='lg:flex-fow flex flex-col xl:mt-6'>
@@ -77,7 +90,7 @@ export function ToursBlockPhoto({ hotelId }: ToursBlockPhotoProps) {
               </div>
             </div>
 
-            {!showAllPhoto ? (
+            {!showAllPhoto && hotel.photo ? (
               <div className='grid h-[182px] grid-cols-1 gap-4 py-4 md:h-auto lg:grid-cols-2'>
                 <img
                   src={hotel.photo[0]?.photo}
@@ -128,15 +141,16 @@ export function ToursBlockPhoto({ hotelId }: ToursBlockPhotoProps) {
             ) : (
               <div className='py-4'>
                 <ul className='grid h-[480px] gap-4 overflow-y-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-                  {hotel.photo.map((photo) => (
-                    <li key={nanoid()}>
-                      <img
-                        src={photo.photo}
-                        alt={`Hotel ${hotel.name} hotel-photo`}
-                        className='h-[230px] w-[300px] rounded-3xl object-cover shadow-md lg:block'
-                      />
-                    </li>
-                  ))}
+                  {hotel.photo &&
+                    hotel.photo.map((photo) => (
+                      <li key={nanoid()}>
+                        <img
+                          src={photo.photo}
+                          alt={`Hotel ${hotel.name} hotel-photo`}
+                          className='h-[230px] w-[300px] rounded-3xl object-cover shadow-md lg:block'
+                        />
+                      </li>
+                    ))}
                   <li
                     key={nanoid()}
                     className='relative h-[230px] w-[300px] flex-shrink-0 rounded-3xl p-2 shadow-md md:w-full'
@@ -144,7 +158,7 @@ export function ToursBlockPhoto({ hotelId }: ToursBlockPhotoProps) {
                     <div
                       className='absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transform rounded-3xl bg-cover bg-center'
                       style={{
-                        backgroundImage: `url(${hotel.photo[0]?.photo})`,
+                        backgroundImage: `url(${hotel.photo ? hotel.photo[0]?.photo : ''})`,
                         opacity: 0.6,
                       }}
                     />
@@ -299,8 +313,8 @@ export function ToursBlockPhoto({ hotelId }: ToursBlockPhotoProps) {
               </div>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
       {
         <Modal getState={setIsOpenModal} isOpen={isOpenModal}>
           <ModalTours type={'trip'} />

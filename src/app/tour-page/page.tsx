@@ -81,7 +81,7 @@ function CatalogToursContent() {
     <div className='container'>
       <Breadcrumbs />
       <SearchTour type='Туры' hotel={hotel} />
-      <ToursBlockPhoto hotelId={hotelId} />
+      <ToursBlockPhoto />
       <section className='mb-10 mt-10'>
         <OtherTours />
         {rooms.map((elem) => (
