@@ -1,61 +1,52 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { BASE_URL } from '@/temp/domen_nikita';
-import { IApplication } from '@/types/application';
-
-interface IResponseListApplications {
-  count: number;
-  next: null;
-  previous: null;
-  results: IApplication[];
-}
+import { IApplication } from '@/types/application.type';
 
 export const applicationsApi = createApi({
   reducerPath: 'applicationsApi',
-  tagTypes: ['Applications'],
+  tagTypes: ['applications'],
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (build) => ({
     getApplications: build.query<
-      IResponseListApplications,
+      IApplication[],
       { limit?: number; offset?: number }
     >({
       query: ({ limit, offset }) =>
-        `applications?${limit ? 'limit=' + limit : ''}${offset ? '&offset=' + offset : ''}`,
-      providesTags: (result) => {
-        if (!result || !Array.isArray(result.results)) {
-          return [];
-        }
-        return [
-          { type: 'Applications', id: 'LIST' },
-          ...result.results.map((application) => ({
-            type: 'Applications' as const,
-            id: application.id,
-          })),
-        ];
-      },
+        `applications/?${limit && 'limit=' + limit}${offset && '&offset=' + offset}`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ phone_number }: { phone_number: string }) => ({
+                type: 'applications' as const,
+                phone_number,
+              })),
+              { type: 'applications', id: 'LIST' },
+            ]
+          : [{ type: 'applications', id: 'LIST' }],
     }),
-
-    getOneApplication: build.query<IApplication, number | null>({
-      query: (id) => `applications/${id ?? ''}`,
-      providesTags: [{ type: 'Applications', id: 'LIST' }],
-    }),
-
     addApplication: build.mutation<IApplication, Omit<IApplication, 'id'>>({
-      query: (applicationData) => ({
+      query: (body) => ({
         url: 'applications/',
         method: 'POST',
         headers: {
           accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: applicationData,
+        body,
       }),
-      invalidatesTags: [{ type: 'Applications', id: 'LIST' }],
+      invalidatesTags: [{ type: 'applications', id: 'LIST' }],
     }),
-
+    getOneApplication: build.query<IApplication, number | void>({
+      query: (id) => `flights/${id ?? ''}`,
+      providesTags: [{ type: 'applications', id: 'LIST' }],
+    }),
     changeApplication: build.mutation<
       IApplication,
-      { body: Omit<IApplication, 'id'>; id: number }
+      {
+        body: Omit<IApplication, 'id'>;
+        id: number;
+      }
     >({
       query: ({ body, id }) => ({
         url: `applications/${id}/`,
@@ -66,23 +57,23 @@ export const applicationsApi = createApi({
         },
         body,
       }),
-      invalidatesTags: [{ type: 'Applications', id: 'LIST' }],
+      invalidatesTags: [{ type: 'applications', id: 'LIST' }],
     }),
-
     deleteApplication: build.mutation({
       query: (id: number) => ({
         url: `applications/${id}/`,
         method: 'DELETE',
       }),
-      invalidatesTags: [{ type: 'Applications', id: 'LIST' }],
+      invalidatesTags: [{ type: 'applications', id: 'LIST' }],
     }),
   }),
 });
 
 export const {
   useGetApplicationsQuery,
-  useGetOneApplicationQuery,
   useAddApplicationMutation,
+  useGetOneApplicationQuery,
+  useLazyGetOneApplicationQuery,
   useChangeApplicationMutation,
   useDeleteApplicationMutation,
 } = applicationsApi;
