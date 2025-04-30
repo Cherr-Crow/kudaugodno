@@ -1,5 +1,7 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { redirect, useSearchParams } from 'next/navigation';
 
 import { FilterYear } from '@/shared/filter-year';
 import { SvgSprite } from '@/shared/svg-sprite';
@@ -9,11 +11,18 @@ import { Checkbox } from '@/shared/ui/checkbox';
 
 export default function EditApplication() {
   const [years] = useState<string[]>(['Гость 1', 'Гость 2']);
+  const idFlight = useSearchParams().get('id');
+  useEffect(() => {
+    console.log(idFlight);
+  }, [idFlight]);
   return (
     <div className=''>
       <div className={'flex flex-col md:flex-row md:justify-between'}>
         <div className='mb-4 flex items-center gap-2'>
-          <div>
+          <div
+            className={'cursor-pointer'}
+            onClick={() => redirect('/admin-panel-tour-operator/applications-page')}
+          >
             <SvgSprite name={'back-arrow'} width={40} height={40} />
           </div>
           <div className='flex flex-col gap-2'>

@@ -23,10 +23,17 @@ export function ContextMenu({ items, visible, positionProp }: IContextMenu) {
       <div
         ref={contextMenuRef}
         className='absolute min-w-36 rounded-xl border border-grey-100 bg-white shadow-xl'
-        style={{
-          top: position.y - 10,
-          left: position.x - 10,
-        }}
+        style={
+          screen.width > 1920
+            ? {
+                top: position.y - 10,
+                left: position.x - 10,
+              }
+            : {
+                top: position.y - 5,
+                left: position.x - 200,
+              }
+        }
         onMouseLeave={handleMouseOut}
       >
         <ul className='p-2'>

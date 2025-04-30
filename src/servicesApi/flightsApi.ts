@@ -34,7 +34,7 @@ export const flightsApi = createApi({
       }),
       invalidatesTags: [{ type: 'Flights', id: 'LIST' }],
     }),
-    getOneFlight: build.query<IFlight, number | void>({
+    getOneFlight: build.query<IFlight, number | null>({
       query: (id) => `flights/${id ?? ''}`,
       providesTags: [{ type: 'Flights', id: 'LIST' }],
     }),

@@ -1,13 +1,20 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { useGetApplicationsQuery } from '@/servicesApi/applicationsApi';
+import { useGetToursQuery } from '@/servicesApi/toursApi';
 import { FilterYear } from '@/shared/filter-year';
 import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ApplicationCard } from '@/shared/ui/application-card';
 
 export default function ApplicationsPage() {
-  const [years] = useState<string[]>(['2024', '2023', '2022']);
+  const [years] = useState<string[]>(['2025']);
+  const applicationsQuery = useGetApplicationsQuery({ limit: 10, offset: 0 });
+  const { data, status } = useGetToursQuery({ limit: 10, offset: 0 });
+  useEffect(() => {
+    console.log(data);
+  }, [status]);
   return (
     <div className='w-full'>
       <div className='flex flex-col'>
@@ -28,12 +35,17 @@ export default function ApplicationsPage() {
             />
           </form>
         </div>
-        <Typography variant={'h4'}>20 ноября, среда</Typography>
-        <ApplicationCard></ApplicationCard>
-        <ApplicationCard></ApplicationCard>
-        <Typography variant={'h4'}>21 ноября, четверг</Typography>
-        <ApplicationCard></ApplicationCard>
-        <ApplicationCard></ApplicationCard>
+        {applicationsQuery.data &&
+          status &&
+          data &&
+          applicationsQuery.data.map((item, i) => (
+            <ApplicationCard
+              key={i}
+              application={item}
+              tour={data[0]}
+              status={status}
+            ></ApplicationCard>
+          ))}
       </div>
     </div>
   );
