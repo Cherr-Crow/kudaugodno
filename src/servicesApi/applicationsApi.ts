@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { BASE_URL } from '@/temp/domen_nikita';
-import { IApplication } from '@/types/application.type';
+import { IApplication, IApplicationRequest } from '@/types/application.type';
 
 export const applicationsApi = createApi({
   reducerPath: 'applicationsApi',
@@ -25,7 +25,7 @@ export const applicationsApi = createApi({
             ]
           : [{ type: 'applications', id: 'LIST' }],
     }),
-    addApplication: build.mutation<IApplication, Omit<IApplication, 'id'>>({
+    addApplication: build.mutation<IApplication, IApplicationRequest>({
       query: (body) => ({
         url: 'applications/',
         method: 'POST',
