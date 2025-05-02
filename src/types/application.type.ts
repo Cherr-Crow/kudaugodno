@@ -32,3 +32,14 @@ export interface IApplication {
   cancellation_insurance: boolean;
   wishes: string;
 }
+
+export interface IApplicationRequest {
+  tour: number;
+  email: string;
+  phone_number: string;
+  quantity_guests: number[];
+  visa: boolean;
+  med_insurance: boolean;
+  cancellation_insurance: boolean;
+  wishes: string;
+}
