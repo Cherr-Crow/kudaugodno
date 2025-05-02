@@ -24,5 +24,9 @@ export default function CatalogHotels() {
     );
   }
 
-  return <div>{isClient && <HotelCatalog />}</div>;
+  return (
+    <div>
+      {isClient && <HotelCatalog hotels={data.results} initialTab='Отели' />}
+    </div>
+  );
 }
