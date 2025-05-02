@@ -5,7 +5,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useGetHotelsQuery } from '@/servicesApi/hotelsApi';
 import { FilterAirportDistance } from '@/shared/filter-airport-distance';
 import { FilterAmenities } from '@/shared/filter-amenities';
 import { FilterCity } from '@/shared/filter-city';
@@ -25,7 +24,12 @@ import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SearchBlock } from '@/shared/ui/search-block';
 import { IHotel } from '@/types/hotel';
 
-export function HotelCatalog() {
+type HotelCatalogProps = {
+  hotels: IHotel[];
+  initialTab: 'Туры' | 'Отели';
+};
+
+export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
   {
     /* Отзывы*/
   }
@@ -72,7 +76,7 @@ export function HotelCatalog() {
   const [tourOperators, setTourOperators] = useState<string[]>([]);
   const [guests, setGuests] = useState<string | undefined>();
 
-  const [tab, setTab] = useState<'Туры' | 'Отели'>('Отели');
+  const [tab, setTab] = useState<'Туры' | 'Отели'>(initialTab);
 
   // Load data to filter from URL
 
@@ -94,13 +98,13 @@ export function HotelCatalog() {
     }
   }, [searchParams]);
 
-  // Load hotel data from query
-
-  const { data: hotelData } = useGetHotelsQuery({});
-
-  const hotels = useMemo<IHotel[]>(() => {
-    return tab === 'Отели' ? hotelData?.results || [] : [];
-  }, [hotelData]);
+  // // Load tours from hotelIds
+  // const hotelIds = hotels?.map((hotel) => hotel.id) || [];
+  // const { data: tours } = useGetToursByHotelsQuery({
+  //   hotelIds,
+  //   limit: 10,
+  //   offset: 0,
+  // });
 
   // Filters reset
 
