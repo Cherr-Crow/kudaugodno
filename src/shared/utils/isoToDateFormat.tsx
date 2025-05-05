@@ -4,6 +4,9 @@
 */
 
 export function isoToDateFormat(isoDate: string): string {
+  if (!isoDate || !isoDate.includes('-')) {
+    throw new Error('Неверный формат входных данных');
+  }
   const [year, month, day] = isoDate.split('-');
   return `${day}.${month}.${year}`;
 }

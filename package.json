@@ -15,10 +15,11 @@
     "page": "generate-react component --type=page"
   },
   "dependencies": {
-    "@pbe/react-yandex-maps": "^1.2.5",
     "@hookform/resolvers": "^4.1.3",
+    "@pbe/react-yandex-maps": "^1.2.5",
     "@reduxjs/toolkit": "^2.5.0",
     "axios": "^1.7.9",
+    "cors": "^2.8.5",
     "generate-react-cli": "^8.4.9",
     "jsdom": "^25.0.1",
     "nanoid": "^5.0.9",

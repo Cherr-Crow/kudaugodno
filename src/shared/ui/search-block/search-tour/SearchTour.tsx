@@ -1,26 +1,31 @@
 import React, { useEffect, useState } from 'react';
 
-import { useRouter, useSearchParams } from 'next/navigation';
-
 import { Modal } from '@/shared/modal';
 import { SelectForSearchBlock } from '@/shared/select-for-search-block';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { InputDateForSearchBlock } from '@/shared/ui/search-block/input-date-for-search-block';
 import { InputForSearchBlock } from '@/shared/ui/search-block/input-for-search-block';
+import { getDateNow } from '@/shared/utils/getDateNow';
 
 import { ISearchTour } from './SearchTour.types';
 
-export function SearchTour({ type, hotel }: ISearchTour) {
-  const router = useRouter();
-
-  const searchParams = useSearchParams();
-
-  const [departureCity, setDepartureCity] = useState<string>('');
-  const [where, setWhere] = useState<string>('');
-  const [checkInDate, setCheckInDate] = useState('');
-  const [checkOutDate, setCheckOutDate] = useState('');
-  const [guests, setGuests] = useState('Гостей');
+export function SearchTour({
+  type,
+  hotel,
+  departureCity = '',
+  where = '',
+  checkInDate = `${getDateNow(+5)}`,
+  checkOutDate = '',
+  nights = '7 ночей',
+  guests = '2 гостя',
+  setDepartureCity,
+  setWhere,
+  setCheckInDate,
+  setCheckOutDate,
+  setNights,
+  setGuests,
+}: ISearchTour) {
   const [isFormValid, setIsFormValid] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -31,23 +36,27 @@ export function SearchTour({ type, hotel }: ISearchTour) {
   }, []);
 
   const handleSetDepartureCity = (event: string) => {
-    setDepartureCity(event);
+    setDepartureCity?.(event);
   };
 
   const handleSetWhere = (event: string) => {
-    setWhere(event);
+    setWhere?.(event);
   };
 
   const handleSetCheckInDate = (event: string) => {
-    setCheckInDate(event);
+    setCheckInDate?.(event);
   };
 
   const handleSetCheckOutDate = (event: string) => {
-    setCheckOutDate(event);
+    setCheckOutDate?.(event);
+  };
+
+  const handleSetNights = (event: string) => {
+    setNights?.(event === 'Количество ночей' ? '' : event);
   };
 
   const handleSetGuests = (event: string) => {
-    setGuests(event === 'Гостей' ? '' : event);
+    setGuests?.(event === 'Количество гостей' ? '' : event);
   };
 
   const handleSearch = () => {
@@ -74,8 +83,8 @@ export function SearchTour({ type, hotel }: ISearchTour) {
 
   const checkFormValidity = () => {
     const checkInDateValid = checkInDate.trim() !== '';
-    const checkOutDateValid = checkOutDate.trim() !== '';
-    const guestsValid = guests.trim() !== '' && guests !== 'Гостей';
+    const nightsValid = nights.trim() !== '' && nights !== 'Количество ночей';
+    const guestsValid = guests.trim() !== '' && guests !== 'Количество гостей';
 
     const isValidDates =
       new Date(checkInDate).setHours(0, 0, 0, 0) <
@@ -84,7 +93,7 @@ export function SearchTour({ type, hotel }: ISearchTour) {
     const valid =
       where.trim() !== '' &&
       checkInDateValid &&
-      checkOutDateValid &&
+      nightsValid &&
       guestsValid &&
       (type !== 'Туры' || departureCity.trim() !== '') &&
       isValidDates;
@@ -93,88 +102,11 @@ export function SearchTour({ type, hotel }: ISearchTour) {
     return valid;
   };
 
-  // Fill URL with search data
-
-  useEffect(() => {
-    setDepartureCity(searchParams.get('departureCity') || '');
-    setWhere(searchParams.get('where') || '');
-    setCheckInDate(searchParams.get('checkInDate') || '');
-    setCheckOutDate(searchParams.get('checkOutDate') || '');
-    setGuests(searchParams.get('guests') || 'Гостей');
-  }, [searchParams]);
-
-  // Auto Update URL
-
-  useEffect(() => {
-    if (!isClient) return;
-
-    const params = new URLSearchParams();
-    if (type) params.set('type', type);
-    if (hotel?.id) params.set('hotelId', String(hotel.id));
-    if (hotel?.name) params.set('name', hotel.name);
-    if (departureCity) params.set('departureCity', departureCity);
-    if (where) params.set('where', where);
-    if (checkInDate) params.set('checkInDate', checkInDate);
-    if (checkOutDate) params.set('checkOutDate', checkOutDate);
-
-    const guestsCount = parseInt(guests);
-    if (!isNaN(guestsCount) && guestsCount > 0) {
-      params.set('guests', String(guestsCount));
-    }
-
-    const query = params.toString();
-    const path = `${window.location.pathname}?${query}`;
-
-    router.replace(path);
-  }, [
-    type,
-    hotel?.id,
-    hotel?.name,
-    departureCity,
-    where,
-    checkInDate,
-    checkOutDate,
-    guests,
-    isClient,
-  ]);
-
-  // Delete ULR data when inputs are empty
-
-  useEffect(() => {
-    if (!departureCity) {
-      setDepartureCity('');
-    }
-  }, [departureCity]);
-
-  useEffect(() => {
-    if (!where) {
-      setWhere('');
-    }
-  }, [where]);
-
-  useEffect(() => {
-    if (!checkInDate) {
-      setCheckInDate('');
-    }
-  }, [checkInDate]);
-
-  useEffect(() => {
-    if (!checkOutDate) {
-      setCheckOutDate('');
-    }
-  }, [checkOutDate]);
-
-  useEffect(() => {
-    if (guests === 'Гостей') {
-      setGuests('Гостей');
-    }
-  }, [guests]);
-
   // Update SearchBlock, URL from hotel data
 
   useEffect(() => {
     if (hotel) {
-      setWhere(hotel.city);
+      setWhere?.(hotel.city || '');
     }
   }, [hotel]);
 
@@ -182,7 +114,9 @@ export function SearchTour({ type, hotel }: ISearchTour) {
 
   useEffect(() => {
     checkFormValidity();
-  }, [checkInDate, checkOutDate, guests, where, departureCity]);
+  }, [checkInDate, checkOutDate, nights, guests, where, departureCity]);
+
+  if (!isClient) return null;
 
   return (
     <div className='md:flex md:justify-center'>
@@ -190,6 +124,7 @@ export function SearchTour({ type, hotel }: ISearchTour) {
         {type === 'Туры' && (
           <InputForSearchBlock
             placeholder='Город вылета'
+            value={departureCity}
             getValue={handleSetDepartureCity}
             className='border-r-2 border-grey-400'
           />
@@ -203,15 +138,19 @@ export function SearchTour({ type, hotel }: ISearchTour) {
         <InputDateForSearchBlock
           placeholder='Дата заезда'
           className='border-r-2 border-grey-400'
+          startValue={checkInDate}
           getValue={handleSetCheckInDate}
         />
-        <InputDateForSearchBlock
-          placeholder='Дата выезда'
+        <SelectForSearchBlock
+          type='nights'
           className='border-r-2 border-grey-400'
-          getValue={handleSetCheckOutDate}
+          startValue={nights}
+          getValue={handleSetNights}
         />
         <SelectForSearchBlock
+          type='guests'
           className='border-r-2 border-grey-400'
+          startValue={guests}
           getValue={handleSetGuests}
         />
         <div className='flex items-center'>
@@ -224,29 +163,41 @@ export function SearchTour({ type, hotel }: ISearchTour) {
         {type === 'Туры' && (
           <InputForSearchBlock
             placeholder='Город вылета'
+            value={departureCity}
             getValue={handleSetDepartureCity}
             className='col-span-2 w-full rounded-lg bg-white p-4'
           />
         )}
         <InputForSearchBlock
           placeholder='Куда'
+          value={where}
           getValue={handleSetWhere}
           className='col-span-2 w-full rounded-lg bg-white p-4'
         />
         <SelectForSearchBlock
+          type='nights'
           className='col-span-2 w-full rounded-lg bg-white px-4'
+          startValue={nights}
+          getValue={handleSetNights}
+        />
+        <SelectForSearchBlock
+          type='guests'
+          className='col-span-2 w-full rounded-lg bg-white px-4'
+          startValue={guests}
           getValue={handleSetGuests}
         />
         <InputDateForSearchBlock
           placeholder='Дата заезда'
           className='w-full rounded-lg bg-white p-4'
           min={new Date().toISOString().split('T')[0]}
+          startValue={checkInDate}
           getValue={handleSetCheckInDate}
         />
         <InputDateForSearchBlock
           placeholder='Дата выезда'
           className='w-full rounded-lg bg-white p-4'
           min={new Date().toISOString().split('T')[0]}
+          startValue={checkOutDate}
           getValue={handleSetCheckOutDate}
         />
         <ButtonCustom

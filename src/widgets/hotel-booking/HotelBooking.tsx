@@ -7,6 +7,8 @@ import { HotelBookingPayForm } from '@/shared/hotel-booking-pay-form';
 import { Rating } from '@/shared/rating';
 import { Typography } from '@/shared/typography';
 import { NamedInput } from '@/shared/ui/named-input';
+import { getCheckOutDate } from '@/shared/utils/getCheckoutDate';
+import { isoToDateFormat } from '@/shared/utils/isoToDateFormat';
 import { IHotel } from '@/types/hotel';
 
 import { IHotelBooking } from './HotelBooking.types';
@@ -22,20 +24,6 @@ const extractNumber = (text: string): number => {
   return match ? parseInt(match[0], 10) : 0;
 };
 
-const calculateNights = (checkIn: string, checkOut: string) => {
-  if (!checkIn || !checkOut) return 1;
-  const formattedCheckIn = checkIn.split('.').reverse().join('-');
-  const formattedCheckOut = checkOut.split('.').reverse().join('-');
-  const inDate = new Date(formattedCheckIn);
-  const outDate = new Date(formattedCheckOut);
-  if (isNaN(inDate.getTime()) || isNaN(outDate.getTime())) {
-    console.error('Некорректные даты:', checkIn, checkOut);
-    return 1;
-  }
-  const diffTime = outDate.getTime() - inDate.getTime();
-  return Math.max(Math.ceil(diffTime / (1000 * 60 * 60 * 24)), 1);
-};
-
 export function HotelBooking({ hotelId }: IHotelBooking) {
   //  Загрузка дынных из блока поиска
 
@@ -49,6 +37,7 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
           where: '',
           checkInDate: '',
           checkOutDate: '',
+          nights: '',
           guests: '',
         };
   });
@@ -66,13 +55,23 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
     }
   }, [searchData]);
 
+  // Загрузка данных об отелях
+
+  const { data } = useGetOneHotelQuery(hotelId, {
+    skip: hotelId === null,
+  });
+
+  const hotel = useMemo<IHotel | null>(() => {
+    return data ?? null;
+  }, [data]);
+
+  const room = hotel?.rooms[Number(searchData.roomId)];
+
   // Данные
 
-  const nights = calculateNights(searchData.checkInDate, searchData.checkOutDate);
-
   const [mockData, setMockData] = useState({
-    dates: `${searchData.checkInDate} - ${searchData.checkOutDate}`,
-    guestsInfo: `${searchData.guests} ${searchData.guests === 1 ? 'гость' : searchData.guests < 5 ? 'взрослых' : 'взрослых'} на ${nights} ${nights === 1 ? 'ночь' : nights < 5 ? 'ночи' : 'ночей'}`,
+    dates: `${isoToDateFormat(searchData.checkInDate)} - ${isoToDateFormat(getCheckOutDate(searchData.checkInDate, searchData.nights))}`,
+    guestsInfo: `${searchData.guests} ${searchData.guests === 1 ? 'гость' : searchData.guests < 5 ? 'взрослых' : 'взрослых'} на ${searchData.nights} ${searchData.nights === 1 ? 'ночь' : searchData.nights < 5 ? 'ночи' : 'ночей'}`,
     paymentInfo: 'Необходимо оплатить при заселении',
     resortFee: 100,
     flightInfo: {
@@ -83,8 +82,10 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
     hotelAdress: 'Краснодарский край, пос. Сириус, Континентальный проспект д. 6',
     hotelPhoneNumber: '+7 (571) 079–27–45',
     hotelEmail: 'example@mail.com',
-    checkInDate: searchData.checkInDate,
-    checkOutDate: searchData.checkOutDate,
+    checkInDate: isoToDateFormat(searchData.checkInDate),
+    checkOutDate: isoToDateFormat(
+      getCheckOutDate(searchData.checkInDate, searchData.nights),
+    ),
     guests: extractNumber(searchData.guests),
     phone: '',
     email: '',
@@ -140,18 +141,6 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
     }));
   };
 
-  // Загрузка данных об отелях
-
-  const { data } = useGetOneHotelQuery(hotelId, {
-    skip: hotelId === null,
-  });
-
-  const hotel = useMemo<IHotel | null>(() => {
-    return data ?? null;
-  }, [data]);
-
-  // Поиск отеля по hotelId
-
   if (!hotel) {
     return <div>Отель не найден</div>;
   }
@@ -159,6 +148,7 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
   const hotelData = {
     ...mockData,
     hotel: hotel,
+    room: room,
   };
 
   return (

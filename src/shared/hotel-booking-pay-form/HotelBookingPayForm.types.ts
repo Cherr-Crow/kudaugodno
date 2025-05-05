@@ -1,4 +1,5 @@
 import { IHotel } from '@/types/hotel';
+import { RoomType } from '@/types/room';
 import { ITour } from '@/types/tour-type';
 
 type DivProps = React.ComponentPropsWithoutRef<'div'>;
@@ -50,5 +51,6 @@ export interface IHotelBookingPayForm extends DivProps {
     }[];
     hotel?: IHotel | null;
     tour?: ITour | null;
+    room?: RoomType | null;
   };
 }

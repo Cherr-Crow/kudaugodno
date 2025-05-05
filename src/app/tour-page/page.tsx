@@ -3,7 +3,7 @@
 import React, { Suspense, useEffect, useState } from 'react';
 
 import { nanoid } from 'nanoid';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { useGetToursByHotelQuery } from '@/servicesApi/toursApi';
@@ -15,18 +15,41 @@ import { ReviewsTours } from '@/shared/ui/reviews-tours';
 import { RoomCards } from '@/shared/ui/room-cards';
 import { IRoomCards } from '@/shared/ui/room-cards/RoomCards.types';
 import { SearchTour } from '@/shared/ui/search-block/search-tour';
+import { getDateNow } from '@/shared/utils/getDateNow';
+import { useSearchBlockState } from '@/shared/utils/useSearchBlockState';
 import { IHotel } from '@/types/hotel';
+import { ITour } from '@/types/tour-type';
 import { ToursBlockPhoto } from '@/widgets/tours-block-photo';
 
 function CatalogToursContent() {
-  const [rooms, setRooms] = useState<IRoomCards[]>([]);
-  const [hotel, setHotel] = useState<IHotel | null>(null);
-
   const searchParams = useSearchParams();
-  const hotelName = searchParams.get('hotel') ?? '';
-  const hotelId = Number(
-    typeof window !== 'undefined' ? localStorage.getItem('selectedHotelId') : 0,
-  );
+  const router = useRouter();
+  const hotelId = Number(searchParams.get('hotelId')) ?? null;
+  const [allRooms, setAllRooms] = useState<IRoomCards[]>([]);
+  const [visibleRooms, setVisibleRooms] = useState<IRoomCards[]>([]);
+  const [roomsToShow, setRoomsToShow] = useState(5);
+  const [hotel, setHotel] = useState<IHotel | null>(null);
+  const [tours, setTours] = useState<ITour[] | null>(null);
+
+  // Инициализация компонента стейтов для SearchTour
+  const searchState = useSearchBlockState({
+    defaultCheckInDate: `${getDateNow(+5)}`,
+    defaultNights: '7 ночей',
+    defaultGuests: '2 гостя',
+  });
+  const { updateUrlParams, ...searchProps } = searchState;
+
+  // Обновление URL
+  useEffect(() => {
+    updateUrlParams(router, hotelId);
+  }, [
+    searchProps.departureCity,
+    searchProps.where,
+    searchProps.checkInDate,
+    searchProps.checkOutDate,
+    searchProps.nights,
+    searchProps.guests,
+  ]);
 
   const {
     data: hotelData,
@@ -39,7 +62,7 @@ function CatalogToursContent() {
     isLoading: isToursLoading,
     isError: isToursError,
   } = useGetToursByHotelQuery({
-    hotelName,
+    hotelId,
   });
 
   useEffect(() => {
@@ -47,19 +70,62 @@ function CatalogToursContent() {
   }, [hotelData]);
 
   useEffect(() => {
-    if (toursData) {
-      const filteredRooms: IRoomCards[] = toursData.map((tour) => ({
-        tourId: tour.id,
-        name: tour.room,
-        services: [],
-        start_date: tour.start_date,
-        end_date: tour.end_date,
-        tour_operator: tour.tour_operator ?? 'Без оператора',
-        price: tour.price,
-      }));
-      setRooms(filteredRooms);
-    }
+    if (toursData) setTours(toursData);
   }, [toursData]);
+
+  // Фильтрация туров
+  useEffect(() => {
+    if (tours && hotel) {
+      const nights = parseInt(searchProps.nights);
+      const guests = parseInt(searchProps.guests);
+
+      // Не фильтруем и не показываем ничего, если параметры не выбраны
+      if (!nights || !guests) {
+        setAllRooms([]);
+        setVisibleRooms([]);
+        return;
+      }
+
+      const filteredTours = tours.filter((tour) => {
+        const tourStart = new Date(tour.start_date);
+        const tourEnd = new Date(tour.end_date);
+        const tourNights = Math.ceil(
+          (+tourEnd - +tourStart) / (1000 * 60 * 60 * 24),
+        );
+
+        return tourNights === nights;
+      });
+
+      const filteredRooms = hotel.rooms.filter((room) => {
+        const roomCapacity = room.number_of_adults;
+        return guests === roomCapacity;
+      });
+
+      const availableCategories = filteredRooms.map((room) => room.category);
+      const filteredToursByRooms = filteredTours.filter((tour) =>
+        availableCategories.includes(tour.room),
+      );
+
+      const mapped: IRoomCards[] = filteredToursByRooms.map((tour) => {
+        const matchingRoom = hotel.rooms.find((room) => room.category === tour.room);
+        return {
+          tourId: tour.id,
+          roomId: matchingRoom?.id,
+          name: tour.room,
+          services: [],
+          start_date: tour.start_date,
+          end_date: tour.end_date,
+          tour_operator: tour.tour_operator ?? 'Без оператора',
+          price: tour.price,
+          guests,
+          nights,
+        };
+      });
+
+      setAllRooms(mapped);
+      setVisibleRooms(mapped.slice(0, roomsToShow));
+    }
+  }, [tours, hotel, hotelId, searchProps.guests, searchProps.nights, roomsToShow]);
 
   if (isHotelLoading || isToursLoading) {
     return <div className='pt-[40px] text-center text-[32px]'>Загрузка...</div>;
@@ -80,25 +146,29 @@ function CatalogToursContent() {
   return (
     <div className='container'>
       <Breadcrumbs />
-      <SearchTour type='Туры' hotel={hotel} />
+      {searchProps.isInitialized && (
+        <SearchTour type='Туры' hotel={hotel} {...searchProps} />
+      )}
       <ToursBlockPhoto />
       <section className='mb-10 mt-10'>
         <OtherTours />
-        {rooms.map((elem) => (
-          <RoomCards key={nanoid()} {...elem} />
+        {visibleRooms.map((room) => (
+          <RoomCards key={nanoid()} {...room} roomId={room.roomId} />
         ))}
-        <div className='mt-8 flex items-center justify-center'>
-          <ButtonCustom
-            variant='tetriary'
-            size='m'
-            type='submit'
-            className='mt-2 xl:mt-0'
-            style={{ gridArea: 'btnSubmit' }}
-            onClick={() => setRooms((prev) => [...prev, ...prev])}
-          >
-            <Typography variant='l-bold'>Показать ещё</Typography>
-          </ButtonCustom>
-        </div>
+        {visibleRooms.length < allRooms.length && (
+          <div className='mt-8 flex items-center justify-center'>
+            <ButtonCustom
+              variant='tetriary'
+              size='m'
+              type='button'
+              className='mt-2 xl:mt-0'
+              style={{ gridArea: 'btnSubmit' }}
+              onClick={() => setRoomsToShow((prev) => prev + 5)}
+            >
+              <Typography variant='l-bold'>Показать ещё</Typography>
+            </ButtonCustom>
+          </div>
+        )}
       </section>
       <ReviewsTours />
     </div>
