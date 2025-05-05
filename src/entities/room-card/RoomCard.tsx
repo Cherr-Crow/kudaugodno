@@ -47,7 +47,8 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
   const [where, setWhere] = useState<string>('');
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
-  const [guests, setGuests] = useState('Гостей');
+  const [nights, setNights] = useState('Количество ночей');
+  const [guests, setGuests] = useState('Количество гостей');
 
   useEffect(() => {
     setType(searchParams.get('type') || '');
@@ -55,17 +56,20 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
     setWhere(searchParams.get('where') || '');
     setCheckInDate(searchParams.get('checkInDate') || '');
     setCheckOutDate(searchParams.get('checkOutDate') || '');
-    setGuests(searchParams.get('guests') || 'Гостей');
+    setNights(searchParams.get('nights') || 'Количество ночей');
+    setGuests(searchParams.get('guests') || 'Количество гостей');
   }, [searchParams]);
 
   const handleBooking = () => {
     const searchData = {
       hotelId: hotelId ? hotelId.toString() : '',
+      roomId: room.id ? room.id.toString() : '',
       type,
       departureCity,
       where,
       checkInDate,
       checkOutDate,
+      nights,
       guests,
     };
     localStorage.setItem('searchData', JSON.stringify(searchData));

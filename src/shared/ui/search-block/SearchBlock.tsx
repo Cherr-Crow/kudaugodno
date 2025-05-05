@@ -7,7 +7,22 @@ import { TabBar } from '@/shared/ui/tab-bar';
 
 import { ISearchBlock } from './SearchBlock.types';
 
-export function SearchBlock({ tab: initialTab, setTab }: ISearchBlock) {
+export function SearchBlock({
+  tab: initialTab,
+  setTab,
+  departureCity,
+  where,
+  checkInDate,
+  checkOutDate,
+  nights,
+  guests,
+  setDepartureCity,
+  setWhere,
+  setCheckInDate,
+  setCheckOutDate,
+  setNights,
+  setGuests,
+}: ISearchBlock) {
   const [tab, setTabState] = useState<'Туры' | 'Отели'>(initialTab ?? 'Туры');
 
   const handleTabChange = (newTab: 'Туры' | 'Отели') => {
@@ -26,7 +41,21 @@ export function SearchBlock({ tab: initialTab, setTab }: ISearchBlock) {
         getActiveTab={handleTabChange}
         variant='secondary'
       />
-      <SearchTour type={tab} />
+      <SearchTour
+        type={tab}
+        departureCity={departureCity}
+        where={where}
+        checkInDate={checkInDate}
+        checkOutDate={checkOutDate}
+        nights={nights}
+        guests={guests}
+        setDepartureCity={setDepartureCity}
+        setWhere={setWhere}
+        setCheckInDate={setCheckInDate}
+        setCheckOutDate={setCheckOutDate}
+        setNights={setNights}
+        setGuests={setGuests}
+      />
     </div>
   );
 }

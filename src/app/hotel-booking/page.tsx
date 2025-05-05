@@ -15,7 +15,7 @@ function HotelBookingWithParams() {
     setHotelId(hotelIdParam ? Number(hotelIdParam) : null);
   }, [searchParams]);
 
-  return <HotelBooking hotelId={hotelId} />;
+  return hotelId ? <HotelBooking hotelId={hotelId} /> : <div>Загрузка...</div>;
 }
 
 export default function HotelBookingPage() {

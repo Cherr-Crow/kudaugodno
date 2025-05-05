@@ -9,7 +9,7 @@ import { ButtonCustom } from '@/shared/ui/button-custom';
 import { HotelRomsListProps } from './HotelRomsList.types';
 
 const HotelRomsList: React.FC<HotelRomsListProps> = ({ rooms, hotelId }) => {
-  const [count, setCount] = useState<number>(1);
+  const [count, setCount] = useState<number>(3);
   const [bottonShowMore, setBottonShowMore] = useState<boolean>(true);
 
   const roomCount = rooms.length;

@@ -22,6 +22,8 @@ import { SvgSprite } from '@/shared/svg-sprite';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SearchBlock } from '@/shared/ui/search-block';
+import { getDateNow } from '@/shared/utils/getDateNow';
+import { useSearchBlockState } from '@/shared/utils/useSearchBlockState';
 import { IHotel } from '@/types/hotel';
 
 type HotelCatalogProps = {
@@ -74,7 +76,6 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
   const [amenities, setAmenities] = useState<string[]>([]);
   const [airportDistance, setAirportDistance] = useState<string>('Любое');
   const [tourOperators, setTourOperators] = useState<string[]>([]);
-  const [guests, setGuests] = useState<string | undefined>();
 
   const [tab, setTab] = useState<'Туры' | 'Отели'>(initialTab);
 
@@ -82,19 +83,32 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
 
   const searchParams = useSearchParams();
 
+  // Инициализация компонента стейтов для SearchTour
+  const searchState = useSearchBlockState({
+    defaultCheckInDate: `${getDateNow(+5)}`,
+    defaultNights: '7 ночей',
+    defaultGuests: '2 гостя',
+  });
+  const { updateUrlParams, ...searchProps } = searchState;
+
+  // Обновление URL
+  useEffect(() => {
+    updateUrlParams(router);
+  }, [
+    searchProps.departureCity,
+    searchProps.where,
+    searchProps.checkInDate,
+    searchProps.checkOutDate,
+    searchProps.nights,
+    searchProps.guests,
+  ]);
+
   useEffect(() => {
     const selectedCitiesParam = searchParams.get('where');
-    const guestsParam = searchParams.get('guests');
-
     if (selectedCitiesParam) {
       setSelectedCities(selectedCitiesParam.split(','));
     } else {
       setSelectedCities([]);
-    }
-    if (guestsParam) {
-      setGuests(guestsParam);
-    } else {
-      setGuests('Гостей');
     }
   }, [searchParams]);
 
@@ -119,7 +133,6 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
     setAmenities([]);
     setAirportDistance('Любое');
     setTourOperators([]);
-    setGuests('Гостей');
   };
 
   // Filters visibility
@@ -177,14 +190,28 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
         );
 
       const isGuestsSelected =
-        guests === 'Гостей' ||
-        guests === undefined ||
+        searchProps.guests === 'Гостей' ||
+        searchProps.guests === undefined ||
         hotel.rooms.some((room) => {
           const totalGuests =
             (room.number_of_adults || 0) + (room.number_of_children || 0);
-          const guestsNumber = guests === 'Любое' ? 0 : parseInt(guests || '0', 10);
+          const guestsNumber =
+            searchProps.guests === 'Любое'
+              ? 0
+              : parseInt(searchProps.guests || '0', 10);
           return totalGuests >= guestsNumber;
         });
+
+      // const isNightsSelected =
+      //   searchProps.nights === null ||
+      //   (tours || []).some((tour) => {
+      //     const start = new Date(tour.start_date);
+      //     const end = new Date(tour.end_date);
+      //     const tourNights = Math.ceil(
+      //       (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24),
+      //     );
+      //     return tourNights === Number(searchProps.nights);
+      //   });
 
       return (
         isWithinAirportDistance &&
@@ -197,6 +224,7 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
         isMealTypeSelected &&
         isAmenitiesSelected &&
         isGuestsSelected
+        // && isNightsSelected
       );
     });
 
@@ -213,7 +241,8 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
       mealType,
       amenities,
       airportDistance,
-      guests,
+      searchProps.guests,
+      searchProps.nights,
     ],
   );
 
@@ -370,12 +399,13 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
     setIsClient(true);
   }, []);
 
-  const handleRouting = (hotelName: string, tab: string) => {
+  const handleRouting = (hotelId: number, hotelName: string, tab: string) => {
     const encodedName = encodeURIComponent(hotelName);
+    const encodedId = encodeURIComponent(hotelId);
     if (tab === 'Туры') {
-      router.push(`/tour-page?name=${encodedName}`);
+      router.push(`/tour-page?hotelId=${encodedId}&name=${encodedName}`);
     } else {
-      router.push(`/hotel-page?name=${encodedName}`);
+      router.push(`/hotel-page?hotelId=${encodedId}&name=${encodedName}`);
     }
   };
 
@@ -392,7 +422,9 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
       <div
         className={`mb-[10px] flex w-full rounded-bl-[20px] rounded-br-[20px] bg-blue-600 p-10 md:h-[90%] md:rounded-bl-[100px] md:rounded-br-[100px]`}
       >
-        <SearchBlock tab={tab} setTab={setTab} />
+        {searchProps.isInitialized && (
+          <SearchBlock tab={tab} setTab={setTab} {...searchProps} />
+        )}
       </div>
       <div className='flex w-full flex-col md:flex-row'>
         <aside
@@ -517,7 +549,7 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
                         </div>
 
                         <div
-                          onClick={() => handleRouting(hotel.name, tab)}
+                          onClick={() => handleRouting(hotel.id, hotel.name, tab)}
                           style={{ cursor: 'pointer' }}
                           className='hotel-info relative z-10 w-full rounded-lg p-4 md:ml-[-16px] md:w-3/5'
                         >

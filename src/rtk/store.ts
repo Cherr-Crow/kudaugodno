@@ -5,6 +5,7 @@ import { authApi } from '@/servicesApi/authApi';
 import { flightsApi } from '@/servicesApi/flightsApi';
 import { hotelsApi } from '@/servicesApi/hotelsApi';
 import { insurancesApi } from '@/servicesApi/insurancesApi';
+import { roomsApi } from '@/servicesApi/roomsApi';
 import { toursApi } from '@/servicesApi/toursApi';
 import { userApi } from '@/servicesApi/userApi';
 
@@ -20,6 +21,7 @@ export const store = configureStore({
     [toursApi.reducerPath]: toursApi.reducer,
     [insurancesApi.reducerPath]: insurancesApi.reducer,
     [applicationsApi.reducerPath]: applicationsApi.reducer,
+    [roomsApi.reducerPath]: roomsApi.reducer,
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware().concat(
@@ -30,6 +32,7 @@ export const store = configureStore({
       toursApi.middleware,
       insurancesApi.middleware,
       applicationsApi.middleware,
+      roomsApi.middleware,
     ),
 });
 

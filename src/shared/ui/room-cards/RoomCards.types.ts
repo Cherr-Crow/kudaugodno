@@ -3,6 +3,7 @@ type DivProps = React.ComponentPropsWithoutRef<'div'>;
 export interface IRoomCards extends DivProps {
   name: string;
   tourId?: number;
+  roomId?: number;
   start_date: string;
   end_date: string;
   flight_to?: string;
@@ -12,6 +13,7 @@ export interface IRoomCards extends DivProps {
   arrival_country?: string;
   arrival_city?: string;
   tour_operator: string;
+  guests?: number;
   hotel?: string;
   room?: string;
   transfer?: boolean;

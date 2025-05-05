@@ -11,6 +11,7 @@ import { TourFlightCard } from '@/shared/tour-flight-card';
 import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
+import { isoToDateFormat } from '@/shared/utils/isoToDateFormat';
 import { flightData } from '@/temp/flight-mock';
 import { ITour } from '@/types/tour-type';
 
@@ -19,20 +20,6 @@ import { ITourBooking } from './TourBooking.types';
 const extractNumber = (text: string): number => {
   const match = text.match(/\d+/);
   return match ? parseInt(match[0], 10) : 0;
-};
-
-const calculateNights = (checkIn: string, checkOut: string) => {
-  if (!checkIn || !checkOut) return 1;
-  const formattedCheckIn = checkIn.split('.').reverse().join('-');
-  const formattedCheckOut = checkOut.split('.').reverse().join('-');
-  const inDate = new Date(formattedCheckIn);
-  const outDate = new Date(formattedCheckOut);
-  if (isNaN(inDate.getTime()) || isNaN(outDate.getTime())) {
-    console.error('Некорректные даты:', checkIn, checkOut);
-    return 1;
-  }
-  const diffTime = outDate.getTime() - inDate.getTime();
-  return Math.max(Math.ceil(diffTime / (1000 * 60 * 60 * 24)), 1);
 };
 
 export function TourBooking({ tourId }: ITourBooking) {
@@ -47,7 +34,7 @@ export function TourBooking({ tourId }: ITourBooking) {
           departureCity: '',
           where: '',
           checkInDate: '',
-          checkOutDate: '',
+          nights: '',
           guests: '',
         };
   });
@@ -65,13 +52,24 @@ export function TourBooking({ tourId }: ITourBooking) {
     }
   }, [searchData]);
 
+  // Поиск отеля по tourId
+  const { data } = useGetOneTourQuery(tourId as number, {
+    skip: tourId === null,
+  });
+
+  const tour = useMemo<ITour | null>(() => {
+    return data ?? null;
+  }, [data]);
+
+  const { data: hotel } = useGetOneHotelQuery(Number(tour?.hotel_id));
+
+  const room = hotel?.rooms[Number(searchData.roomId)];
+
   // Данные
 
-  const nights = calculateNights(searchData.checkInDate, searchData.checkOutDate);
-
   const [mockData, setMockData] = useState({
-    dates: `${searchData.checkInDate} - ${searchData.checkOutDate}`,
-    guestsInfo: `${extractNumber(searchData.guests)} гостей на ${nights} ночей`,
+    dates: `${isoToDateFormat(searchData.checkInDate)} - ${isoToDateFormat(searchData.checkOutDate)}`,
+    guestsInfo: `${extractNumber(searchData.guests)} гостей на ${searchData.nights} ночей`,
     paymentInfo: 'Необходимо оплатить при заселении',
     resortFee: 100,
     price: searchData.price,
@@ -80,15 +78,15 @@ export function TourBooking({ tourId }: ITourBooking) {
       flightDetails:
         'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
     },
-    checkInDate: searchData.checkInDate,
-    checkOutDate: searchData.checkOutDate,
+    checkInDate: isoToDateFormat(searchData.checkInDate),
+    checkOutDate: isoToDateFormat(searchData.checkOutDate),
     tourOperatorPhoneNumber: '+7(971) 079–27–45',
     tourOperatorEmail: 'example@mail.com',
     airCompany: 'Air Arabia',
     cancellationPolicy:
       'Отменить тур можно связавшись с туроператором. В случае аннулирования тура от Вас потребуют возмещения понесённых расходов. Точный размер штрафа уточнит менеджер туроператора.',
-    flightTo: searchData.flight_to,
-    flightFrom: searchData.flight_from,
+    flightTo: tour?.arrival_city,
+    flightFrom: tour?.departure_city,
     departureCountry: searchData.departure_country,
     departureCity: searchData.departure_city,
     arrivalCountry: searchData.arrival_country,
@@ -200,23 +198,13 @@ export function TourBooking({ tourId }: ITourBooking) {
     }));
   };
 
-  // Поиск отеля по tourId
-  const { data } = useGetOneTourQuery(tourId as number, {
-    skip: tourId === null,
-  });
-
-  const tour = useMemo<ITour | null>(() => {
-    return data ?? null;
-  }, [data]);
-
-  const { data: hotel } = useGetOneHotelQuery(Number(tour?.hotel_id));
-
   if (!hotel) return <div>Тур не найден</div>;
 
   const tourData = {
     ...mockData,
     tour: tour,
     hotel: hotel,
+    room: room,
   };
 
   return (

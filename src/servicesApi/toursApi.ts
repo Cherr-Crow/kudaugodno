@@ -24,17 +24,38 @@ export const toursApi = createApi({
     }),
     getToursByHotel: build.query<
       ITour[],
-      { hotelName: string; limit?: number; offset?: number }
+      { hotelId: number; limit?: number; offset?: number }
     >({
-      query: ({ hotelName, limit, offset }) =>
-        `tours/?hotel=${hotelName}${limit ? `&limit=${limit}` : ''}${offset ? `&offset=${offset}` : ''}`,
+      query: ({ hotelId, limit, offset }) => {
+        const params = new URLSearchParams();
+        params.set('hotel_id', hotelId.toString());
+        if (limit) params.set('limit', limit.toString());
+        if (offset) params.set('offset', offset.toString());
+        return `tours/?${params.toString()}`;
+      },
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }: { id: number }) => ({
-                type: 'Tours' as const,
-                id,
-              })),
+              ...result.map(({ id }) => ({ type: 'Tours' as const, id })),
+              { type: 'Tours', id: 'LIST' },
+            ]
+          : [{ type: 'Tours', id: 'LIST' }],
+    }),
+    getToursByHotels: build.query<
+      ITour[],
+      { hotelIds: number[]; limit?: number; offset?: number }
+    >({
+      query: ({ hotelIds, limit, offset }) => {
+        const params = new URLSearchParams();
+        params.set('hotel_ids', hotelIds.join(','));
+        if (limit) params.set('limit', limit.toString());
+        if (offset) params.set('offset', offset.toString());
+        return `tours/?${params.toString()}`;
+      },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'Tours' as const, id })),
               { type: 'Tours', id: 'LIST' },
             ]
           : [{ type: 'Tours', id: 'LIST' }],
@@ -101,6 +122,7 @@ export const toursApi = createApi({
 export const {
   useGetToursQuery,
   useGetToursByHotelQuery,
+  useGetToursByHotelsQuery,
   useAddTourMutation,
   useGetOneTourQuery,
   useChangeTourMutation,

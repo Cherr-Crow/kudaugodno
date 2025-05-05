@@ -22,11 +22,11 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
 
   // Финальная сумма бронирования
   const bookingPrice = {
-    stayPrice: 22765,
-    taxes: 765,
-    discount: 765,
-    bonuses: 238,
-    totalPrice: 22765 + 765 - 765,
+    stayPrice: data.room?.price ?? 0,
+    taxes: 0,
+    discount: 0,
+    bonuses: 0,
+    totalPrice: (data.room?.price ?? 0) + 0 - 0,
   };
 
   const finalBookingData = {
@@ -114,7 +114,10 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
           Проживание
         </Typography>
         <Typography variant='m' className='text-grey-800'>
-          {bookingPrice.stayPrice.toLocaleString()} ₽
+          {bookingPrice.stayPrice !== undefined
+            ? bookingPrice.stayPrice.toLocaleString()
+            : 'Неизвестная цена'}{' '}
+          ₽
         </Typography>
       </div>
       <div className='mb-2 flex justify-between'>
@@ -125,14 +128,16 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
           {bookingPrice.taxes.toLocaleString()} ₽
         </Typography>
       </div>
-      <div className='mb-2 flex justify-between'>
-        <Typography variant='m' className='text-grey-800'>
-          Скидка
-        </Typography>
-        <Typography variant='m' className='text-[#FF0202]'>
-          -{bookingPrice.discount.toLocaleString()} ₽
-        </Typography>
-      </div>
+      {bookingPrice.discount !== 0 && (
+        <div className='mb-2 flex justify-between'>
+          <Typography variant='m' className='text-grey-800'>
+            Скидка
+          </Typography>
+          <Typography variant='m' className='text-[#FF0202]'>
+            -{bookingPrice.discount.toLocaleString()} ₽
+          </Typography>
+        </div>
+      )}
       <div className='mb-4 flex justify-between'>
         <Typography variant='m' className='text-grey-800'>
           Начислим бонусы

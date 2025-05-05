@@ -12,6 +12,7 @@ import { ButtonCustom } from '../button-custom';
 
 export function RoomCards({
   tourId,
+  roomId,
   name,
   services,
   start_date,
@@ -20,6 +21,7 @@ export function RoomCards({
   price,
   flight_to,
   flight_from,
+  guests,
 }: IRoomCards) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -27,6 +29,7 @@ export function RoomCards({
   const handleBooking = () => {
     const searchData = {
       tourId: String(tourId) || '',
+      roomId: String(roomId) || '',
       name: name || '',
       startDate: start_date || '',
       endDate: end_date || '',
@@ -34,6 +37,7 @@ export function RoomCards({
       price: price ? String(price) : '',
       flightTo: flight_to || '',
       flightFrom: flight_from || '',
+      nights: searchParams.get('nights') || '',
       guests: searchParams.get('guests') || '',
       checkInDate: start_date || '',
       checkOutDate: end_date || '',
@@ -68,6 +72,7 @@ export function RoomCards({
           <Typography className='mr-5'>{`Обратно ${end_date}`}</Typography>
           <Typography className='mr-5'>{`Туроператор ${tour_operator}`}</Typography>
           <Typography className='mr-5'>{`На сколько ${(new Date(end_date).getTime() - new Date(start_date).getTime()) / (1000 * 60 * 60 * 24)}`}</Typography>
+          <Typography className='mr-5'>{`Гости ${guests}`}</Typography>
         </div>
       </div>
       <div className='h-x[72px] grid rounded-[20px]'>
