@@ -81,8 +81,8 @@ export function TableForTours({ tours }: ITableForTours) {
           : bDate.getTime() - aDate.getTime();
       }
 
-      const aValue = a[sortField]?.toLowerCase() || '';
-      const bValue = b[sortField]?.toLowerCase() || '';
+      const aValue = String(a[sortField] ?? '').toLowerCase();
+      const bValue = String(b[sortField] ?? '').toLowerCase();
       return sortOrder === 'asc'
         ? aValue.localeCompare(bValue)
         : bValue.localeCompare(aValue);
@@ -158,7 +158,7 @@ export function TableForTours({ tours }: ITableForTours) {
                 {tour.arrival_city}
               </td>
               <td className='pl-3 pt-3 text-left text-[12px] sm:text-[12px] md:text-base'>
-                {tour.hotel}
+                {tour.hotel.name}
               </td>
               <td className='pl-3 pt-3 text-left text-[12px] sm:text-[12px] md:text-base'>
                 <span className='font-bold'>

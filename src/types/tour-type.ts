@@ -1,6 +1,8 @@
+import { IHotel } from './hotel';
+
 export interface ITour {
-  hotel_id: number;
   id: number;
+  hotel_id: number;
   start_date: string;
   end_date: string;
   flight_to: string;
@@ -12,10 +14,10 @@ export interface ITour {
   number_of_adults?: number;
   number_of_children?: number;
   tour_operator: string | null;
-  hotel: string;
+  hotel: IHotel;
   room: string;
   transfer: boolean;
-  price: string;
+  price: number;
   created_at: string;
   updated_at: string;
   is_active: boolean;

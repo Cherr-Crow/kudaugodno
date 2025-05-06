@@ -61,7 +61,7 @@ export function ApplicationCard({ tour, application, status }: IApplicationCard)
           <div className={'flex gap-4'}>
             <div className={'flex'}>
               <Typography variant={'m-bold'}>Отель: </Typography>
-              <Typography variant={'m'}>{tour.hotel}</Typography>
+              <Typography variant={'m'}>{tour.hotel.name}</Typography>
             </div>
             <div className={'flex'}>
               <Typography variant={'m-bold'}>Перелет: </Typography>

@@ -116,7 +116,7 @@ function CatalogToursContent() {
           start_date: tour.start_date,
           end_date: tour.end_date,
           tour_operator: tour.tour_operator ?? 'Без оператора',
-          price: tour.price,
+          price: String(tour.price),
           guests,
           nights,
         };

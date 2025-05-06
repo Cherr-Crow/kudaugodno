@@ -1,15 +1,16 @@
+/* eslint-disable no-commented-code/no-commented-code */
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { HotelBookingPayForm } from '@/shared/hotel-booking-pay-form';
 import { Rating } from '@/shared/rating';
 import { Typography } from '@/shared/typography';
+import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
 import { getCheckOutDate } from '@/shared/utils/getCheckoutDate';
 import { isoToDateFormat } from '@/shared/utils/isoToDateFormat';
-import { IHotel } from '@/types/hotel';
 
 import { IHotelBooking } from './HotelBooking.types';
 
@@ -41,7 +42,7 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
           guests: '',
         };
   });
-
+  const [guests, setGuests] = useState<number>(Number(searchData.guests) ?? 1);
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedSearchData = localStorage.getItem('searchData');
@@ -57,21 +58,17 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
 
   // Загрузка данных об отелях
 
-  const { data } = useGetOneHotelQuery(hotelId, {
+  const { data: hotel } = useGetOneHotelQuery(hotelId, {
     skip: hotelId === null,
   });
 
-  const hotel = useMemo<IHotel | null>(() => {
-    return data ?? null;
-  }, [data]);
-
-  const room = hotel?.rooms[Number(searchData.roomId)];
+  // const room = hotel?.rooms.find((room) => room.id === Number(searchData.roomId || 0));
 
   // Данные
 
   const [mockData, setMockData] = useState({
     dates: `${isoToDateFormat(searchData.checkInDate)} - ${isoToDateFormat(getCheckOutDate(searchData.checkInDate, searchData.nights))}`,
-    guestsInfo: `${searchData.guests} ${searchData.guests === 1 ? 'гость' : searchData.guests < 5 ? 'взрослых' : 'взрослых'} на ${searchData.nights} ${searchData.nights === 1 ? 'ночь' : searchData.nights < 5 ? 'ночи' : 'ночей'}`,
+    guestsInfo: `${guests} ${guests === 1 ? 'гость' : guests < 5 ? 'взрослых' : 'взрослых'} на ${searchData.nights} ${searchData.nights === 1 ? 'ночь' : searchData.nights < 5 ? 'ночи' : 'ночей'}`,
     paymentInfo: 'Необходимо оплатить при заселении',
     resortFee: 100,
     flightInfo: {
@@ -87,6 +84,7 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
       getCheckOutDate(searchData.checkInDate, searchData.nights),
     ),
     guests: extractNumber(searchData.guests),
+    roomId: Number(searchData.roomId),
     phone: '',
     email: '',
     wishes: '',
@@ -141,14 +139,13 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
     }));
   };
 
-  if (!hotel) {
-    return <div>Отель не найден</div>;
-  }
+  if (!hotel) return <div>Отель не найден</div>;
+  // if (!room) return <div>Номер не найден</div>;
 
   const hotelData = {
     ...mockData,
     hotel: hotel,
-    room: room,
+    // room: room,
   };
 
   return (
@@ -157,58 +154,56 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
         {/* {left side content} */}
         <div className='flex w-full flex-col gap-4 p-4 md:w-2/3'>
           <div className='rounded-lg bg-white p-4 shadow-lg'>
-            <div className='rounded-lg bg-white p-4 shadow-lg'>
-              <div className='hotel-info'>
-                <div className='flex flex-row justify-between'>
-                  <div className='flex flex-col gap-4 lg:gap-1'>
-                    <Rating category={hotel.star_category} starSize={16} gap={1} />
-                    <Typography
-                      variant='l'
-                      className='font-bold text-blue-950 md:text-lg'
-                    >
-                      {hotel.name}
-                    </Typography>
-                    <Typography variant='l' className='text-blue-950 md:text-sm'>
-                      {hotel.city}
-                    </Typography>
-                  </div>
-                  <div className='flex h-[65px] w-[130px] md:h-full md:w-[25%]'>
-                    <img
-                      src={hotel.photo?.[0]?.photo}
-                      alt='Image of Novotel Nairobi Westlands hotel with a pool and palm trees'
-                      className='mx-auto rounded-2xl'
-                    />
-                  </div>
-                </div>
-                <div className='mb-3 grid grid-cols-3 gap-2'>
-                  {hotel.amenities_common.map((amenity, amenityIndex) => (
-                    <Typography
-                      key={`amenity-${amenityIndex}`}
-                      variant='l-bold'
-                      className='rounded-xl bg-grey-50 p-1 text-xs text-grey-950 md:text-base'
-                    >
-                      {amenity}
-                    </Typography>
-                  ))}
-                </div>
-                <div className='flex flex-col gap-2 rounded-lg bg-blue-100 p-4'>
+            <div className='hotel-info'>
+              <div className='flex flex-row justify-between'>
+                <div className='flex flex-col gap-4 lg:gap-1'>
+                  <Rating category={hotel.star_category} starSize={16} gap={1} />
                   <Typography
                     variant='l'
-                    className='text-[14px] font-bold text-blue-950'
+                    className='font-bold text-blue-950 md:text-lg'
                   >
-                    {mockData.dates}
+                    {hotel.name}
                   </Typography>
-                  <Typography variant='m' className='text-blue-950'>
-                    {mockData.guestsInfo}
-                  </Typography>
-                  <Typography variant='l' className='font-bold text-blue-950'>
-                    {mockData.paymentInfo}
-                  </Typography>
-                  <Typography variant='m' className='text-blue-950'>
-                    Необходимо оплатить при заселении {mockData.resortFee} ₽ с
-                    человека за ночь
+                  <Typography variant='l' className='text-blue-950 md:text-sm'>
+                    {hotel.city}
                   </Typography>
                 </div>
+                <div className='flex h-[65px] w-[130px] md:h-full md:w-[25%]'>
+                  <img
+                    src={hotel.photo?.[0]?.photo}
+                    alt='Image of Novotel Nairobi Westlands hotel with a pool and palm trees'
+                    className='mx-auto rounded-2xl'
+                  />
+                </div>
+              </div>
+              <div className='mb-3 grid grid-cols-3 gap-2'>
+                {hotel.amenities_common.map((amenity, amenityIndex) => (
+                  <Typography
+                    key={`amenity-${amenityIndex}`}
+                    variant='l-bold'
+                    className='rounded-xl bg-grey-50 p-1 text-xs text-grey-950 md:text-base'
+                  >
+                    {amenity}
+                  </Typography>
+                ))}
+              </div>
+              <div className='flex flex-col gap-2 rounded-lg bg-blue-100 p-4'>
+                <Typography
+                  variant='l'
+                  className='text-[14px] font-bold text-blue-950'
+                >
+                  {mockData.dates}
+                </Typography>
+                <Typography variant='m' className='text-blue-950'>
+                  {mockData.guestsInfo}
+                </Typography>
+                <Typography variant='l' className='font-bold text-blue-950'>
+                  {mockData.paymentInfo}
+                </Typography>
+                <Typography variant='m' className='text-blue-950'>
+                  Необходимо оплатить при заселении {mockData.resortFee} ₽ с человека
+                  за ночь
+                </Typography>
               </div>
             </div>
           </div>
@@ -254,19 +249,15 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
           </div>
           <div className='flex flex-col gap-1'>
             <Typography variant='l' className='font-bold text-grey-950'>
-              Гости, {mockData.guests}{' '}
-              {mockData.guests === 1
-                ? 'гость'
-                : mockData.guests < 5
-                  ? 'гостя'
-                  : 'гостей'}
+              Гости, {guests}{' '}
+              {guests === 1 ? 'гость' : guests < 5 ? 'гостя' : 'гостей'}
             </Typography>
             <Typography variant='m' className='text-grey-800'>
               Данные всех гостей нужны для визы, либо если заселяетесь в разное время
             </Typography>
           </div>
 
-          {Array.from({ length: mockData.guests }).map((_, index) => (
+          {Array.from({ length: guests }).map((_, index) => (
             <div key={index} className='rounded-lg bg-white shadow-lg'>
               <div className='flex flex-col gap-2 p-6'>
                 <div className='bg-gray-100 flex flex-col gap-3 rounded-lg md:gap-4'>
@@ -328,6 +319,28 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
               </div>
             </div>
           ))}
+          <div className='flex flex-row justify-between'>
+            <ButtonCustom
+              className='mb-4'
+              onClick={() => {
+                setGuests((prev: number) => prev + 1);
+              }}
+              variant={'secondary'}
+              size={'s'}
+            >
+              Добавить пользователя
+            </ButtonCustom>
+            <ButtonCustom
+              className='mb-4'
+              onClick={() => {
+                setGuests((prev: number) => prev - 1);
+              }}
+              variant={'secondary'}
+              size={'s'}
+            >
+              Убрать пользователя
+            </ButtonCustom>
+          </div>
           <div className='flex flex-col gap-1'>
             <Typography variant='l' className='font-bold text-grey-950'>
               Пожелания
