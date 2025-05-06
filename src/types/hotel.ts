@@ -57,6 +57,7 @@ export type IHotel = {
   room_categories: string[];
   photo: photoType[];
   rooms: RoomType[];
-  reviews: reviewsType[];
+  reviews?: reviewsType[];
   tourInfo?: ITour;
+  price?: number;
 };

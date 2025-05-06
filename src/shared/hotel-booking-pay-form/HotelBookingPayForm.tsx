@@ -20,13 +20,14 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
   const [isClient, setIsClient] = useState(false);
   const [addApplication] = useAddApplicationMutation();
 
+  const room = data.hotel?.rooms.find((room) => room.id === data.roomId);
   // Финальная сумма бронирования
   const bookingPrice = {
-    stayPrice: data.room?.price ?? 0,
+    stayPrice: data.tour?.price ?? room?.price ?? 0,
     taxes: 0,
     discount: 0,
     bonuses: 0,
-    totalPrice: (data.room?.price ?? 0) + 0 - 0,
+    totalPrice: (data.tour?.price ?? room?.price ?? 0) + 0 - 0,
   };
 
   const finalBookingData = {

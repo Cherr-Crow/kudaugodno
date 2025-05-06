@@ -23,7 +23,7 @@ export default function ToursPage() {
   const filteredTours = (data ?? []).filter((tour) => {
     const matchesSearch = search.trim()
       ? tour.id.toString().includes(search.toLowerCase()) ||
-        (tour.hotel?.toLowerCase() || '').includes(search.toLowerCase()) ||
+        (tour.hotel?.name.toLowerCase() || '').includes(search.toLowerCase()) ||
         (tour.arrival_country?.toLowerCase() || '').includes(search.toLowerCase()) ||
         (tour.arrival_city?.toLowerCase() || '').includes(search.toLowerCase())
       : true;

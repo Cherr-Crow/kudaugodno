@@ -1,6 +1,7 @@
+/* eslint-disable no-commented-code/no-commented-code */
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { useGetOneTourQuery } from '@/servicesApi/toursApi';
@@ -13,7 +14,6 @@ import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
 import { isoToDateFormat } from '@/shared/utils/isoToDateFormat';
 import { flightData } from '@/temp/flight-mock';
-import { ITour } from '@/types/tour-type';
 
 import { ITourBooking } from './TourBooking.types';
 
@@ -38,6 +38,7 @@ export function TourBooking({ tourId }: ITourBooking) {
           guests: '',
         };
   });
+  const [guests, setGuests] = useState<number>(Number(searchData.guests) ?? 1);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -53,23 +54,23 @@ export function TourBooking({ tourId }: ITourBooking) {
   }, [searchData]);
 
   // Поиск отеля по tourId
-  const { data } = useGetOneTourQuery(tourId as number, {
+  const { data: tour } = useGetOneTourQuery(tourId as number, {
     skip: tourId === null,
   });
 
-  const tour = useMemo<ITour | null>(() => {
-    return data ?? null;
-  }, [data]);
+  const hotelId = Number(tour?.hotel.id);
 
-  const { data: hotel } = useGetOneHotelQuery(Number(tour?.hotel_id));
+  const { data: hotel } = useGetOneHotelQuery(hotelId, {
+    skip: hotelId === null,
+  });
 
-  const room = hotel?.rooms[Number(searchData.roomId)];
+  // const room = hotel?.rooms.find((room) => room.id === Number(searchData.roomId || 0));
 
   // Данные
 
   const [mockData, setMockData] = useState({
     dates: `${isoToDateFormat(searchData.checkInDate)} - ${isoToDateFormat(searchData.checkOutDate)}`,
-    guestsInfo: `${extractNumber(searchData.guests)} гостей на ${searchData.nights} ночей`,
+    guestsInfo: `${guests} гостей на ${searchData.nights} ночей`,
     paymentInfo: 'Необходимо оплатить при заселении',
     resortFee: 100,
     price: searchData.price,
@@ -91,7 +92,8 @@ export function TourBooking({ tourId }: ITourBooking) {
     departureCity: searchData.departure_city,
     arrivalCountry: searchData.arrival_country,
     arrivalCity: searchData.arrival_city,
-    guests: extractNumber(searchData.guests),
+    roomId: Number(searchData.roomId),
+    guests: guests,
     phone: '',
     email: '',
     wishes: '',
@@ -198,13 +200,15 @@ export function TourBooking({ tourId }: ITourBooking) {
     }));
   };
 
-  if (!hotel) return <div>Тур не найден</div>;
+  if (!tour) return <div>Тур не найден</div>;
+  if (!hotel) return <div>Отель не найден</div>;
+  // if (!room) return <div>Номер не найден</div>;
 
   const tourData = {
     ...mockData,
     tour: tour,
     hotel: hotel,
-    room: room,
+    // room: room,
   };
 
   return (
@@ -378,18 +382,14 @@ export function TourBooking({ tourId }: ITourBooking) {
           </div>
           <div className='flex flex-col gap-1'>
             <Typography variant='l' className='font-bold text-grey-950'>
-              Гости, {mockData.guests}{' '}
-              {mockData.guests === 1
-                ? 'гость'
-                : mockData.guests < 5
-                  ? 'гостя'
-                  : 'гостей'}
+              Гости, {guests}{' '}
+              {guests === 1 ? 'гость' : guests < 5 ? 'гостя' : 'гостей'}
             </Typography>
             <Typography variant='m' className='text-grey-800'>
               Фамилию и имя укажите, как в загранпаспорте
             </Typography>
           </div>
-          {Array.from({ length: mockData.guests }).map((_, index) => (
+          {Array.from({ length: guests }).map((_, index) => (
             <div key={index} className='rounded-lg bg-white shadow-lg'>
               <div className='flex flex-col gap-2 p-6'>
                 <div className='bg-gray-100 flex flex-col gap-3 rounded-lg md:gap-4'>
@@ -518,7 +518,28 @@ export function TourBooking({ tourId }: ITourBooking) {
               </div>
             </div>
           ))}
-
+          <div className='flex flex-row justify-between'>
+            <ButtonCustom
+              className='mb-4'
+              onClick={() => {
+                setGuests((prev: number) => prev + 1);
+              }}
+              variant={'secondary'}
+              size={'s'}
+            >
+              Добавить пользователя
+            </ButtonCustom>
+            <ButtonCustom
+              className='mb-4'
+              onClick={() => {
+                setGuests((prev: number) => prev - 1);
+              }}
+              variant={'secondary'}
+              size={'s'}
+            >
+              Убрать пользователя
+            </ButtonCustom>
+          </div>
           <div className='flex flex-col gap-1'>
             <Typography variant='l' className='font-bold text-grey-950'>
               Пожелания

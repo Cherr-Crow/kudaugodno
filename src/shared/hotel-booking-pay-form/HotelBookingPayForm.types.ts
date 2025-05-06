@@ -52,5 +52,6 @@ export interface IHotelBookingPayForm extends DivProps {
     hotel?: IHotel | null;
     tour?: ITour | null;
     room?: RoomType | null;
+    roomId?: number;
   };
 }
