@@ -4,9 +4,9 @@ import { nanoid } from 'nanoid';
 
 import { Modal } from '@/shared/modal';
 import { Rating } from '@/shared/rating';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 import { YandexMap } from '@/widgets/ymap';
 
 import { IHotelBlockPhotosReview } from './HotelBlockPhotosReview.types';

@@ -6,11 +6,11 @@ import Link from 'next/link';
 
 import { useCreateNewCompanyMutation } from '@/servicesApi/userApi';
 import { Modal } from '@/shared/modal';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { timeForComponent } from '@/shared/ui/time-for-component/time';
+import { Typography } from '@/shared/ui/typography';
 
 import { IAuthForBusiness } from './AuthForBusiness.types';
 

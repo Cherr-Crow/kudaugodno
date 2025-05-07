@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useScreen } from 'usehooks-ts';
 
-import { Typography } from '@/shared/typography';
+import { Typography } from '@/shared/ui/typography';
 
 import { IReviewsTours } from './ReviewsTours.types';
 import { ButtonCustom } from '../button-custom';

@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom/ButtonCustom';
+import { Typography } from '@/shared/ui/typography';
 
 import { ISubscribeToTheNewsletter } from './SubscribeToTheNewsletter.types';
 

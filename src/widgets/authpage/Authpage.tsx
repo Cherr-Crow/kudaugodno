@@ -7,10 +7,10 @@ import { useDispatch } from 'react-redux';
 
 import { setUserEmail } from '@/rtk/userSlice';
 import { useGetCodeMutation, useConfirmCodeMutation } from '@/servicesApi/authApi';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { timeForComponent } from '@/shared/ui/time-for-component/time';
+import { Typography } from '@/shared/ui/typography';
 
 import { IAuthpage } from './Authpage.types';
 

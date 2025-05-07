@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 
-import { Typography } from '../typography';
 import { IFilterAmenities } from './FilterAmenities.types';
 import { Checkbox } from '../ui/checkbox';
+import { Typography } from '../ui/typography';
 
 export function FilterAmenities({
   selectedAmenities,

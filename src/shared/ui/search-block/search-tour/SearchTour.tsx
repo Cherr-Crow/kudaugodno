@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import { Modal } from '@/shared/modal';
 import { SelectForSearchBlock } from '@/shared/select-for-search-block';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { InputDateForSearchBlock } from '@/shared/ui/search-block/input-date-for-search-block';
 import { InputForSearchBlock } from '@/shared/ui/search-block/input-for-search-block';
+import { Typography } from '@/shared/ui/typography';
 import { getDateNow } from '@/shared/utils/getDateNow';
 
 import { ISearchTour } from './SearchTour.types';

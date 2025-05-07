@@ -7,11 +7,11 @@ import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { useGetOneTourQuery } from '@/servicesApi/toursApi';
 import { HotelBookingPayForm } from '@/shared/hotel-booking-pay-form';
 import { Rating } from '@/shared/rating';
-import { SvgSprite } from '@/shared/svg-sprite';
 import { TourFlightCard } from '@/shared/tour-flight-card';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 import { isoToDateFormat } from '@/shared/utils/isoToDateFormat';
 import { flightData } from '@/temp/flight-mock';
 

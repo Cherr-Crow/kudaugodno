@@ -2,8 +2,8 @@ import React from 'react';
 
 import Link from 'next/link';
 
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 import { IFooter } from './Footer.types';
 

@@ -2,8 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 
-import { Typography } from '../typography';
 import { IFilterPrice } from './FilterPrice.types';
+import { Typography } from '../ui/typography';
 
 export function FilterPrice({ price, onPriceChange }: IFilterPrice) {
   const [priceRange, setPriceRange] = useState<[number, number]>(price);

@@ -7,12 +7,12 @@ import { useRouter } from 'next/navigation';
 
 import { useGetFlightsQuery } from '@/servicesApi/flightsApi';
 import { useGetHotelsQuery } from '@/servicesApi/hotelsApi';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { InputDateForSearchBlock } from '@/shared/ui/search-block/input-date-for-search-block';
 import { Select } from '@/shared/ui/select';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 export default function AddTourPage() {
   const router = useRouter();

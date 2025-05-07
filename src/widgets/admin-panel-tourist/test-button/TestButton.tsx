@@ -4,9 +4,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 import { useLogoutMutation } from '@/servicesApi/authApi';
-import { PopupWindow } from '@/shared/popup-window';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { PopupWindow } from '@/shared/ui/popup-window';
+import { Typography } from '@/shared/ui/typography';
 
 // Компонент для тестирования (навигирования) по личному кабинету пользователя-туриста. Далее можно убрать кнопку, оставить только выпадающее меню
 

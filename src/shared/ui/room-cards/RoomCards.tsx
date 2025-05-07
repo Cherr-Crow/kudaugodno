@@ -4,8 +4,8 @@ import { nanoid } from 'nanoid';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 import { IRoomCards } from './RoomCards.types';
 import { ButtonCustom } from '../button-custom';

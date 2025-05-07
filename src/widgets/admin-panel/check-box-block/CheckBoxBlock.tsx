@@ -5,10 +5,10 @@ import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
 
 import { Modal } from '@/shared/modal';
-import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
+import { Typography } from '@/shared/ui/typography';
 
 import { ICheckBoxBlock } from './CheckBoxBlock.types';
 

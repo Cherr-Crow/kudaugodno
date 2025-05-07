@@ -14,9 +14,9 @@ import {
   useUpdateUserMutation,
 } from '@/servicesApi/userApi';
 import { useGetUserDataQuery } from '@/servicesApi/userApi';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 // Размер загружаемой фотографии 1MB
 const MAX_FILE_SIZE = 1 * 1024 * 1024;

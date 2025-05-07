@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Typography } from '@/shared/typography';
+import { Typography } from '@/shared/ui/typography';
 
 import { IHotelBookingModalConfirm } from './HotelBookingModalConfirm.types';
 import { ButtonCustom } from '../ui/button-custom';

@@ -1,5 +1,5 @@
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { Typography } from '@/shared/ui/typography';
 
 interface TripCardProps {
   type: string;

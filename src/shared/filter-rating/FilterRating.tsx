@@ -2,8 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 
-import { Typography } from '../typography';
 import { IFilterRating } from './FilterRating.types';
+import { Typography } from '../ui/typography';
 
 export function FilterRating({ rating, onRatingChange }: IFilterRating) {
   const [ratingRange, setRatingRange] = useState<[number, number]>(rating);

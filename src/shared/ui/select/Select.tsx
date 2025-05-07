@@ -5,8 +5,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { useScreen } from 'usehooks-ts';
 
-import { PopupWindow } from '@/shared/popup-window';
-import { SvgSprite } from '@/shared/svg-sprite';
+import { PopupWindow } from '@/shared/ui/popup-window';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
 
 import { ISelect } from './Select.types';
 

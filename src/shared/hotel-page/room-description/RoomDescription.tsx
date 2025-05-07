@@ -1,9 +1,9 @@
 /* eslint-disable import/order */
 import React from 'react';
 
-import { SvgSprite } from '@/shared/svg-sprite';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
 // eslint-disable-next-line import/order
-import { Typography } from '@/shared/typography';
+import { Typography } from '@/shared/ui/typography';
 
 import { RoomDescriptionProps } from './RoomDescription.types';
 

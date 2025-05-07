@@ -6,10 +6,10 @@ import { nanoid } from 'nanoid';
 import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { Modal } from '@/shared/modal';
 import { Rating } from '@/shared/rating';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { ModalTours } from '@/shared/ui/modal-tours';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 import { YandexMap } from '../ymap';
 

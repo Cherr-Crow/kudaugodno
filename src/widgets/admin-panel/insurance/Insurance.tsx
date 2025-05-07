@@ -9,10 +9,10 @@ import {
   useGetInsuranceDataQuery,
   useUpdateInsurancesMutation,
 } from '@/servicesApi/insurancesApi';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { Select } from '@/shared/ui/select';
+import { Typography } from '@/shared/ui/typography';
 
 import { IInsurance } from './Insurance.types';
 

@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 
-import { Typography } from '../typography';
 import { IFilterRecreationType } from './FilterRecreationType.types';
+import { Typography } from '../ui/typography';
 
 export function FilterRecreationType({
   selectedTypes,

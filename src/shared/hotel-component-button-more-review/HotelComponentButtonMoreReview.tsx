@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { IHotel } from '@/types/hotel';
 
 import { HotelComponentReview } from '../hotel-component-review';
-import { Typography } from '../typography';
+import { Typography } from '../ui/typography';
 
 interface HotelComponentButtonMoreReviewProps {
   hotel: IHotel;

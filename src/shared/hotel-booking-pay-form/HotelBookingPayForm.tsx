@@ -8,9 +8,9 @@ import { useAddApplicationMutation } from '@/servicesApi/applicationsApi';
 
 import { IHotelBookingPayForm } from './HotelBookingPayForm.types';
 import { HotelBookingModalCancel } from '../hotel-booking-modal-cancel';
-import { Typography } from '../typography';
 import { ButtonCustom } from '../ui/button-custom';
 import { NamedInput } from '../ui/named-input';
+import { Typography } from '../ui/typography';
 
 export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
   const router = useRouter();

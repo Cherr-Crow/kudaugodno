@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useId } from 'react';
 
-import { SvgSprite } from '@/shared/svg-sprite';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
 
 import { ICheckbox } from './Checkbox.types';
 

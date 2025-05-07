@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { Typography } from '@/shared/typography';
 import { TabBar } from '@/shared/ui/tab-bar';
+import { Typography } from '@/shared/ui/typography';
 
 import { ITourOperatorPanelTitle } from './TourOperatorPanelTitle.types';
 

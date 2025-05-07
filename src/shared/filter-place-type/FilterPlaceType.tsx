@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 
-import { Typography } from '../typography';
 import { IFilterPlaceType } from './FilterPlaceType.types';
+import { Typography } from '../ui/typography';
 
 export function FilterPlaceType({
   selectedPlaceTypes,

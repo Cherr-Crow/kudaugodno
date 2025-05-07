@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Typography } from '@/shared/typography';
+import { Typography } from '@/shared/ui/typography';
 
 import { IOurAdvantages } from './OurAdvantages.types';
 

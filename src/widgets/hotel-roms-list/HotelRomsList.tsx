@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { RoomCard } from '@/entities/room-card';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { Typography } from '@/shared/ui/typography';
 
 import { HotelRomsListProps } from './HotelRomsList.types';
 

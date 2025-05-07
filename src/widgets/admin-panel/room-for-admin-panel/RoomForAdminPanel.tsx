@@ -9,11 +9,11 @@ import {
   useDelRoomHotelMutation,
   useGetOneHotelQuery,
 } from '@/servicesApi/hotelsApi';
-import { Accordeon } from '@/shared/accordeon';
-import { Typography } from '@/shared/typography';
+import { Accordeon } from '@/shared/ui/accordeon';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
 import { Select } from '@/shared/ui/select';
+import { Typography } from '@/shared/ui/typography';
 import { CheckBoxBlock } from '@/widgets/admin-panel/check-box-block';
 import { DiscountBlock } from '@/widgets/admin-panel/discount-block';
 import { PhotosRoom } from '@/widgets/admin-panel/photos-room';

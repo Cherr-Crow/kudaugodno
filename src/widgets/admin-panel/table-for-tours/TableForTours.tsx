@@ -4,8 +4,8 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/navigation';
 
 import { useDeleteTourMutation, usePatchTourMutation } from '@/servicesApi/toursApi';
-import { SvgSprite } from '@/shared/svg-sprite';
 import { ContextMenu } from '@/shared/ui/context-menu';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
 
 import { ITableForTours } from './TableForTours.types';
 

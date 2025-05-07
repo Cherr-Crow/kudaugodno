@@ -6,9 +6,9 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/navigation';
 
 import { useAddHotelMutation, useGetHotelsQuery } from '@/servicesApi/hotelsApi';
-import { PopupWindow } from '@/shared/popup-window';
-import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
+import { PopupWindow } from '@/shared/ui/popup-window';
+import { Typography } from '@/shared/ui/typography';
 import { IHotel } from '@/types/hotel';
 
 export default function AddedHotel() {

@@ -2,8 +2,8 @@
 import { useState } from 'react';
 
 import { Rating } from '@/shared/rating';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { Typography } from '@/shared/ui/typography';
 import { ModalBookingCancellation } from '@/widgets/modal-booking-cancellation';
 
 interface HotelCardProps {

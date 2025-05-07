@@ -4,7 +4,7 @@ import React from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
-import { Typography } from '@/shared/typography';
+import { Typography } from '@/shared/ui/typography';
 import { AddedHotelField } from '@/widgets/admin-panel/added-hotel-field';
 
 export default function AddedHotel() {

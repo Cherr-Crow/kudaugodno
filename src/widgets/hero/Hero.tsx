@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 
 import { useScreen } from 'usehooks-ts';
 
-import { Typography } from '@/shared/typography';
 import { SearchBlock } from '@/shared/ui/search-block';
+import { Typography } from '@/shared/ui/typography';
 
 import { IHero } from './Hero.types';
 import { Wzhuh } from '../wzhuh';
