@@ -6,11 +6,11 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/navigation';
 
 import { useDeleteHotelMutation, useGetHotelsQuery } from '@/servicesApi/hotelsApi';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { ContextMenu } from '@/shared/ui/context-menu';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 export default function Hotels() {
   const route = useRouter();

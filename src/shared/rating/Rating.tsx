@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { SvgSprite } from '@/shared/svg-sprite';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
 
 import { IRating } from './Rating.types';
 

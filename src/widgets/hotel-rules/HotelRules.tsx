@@ -2,7 +2,7 @@ import React from 'react';
 
 import { nanoid } from 'nanoid';
 
-import { Typography } from '@/shared/typography';
+import { Typography } from '@/shared/ui/typography';
 
 import { IHotelRules } from './HotelRules.types';
 

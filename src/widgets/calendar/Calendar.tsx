@@ -4,7 +4,7 @@ import React, { FC, useEffect, useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
-import { Typography } from '@/shared/typography';
+import { Typography } from '@/shared/ui/typography';
 
 import { ICalendar } from './Calendar.types';
 

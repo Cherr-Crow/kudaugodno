@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 
-import { Typography } from '../typography';
 import { IFilterAirportDistance } from './FilterAirportDistance.types';
 import { RadioButton } from '../ui/radio-button';
+import { Typography } from '../ui/typography';
 
 const distances = ['Любое', 'До 15 км', 'До 50 км', 'До 75 км', 'До 100 км'];
 

@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 
-import { Typography } from '@/shared/typography';
 import { Select } from '@/shared/ui/select';
 import { Switcher } from '@/shared/ui/switcher';
+import { Typography } from '@/shared/ui/typography';
 
 const userSettings = {
   currency: '$',

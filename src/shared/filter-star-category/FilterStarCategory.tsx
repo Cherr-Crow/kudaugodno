@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 
-import { Typography } from '../typography';
 import { IFilterStarCategory } from './FilterStarCategory.types';
-import { SvgSprite } from '../svg-sprite';
+import { SvgSprite } from '../ui/svg-sprite';
+import { Typography } from '../ui/typography';
 
 export function FilterStarCategory({
   starCategory,

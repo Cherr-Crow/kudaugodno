@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
 import { ContextMenu } from '@/shared/ui/context-menu';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 import { IApplicationCard } from './application-card.types';
 

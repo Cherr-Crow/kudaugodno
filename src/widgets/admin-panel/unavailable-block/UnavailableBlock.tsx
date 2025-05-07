@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import { Typography } from '@/shared/typography';
 import { NamedInput } from '@/shared/ui/named-input';
 import { InputDateForSearchBlock } from '@/shared/ui/search-block/input-date-for-search-block';
+import { Typography } from '@/shared/ui/typography';
 
 import { IUnavailableBlock } from './UnavailableBlock.types';
 

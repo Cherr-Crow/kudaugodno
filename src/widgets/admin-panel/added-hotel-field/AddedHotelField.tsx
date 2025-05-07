@@ -9,12 +9,12 @@ import {
   useDeleteHotelMutation,
   useGetOneHotelQuery,
 } from '@/servicesApi/hotelsApi';
-import { Accordeon } from '@/shared/accordeon';
 import { Rating } from '@/shared/rating';
-import { Typography } from '@/shared/typography';
+import { Accordeon } from '@/shared/ui/accordeon';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
 import { Select } from '@/shared/ui/select';
+import { Typography } from '@/shared/ui/typography';
 import { IHotel } from '@/types/hotel';
 import {
   accommodationType,

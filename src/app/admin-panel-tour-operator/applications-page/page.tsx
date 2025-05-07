@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { useGetApplicationsQuery } from '@/servicesApi/applicationsApi';
 import { useGetToursQuery } from '@/servicesApi/toursApi';
 import { FilterYear } from '@/shared/filter-year';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
 import { ApplicationCard } from '@/shared/ui/application-card';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 export default function ApplicationsPage() {
   const [years] = useState<string[]>(['2025']);

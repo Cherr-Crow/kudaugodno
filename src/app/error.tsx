@@ -2,8 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { Typography } from '@/shared/ui/typography';
 
 export default function Error({
   error,

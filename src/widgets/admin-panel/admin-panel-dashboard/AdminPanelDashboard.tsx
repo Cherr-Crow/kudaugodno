@@ -5,7 +5,7 @@ import React from 'react';
 import { nanoid } from 'nanoid';
 import { usePathname, useRouter } from 'next/navigation';
 
-import { Typography } from '@/shared/typography';
+import { Typography } from '@/shared/ui/typography';
 
 import { IAdminPanelDashboard } from './AdminPanelDashboard.types';
 

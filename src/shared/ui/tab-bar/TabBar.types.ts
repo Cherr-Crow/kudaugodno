@@ -1,4 +1,4 @@
-import { NameSvg } from '@/shared/svg-sprite/SvgSprite.types';
+import { NameSvg } from '@/shared/ui/svg-sprite/SvgSprite.types';
 
 type UlProps = Omit<React.ComponentPropsWithoutRef<'ul'>, 'tabIndex'>;
 

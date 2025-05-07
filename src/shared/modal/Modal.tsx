@@ -4,10 +4,10 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { createPortal } from 'react-dom';
 
-import { PopupWindow } from '@/shared/popup-window';
+import { PopupWindow } from '@/shared/ui/popup-window';
 
 import { IModal } from './Modal.types';
-import { SvgSprite } from '../svg-sprite';
+import { SvgSprite } from '../ui/svg-sprite';
 
 export function Modal({ children, isOpen, getState, err = false }: IModal) {
   const modalRef = useRef<HTMLDivElement>(null);

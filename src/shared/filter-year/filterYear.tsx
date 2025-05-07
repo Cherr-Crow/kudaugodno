@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-import { Typography } from '@/shared/typography';
+import { Typography } from '@/shared/ui/typography';
 
 import { IFilterYear } from './filterYear.types';
 

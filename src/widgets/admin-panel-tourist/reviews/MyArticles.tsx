@@ -1,5 +1,5 @@
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 export function MyArticles() {
   return (

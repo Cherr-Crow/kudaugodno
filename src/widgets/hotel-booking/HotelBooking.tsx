@@ -6,9 +6,9 @@ import React, { useEffect, useState } from 'react';
 import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { HotelBookingPayForm } from '@/shared/hotel-booking-pay-form';
 import { Rating } from '@/shared/rating';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
+import { Typography } from '@/shared/ui/typography';
 import { getCheckOutDate } from '@/shared/utils/getCheckoutDate';
 import { isoToDateFormat } from '@/shared/utils/isoToDateFormat';
 

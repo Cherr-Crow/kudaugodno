@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { redirect, useSearchParams } from 'next/navigation';
 
 import { FilterYear } from '@/shared/filter-year';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
 import { ApplicationInfo } from '@/shared/ui/application-info';
 import { Checkbox } from '@/shared/ui/checkbox';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 export default function EditApplication() {
   const [years] = useState<string[]>(['Гость 1', 'Гость 2']);

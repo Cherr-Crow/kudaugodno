@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { IHotel } from '@/types/hotel';
 
-import { SvgSprite } from '../svg-sprite';
+import { SvgSprite } from '../ui/svg-sprite';
 
 interface HotelComponentPhotoSliderProps {
   hotel: IHotel;

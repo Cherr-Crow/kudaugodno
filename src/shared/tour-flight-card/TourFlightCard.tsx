@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ITourFlightCard } from './TourFlightCard.types';
-import { SvgSprite } from '../svg-sprite';
+import { SvgSprite } from '../ui/svg-sprite';
 
 function calculateFlightDuration(
   departureDate: string,

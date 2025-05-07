@@ -7,12 +7,12 @@ import { useSearchParams } from 'next/navigation';
 
 import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { Modal } from '@/shared/modal';
-import { Typography } from '@/shared/typography';
 import { AddedButton } from '@/shared/ui/added-button';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
 import { RuleAdd } from '@/shared/ui/rule-add';
 import { Rule } from '@/shared/ui/rule-add/RuleAdd.types';
+import { Typography } from '@/shared/ui/typography';
 
 import { IRulesAdd } from './RulesAdd.types';
 

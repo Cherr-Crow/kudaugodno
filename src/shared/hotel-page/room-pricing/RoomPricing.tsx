@@ -1,7 +1,7 @@
 /* eslint-disable react/no-children-prop */
 import React from 'react';
 
-import { Typography } from '@/shared/typography';
+import { Typography } from '@/shared/ui/typography';
 
 import { RoomPricingProps } from './RoomPricing.types';
 

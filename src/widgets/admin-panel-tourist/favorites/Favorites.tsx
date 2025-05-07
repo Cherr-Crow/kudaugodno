@@ -1,4 +1,4 @@
-import { Typography } from '@/shared/typography';
+import { Typography } from '@/shared/ui/typography';
 import { InterestingPlacesNearby } from '@/widgets/interesting-places-nearby';
 
 import { FavoritesHotelCard } from './FavoritesHotelCard';

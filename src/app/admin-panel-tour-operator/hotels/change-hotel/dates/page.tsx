@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
-import { SvgSprite } from '../../../../../shared/svg-sprite';
-import { Typography } from '../../../../../shared/typography';
 import { ButtonCustom } from '../../../../../shared/ui/button-custom';
+import { SvgSprite } from '../../../../../shared/ui/svg-sprite';
+import { Typography } from '../../../../../shared/ui/typography';
 import { Calendar } from '../../../../../widgets/calendar';
 
 const years = [2025, 2024, 2023];

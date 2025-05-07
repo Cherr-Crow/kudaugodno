@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 import { IInputForSearchBlock } from './InputForSearchBlock.types';
 

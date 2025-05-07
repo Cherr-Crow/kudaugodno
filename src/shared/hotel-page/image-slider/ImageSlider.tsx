@@ -8,7 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { SvgSprite } from '@/shared/svg-sprite';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
 
 interface ImageSliderProps {
   images: photoTypeRoom[];

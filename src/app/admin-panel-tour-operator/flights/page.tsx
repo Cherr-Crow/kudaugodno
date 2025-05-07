@@ -5,9 +5,9 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 
 import { useGetFlightsQuery } from '@/servicesApi/flightsApi';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 import { TableForFlights } from '@/widgets/admin-panel/table-for-flights';
 
 export default function Flights() {

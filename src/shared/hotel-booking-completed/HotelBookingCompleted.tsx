@@ -3,7 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
-import { Typography } from '@/shared/typography';
+import { Typography } from '@/shared/ui/typography';
 import { IHotel } from '@/types/hotel';
 
 import { HotelBookingModalCancel } from '../hotel-booking-modal-cancel';

@@ -7,9 +7,9 @@ import { useSelector } from 'react-redux';
 
 import { selectUserId } from '@/rtk/userSlice';
 import { useGetUserDataQuery } from '@/servicesApi/userApi';
-import { PopupWindow } from '@/shared/popup-window';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
+import { PopupWindow } from '@/shared/ui/popup-window';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 import { IHeader } from './Header.types';
 

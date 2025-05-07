@@ -11,12 +11,12 @@ import {
   useLazyGetOneFlightQuery,
 } from '@/servicesApi/flightsApi';
 import { Modal } from '@/shared/modal';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
 import { InputDateForSearchBlock } from '@/shared/ui/search-block/input-date-for-search-block';
 import { Select } from '@/shared/ui/select';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 import { airports } from '@/temp/airports-mock';
 import { IFlight } from '@/types/flight-type';
 

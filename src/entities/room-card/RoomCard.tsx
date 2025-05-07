@@ -9,9 +9,9 @@ import { RoomDescription } from '@/shared/hotel-page/room-description';
 import { RoomPricing } from '@/shared/hotel-page/room-pricing';
 import { RoomSquare } from '@/shared/hotel-page/room-square';
 import { Modal } from '@/shared/modal';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Select } from '@/shared/ui/select';
+import { Typography } from '@/shared/ui/typography';
 import { RoomType } from '@/types/room';
 import { RoomModal } from '@/widgets/room-modal';
 

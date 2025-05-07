@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useResizeObserver } from 'usehooks-ts';
 
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 import { IAccordeon } from './Accordeon.types';
 

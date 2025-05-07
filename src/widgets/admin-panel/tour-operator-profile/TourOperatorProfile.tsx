@@ -12,9 +12,9 @@ import {
   useGetUserDataQuery,
   useUpdateUserMutation,
 } from '@/servicesApi/userApi';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
 import { Checkbox } from '@/shared/ui/checkbox';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 import { ICompany, ITourist } from '@/types/users';
 
 function isCompany(user: ITourist | ICompany): user is ICompany {

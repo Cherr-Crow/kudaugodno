@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 interface ModalBookingCancellationProps {
   onClose: () => void;

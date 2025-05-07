@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { Typography } from '@/shared/typography';
+import { Typography } from '@/shared/ui/typography';
 
 import { INamedInput } from './NamedInput.types';
 

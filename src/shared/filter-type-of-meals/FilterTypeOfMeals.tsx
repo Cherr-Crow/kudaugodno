@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 
-import { Typography } from '../typography';
 import { IFilterTypeOfMeals } from './FilterTypeOfMeals.types';
 import { Checkbox } from '../ui/checkbox';
+import { Typography } from '../ui/typography';
 
 export function FilterTypeOfMeals({
   selectedMeals,

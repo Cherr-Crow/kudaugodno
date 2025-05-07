@@ -1,9 +1,9 @@
 import React, { useState, useId } from 'react';
 
 import { IFilterCity } from './FilterCity.types';
-import { SvgSprite } from '../svg-sprite';
-import { Typography } from '../typography';
 import { Checkbox } from '../ui/checkbox';
+import { SvgSprite } from '../ui/svg-sprite';
+import { Typography } from '../ui/typography';
 
 export const FilterCity = ({ selectedCities, onCityChange }: IFilterCity) => {
   const [isCollapsed, setIsCollapsed] = useState(false);

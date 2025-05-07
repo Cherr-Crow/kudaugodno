@@ -7,8 +7,8 @@ import Link from 'next/link';
 import { useScreen } from 'usehooks-ts';
 
 import { HotelCard } from '@/entities/hotel-card';
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 import { IHotel } from '@/types/hotel';
 
 import { IHotOffer } from './HotOffer.types';

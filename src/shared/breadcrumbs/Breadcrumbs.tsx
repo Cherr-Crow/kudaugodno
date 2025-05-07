@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { IBreadcrumbs } from './Breadcrumbs.types';
-import { SvgSprite } from '../svg-sprite';
+import { SvgSprite } from '../ui/svg-sprite';
 
 const crumbs: Record<string, string> = {
   'catalog-hotels': 'Отели',

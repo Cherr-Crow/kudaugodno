@@ -3,7 +3,7 @@ import React from 'react';
 import { nanoid } from 'nanoid';
 
 import { TourFlightCard } from '@/shared/tour-flight-card';
-import { Typography } from '@/shared/typography';
+import { Typography } from '@/shared/ui/typography';
 import { flightData } from '@/temp/flight-mock';
 import { hotels } from '@/temp/hotel-mock';
 

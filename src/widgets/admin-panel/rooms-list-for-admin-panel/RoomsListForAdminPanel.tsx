@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 
 import { newRoom } from '@/app/admin-panel-tour-operator/hotels/change-hotel/rooms/service/newRoom';
 import { useAddRoomHotelMutation } from '@/servicesApi/hotelsApi';
-import { Accordeon } from '@/shared/accordeon';
+import { Accordeon } from '@/shared/ui/accordeon';
 import { AddedButton } from '@/shared/ui/added-button';
 import { RoomForAdminPanel } from '@/widgets/admin-panel/room-for-admin-panel';
 

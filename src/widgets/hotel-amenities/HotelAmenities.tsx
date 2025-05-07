@@ -4,8 +4,8 @@ import React from 'react';
 
 import { nanoid } from 'nanoid';
 
-import { SvgSprite } from '@/shared/svg-sprite';
-import { Typography } from '@/shared/typography';
+import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { Typography } from '@/shared/ui/typography';
 
 import { IHotelAmenities } from './HotelAmenities.types';
 

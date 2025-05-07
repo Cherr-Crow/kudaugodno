@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
 
-import { Typography } from '@/shared/typography';
 import { TabBar } from '@/shared/ui/tab-bar';
+import { Typography } from '@/shared/ui/typography';
 
 import { MyArticles } from './MyArticles';
 import { MyReviews } from './MyReviews';
