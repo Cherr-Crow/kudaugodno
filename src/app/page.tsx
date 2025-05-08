@@ -1,5 +1,6 @@
 import { AdvertisingBanner } from '@/widgets/advertising-banner';
 import { Hero } from '@/widgets/hero';
+import { HotOffer } from '@/widgets/hot-offer';
 import { OurAdvantages } from '@/widgets/our-advantages';
 import { PopularDestinations } from '@/widgets/popular-destinations';
 import { SubscribeToTheNewsletter } from '@/widgets/subscribe-to-the-newsletter';
@@ -10,20 +11,18 @@ export default async function Home() {
     <div className='flex flex-col gap-3'>
       <Hero />
       <Wzhuh className='p3 container md:hidden' />
-      {/*TODO: блоки "HotOffer" оживить после подключения бэкенда*/}
-      {/*<HotOffer*/}
-      {/*  array={arr}*/}
-      {/*  type='hotel'*/}
-      {/*  title='Ой..., а эти туры скоро разберут'*/}
-      {/*  link='/catalog-tours'*/}
-      {/*/>*/}
-      {/*<HotOffer*/}
-      {/*  array={arr}*/}
-      {/*  type='hotel'*/}
-      {/*  title='Что насчет погреться в Турции?'*/}
-      {/*  link='/catalog-hotels'*/}
-      {/*  className='mt-10 md:mt-14 lg:mt-20'*/}
-      {/*/>*/}
+      {/* TODO: блоки "HotOffer" оживить после подключения бэкенда*/}
+      {/* <HotOffer
+        type='tour'
+        title='Ой... А эти туры скоро разберут'
+        link='/catalog-tours'
+      /> */}
+      <HotOffer
+        type='hotel'
+        title='Что насчет...'
+        link='/catalog-hotels'
+        className='pb-8 md:pb-12 lg:pb-[70px]'
+      />
       <AdvertisingBanner />
       <PopularDestinations />
       <OurAdvantages />

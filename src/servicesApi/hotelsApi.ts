@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+import { IHotelMiniData } from '@/entities/offer-card/OfferCard.types';
 import { BASE_URL } from '@/temp/domen_nikita';
 import { IHotel } from '@/types/hotel';
 import { PhotoHotel } from '@/types/photo_hotel';
@@ -192,8 +193,21 @@ export const hotelsApi = createApi({
       }),
       invalidatesTags: [{ type: 'PhotosRoom', id: 'LIST' }],
     }),
-
     // /api/v1/hotels/{hotel_id}/rooms/
+    getWhatAboutHotels: build.query<
+      { name_set: string; hotel: IHotelMiniData[] }[],
+      void
+    >({
+      query: () => `hotels/whats_about/`,
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          const data = await queryFulfilled;
+          console.log('HotOffer отели получены успешно!', data);
+        } catch (error) {
+          console.error('Ошибка при получении HotOffer отелей:', error);
+        }
+      },
+    }),
   }),
 });
 
@@ -213,4 +227,5 @@ export const {
   useGetPhotosRoomQuery,
   useAddPhotoRoomMutation,
   useDelPhotoRoomMutation,
+  useGetWhatAboutHotelsQuery,
 } = hotelsApi;
