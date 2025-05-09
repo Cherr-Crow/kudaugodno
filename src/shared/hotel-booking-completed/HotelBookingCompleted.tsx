@@ -6,6 +6,7 @@ import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { Typography } from '@/shared/ui/typography';
 import { IHotel } from '@/types/hotel';
 
+import { Breadcrumbs } from '../breadcrumbs';
 import { HotelBookingModalCancel } from '../hotel-booking-modal-cancel';
 import { HotelBookingModalConfirm } from '../hotel-booking-modal-confirm';
 import { Rating } from '../rating';
@@ -130,6 +131,46 @@ export default function HotelBookingCompleted() {
         onClose={() => setConfirmModalOpen(false)}
       />
       <div className='container relative z-10'>
+        <div className='-mb-[60px] pt-[1px]'>
+          {bookingData.type === 'tour' ? (
+            <Breadcrumbs
+              color='white'
+              paths={[
+                { label: 'Туры', href: '/catalog-tours' },
+                {
+                  label: `${hotel?.country}, ${hotel?.city}`,
+                  href: `/catalog-tours?where=${hotel?.city}`,
+                },
+                {
+                  label: `${hotel?.name}`,
+                  href: `/tour-page?where=${hotel?.city}&hotelName=${hotel?.name}&hotelId=${hotel.id}`,
+                },
+                {
+                  label: 'Бронирование',
+                  href: `/tour-page?where=${hotel?.city}&hotelName=${hotel?.name}`,
+                },
+              ]}
+            />
+          ) : (
+            <Breadcrumbs
+              color='white'
+              paths={[
+                { label: 'Отели', href: '/catalog-hotels' },
+                {
+                  label: `${hotel.country}, ${hotel.city}`,
+                  href: `/catalog-hotels?where=${hotel.city}`,
+                },
+                {
+                  label: `${hotel.name}`,
+                  href: `/hotel-page?where=${hotel.city}&hotelName=${hotel.name}&hotelId=${hotel.id}`,
+                },
+                {
+                  label: 'Бронирование',
+                },
+              ]}
+            />
+          )}
+        </div>
         <div className='relative translate-y-10 rounded-lg bg-white p-4 shadow-lg'>
           <div className='flex flex-row justify-between'>
             <div className='flex flex-col gap-4 lg:gap-1'>

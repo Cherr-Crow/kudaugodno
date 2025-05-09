@@ -399,13 +399,25 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
     setIsClient(true);
   }, []);
 
-  const handleRouting = (hotelId: number, hotelName: string, tab: string) => {
+  const handleRouting = (
+    hotelId: number,
+    hotelName: string,
+    hotelCountry: string,
+    tab: string,
+  ) => {
     const encodedName = encodeURIComponent(hotelName);
     const encodedId = encodeURIComponent(hotelId);
+    const encodedCountry = encodeURIComponent(hotelCountry);
+    const encodedType = encodeURIComponent(tab);
+
     if (tab === 'Туры') {
-      router.push(`/tour-page?hotelId=${encodedId}&name=${encodedName}`);
+      router.push(
+        `/tour-page?type${encodedType}&hotelId=${encodedId}&hotelName=${encodedName}&arrivalCountry=${encodedCountry}`,
+      );
     } else {
-      router.push(`/hotel-page?hotelId=${encodedId}&name=${encodedName}`);
+      router.push(
+        `/hotel-page?type${encodedType}&hotelId=${encodedId}&hotelName=${encodedName}&arrivalCountry=${encodedCountry}`,
+      );
     }
   };
 
@@ -549,7 +561,9 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
                         </div>
 
                         <div
-                          onClick={() => handleRouting(hotel.id, hotel.name, tab)}
+                          onClick={() =>
+                            handleRouting(hotel.id, hotel.name, hotel.country, tab)
+                          }
                           style={{ cursor: 'pointer' }}
                           className='hotel-info relative z-10 w-full rounded-lg p-4 md:ml-[-16px] md:w-3/5'
                         >

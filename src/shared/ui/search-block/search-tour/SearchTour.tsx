@@ -21,6 +21,8 @@ export function SearchTour({
   guests = '2 гостя',
   setDepartureCity,
   setWhere,
+  setHotelName,
+  setArrivalCountry,
   setCheckInDate,
   setCheckOutDate,
   setNights,
@@ -107,6 +109,8 @@ export function SearchTour({
   useEffect(() => {
     if (hotel) {
       setWhere?.(hotel.city || '');
+      setHotelName?.(hotel.name || '');
+      setArrivalCountry?.(hotel.country || '');
     }
   }, [hotel]);
 

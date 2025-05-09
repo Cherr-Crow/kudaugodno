@@ -42,9 +42,10 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
   const router = useRouter();
 
   const [type, setType] = useState<string>('');
-
+  const [hotelName, setHotelName] = useState<string>('');
   const [departureCity, setDepartureCity] = useState<string>('');
   const [where, setWhere] = useState<string>('');
+  const [arrivalCountry, setArrivalCountry] = useState<string>('');
   const [checkInDate, setCheckInDate] = useState('');
   const [checkOutDate, setCheckOutDate] = useState('');
   const [nights, setNights] = useState('Количество ночей');
@@ -52,8 +53,10 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
 
   useEffect(() => {
     setType(searchParams.get('type') || '');
+    setHotelName(searchParams.get('hotelName') || '');
     setDepartureCity(searchParams.get('departureCity') || '');
     setWhere(searchParams.get('where') || '');
+    setArrivalCountry(searchParams.get('arrivalCountry') || '');
     setCheckInDate(searchParams.get('checkInDate') || '');
     setCheckOutDate(searchParams.get('checkOutDate') || '');
     setNights(searchParams.get('nights') || 'Количество ночей');
@@ -65,6 +68,8 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
       hotelId: hotelId ? hotelId.toString() : '',
       roomId: room.id ? room.id.toString() : '',
       type,
+      hotelName,
+      arrivalCountry,
       departureCity,
       where,
       checkInDate,

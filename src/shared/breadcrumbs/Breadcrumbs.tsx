@@ -2,45 +2,60 @@
 import React from 'react';
 
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
-import { IBreadcrumbs } from './Breadcrumbs.types';
 import { SvgSprite } from '../ui/svg-sprite';
 
-const crumbs: Record<string, string> = {
-  'catalog-hotels': 'Отели',
-  'catalog-tours': 'Туры',
-  Kenia: 'Кения',
-  Nairobi: 'Найроби',
+type Path = {
+  label: string;
+  href?: string;
 };
-export function Breadcrumbs({}: IBreadcrumbs) {
-  const pathname = usePathname();
+
+type BreadcrumbsProps = {
+  paths: Path[];
+  color?: 'grey' | 'white';
+};
+
+export function Breadcrumbs({ paths, color = 'grey' }: BreadcrumbsProps) {
   const router = useRouter();
-  const route = pathname.split('/');
-  route.shift();
+
   return (
-    <div className={`invisible mb-10 mt-6 lg:visible`}>
-      <ul className={`flex flex-row gap-1`}>
-        {route.map((elem, i) =>
-          crumbs[elem] ? (
-            <li key={i} className={`flex flex-row gap-1 text-grey-400`}>
-              <Link
-                href='#'
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push(route.slice(0, i + 1).join('/'));
-                }}
-              >
-                {crumbs[elem]}
-              </Link>
-              {route.length > 1 && <SvgSprite name={'arrow'} width={16}></SvgSprite>}
+    <div className='invisible mb-10 mt-6 lg:visible'>
+      <ul className='flex flex-row flex-wrap gap-1'>
+        {paths.map((crumb, i) => {
+          const isLast = i === paths.length - 1;
+          return (
+            <li
+              key={i}
+              className={`flex flex-row items-center gap-1 font-normal ${color === 'white' ? 'text-white' : 'text-grey-400'}`}
+            >
+              {!isLast && crumb.href ? (
+                <>
+                  <Link
+                    href={crumb.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      router.push(crumb.href!);
+                    }}
+                  >
+                    {crumb.label}
+                  </Link>
+                  <SvgSprite
+                    name='arrow'
+                    color={color === 'white' ? 'white' : 'grey'}
+                    width={16}
+                  />
+                </>
+              ) : (
+                <span
+                  className={`font-semibold ${color === 'white' ? 'text-white' : 'text-grey-950'}`}
+                >
+                  {crumb.label}
+                </span>
+              )}
             </li>
-          ) : (
-            <li key={i} className={`font-medium text-grey-950`}>
-              {elem}
-            </li>
-          ),
-        )}
+          );
+        })}
       </ul>
     </div>
   );

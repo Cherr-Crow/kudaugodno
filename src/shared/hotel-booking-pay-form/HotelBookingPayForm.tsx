@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { useAddApplicationMutation } from '@/servicesApi/applicationsApi';
 
@@ -83,14 +83,60 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
   useEffect(() => {
     setIsClient(true);
   }, []);
+  const searchParams = useSearchParams();
+
+  const [type, setType] = useState<string>('');
+  const [hotelId, setHotelId] = useState<string>('');
+  const [hotelName, setHotelName] = useState<string>('');
+  const [arrivalCountry, setArrivalCountry] = useState<string>('');
+  const [departureCity, setDepartureCity] = useState<string>('');
+  const [where, setWhere] = useState<string>('');
+  const [checkInDate, setCheckInDate] = useState('');
+  const [checkOutDate, setCheckOutDate] = useState('');
+  const [nights, setNights] = useState('Количество ночей');
+  const [guests, setGuests] = useState('Количество гостей');
+
+  useEffect(() => {
+    setType(searchParams.get('type') || '');
+    setHotelId(searchParams.get('hotelId') || '');
+    setHotelName(searchParams.get('hotelName') || '');
+    setDepartureCity(searchParams.get('departureCity') || '');
+    setWhere(searchParams.get('where') || '');
+    setArrivalCountry(searchParams.get('arrivalCountry') || '');
+    setCheckInDate(searchParams.get('checkInDate') || '');
+    setCheckOutDate(searchParams.get('checkOutDate') || '');
+    setNights(searchParams.get('nights') || 'Количество ночей');
+    setGuests(searchParams.get('guests') || 'Количество гостей');
+  }, [searchParams]);
 
   const handleCompleteBooking = async () => {
     if (isClient) {
       try {
+        const searchData = {
+          type,
+          hotelId,
+          hotelName,
+          departureCity,
+          where,
+          arrivalCountry,
+          checkInDate,
+          checkOutDate,
+          nights,
+          guests,
+        };
+
         const response = await addApplication(applicationData).unwrap();
         console.log('Заявка успешно создана:', response);
         localStorage.setItem('bookingData', JSON.stringify(finalBookingData));
-        router.push('/booking-completed');
+
+        let path = '/booking-completed';
+        if (finalBookingData?.tourId) {
+          path = '/tour-booking-completed';
+        } else if (finalBookingData?.hotelId) {
+          path = '/hotel-booking-completed';
+        }
+
+        router.push(`${path}?${new URLSearchParams(searchData).toString()}`);
       } catch (error) {
         console.error('Ошибка при создании заявки:', error);
       }
