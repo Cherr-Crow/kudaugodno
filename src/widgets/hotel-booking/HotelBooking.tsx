@@ -333,10 +333,11 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
             <ButtonCustom
               className='mb-4'
               onClick={() => {
-                setGuests((prev: number) => prev - 1);
+                setGuests((prev: number) => (prev > 1 ? prev - 1 : prev));
               }}
               variant={'secondary'}
               size={'s'}
+              disabled={guests === 1}
             >
               Убрать пользователя
             </ButtonCustom>
