@@ -5,8 +5,11 @@ import { useEffect, useState } from 'react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useSearchParams } from 'next/navigation';
 type SearchBlockDefaults = {
+  defaultType?: string;
   defaultDepartureCity?: string;
   defaultWhere?: string;
+  defaultArrivalCountry?: string;
+  defaultHotelName?: string;
   defaultCheckInDate?: string;
   defaultCheckOutDate?: string;
   defaultNights?: string;
@@ -38,8 +41,11 @@ const getNumericValue = (str: string): string | null => {
 };
 
 export const useSearchBlockState = ({
+  defaultType = '',
   defaultDepartureCity = '',
   defaultWhere = '',
+  defaultArrivalCountry = '',
+  defaultHotelName = '',
   defaultCheckInDate = '',
   defaultCheckOutDate = '',
   defaultNights = 'Количество ночей',
@@ -47,18 +53,25 @@ export const useSearchBlockState = ({
 }: SearchBlockDefaults = {}) => {
   const searchParams = useSearchParams();
   // Состояния для формы поиска
+  const [type, setType] = useState(defaultType);
   const [departureCity, setDepartureCity] = useState(defaultDepartureCity);
   const [where, setWhere] = useState(defaultWhere);
+  const [arrivalCountry, setArrivalCountry] = useState(defaultArrivalCountry);
+  const [hotelName, setHotelName] = useState(defaultHotelName);
   const [checkInDate, setCheckInDate] = useState(defaultCheckInDate);
   const [checkOutDate, setCheckOutDate] = useState(defaultCheckOutDate);
   const [nights, setNights] = useState(defaultNights);
   const [guests, setGuests] = useState(defaultGuests);
+
   const [isInitialized, setIsInitialized] = useState(false);
   // Загружаем параметры из URL
   useEffect(() => {
     if (searchParams && searchParams.size > 0 && !isInitialized) {
+      setType(searchParams.get('type') || defaultType);
       setDepartureCity(searchParams.get('departureCity') || defaultDepartureCity);
       setWhere(searchParams.get('where') || defaultWhere);
+      setArrivalCountry(searchParams.get('arrivalCountry') || defaultArrivalCountry);
+      setHotelName(searchParams.get('hotelName') || defaultHotelName);
       setCheckInDate(searchParams.get('checkInDate') || defaultCheckInDate);
       setCheckOutDate(searchParams.get('checkOutDate') || defaultCheckOutDate);
       setNights(
@@ -81,8 +94,11 @@ export const useSearchBlockState = ({
   // Обновляем URL при изменении полей
   const updateUrlParams = (router: AppRouterInstance, hotelId?: number | null) => {
     const params = new URLSearchParams();
+    if (type) params.set('type', type);
     if (departureCity) params.set('departureCity', departureCity);
     if (where) params.set('where', where);
+    if (arrivalCountry) params.set('arrivalCountry', arrivalCountry);
+    if (hotelName) params.set('hotelName', hotelName);
     if (checkInDate) params.set('checkInDate', checkInDate);
     if (checkOutDate) params.set('checkOutDate', checkOutDate);
 
@@ -98,14 +114,19 @@ export const useSearchBlockState = ({
   };
 
   return {
+    type,
     departureCity,
     where,
+    arrivalCountry,
+    hotelName,
     checkInDate,
     checkOutDate,
     nights,
     guests,
+    setHotelName,
     setDepartureCity,
     setWhere,
+    setArrivalCountry,
     setCheckInDate,
     setCheckOutDate,
     setNights,

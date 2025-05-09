@@ -36,6 +36,7 @@ function CatalogToursContent() {
     defaultCheckInDate: `${getDateNow(+5)}`,
     defaultNights: '7 ночей',
     defaultGuests: '2 гостя',
+    defaultType: 'Туры',
   });
   const { updateUrlParams, ...searchProps } = searchState;
 
@@ -145,10 +146,20 @@ function CatalogToursContent() {
 
   return (
     <div className='container'>
-      <Breadcrumbs />
-      {searchProps.isInitialized && (
-        <SearchTour type='Туры' hotel={hotel} {...searchProps} />
-      )}
+      <Breadcrumbs
+        paths={[
+          { label: 'Туры', href: '/catalog-tours' },
+          {
+            label: `${hotel?.country}, ${hotel?.city}`,
+            href: `/catalog-tours?where=${hotel?.city}`,
+          },
+          {
+            label: `${hotel?.name}`,
+            href: `/tour-page?where=${hotel?.city}&hotelName=${hotel?.name}&hotelId=${hotel?.id}`,
+          },
+        ]}
+      />
+      {searchProps.isInitialized && <SearchTour hotel={hotel} {...searchProps} />}
       <ToursBlockPhoto />
       <section className='mb-10 mt-10'>
         <OtherTours />

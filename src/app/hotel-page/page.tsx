@@ -25,6 +25,7 @@ function HotelPageContent() {
     defaultCheckInDate: `${getDateNow(+5)}`,
     defaultNights: '7 ночей',
     defaultGuests: '2 гостя',
+    defaultType: 'Отели',
   });
   const { updateUrlParams, ...searchProps } = searchState;
 
@@ -87,11 +88,22 @@ function HotelPageContent() {
 
   return (
     <section className='container rounded-bl-[20px] rounded-br-[20px] xl:rounded-bl-[100px] xl:rounded-br-[100px]'>
-      <Breadcrumbs />
+      <Breadcrumbs
+        paths={[
+          { label: 'Отели', href: '/catalog-hotels' },
+          {
+            label: `${hotel.country}, ${hotel.city}`,
+            href: `/catalog-hotels?where=${hotel.city}`,
+          },
+          {
+            label: `${hotel.name}`,
+            href: `/hotel-page?where=${hotel.city}&hotelName=${hotel.name}&hotelId=${hotel.id}`,
+          },
+        ]}
+      />
       {searchProps.isInitialized && (
         <SearchTour
           className={'mb-[40px] border-solid shadow-lg xl:mb-[313px]'}
-          type={'Отели'}
           hotel={hotel}
           {...searchProps}
         />

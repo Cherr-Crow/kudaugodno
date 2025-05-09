@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { nanoid } from 'nanoid';
 import { useSearchParams } from 'next/navigation';
@@ -26,9 +26,27 @@ export function RoomCards({
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  const [type, setType] = useState<string>('');
+  const [hotelId, setHotelId] = useState<string>('');
+  const [hotelName, setHotelName] = useState<string>('');
+  const [departureCity, setDepartureCity] = useState<string>('');
+  const [where, setWhere] = useState<string>('');
+  const [arrivalCountry, setArrivalCountry] = useState<string>('');
+
+  useEffect(() => {
+    setType(searchParams.get('type') || '');
+    setHotelId(searchParams.get('hotelId') || '');
+    setHotelName(searchParams.get('hotelName') || '');
+    setDepartureCity(searchParams.get('departureCity') || '');
+    setWhere(searchParams.get('where') || '');
+    setArrivalCountry(searchParams.get('arrivalCountry') || '');
+  }, [searchParams]);
+
   const handleBooking = () => {
     const searchData = {
+      type,
       tourId: String(tourId) || '',
+      hotelId: String(hotelId) || '',
       roomId: String(roomId) || '',
       name: name || '',
       startDate: start_date || '',
@@ -41,6 +59,10 @@ export function RoomCards({
       guests: searchParams.get('guests') || '',
       checkInDate: start_date || '',
       checkOutDate: end_date || '',
+      hotelName,
+      departureCity,
+      where,
+      arrivalCountry,
     };
     localStorage.setItem('searchData', JSON.stringify(searchData));
     const url = '/tour-booking';
