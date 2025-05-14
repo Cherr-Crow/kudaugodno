@@ -56,15 +56,13 @@ function CatalogToursContent() {
     data: hotelData,
     isLoading: isHotelLoading,
     isError: isHotelError,
-  } = useGetOneHotelQuery(hotelId || null);
+  } = useGetOneHotelQuery(hotelId);
 
   const {
     data: toursData,
     isLoading: isToursLoading,
     isError: isToursError,
-  } = useGetToursByHotelQuery({
-    hotelId,
-  });
+  } = useGetToursByHotelQuery({ hotelId, limit: 10 }, { skip: !hotelId });
 
   useEffect(() => {
     if (hotelData) setHotel(hotelData);
@@ -160,9 +158,9 @@ function CatalogToursContent() {
         ]}
       />
       {searchProps.isInitialized && <SearchTour hotel={hotel} {...searchProps} />}
-      <ToursBlockPhoto />
+      <ToursBlockPhoto hotel={hotel} />
       <section className='mb-10 mt-10'>
-        <OtherTours />
+        <OtherTours hotel={hotel} tours={tours} />
         {visibleRooms.map((room) => (
           <RoomCards key={nanoid()} {...room} roomId={room.roomId} />
         ))}

@@ -1,9 +1,8 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
-import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { Modal } from '@/shared/modal';
 import { Rating } from '@/shared/rating';
 import { ButtonCustom } from '@/shared/ui/button-custom';
@@ -12,28 +11,12 @@ import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
 
 import { YandexMap } from '../ymap';
+import { IToursBlockPhoto } from './ToursBlockPhoto.types';
 
-export function ToursBlockPhoto() {
-  const [hotelId, setHotelId] = useState<number | null>(null);
+export function ToursBlockPhoto({ hotel }: IToursBlockPhoto) {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenModalMap, setIsOpenModalMap] = useState(false);
   const [showAllPhoto, setShowAllPhoto] = useState<boolean>(false);
-  const {
-    data: hotel,
-    isLoading,
-    error,
-  } = useGetOneHotelQuery(hotelId!, {
-    skip: hotelId === null,
-  });
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedId = localStorage.getItem('selectedHotelId');
-      if (storedId) {
-        setHotelId(Number(storedId));
-      }
-    }
-  }, []);
 
   const handleClickAllPhoto = () => {
     setShowAllPhoto(true);
@@ -55,8 +38,6 @@ export function ToursBlockPhoto() {
     coordinates = [Number(hotel.width), Number(hotel.longitude)];
   }
 
-  if (isLoading) return <div>Загрузка...</div>;
-  if (error) return <div>Ошибка при загрузке данных отеля.</div>;
   if (!hotel) return <div>Информация об отеле отсутствует.</div>;
 
   return (
@@ -307,7 +288,9 @@ export function ToursBlockPhoto() {
                     size='l'
                     className='col-snap-1 justify-end self-center lg:flex'
                   >
-                    <Typography variant='s-bold'>240 894 ₽ за 2- х</Typography>
+                    <Typography variant='s-bold'>
+                      {`${hotel.rooms[0].price}₽ за ${hotel.rooms[0].number_of_adults === 1 ? '1-го' : `${hotel.rooms[0].number_of_adults}-х`}`}
+                    </Typography>
                   </ButtonCustom>
                 </div>
               </div>

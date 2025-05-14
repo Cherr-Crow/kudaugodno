@@ -107,7 +107,9 @@ export function RoomCards({
             style={{ gridArea: 'btnSubmit' }}
             onClick={handleBooking}
           >
-            <Typography variant='s-bold'>{`${price}₽ за 2- х`}</Typography>
+            <Typography variant='s-bold'>
+              {`${price}₽ за ${guests === 1 ? '1-го' : `${guests}-х`}`}
+            </Typography>
           </ButtonCustom>
         </div>
       </div>
