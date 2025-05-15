@@ -11,7 +11,7 @@ export const PopupWindow: React.FC<IPopupWindow> = ({
   return (
     <div
       ref={ref}
-      className={`${className} absolute z-10 w-fit rounded-2xl bg-white shadow-xl`}
+      className={`absolute z-10 w-fit rounded-2xl bg-white shadow-xl ${className}`}
       data-testid='pop-up-window'
     >
       {children}

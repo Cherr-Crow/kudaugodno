@@ -27,14 +27,15 @@ export function Select({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   enum Background {
-    'blue' = 'border border-blue-400 bg-blue-300',
+    'blue' = 'border border-blue-300 bg-blue-200',
     'green' = 'border border-green-500 bg-green-300',
   }
 
   enum Size {
     'small' = 'rounded-md py-2 px-4',
     'medium' = 'rounded-full p-4',
-    'mobile' = 'rounded-full w-20 h-7',
+    'mobile' = 'rounded-[20px] w-20 h-[30px] px-5 md:w-[52px] md:px-3 lg:w-[83px] lg:p-5',
+    'meals' = 'rounded-[20px] w-[180px] h-[30px] px-5 md:w-[164px] md:px-3 lg:w-[180px] lg:p-5',
   }
 
   const handleToggle = () => {
@@ -70,7 +71,10 @@ export function Select({
   }, [selectedOption]);
 
   return (
-    <div className={`relative w-fit cursor-pointer ${className}`} ref={dropdownRef}>
+    <div
+      className={`relative w-fit cursor-pointer ${className} ui-select`}
+      ref={dropdownRef}
+    >
       <div
         className={`flex items-center justify-between ${Size[size]} ${color ? Background[color] : 'bg-transparent'}`}
         onClick={handleToggle}

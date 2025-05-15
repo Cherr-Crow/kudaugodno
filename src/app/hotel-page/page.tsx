@@ -10,7 +10,7 @@ import { getDateNow } from '@/shared/utils/getDateNow';
 import { useSearchBlockState } from '@/shared/utils/useSearchBlockState';
 import { HotelAmenities } from '@/widgets/hotel-amenities';
 import { HotelBlockPhotosReview } from '@/widgets/hotel-block-photos-review';
-import { HotelRomsList } from '@/widgets/hotel-roms-list';
+import { HotelRoomsList } from '@/widgets/hotel-rooms-list';
 import { HotelRules } from '@/widgets/hotel-rules';
 
 function HotelPageContent() {
@@ -109,7 +109,7 @@ function HotelPageContent() {
         />
       )}
       <HotelBlockPhotosReview hotel={hotel} />
-      <HotelRomsList hotelId={hotel.id} rooms={filteredRooms} />
+      <HotelRoomsList hotelId={hotel.id} rooms={filteredRooms} />
       <HotelAmenities amenities={amenities} />
       <HotelRules rules={rules} />
     </section>

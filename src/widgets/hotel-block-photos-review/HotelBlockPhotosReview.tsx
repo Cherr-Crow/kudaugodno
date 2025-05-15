@@ -103,7 +103,8 @@ export function HotelBlockPhotosReview({ hotel }: IHotelBlockPhotosReview) {
         {hotels.slice(0, 1).map((hotel) => (
           <div key={hotel.id} className='mb-6'>
             <div className='py-4'>
-              <div className='flex flex-row items-center'>
+              {/* <div className='flex flex-row items-center'> */}
+              <div className='flex flex-col items-center md:flex-row'>
                 <Typography
                   variant='h2'
                   className='mr-2 flex items-center text-2xl font-bold'
