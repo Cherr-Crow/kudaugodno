@@ -1,0 +1,1 @@
+export { RoomArea } from './RoomArea';

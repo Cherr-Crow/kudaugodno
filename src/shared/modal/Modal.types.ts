@@ -5,4 +5,6 @@ export interface IModal extends DivProps {
   isOpen: boolean;
   getState(open: boolean): void;
   err?: boolean;
+  isNewVariation?: boolean;
+  hasScrollbar?: boolean;
 }

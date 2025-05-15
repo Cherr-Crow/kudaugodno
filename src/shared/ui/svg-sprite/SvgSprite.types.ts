@@ -10,7 +10,7 @@ export interface ISvgSprite extends DivProps {
 
 export type NameSvg =
   | 'room_guest_child'
-  | 'icutlery_items'
+  | 'cutlery_items'
   | 'square_room'
   | 'bed'
   | 'room-guests'
@@ -85,4 +85,7 @@ export type NameSvg =
   | 'comments'
   | 'ellipsisVertical'
   | 'greenCircle'
-  | 'for-business';
+  | 'for-business'
+  | 'guest-adult'
+  | 'guest-child'
+  | 'single-bed';
