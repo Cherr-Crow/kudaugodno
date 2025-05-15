@@ -1,7 +1,7 @@
-import { ITour } from '@/types/tour-type';
+import { IHotel } from '@/types/hotel';
 
 type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
 export interface IToursBlockPhoto extends DivProps {
-  data: ITour[];
+  hotel: IHotel | null;
 }

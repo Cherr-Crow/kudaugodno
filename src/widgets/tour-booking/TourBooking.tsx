@@ -3,6 +3,8 @@
 
 import React, { useEffect, useState } from 'react';
 
+import { useSearchParams } from 'next/navigation';
+
 import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
 import { useGetOneTourQuery } from '@/servicesApi/toursApi';
 import { Breadcrumbs } from '@/shared/breadcrumbs';
@@ -59,7 +61,8 @@ export function TourBooking({ tourId }: ITourBooking) {
     skip: tourId === null,
   });
 
-  const hotelId = Number(tour?.hotel.id);
+  const searchParams = useSearchParams();
+  const hotelId = Number(searchParams.get('hotelId')) ?? null;
 
   const { data: hotel } = useGetOneHotelQuery(hotelId, {
     skip: hotelId === null,
