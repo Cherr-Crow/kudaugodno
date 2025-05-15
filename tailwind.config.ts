@@ -12,11 +12,11 @@ export default {
   theme: {
     extend: {},
     screens: {
-      xs: '330px',
+      xs: '360px',
       xxs: '500px',
       sm: '620px',
       md: '840px',
-      lg: '1280px',
+      lg: '1380px',
       xl: '1446px',
       '2xl': '1600px',
     },
