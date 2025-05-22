@@ -1,9 +1,13 @@
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
 
-export function MyArticles() {
+import { IMyArticle } from './MyArticles.types';
+
+export function MyArticles({ className }: IMyArticle) {
   return (
-    <div className='flex w-full rounded-[20px] shadow-lg md:max-w-[calc((100%-32px)/2)] md:flex-col lg:max-w-[calc((100%-32px)/3)]'>
+    <div
+      className={`${className} flex w-full rounded-[20px] shadow-lg md:max-w-[calc((100%-32px)/2)] md:flex-col lg:max-w-[calc((100%-32px)/3)]`}
+    >
       <div className='md:rounded-bl-0 h-[191px] w-[40%] rounded-bl-[20px] rounded-tl-[20px] bg-grey-50 md:h-auto md:w-full md:rounded-tr-[20px] lg:min-w-[340px]'>
         <img
           className='md:rounded-bl-0 h-full w-full rounded-bl-[20px] rounded-tl-[20px] md:rounded-tr-[20px]'
