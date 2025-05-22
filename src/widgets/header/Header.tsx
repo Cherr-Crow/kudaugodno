@@ -25,14 +25,14 @@ export function Header({ className }: IHeader) {
   };
 
   return (
-    <header className={`${className} bg-grey-50 py-4`}>
+    <header className={`${className} w-full bg-grey-50 py-3 md:py-6 lg:py-6`}>
       <div className='container flex items-center justify-between'>
         <Link href='/' as='/' className=''>
           {/*<div className='border border-grey-900'>*/}
           <SvgSprite name='logo' width={65} className='link_hover sm:w-[106px]' />
           {/*</div>*/}
         </Link>
-        <nav className='hidden gap-3 md:flex'>
+        <nav className='hidden gap-9 md:flex'>
           <Link href='/catalog-tours' className='link_hover'>
             <Typography variant='l-bold'>Туры</Typography>
           </Link>
@@ -48,8 +48,8 @@ export function Header({ className }: IHeader) {
             </Typography>
           </Link>
         </nav>
-        <div className='flex items-center gap-3'>
-          <div className='hidden cursor-pointer items-center gap-2 md:flex'>
+        <div className='flex items-center gap-5 lg:-mr-1 lg:gap-[19px] xl:gap-[21px]'>
+          <div className='mr-1 hidden cursor-pointer items-center gap-1 md:flex'>
             <SvgSprite name='phone' width={24} color='#4757EA' />
             <Typography variant='l' className='text-blue-600'>
               Поддержка
@@ -57,7 +57,7 @@ export function Header({ className }: IHeader) {
           </div>
           <a
             href='/company-registration'
-            className='hidden items-center gap-1 rounded-lg text-[#4757EA] transition hover:shadow-md focus:shadow-md focus:outline-none focus-visible:shadow-md active:text-grey-950 md:flex'
+            className='mr-1 hidden items-center gap-1 rounded-lg text-[#4757EA] transition hover:shadow-md focus:shadow-md focus:outline-none focus-visible:shadow-md active:text-grey-950 md:flex'
           >
             <SvgSprite name='for-business' width={24} color='currentColor' />
             <Typography variant='l'>Бизнесу</Typography>
@@ -70,7 +70,7 @@ export function Header({ className }: IHeader) {
           />
           <div className='relative'>
             <div
-              className={`flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-grey-950 p-1`}
+              className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-grey-950 p-1 md:h-10 md:w-10`}
               style={{
                 backgroundImage: user?.avatar ? `url('${user.avatar}')` : undefined,
                 backgroundSize: 'cover',
