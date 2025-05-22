@@ -1,3 +1,4 @@
+import { Typography } from '@/shared/ui/typography';
 import { AdvertisingBanner } from '@/widgets/advertising-banner';
 import { Hero } from '@/widgets/hero';
 import { HotOffer } from '@/widgets/hot-offer';
@@ -25,7 +26,14 @@ export default async function Home() {
       />
       <AdvertisingBanner />
       <PopularDestinations />
-      <OurAdvantages />
+      <OurAdvantages>
+        <Typography
+          variant='h4'
+          className='mb-5 text-[22px] font-semibold lg:text-[32px]'
+        >
+          Зачем ехать в тур с нами?
+        </Typography>
+      </OurAdvantages>
       <SubscribeToTheNewsletter />
     </div>
   );
