@@ -215,8 +215,17 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
               hotel.distance_to_the_airport <= 100000)));
 
       const isWithinPriceRange =
+        // (price[0] !== 0 || price[1] !== 0) &&
+        // hotel.rooms.some((room) => room.price >= price[0] && room.price <= price[1]);
         (price[0] !== 0 || price[1] !== 0) &&
-        hotel.rooms.some((room) => room.price >= price[0] && room.price <= price[1]);
+        hotel.rooms.some(
+          (room) =>
+            Array.isArray(room.dates) &&
+            room.dates.length > 0 &&
+            typeof room.dates[0].price === 'number' &&
+            room.dates[0].price >= price[0] &&
+            room.dates[0].price <= price[1],
+        );
 
       const isCitySelected =
         selectedCities.length === 0 || selectedCities.includes(hotel.city);
@@ -236,7 +245,10 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
 
       const isMealTypeSelected =
         mealType.length === 0 ||
-        hotel.rooms.some((room) => mealType.includes(room.type_of_meals));
+        // hotel.rooms.some((room) => mealType.includes(room.type_of_meals[0].name));
+        hotel.rooms.some((room) =>
+          room.type_of_meals.some((meal) => mealType.includes(meal.name)),
+        );
 
       const isAmenitiesSelected =
         amenities.length === 0 ||
@@ -618,17 +630,24 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
                 <>
                   {sortedHotels.map((hotel, index) => {
                     const filteredRoom = hotel.rooms.find(
+                      // (room) =>
+                      //   room.price >= appliedFilters.price[0] &&
+                      //   room.price <= appliedFilters.price[1],
                       (room) =>
-                        room.price >= appliedFilters.price[0] &&
-                        room.price <= appliedFilters.price[1],
+                        Array.isArray(room.dates) &&
+                        room.dates.length > 0 &&
+                        typeof room.dates[0].price === 'number' &&
+                        room.dates[0].price >= appliedFilters.price[0] &&
+                        room.dates[0].price <= appliedFilters.price[1],
                     );
                     if (filteredRoom)
                       return (
                         <div
                           key={
-                            hotel.tourInfo
-                              ? `tour-${hotel.tourInfo.id}`
-                              : `hotel-${hotel.id}`
+                            `hotel - ${hotel.id}`
+                            // hotel.tourInfo
+                            //   ? `tour-${hotel.tourInfo.id}`
+                            //   : `hotel-${hotel.id}`
                           }
                         >
                           <div
@@ -729,13 +748,16 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
                                   variant='l-bold'
                                   className='mb-2 text-xs'
                                 >
-                                  Питание: {filteredRoom.type_of_meals}
+                                  Питание: {filteredRoom.type_of_meals[0].name}
                                 </Typography>
                                 <Typography
                                   variant='h4'
                                   className='text-[16px] text-blue-600 md:text-lg'
                                 >
-                                  {filteredRoom.price} ₽
+                                  {/* {filteredRoom.price} ₽ */}
+                                  {filteredRoom?.dates?.[0]?.price
+                                    ? `${filteredRoom.dates[0].price} ₽`
+                                    : 'Цена не указана'}
                                 </Typography>
                               </div>
 

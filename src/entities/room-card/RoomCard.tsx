@@ -210,7 +210,7 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
                   variant='m-bold'
                   className='font-medium md:text-lg lg:text-xl'
                 >
-                  {formatNumberToPriceInRub(room.price, 'word')}
+                  {formatNumberToPriceInRub(room.dates[0].price, 'word')}
                 </Typography>
 
                 <div className='md:text-nowrap'>

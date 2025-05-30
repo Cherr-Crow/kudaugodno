@@ -1,6 +1,6 @@
 import { IHotel } from '@/types/hotel';
 import { RoomType } from '@/types/room';
-import { ITour } from '@/types/tour-type';
+import { ITour } from '@/types/tour';
 
 type DivProps = React.ComponentPropsWithoutRef<'div'>;
 

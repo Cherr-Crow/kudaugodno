@@ -1,23 +1,35 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { BASE_URL } from '@/temp/domen_nikita';
-import { IFlight } from '@/types/flight-type';
+import { IFlight } from '@/types/flight';
+
+interface IResponseListFlights {
+  count: number;
+  next: null;
+  previous: null;
+  results: IFlight[];
+}
 
 export const flightsApi = createApi({
   reducerPath: 'flightsApi',
   tagTypes: ['Flights'],
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (build) => ({
-    getFlights: build.query<IFlight[], { limit?: number; offset?: number }>({
+    getFlights: build.query<
+      IResponseListFlights,
+      { limit?: number; offset?: number }
+    >({
       query: ({ limit, offset }) =>
         `flights/?${limit && 'limit=' + limit}${offset && '&offset=' + offset}`,
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ flight_number }: { flight_number: string }) => ({
-                type: 'Flights' as const,
-                flight_number,
-              })),
+              ...result.results.map(
+                ({ flight_number }: { flight_number: string }) => ({
+                  type: 'Flights' as const,
+                  flight_number,
+                }),
+              ),
               { type: 'Flights', id: 'LIST' },
             ]
           : [{ type: 'Flights', id: 'LIST' }],

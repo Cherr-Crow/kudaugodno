@@ -1,5 +1,5 @@
-import { IApplication } from '@/types/application.type';
-import { ITour } from '@/types/tour-type';
+import { IApplication } from '@/types/application';
+import { ITour } from '@/types/tour';
 
 type DivProps = React.ComponentPropsWithoutRef<'div'>;
 

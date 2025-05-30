@@ -13,6 +13,7 @@ import { TableForFlights } from '@/widgets/admin-panel/table-for-flights';
 export default function Flights() {
   const router = useRouter();
   const { data } = useGetFlightsQuery({});
+  const flights = data?.results;
 
   const handleRout = () => {
     router.push('/admin-panel-tour-operator/flights/added-flights');
@@ -37,7 +38,7 @@ export default function Flights() {
         </ButtonCustom>
       </div>
 
-      {data && <TableForFlights flights={data} />}
+      {flights && <TableForFlights flights={flights} />}
     </div>
   );
 }

@@ -33,8 +33,13 @@ export const hotels: IHotel[] = [
         amenities_view: ['Wi-Fi'],
         single_bed: null,
         double_bed: 1,
-        price: 1000,
-        type_of_meals: 'полный пансион',
+        type_of_meals: [
+          {
+            id: 1,
+            name: 'Полный пансион',
+            price: 1000,
+          },
+        ],
         photo: [
           { id: 1, photo: 'room1.png', room: 0 },
           { id: 2, photo: 'room2.png', room: 0 },
@@ -42,36 +47,32 @@ export const hotels: IHotel[] = [
         number_of_adults: 2,
         number_of_children: 1,
         quantity_rooms: 3,
-        discount: [
+        rules: [
           {
-            id: 1,
-            name: 'string',
-            size: 10,
-            start_date: '10.10.2025',
-            end_date: '10.10.2026',
+            name: 'Без детей',
+            option: true,
           },
         ],
-        unavailable: [
+        dates: [
           {
             id: 1,
-            reason: 'string',
-            start_date: '10.10.2025',
-            end_date: '10.10.2026',
+            start_date: '2024-07-01',
+            end_date: '2024-07-10',
+            available_for_booking: true,
+            stock: true,
+            share_size: 0.2,
+            price: 42000,
+          },
+          {
+            id: 2,
+            start_date: '2024-07-15',
+            end_date: '2024-07-25',
+            available_for_booking: true,
+            stock: false,
+            share_size: 0,
+            price: 47000,
           },
         ],
-      },
-    ],
-    reviews: [
-      {
-        id: 1,
-        username: 'Константин Константинопольский',
-        userPhoto: 'user1-photo.png',
-        date: '26.03.2023',
-        rating: 8.9,
-        text: `Расположение идеальное и близко ко многим хорошим местам, например Sarit entre и Westgate Mall. 
-            Завтрак был отличным, с таким количеством вариантов на выбор. 
-            Первая линия. Лежаки и полотенца предоставлялись от отеля. СПА чудесный, есть много возможностей для спорта. 
-            Очень зеленая территория.`,
       },
     ],
     rules: [
@@ -104,13 +105,7 @@ export const hotels: IHotel[] = [
     amenities_in_the_room: [],
     amenities_sports_and_recreation: [],
     amenities_for_children: [],
-    type_of_meals_ultra_all_inclusive: null,
-    type_of_meals_all_inclusive: null,
-    type_of_meals_full_board: null,
-    type_of_meals_half_board: null,
-    type_of_meals_only_breakfast: null,
     is_active: true,
-    room_categories: [],
     width: '-1.272748',
     longitude: '36.827871',
   },

@@ -9,6 +9,7 @@ import { Typography } from '@/shared/ui/typography';
 
 import { IRoomCards } from './RoomCards.types';
 import { ButtonCustom } from '../button-custom';
+import { NameSvg } from '../svg-sprite/SvgSprite.types';
 
 export function RoomCards({
   tourId,
@@ -80,9 +81,9 @@ export function RoomCards({
             {services.map((elem) => {
               return (
                 <div className='flex items-center justify-start' key={nanoid()}>
-                  <SvgSprite name={`${elem.type}`} width={24} className='mr-3' />
+                  <SvgSprite name={elem as NameSvg} width={24} className='mr-3' />
                   <Typography variant='s-bold' className='text-black text-nowrap'>
-                    {elem.text}
+                    Должно было быть описание к иконке {elem}
                   </Typography>
                 </div>
               );

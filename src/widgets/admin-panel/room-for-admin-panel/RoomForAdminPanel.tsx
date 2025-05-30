@@ -15,9 +15,9 @@ import { NamedInput } from '@/shared/ui/named-input';
 import { Select } from '@/shared/ui/select';
 import { Typography } from '@/shared/ui/typography';
 import { CheckBoxBlock } from '@/widgets/admin-panel/check-box-block';
-import { DiscountBlock } from '@/widgets/admin-panel/discount-block';
+// import { DiscountBlock } from '@/widgets/admin-panel/discount-block';
 import { PhotosRoom } from '@/widgets/admin-panel/photos-room';
-import { UnavailableBlock } from '@/widgets/admin-panel/unavailable-block';
+// import { UnavailableBlock } from '@/widgets/admin-panel/unavailable-block';
 
 import { IRoomForAdminPanel } from './RoomForAdminPanel.types';
 
@@ -27,8 +27,8 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
   const [delRoom] = useDelRoomHotelMutation();
   const [changeRoom] = useChangeRoomHotelMutation();
 
-  const [price, setPrice] = useState<number>(room.price);
-  const [typeOfMeals, setTypeOfMeals] = useState<string>(room.type_of_meals);
+  const [price, setPrice] = useState<number>(room.dates[0].price);
+  const [typeOfMeals, setTypeOfMeals] = useState<string>('Без питания');
   const [numberOfAdults, setNumberOfAdults] = useState<number>(
     room.number_of_adults,
   );
@@ -39,21 +39,21 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
   const [doubleBed, setDoubleBed] = useState<number>(room.double_bed ?? 0);
   const [area, setArea] = useState<number>(room.area);
   const [quantityRooms, setQuantityRooms] = useState<number>(room.quantity_rooms);
-  const [discount, setDiscount] = useState<
-    {
-      name: string;
-      size: number;
-      start_date: string;
-      end_date: string;
-    }[]
-  >(room.discount);
-  const [unavailable, setUnavailable] = useState<
-    {
-      reason: string;
-      start_date: string;
-      end_date: string;
-    }[]
-  >(room.unavailable);
+  // const [discount, setDiscount] = useState<
+  //   {
+  //     name: string;
+  //     size: number;
+  //     start_date: string;
+  //     end_date: string;
+  //   }[]
+  // >(room.discount);
+  // const [unavailable, setUnavailable] = useState<
+  //   {
+  //     reason: string;
+  //     start_date: string;
+  //     end_date: string;
+  //   }[]
+  // >(room.unavailable);
   const [amenitiesCommon, setAmenitiesCommon] = useState<string[]>(
     room.amenities_common,
   );
@@ -64,8 +64,8 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
     room.amenities_bathroom,
   );
   const [amenitiesView, setAmenitiesView] = useState<string[]>(room.amenities_view);
-  const [praceMeal, setPraceMeal] = useState<number>(0);
-  const [praceDiscount, setPraceDiscount] = useState<number>(0);
+  // const [praceMeal, setPraceMeal] = useState<number>(0);
+  // const [praceDiscount, setPraceDiscount] = useState<number>(0);
 
   const handlePriceChange = (value: number) => {
     setPrice(value);
@@ -99,32 +99,32 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
     setQuantityRooms(value);
   };
 
-  const handleDiscountChange = (
-    value: {
-      name: string;
-      size: number;
-      start_date: string;
-      end_date: string;
-    }[],
-  ) => {
-    setDiscount(value);
-    setPraceDiscount(
-      price + praceMeal - (price * (discount[0] ? discount[0].size : 0)) / 100,
-    );
-  };
+  // const handleDiscountChange = (
+  //   value: {
+  //     name: string;
+  //     size: number;
+  //     start_date: string;
+  //     end_date: string;
+  //   }[],
+  // ) => {
+  //   setDiscount(value);
+  //   setPraceDiscount(
+  //     price + praceMeal - (price * (discount[0] ? discount[0].size : 0)) / 100,
+  //   );
+  // };
 
-  const handleUnavailableChange = (
-    value: [
-      {
-        id?: number;
-        reason: string;
-        start_date: string;
-        end_date: string;
-      },
-    ],
-  ) => {
-    setUnavailable(value);
-  };
+  // const handleUnavailableChange = (
+  //   value: [
+  //     {
+  //       id?: number;
+  //       reason: string;
+  //       start_date: string;
+  //       end_date: string;
+  //     },
+  //   ],
+  // ) => {
+  //   setUnavailable(value);
+  // };
 
   const handleAmenitiesCommonChange = (value: string[]) => {
     setAmenitiesCommon(value);
@@ -153,7 +153,10 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
     const _room = {
       category: room.category,
       price,
-      type_of_meals: typeOfMeals,
+      type_of_meals: [
+        { id: 1, name: 'Завтрак', price: 500 },
+        { id: 2, name: 'Полупансион', price: 1500 },
+      ],
       number_of_adults: numberOfAdults,
       number_of_children: numberOfChildren,
       single_bed: singleBed,
@@ -164,8 +167,20 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
       amenities_coffee: amenitiesCoffee,
       amenities_bathroom: amenitiesBathroom,
       amenities_view: amenitiesView,
-      discount,
-      unavailable,
+      rules: [{ name: 'Курение запрещено', option: true }],
+      dates: [
+        {
+          id: 1,
+          start_date: '2024-07-01',
+          end_date: '2024-07-10',
+          available_for_booking: true,
+          stock: true,
+          share_size: 0.2,
+          price: 42000,
+        },
+      ],
+      // discount,
+      // unavailable,
     };
 
     changeRoom({ body: _room, hotel_id: +hotelId, room_id: room.id });
@@ -173,53 +188,53 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
 
   useEffect(() => {
     if (!hotel) return;
-    switch (typeOfMeals) {
-      case 'Только завтрак':
-        setPraceMeal((hotel.type_of_meals_only_breakfast ?? 0) + price);
-        setPraceDiscount(
-          price +
-            (hotel.type_of_meals_only_breakfast ?? 0) -
-            (price * (discount[0] ? discount[0].size : 0)) / 100,
-        );
-        break;
-      case 'Полупансион':
-        setPraceMeal((hotel.type_of_meals_half_board ?? 0) + price);
-        setPraceDiscount(
-          price +
-            (hotel.type_of_meals_half_board ?? 0) -
-            (price * (discount[0] ? discount[0].size : 0)) / 100,
-        );
-        break;
-      case 'Полный пансион':
-        setPraceMeal((hotel.type_of_meals_full_board ?? 0) + price);
-        setPraceDiscount(
-          price +
-            (hotel.type_of_meals_full_board ?? 0) -
-            (price * (discount[0] ? discount[0].size : 0)) / 100,
-        );
-        break;
-      case 'Все включено':
-        setPraceMeal(+(hotel.type_of_meals_all_inclusive ?? 0) + price);
-        setPraceDiscount(
-          price +
-            (hotel.type_of_meals_all_inclusive ?? 0) -
-            (price * (discount[0] ? discount[0].size : 0)) / 100,
-        );
-        break;
-      case 'Ультра все включено':
-        setPraceMeal((hotel.type_of_meals_ultra_all_inclusive ?? 0) + price);
-        setPraceDiscount(
-          price +
-            (hotel.type_of_meals_ultra_all_inclusive ?? 0) -
-            (price * (discount[0] ? discount[0].size : 0)) / 100,
-        );
-        break;
-      default:
-        setPraceMeal(+price);
-        setPraceDiscount(
-          price - (price * (discount[0] ? discount[0].size : 0)) / 100,
-        );
-    }
+    // switch (typeOfMeals) {
+    //   case 'Только завтрак':
+    //     setPraceMeal((hotel.type_of_meals_only_breakfast ?? 0) + price);
+    //     setPraceDiscount(
+    //       price +
+    //         (hotel.type_of_meals_only_breakfast ?? 0) -
+    //         (price * (discount[0] ? discount[0].size : 0)) / 100,
+    //     );
+    //     break;
+    //   case 'Полупансион':
+    //     setPraceMeal((hotel.type_of_meals_half_board ?? 0) + price);
+    //     setPraceDiscount(
+    //       price +
+    //         (hotel.type_of_meals_half_board ?? 0) -
+    //         (price * (discount[0] ? discount[0].size : 0)) / 100,
+    //     );
+    //     break;
+    //   case 'Полный пансион':
+    //     setPraceMeal((hotel.type_of_meals_full_board ?? 0) + price);
+    //     setPraceDiscount(
+    //       price +
+    //         (hotel.type_of_meals_full_board ?? 0) -
+    //         (price * (discount[0] ? discount[0].size : 0)) / 100,
+    //     );
+    //     break;
+    //   case 'Все включено':
+    //     setPraceMeal(+(hotel.type_of_meals_all_inclusive ?? 0) + price);
+    //     setPraceDiscount(
+    //       price +
+    //         (hotel.type_of_meals_all_inclusive ?? 0) -
+    //         (price * (discount[0] ? discount[0].size : 0)) / 100,
+    //     );
+    //     break;
+    //   case 'Ультра все включено':
+    //     setPraceMeal((hotel.type_of_meals_ultra_all_inclusive ?? 0) + price);
+    //     setPraceDiscount(
+    //       price +
+    //         (hotel.type_of_meals_ultra_all_inclusive ?? 0) -
+    //         (price * (discount[0] ? discount[0].size : 0)) / 100,
+    //     );
+    //     break;
+    //   default:
+    //     setPraceMeal(+price);
+    //     setPraceDiscount(
+    //       price - (price * (discount[0] ? discount[0].size : 0)) / 100,
+    //     );
+    // }
   }, [typeOfMeals, price]);
 
   return (
@@ -245,13 +260,13 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
                   name='Цена'
                   title='Цена'
                   type='number'
-                  startValue={room.price}
+                  startValue={room.dates[0].price}
                   getValue={(val) => handlePriceChange(val as number)}
                 />
                 <div>
                   <Typography variant='l-bold'>Тип питания</Typography>
                   <Select
-                    startValue={room.type_of_meals}
+                    startValue={'Без питания'}
                     options={[
                       'Без питания',
                       'Только завтрак',
@@ -269,7 +284,7 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
                 <NamedInput
                   name='Цена c питанием'
                   title='Цена c питанием'
-                  startValue={praceMeal}
+                  // startValue={praceMeal}
                   type='number'
                   disabled
                 />
@@ -277,7 +292,7 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
                   name='Цена со скидкой'
                   title='Цена со скидкой'
                   disabled
-                  startValue={praceDiscount}
+                  // startValue={praceDiscount}
                 />
               </div>
 
@@ -320,15 +335,15 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
                 />
               </div>
 
-              <DiscountBlock
+              {/* <DiscountBlock
                 startData={room.discount}
                 getData={handleDiscountChange}
-              />
+              /> */}
 
-              <UnavailableBlock
+              {/* <UnavailableBlock
                 startData={room.unavailable}
                 getData={handleUnavailableChange}
-              />
+              /> */}
 
               <PhotosRoom idRoom={room.id} />
             </div>

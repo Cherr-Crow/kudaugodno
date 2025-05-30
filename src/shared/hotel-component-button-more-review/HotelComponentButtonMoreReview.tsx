@@ -9,6 +9,12 @@ interface HotelComponentButtonMoreReviewProps {
   hotel: IHotel;
 }
 
+const hotelReviews = [
+  { description: 'Отличный отель!' },
+  { description: 'Отличный отель!' },
+  { description: 'Отличный отель!' },
+];
+
 export function HotelComponentButtonMoreReview({
   hotel,
 }: HotelComponentButtonMoreReviewProps) {
@@ -18,7 +24,11 @@ export function HotelComponentButtonMoreReview({
     setShowAllReviews((prevState) => !prevState);
   };
 
-  if (!hotel.reviews || hotel.reviews.length === 0) {
+  // if (!hotel.reviews || hotel.reviews.length === 0) {
+  //   return null;
+  // }
+
+  if (!hotelReviews || hotelReviews.length === 0) {
     return null;
   }
 
@@ -30,9 +40,7 @@ export function HotelComponentButtonMoreReview({
           onClick={handleToggleReviews}
         >
           <Typography variant='m'>
-            {showAllReviews
-              ? 'Скрыть отзывы'
-              : `Еще ${hotel.reviews.length} отзывов`}
+            {showAllReviews ? 'Скрыть отзывы' : `Еще ${hotelReviews.length} отзывов`}
           </Typography>
         </button>
       </div>

@@ -9,11 +9,26 @@ interface HotelComponentReviewProps {
   showAllReviews: boolean;
 }
 
+const hotelReviews = [
+  {
+    id: 1,
+    userPhoto: 'url/photo',
+    username: 'username',
+    rating: 5,
+    date: '21.03.2021',
+    text: 'Отличный отель, рекомендую всем!',
+  },
+];
+
 export function HotelComponentReview({
   hotel,
   showAllReviews,
 }: HotelComponentReviewProps) {
-  if (!hotel || !hotel.reviews || hotel.reviews.length === 0) {
+  // if (!hotel || !hotel.reviews || hotel.reviews.length === 0) {
+  //   return null;
+  // }
+
+  if (!hotel || !hotelReviews || hotelReviews.length === 0) {
     return null;
   }
 
@@ -25,7 +40,7 @@ export function HotelComponentReview({
           : 'max-h-0 overflow-hidden'
       }`}
     >
-      {hotel.reviews.map((review) => (
+      {hotelReviews.map((review) => (
         <div key={review.id} className='mb-4 border-b pb-4'>
           <div className='mb-2 flex items-center gap-3'>
             <img
