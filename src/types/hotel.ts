@@ -1,7 +1,5 @@
 import { RoomType } from '@/types/room';
 
-import { ITour } from './tour-type';
-
 export type rulesType = {
   name: string;
   description: string;
@@ -14,14 +12,14 @@ export type photoType = {
   room?: number;
 };
 
-type reviewsType = {
-  id: number;
-  username: string;
-  userPhoto: string;
-  date: string;
-  rating: number;
-  text: string;
-};
+// type reviewsType = {
+//   id: number;
+//   username: string;
+//   userPhoto: string;
+//   date: string;
+//   rating: number;
+//   text: string;
+// };
 
 export type IHotel = {
   id: number;
@@ -43,21 +41,12 @@ export type IHotel = {
   amenities_in_the_room: string[];
   amenities_sports_and_recreation: string[];
   amenities_for_children: string[];
-  type_of_meals_ultra_all_inclusive: number | null;
-  type_of_meals_all_inclusive: number | null;
-  type_of_meals_full_board: number | null;
-  type_of_meals_half_board: number | null;
-  type_of_meals_only_breakfast: number | null;
   user_rating: number;
   type_of_rest: string;
   width: string;
   longitude: string;
   rules: rulesType[];
   is_active: boolean;
-  room_categories: string[];
   photo: photoType[];
   rooms: RoomType[];
-  reviews?: reviewsType[];
-  tourInfo?: ITour;
-  price?: number;
 };

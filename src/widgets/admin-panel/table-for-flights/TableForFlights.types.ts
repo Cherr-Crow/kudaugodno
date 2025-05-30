@@ -1,4 +1,4 @@
-import { IFlight } from '@/types/flight-type';
+import { IFlight } from '@/types/flight';
 
 type DivProps = React.ComponentPropsWithoutRef<'div'>;
 

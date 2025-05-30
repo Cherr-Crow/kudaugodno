@@ -162,9 +162,10 @@ export function TableForTours({ tours }: ITableForTours) {
               </td>
               <td className='pl-3 pt-3 text-left text-[12px] sm:text-[12px] md:text-base'>
                 <span className='font-bold'>
-                  {tour.flight_to.split(' ').slice(0, 2).join(' ')}
+                  {tour.flight_to.departure_date.split(' ').slice(0, 2).join(' ')}
                 </span>
-                {tour.flight_to.split(' ').slice(2).join(' ')} - {tour.flight_from}
+                {tour.flight_to.departure_date.split(' ').slice(2).join(' ')} -{' '}
+                {tour.flight_from.departure_date}
               </td>
               <td className='pl-3 pt-3 text-left text-[12px] sm:text-[12px] md:text-base'>
                 {`${formatDate(tour.start_date)} - ${formatDate(tour.end_date)}`}

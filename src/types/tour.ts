@@ -1,26 +1,27 @@
+import { IFlight } from './flight';
 import { IHotel } from './hotel';
+import { MealType, RoomType } from './room';
 
 export interface ITour {
   id: number;
-  hotel_id: number;
   start_date: string;
   end_date: string;
-  flight_to: string;
-  flight_from: string;
+  flight_to: IFlight;
+  flight_from: IFlight;
   departure_country: string;
   departure_city: string;
   arrival_country: string;
   arrival_city: string;
-  number_of_adults?: number;
-  number_of_children?: number;
   tour_operator: string | null;
-  hotel: IHotel;
-  room: string;
-  transfer: boolean;
+  hotel: Omit<IHotel, 'rooms'>;
+  // room: RoomType[];
+  rooms: RoomType[];
+  type_of_meals: MealType[];
   price: number;
+  transfer: boolean;
+  is_active: boolean;
   created_at: string;
   updated_at: string;
-  is_active: boolean;
 }
 
 // стандартный договор с подчёркиванием вместо персональных данных - загрузка документа

@@ -1,4 +1,4 @@
-import { ITour } from '@/types/tour-type';
+import { ITour } from '@/types/tour';
 
 type DivProps = React.ComponentPropsWithoutRef<'div'>;
 

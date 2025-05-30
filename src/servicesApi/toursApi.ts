@@ -1,20 +1,27 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { BASE_URL } from '@/temp/domen_nikita';
-import { ITour } from '@/types/tour-type';
+import { ITour } from '@/types/tour';
+
+interface IResponceListTours {
+  count: number;
+  next: null;
+  previous: null;
+  results: ITour[];
+}
 
 export const toursApi = createApi({
   reducerPath: 'toursApi',
   tagTypes: ['Tours'],
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (build) => ({
-    getTours: build.query<ITour[], { limit?: number; offset?: number }>({
+    getTours: build.query<IResponceListTours, { limit?: number; offset?: number }>({
       query: ({ limit, offset }) =>
         `tours/?${limit && 'limit=' + limit}${offset && '&offset=' + offset}`,
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }: { id: number }) => ({
+              ...result.results.map(({ id }: { id: number }) => ({
                 type: 'Tours' as const,
                 id,
               })),
@@ -22,44 +29,44 @@ export const toursApi = createApi({
             ]
           : [{ type: 'Tours', id: 'LIST' }],
     }),
-    getToursByHotel: build.query<
-      ITour[],
-      { hotelId: number; limit?: number; offset?: number }
-    >({
-      query: ({ hotelId, limit, offset }) => {
-        const params = new URLSearchParams();
-        params.set('hotel_id', hotelId.toString());
-        if (limit) params.set('limit', limit.toString());
-        if (offset) params.set('offset', offset.toString());
-        return `tours/?${params.toString()}`;
-      },
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: 'Tours' as const, id })),
-              { type: 'Tours', id: 'LIST' },
-            ]
-          : [{ type: 'Tours', id: 'LIST' }],
-    }),
-    getToursByHotels: build.query<
-      ITour[],
-      { hotelIds: number[]; limit?: number; offset?: number }
-    >({
-      query: ({ hotelIds, limit, offset }) => {
-        const params = new URLSearchParams();
-        params.set('hotel_ids', hotelIds.join(','));
-        if (limit) params.set('limit', limit.toString());
-        if (offset) params.set('offset', offset.toString());
-        return `tours/?${params.toString()}`;
-      },
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.map(({ id }) => ({ type: 'Tours' as const, id })),
-              { type: 'Tours', id: 'LIST' },
-            ]
-          : [{ type: 'Tours', id: 'LIST' }],
-    }),
+    // getToursByHotel: build.query<
+    //   ITour[],
+    //   { hotelId: number; limit?: number; offset?: number }
+    // >({
+    //   query: ({ hotelId, limit, offset }) => {
+    //     const params = new URLSearchParams();
+    //     params.set('hotel_id', hotelId.toString());
+    //     if (limit) params.set('limit', limit.toString());
+    //     if (offset) params.set('offset', offset.toString());
+    //     return `tours/?${params.toString()}`;
+    //   },
+    //   providesTags: (result) =>
+    //     result
+    //       ? [
+    //           ...result.map(({ id }) => ({ type: 'Tours' as const, id })),
+    //           { type: 'Tours', id: 'LIST' },
+    //         ]
+    //       : [{ type: 'Tours', id: 'LIST' }],
+    // }),
+    // getToursByHotels: build.query<
+    //   ITour[],
+    //   { hotelIds: number[]; limit?: number; offset?: number }
+    // >({
+    //   query: ({ hotelIds, limit, offset }) => {
+    //     const params = new URLSearchParams();
+    //     params.set('hotel_ids', hotelIds.join(','));
+    //     if (limit) params.set('limit', limit.toString());
+    //     if (offset) params.set('offset', offset.toString());
+    //     return `tours/?${params.toString()}`;
+    //   },
+    //   providesTags: (result) =>
+    //     result
+    //       ? [
+    //           ...result.map(({ id }) => ({ type: 'Tours' as const, id })),
+    //           { type: 'Tours', id: 'LIST' },
+    //         ]
+    //       : [{ type: 'Tours', id: 'LIST' }],
+    // }),
     addTour: build.mutation<ITour, Omit<ITour, 'id'>>({
       query: (body) => ({
         url: 'tours/',
@@ -121,8 +128,8 @@ export const toursApi = createApi({
 
 export const {
   useGetToursQuery,
-  useGetToursByHotelQuery,
-  useGetToursByHotelsQuery,
+  // useGetToursByHotelQuery,
+  // useGetToursByHotelsQuery,
   useAddTourMutation,
   useGetOneTourQuery,
   useChangeTourMutation,

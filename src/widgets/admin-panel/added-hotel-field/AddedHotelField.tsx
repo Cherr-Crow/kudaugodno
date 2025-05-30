@@ -81,21 +81,21 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
       ? data?.amenities_for_children
       : amenities_for_children,
   ); // удобства для детей
-  const [typeOfMealsUltraAllInclusive, setTypeOfMealsUltraAllInclusive] = useState(
-    data?.type_of_meals_ultra_all_inclusive || null,
-  ); // цена питания ультра
-  const [typeOfMealsAllInclusive, setTypeOfMealsAllInclusive] = useState(
-    data?.type_of_meals_all_inclusive || null,
-  ); // цена питания всё включено
-  const [typeOfMealsFullBoard, setTypeOfMealsFullBoard] = useState(
-    data?.type_of_meals_full_board || null,
-  ); // цена питания полный пансион
-  const [typeOfMealsHalfBoard, setTypeOfMealsHalfBoard] = useState(
-    data?.type_of_meals_half_board || null,
-  ); // цена питания полу пансион
-  const [typeOfMealsOnlyBreakfast, setTypeOfMealsOnlyBreakfast] = useState(
-    data?.type_of_meals_only_breakfast || null,
-  ); // цена питания только завтрак
+  // const [typeOfMealsUltraAllInclusive, setTypeOfMealsUltraAllInclusive] = useState(
+  //   data?.type_of_meals_ultra_all_inclusive || null,
+  // ); // цена питания ультра
+  // const [typeOfMealsAllInclusive, setTypeOfMealsAllInclusive] = useState(
+  //   data?.type_of_meals_all_inclusive || null,
+  // ); // цена питания всё включено
+  // const [typeOfMealsFullBoard, setTypeOfMealsFullBoard] = useState(
+  //   data?.type_of_meals_full_board || null,
+  // ); // цена питания полный пансион
+  // const [typeOfMealsHalfBoard, setTypeOfMealsHalfBoard] = useState(
+  //   data?.type_of_meals_half_board || null,
+  // ); // цена питания полу пансион
+  // const [typeOfMealsOnlyBreakfast, setTypeOfMealsOnlyBreakfast] = useState(
+  //   data?.type_of_meals_only_breakfast || null,
+  // ); // цена питания только завтрак
   const [typeOfRest, setTypeOfRest] = useState(data?.type_of_rest || ''); //
   const [rules, setRules] = useState(data?.rules || []); // тип отдыха
   const isActive = true; // активный или архивный
@@ -131,16 +131,16 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
       amenities_in_the_room: amenitiesInTheRoom,
       amenities_sports_and_recreation: amenitiesSportsAndRecreation,
       amenities_for_children: amenitiesForChildren,
-      type_of_meals_ultra_all_inclusive: typeOfMealsUltraAllInclusive,
-      type_of_meals_all_inclusive: typeOfMealsAllInclusive,
-      type_of_meals_full_board: typeOfMealsFullBoard,
-      type_of_meals_half_board: typeOfMealsHalfBoard,
-      type_of_meals_only_breakfast: typeOfMealsOnlyBreakfast,
+      // type_of_meals_ultra_all_inclusive: typeOfMealsUltraAllInclusive,
+      // type_of_meals_all_inclusive: typeOfMealsAllInclusive,
+      // type_of_meals_full_board: typeOfMealsFullBoard,
+      // type_of_meals_half_board: typeOfMealsHalfBoard,
+      // type_of_meals_only_breakfast: typeOfMealsOnlyBreakfast,
       user_rating: userRating,
       type_of_rest: typeOfRest,
       rules,
       is_active: isActive,
-      room_categories: ['Стандарт', 'Полулюкс', 'Люкс', 'Апартаменты', 'Студия'],
+      // room_categories: ['Стандарт', 'Полулюкс', 'Люкс', 'Апартаменты', 'Студия'],
       width: latitude,
       longitude: longitude,
     };
@@ -300,7 +300,7 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
           </div>
         </div>
       </Accordeon>
-      <Accordeon title='Питание'>
+      {/* <Accordeon title='Питание'>
         <div className='flex gap-2 p-5'>
           <NamedInput
             placeholder='цена за одного гостя'
@@ -333,7 +333,7 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
             title='ультра все включено'
           />
         </div>
-      </Accordeon>
+      </Accordeon> */}
       <Accordeon title='Регламент'>
         <div className='flex flex-col gap-2 p-5'>
           <div className='flex gap-2'>

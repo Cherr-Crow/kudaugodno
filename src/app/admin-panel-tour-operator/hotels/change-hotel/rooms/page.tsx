@@ -22,32 +22,31 @@ export default function Rooms() {
 
   useEffect(() => {
     if (!hotel || !roomsList) return;
-    hotel.room_categories.map((nameCategory: string) => {
+
+    // hotel.room_categories.map((nameCategory: string) => {
+    const categories = hotel.rooms.map((room) => room.category);
+    const uniqueCategories = Array.from(new Set(categories));
+
+    uniqueCategories.forEach((nameCategory) => {
+      const filtered = roomsList.results.filter(
+        (room) => room.category === nameCategory,
+      );
+
       switch (nameCategory) {
         case 'Стандарт':
-          setRoomsListOne(
-            roomsList.results.filter((room) => room.category === 'Стандарт'),
-          );
+          setRoomsListOne(filtered);
           break;
         case 'Полулюкс':
-          setRoomsListTwo(
-            roomsList.results.filter((room) => room.category === 'Полулюкс'),
-          );
+          setRoomsListTwo(filtered);
           break;
         case 'Люкс':
-          setRoomsListThird(
-            roomsList.results.filter((room) => room.category === 'Люкс'),
-          );
+          setRoomsListThird(filtered);
           break;
         case 'Апартаменты':
-          setRoomsListFourth(
-            roomsList.results.filter((room) => room.category === 'Апартаменты'),
-          );
+          setRoomsListFourth(filtered);
           break;
         case 'Студия':
-          setRoomsListTFifth(
-            roomsList.results.filter((room) => room.category === 'Студия'),
-          );
+          setRoomsListTFifth(filtered);
           break;
         default:
           return;

@@ -12,15 +12,19 @@ import { Typography } from '@/shared/ui/typography';
 import { TableForTours } from '@/widgets/admin-panel/table-for-tours';
 
 export default function ToursPage() {
-  const { data } = useGetToursQuery({});
   const router = useRouter();
+  const { data } = useGetToursQuery({});
+  const tours = data?.results;
+
   const handleAddTour = () => {
     router.push('/admin-panel-tour-operator/tours-page/added-tour');
   };
   const [search, setSearch] = useState('');
   const [showArchived, setShowArchived] = useState(false);
 
-  const filteredTours = (data ?? []).filter((tour) => {
+  console.log(data);
+
+  const filteredTours = (tours ?? []).filter((tour) => {
     const matchesSearch = search.trim()
       ? tour.id.toString().includes(search.toLowerCase()) ||
         (tour.hotel?.name.toLowerCase() || '').includes(search.toLowerCase()) ||

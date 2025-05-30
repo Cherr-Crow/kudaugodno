@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-import { useGetApplicationsQuery } from '@/servicesApi/applicationsApi';
+import { useGetTourApplicationsQuery } from '@/servicesApi/applicationsApi';
 import { useGetToursQuery } from '@/servicesApi/toursApi';
 import { FilterYear } from '@/shared/filter-year';
 import { ApplicationCard } from '@/shared/ui/application-card';
@@ -10,11 +10,14 @@ import { Typography } from '@/shared/ui/typography';
 
 export default function ApplicationsPage() {
   const [years] = useState<string[]>(['2025']);
-  const applicationsQuery = useGetApplicationsQuery({ limit: 10, offset: 0 });
+
+  const applicationsQuery = useGetTourApplicationsQuery({ limit: 10, offset: 0 });
   const { data, status } = useGetToursQuery({ limit: 10, offset: 0 });
+
   useEffect(() => {
     console.log(data);
   }, [status]);
+
   return (
     <div className='w-full'>
       <div className='flex flex-col'>
@@ -42,7 +45,7 @@ export default function ApplicationsPage() {
             <ApplicationCard
               key={i}
               application={item}
-              tour={data[0]}
+              tour={data.results[0]}
               status={status}
             ></ApplicationCard>
           ))}

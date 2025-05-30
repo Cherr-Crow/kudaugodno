@@ -11,6 +11,33 @@ import { YandexMap } from '@/widgets/ymap';
 
 import { IHotelBlockPhotosReview } from './HotelBlockPhotosReview.types';
 
+const hotelReviews = [
+  {
+    id: 1,
+    userPhoto: 'url/photo',
+    username: 'username',
+    rating: 5,
+    date: '21.03.2021',
+    text: 'Отличный отель, рекомендую всем!',
+  },
+  {
+    id: 1,
+    userPhoto: 'url/photo',
+    username: 'username',
+    rating: 5,
+    date: '21.03.2021',
+    text: 'Отличный отель, рекомендую всем!',
+  },
+  {
+    id: 1,
+    userPhoto: 'url/photo',
+    username: 'username',
+    rating: 5,
+    date: '21.03.2021',
+    text: 'Отличный отель, рекомендую всем!',
+  },
+];
+
 export function HotelBlockPhotosReview({ hotel }: IHotelBlockPhotosReview) {
   const hotels = [hotel];
 
@@ -349,7 +376,7 @@ export function HotelBlockPhotosReview({ hotel }: IHotelBlockPhotosReview) {
                       </div>
                     ))} */}
                   </div>
-                  {hotel.reviews && hotel.reviews.length > 1 && (
+                  {hotelReviews && hotelReviews.length > 1 && (
                     <div className='group mt-2 flex items-center justify-end gap-0.5'>
                       <button
                         className='flex items-center gap-1 text-blue-600'
@@ -358,7 +385,7 @@ export function HotelBlockPhotosReview({ hotel }: IHotelBlockPhotosReview) {
                         <Typography variant='s'>
                           {reviewStates[hotel.id]
                             ? 'Скрыть отзывы'
-                            : `Еще ${hotel.reviews.length - 1} отзывов`}
+                            : `Еще ${hotelReviews.length - 1} отзывов`}
                         </Typography>
                         <SvgSprite
                           name='arrow'

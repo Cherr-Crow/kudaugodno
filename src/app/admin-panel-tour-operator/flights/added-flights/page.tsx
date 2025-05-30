@@ -18,7 +18,7 @@ import { Select } from '@/shared/ui/select';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
 import { airports } from '@/temp/airports-mock';
-import { IFlight } from '@/types/flight-type';
+import { IFlight } from '@/types/flight';
 
 type IFlightForm = {
   flightNumber: string;
@@ -36,6 +36,9 @@ type IFlightForm = {
   priceForChild?: string;
   serviceClass: string;
   flightType: string;
+  arrivalCountry: string;
+  departureCountry: string;
+  description: string;
 };
 
 export default function AddedFlights() {
@@ -68,6 +71,9 @@ export default function AddedFlights() {
     priceForChild: undefined,
     serviceClass: 'Эконом',
     flightType: 'Регулярный',
+    departureCountry: '',
+    arrivalCountry: '',
+    description: '',
   });
 
   const updateFields = (updates: Partial<IFlightForm>) => {
@@ -96,7 +102,9 @@ export default function AddedFlights() {
     const _flight: Omit<IFlight, 'id'> = {
       flight_number: formData.flightNumber,
       airline: formData.airline,
+      departure_country: formData.departureCountry,
       departure_city: formData.departureCity,
+      arrival_country: formData.arrivalCountry,
       arrival_city: formData.arrivalCity,
       departure_airport: formData.departureAirport,
       arrival_airport: formData.arrivalAirport,
@@ -108,7 +116,7 @@ export default function AddedFlights() {
       price_for_child: formData.priceForChild,
       service_class: formData.serviceClass,
       flight_type: formData.flightType || 'Регулярный',
-      description: 'string',
+      description: formData.description || '',
     };
 
     try {
@@ -177,6 +185,9 @@ export default function AddedFlights() {
       serviceClass: data.service_class,
       flightType: data.flight_type,
       shortDescription: '',
+      arrivalCountry: 'Египет',
+      departureCountry: 'Нидерланды',
+      description: 'Просто небольшое рыбное описание',
     });
   }, [data]);
 

@@ -21,8 +21,8 @@ export default function AddTourPage() {
   const { data: HotelData } = useGetHotelsQuery({});
   // console.log(HotelData?.results.map((i) => i.city));
   // const [addHotel, setAddHotel] = useState(false);
-  const [startDate, setStartDate] = useState<string>('12.12.2024');
-  const [endDate, setEndDate] = useState<string>('12.12.2024');
+  const [startDate, setStartDate] = useState<string>('12-12-2024');
+  const [endDate, setEndDate] = useState<string>('12-12-2024');
   // const [flightTo, setFlightTo] = useState<string>('Москва');
   // const [flightFrom, setFlightFrom] = useState<string>('Египет');
   const [departureCountry, setDepartureCountry] = useState<string>('Россия');
@@ -90,7 +90,7 @@ export default function AddTourPage() {
   };
 
   const flightOptions =
-    FlightData?.map((flight) => {
+    FlightData?.results.map((flight) => {
       const {
         departure_time,
         arrival_time,

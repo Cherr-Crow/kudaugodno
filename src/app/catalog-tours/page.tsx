@@ -5,7 +5,11 @@ import { useGetHotelsQuery } from '@/servicesApi/hotelsApi';
 import { HotelCatalog } from '@/widgets/hotel-catalog';
 
 export default function CatalogTours() {
-  const { data, error, isLoading } = useGetHotelsQuery({ limit: 10, offset: 0 });
+  const {
+    data: hotels,
+    error,
+    isLoading,
+  } = useGetHotelsQuery({ limit: 10, offset: 0 });
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -16,7 +20,7 @@ export default function CatalogTours() {
     return <div className='pt-[40px] text-center text-[32px]'>Загрузка...!!!</div>;
   }
 
-  if (error || !data?.results) {
+  if (error || !hotels?.results) {
     return (
       <div className='text-red-600 pt-[40px] text-center text-[32px]'>
         Ошибка загрузки
@@ -25,6 +29,8 @@ export default function CatalogTours() {
   }
 
   return (
-    <div>{isClient && <HotelCatalog hotels={data.results} initialTab='Туры' />}</div>
+    <div>
+      {isClient && <HotelCatalog hotels={hotels.results} initialTab='Туры' />}
+    </div>
   );
 }
