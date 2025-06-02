@@ -51,14 +51,14 @@ export function TabBar({
               color={`${active === tab ? 'black' : 'white'}`}
               width={20}
               height={20}
-              className='relative z-10'
+              className='z-5 relative'
             />
           )}
 
           {/* Текст */}
           <Typography
             variant='m-bold'
-            className={`${svgTab ? 'ml-2' : ''} relative z-10`}
+            className={`${svgTab ? 'ml-2' : ''} z-5 relative`}
           >
             {tab}
           </Typography>
