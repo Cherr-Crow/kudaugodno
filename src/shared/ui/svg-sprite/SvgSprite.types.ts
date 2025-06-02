@@ -92,7 +92,8 @@ export type NameSvg =
   | 'burger-menu'
   | 'guest-adult'
   | 'guest-child'
-  | 'single-bed';
+  | 'single-bed'
+  | 'edit-image';
 
 // при добавлении нового типа svg, переносите его и в svgNameList для отображения в ПК плз.
 
@@ -181,4 +182,5 @@ export const svgNameList = [
   'guest-adult',
   'guest-child',
   'single-bed',
+  'edit-image',
 ];

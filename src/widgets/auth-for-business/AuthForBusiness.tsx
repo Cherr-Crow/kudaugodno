@@ -61,6 +61,7 @@ export function AuthForBusiness({}: IAuthForBusiness) {
 
   function validateName(name: string) {
     console.log(name);
+
     const regex = /^[a-zA-Zа-яА-ЯёЁ\s'-]+$/;
     if (!regex.test(name)) {
       return false;
@@ -140,7 +141,8 @@ export function AuthForBusiness({}: IAuthForBusiness) {
       lastName !== '' &&
       isEmailValid &&
       email !== '' &&
-      phone.length == 18
+      phone.length == 18 &&
+      role !== ''
     ) {
       const data = {
         role: role,
@@ -281,9 +283,10 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   placeholder='Отель Ромашка/Туроператор РомашкаАвиа'
                   onBlur={() => {
                     setIsHotelNameValid(validateName(hotelName));
+                    setHotelName((prev) => prev.trim());
                   }}
                   onChange={(e) => {
-                    setHotelName(e.target.value.trim());
+                    setHotelName(e.target.value);
                   }}
                   value={hotelName}
                 />
@@ -305,9 +308,10 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   placeholder='Иван'
                   onBlur={() => {
                     setIsNameValid(validateName(name));
+                    setName((prev) => prev.trim());
                   }}
                   onChange={(e) => {
-                    setName(e.target.value.trim());
+                    setName(e.target.value);
                   }}
                   value={name}
                 />
@@ -329,9 +333,10 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   placeholder='Иванов'
                   onBlur={() => {
                     setIsLastNameValid(validateName(lastName));
+                    setLastName((prev) => prev.trim());
                   }}
                   onChange={(e) => {
-                    setLastName(e.target.value.trim());
+                    setLastName(e.target.value);
                   }}
                   value={lastName}
                 />
@@ -353,6 +358,7 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   placeholder='example@gmail.com'
                   onBlur={() => {
                     emailValid(email);
+                    setEmail((prev) => prev.trim());
                   }}
                   onChange={(e) => {
                     setEmail(e.target.value);

@@ -17,6 +17,7 @@ import { useGetUserDataQuery } from '@/servicesApi/userApi';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
+import { isoToDateFormat } from '@/shared/utils/isoToDateFormat';
 
 // Размер загружаемой фотографии 1MB
 const MAX_FILE_SIZE = 1 * 1024 * 1024;
@@ -75,7 +76,23 @@ const FormSchema = z.object({
     )
     .refine((it) => it.length > 2, { message: 'Фамилия слишком короткая' })
     .refine((it) => it.length < 20, { message: 'Фамилия слишком длинная' }),
-  birthDate: z.string().optional(),
+  birthDate: z.preprocess(
+    (val) => (typeof val === 'string' && val.trim() === '' ? undefined : val),
+    z
+      .string()
+      .regex(/^\d{2}\.\d{2}\.\d{4}$/, {
+        message: 'Формат даты должен быть ДД.ММ.ГГГГ',
+      })
+      .refine(
+        (val) => {
+          const [dd, mm, yyyy] = val.split('.');
+          const inputDate = new Date(`${yyyy}-${mm}-${dd}`);
+          return inputDate <= new Date();
+        },
+        { message: 'Выберите корректную дату рождения' },
+      )
+      .optional(),
+  ),
   email: z
     .string()
     .refine((it) => it.length != 0, { message: 'Введите Email' })
@@ -126,37 +143,80 @@ const FormSchema = z.object({
 type FormData = z.infer<typeof FormSchema>;
 
 export function PersonalData() {
-  // Текст для инпута с датой рождения
   const router = useRouter();
   const userId = useSelector(selectUserId);
-  const [birthDateText, setbirthDateText] = useState<string>('');
 
-  const { data: user } = useGetUserDataQuery(undefined, { skip: !userId });
+  const [previewAvatar, setPreviewAvatar] = useState<string | null>(null);
+  const [birthDateValue, setBirthDateValue] = useState<string>('');
+
+  const { data: user, refetch } = useGetUserDataQuery(undefined, { skip: !userId });
   const { data: users } = useGetAllUsersDataQuery(undefined, { skip: !userId });
   const [changeTouristProfile] = useUpdateUserMutation();
   const [deleteTouristProfile] = useDeleteUserMutation();
 
-  // Форма
+  const formDataToChangeRequest = (isChangeImage: boolean = false) => {
+    let data;
+
+    if (isChangeImage === true) {
+      data = {
+        first_name: user?.first_name,
+        last_name: user?.last_name,
+        phone_number: user?.phone_number,
+        email: user?.email,
+      };
+    } else {
+      const values = getValues();
+      data = {
+        first_name: values.firstName ? values.firstName : user?.first_name,
+        last_name: values.lastName ? values.lastName : user?.last_name,
+        phone_number: values.phone ? values.phone : user?.phone_number,
+        email: values.email ? values.email : user?.email,
+      };
+    }
+
+    const formData = new FormData();
+
+    for (const [key, value] of Object.entries(data)) {
+      if (value !== undefined) {
+        formData.append(key, value);
+      }
+    }
+
+    return formData;
+  };
+
   const {
     register,
-    setFocus,
     setValue,
     getValues,
+    handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      firstName: user?.first_name,
+      lastName: user?.last_name,
+      email: user?.email,
+      phone: user?.phone_number,
+      birthDate: user?.birth_date?.split('-').reverse().join('.'),
+    },
   });
 
-  // DIV, на фоне которого будет отображаться загруженное фото пользователя
-  const containerImg = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (user) {
+      reset({
+        firstName: user.first_name || '',
+        lastName: user.last_name || '',
+        email: user.email || '',
+        phone: user.phone_number || '',
+        birthDate: user.birth_date?.split('-').reverse().join('.') || '',
+      });
+    }
+  }, [user, reset]);
 
   // INPUT для загрузки фото пользователя
   const inputImg = useRef<HTMLInputElement>(null);
-
-  // Фокус на инпут
-  useEffect(() => {
-    setFocus('firstName');
-  }, []);
 
   useEffect(() => {
     if (user) {
@@ -170,49 +230,69 @@ export function PersonalData() {
     }
   }, [users]);
 
-  // Функция для обработки загруженного пользовательского фото для предварительного показа
   function previewFile(event: React.ChangeEvent<HTMLInputElement>) {
-    if (event.target.files) {
-      const avatar = event.target.files[0];
-      setValue('image', avatar);
-    }
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-    const preview = containerImg.current;
-    const file = inputImg.current?.files?.[0];
+    setValue('image', file);
+
     const reader = new FileReader();
+    reader.onload = async () => {
+      if (typeof reader.result === 'string') {
+        setPreviewAvatar(reader.result);
 
-    reader.onload = () => {
-      if (typeof reader.result === 'string' && preview) {
-        preview.style.backgroundImage = `url(${reader.result as string})`;
-        preview.style.backgroundPosition = 'center';
-        preview.style.backgroundSize = 'cover';
-        preview.style.backgroundRepeat = 'no-repeat';
+        const formData = formDataToChangeRequest(true);
+        formData.append('avatar', file);
+
+        try {
+          await changeTouristProfile(formData).unwrap();
+          refetch();
+        } catch {}
       }
     };
 
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    reader.readAsDataURL(file);
   }
 
   const handleChangeProfile = async () => {
+    const serverBirthDate = user?.birth_date || null;
+    const clientBirthDateRaw = getValues().birthDate || null;
+    const clientBirthDate = clientBirthDateRaw
+      ? clientBirthDateRaw.split('.').reverse().join('-')
+      : null;
+
     const values = getValues();
     console.log(values);
+
+    const isDataChanged =
+      (values.firstName && values.firstName !== user?.first_name) ||
+      (values.lastName && values.lastName !== user?.last_name) ||
+      (values.phone && values.phone !== user?.phone_number) ||
+      (values.email && values.email !== user?.email) ||
+      clientBirthDate !== serverBirthDate;
+
+    if (!isDataChanged) {
+      console.log('Данные не изменились. Запрос не отправляется.');
+      return;
+    }
+
     const data = {
       first_name: values.firstName ? values.firstName : user?.first_name,
       last_name: values.lastName ? values.lastName : user?.last_name,
       phone_number: values.phone ? values.phone : user?.phone_number,
       email: values.email ? values.email : user?.email,
-      avatar: values.image ? values.image : user?.avatar,
-      birth_date: values.birthDate ? values.birthDate : user?.birth_date,
     };
 
-    const formData = new FormData();
+    const formData = formDataToChangeRequest();
 
     for (const [key, value] of Object.entries(data)) {
       if (value !== undefined) {
         formData.append(key, value);
       }
+    }
+
+    if (clientBirthDate !== serverBirthDate) {
+      formData.append('birth_date', clientBirthDate ?? '');
     }
 
     for (const [key, value] of formData.entries()) {
@@ -231,11 +311,24 @@ export function PersonalData() {
     } catch {}
   };
 
-  if (!user) {
-    return (
-      <div className='text-gray-500 py-10 text-center'>Загрузка профиля...</div>
-    );
-  }
+  const handleChangeBirthdate = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    isFromCalendar: boolean,
+  ) => {
+    const date: string = e.target.value;
+    console.log(date, date.length);
+    if (isFromCalendar) {
+      // YYYY-MM-DD от календаря
+      setBirthDateValue(date);
+      setValue('birthDate', isoToDateFormat(date));
+    } else {
+      // Ручной ввод в ДД.ММ.ГГГГ
+      setValue('birthDate', date);
+      if (/^\d{2}\.\d{2}\.\d{4}$/.test(date)) {
+        setBirthDateValue(date.split('.').reverse().join('-'));
+      }
+    }
+  };
 
   return (
     <section className='relative overflow-hidden pb-24 pt-11 md:static md:pb-36 md:pt-8 xl:pb-20 xl:pt-12'>
@@ -247,174 +340,211 @@ export function PersonalData() {
         >
           Личные данные
         </Typography>
-        <form className='relative flex flex-col items-center rounded-2xl bg-white px-4 py-10 shadow-xl md:p-5 xl:px-48 xl:py-10'>
-          <div className='mb-5 flex w-full flex-col md:flex-row md:items-center md:justify-between'>
-            <div
-              ref={containerImg}
-              className='mb-5 ml-auto mr-auto flex h-44 w-44 cursor-pointer items-center justify-center rounded-full bg-[#C5DAFF] md:m-0 md:h-56 md:w-56'
-              style={{
-                backgroundImage: user?.avatar ? `url('${user.avatar}')` : undefined,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-              }}
-            >
-              <label htmlFor='image'>
-                <input
-                  {...register('image')}
-                  onChange={(e) => {
-                    previewFile(e);
+        <form
+          className='relative flex flex-col items-center rounded-2xl bg-white px-4 py-10 shadow-xl md:p-5 xl:px-48 xl:py-10'
+          onSubmit={handleSubmit(handleChangeProfile)}
+        >
+          {!user ? (
+            <div className='text-gray-500 py-10 text-center text-xl lg:min-h-[588px]'>
+              Загрузка профиля...
+            </div>
+          ) : (
+            <>
+              <div className='mb-5 flex w-full flex-col md:flex-row md:items-center md:justify-between'>
+                <label
+                  htmlFor='image'
+                  className='group relative mb-5 ml-auto mr-auto flex h-44 w-44 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-[#C5DAFF] md:m-0 md:h-56 md:w-56'
+                  style={{
+                    backgroundImage: previewAvatar
+                      ? `url('${previewAvatar}')`
+                      : user?.avatar
+                        ? `url('${user.avatar}')`
+                        : undefined,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
                   }}
-                  ref={inputImg}
-                  type='file'
-                  id='image'
-                  className='hidden'
-                  accept='image/*'
-                  multiple={false}
-                />
-                <SvgSprite name='add-image' className='cursor-pointer' />
-              </label>
-            </div>
-            {errors.image && (
-              <Typography variant='s' className='mx-auto text-red-primary-800'>
-                {errors.image.message}
-              </Typography>
-            )}
-            <div className='flex flex-col gap-5 md:w-[65.53%]'>
-              <label htmlFor='firstName' className='flex flex-col gap-1'>
-                <Typography className='text-xl font-medium leading-8'>
-                  Имя*
-                </Typography>
-                <input
-                  {...register('firstName')}
-                  id='firstName'
-                  className='border-neutral-500/[1] w-full rounded-lg border p-3 text-base font-normal leading-6'
-                  type='text'
-                  placeholder={`${user ? user.first_name : 'Иван'}`}
-                />
-                {errors.firstName && (
-                  <Typography variant='s' className='text-red-primary-800'>
-                    {errors.firstName.message}
-                  </Typography>
-                )}
-              </label>
-              <label htmlFor='lastName' className='flex flex-col gap-1'>
-                <Typography className='text-xl font-medium leading-8'>
-                  Фамилия*
-                </Typography>
-                <input
-                  {...register('lastName')}
-                  id='lastName'
-                  className='border-neutral-500/[1] w-full rounded-lg border p-3 text-base font-normal leading-6'
-                  type='text'
-                  placeholder={`${user ? user.last_name : 'Иванов'}`}
-                />
-                {errors.lastName && (
-                  <Typography variant='s' className='text-red-primary-800'>
-                    {errors.lastName.message}
-                  </Typography>
-                )}
-              </label>
-              <label htmlFor='birthDate' className='flex flex-col gap-1'>
-                <Typography className='text-xl font-medium leading-8'>
-                  Дата рождения
-                </Typography>
-                <div className='relative'>
-                  <Typography className='text-neutral-500/[1] absolute left-[0.75rem] top-1/2 -translate-y-1/2 text-base font-normal leading-6'>
-                    {user
-                      ? user.birth_date?.split('-').reverse().join('.')
-                      : birthDateText
-                        ? birthDateText
-                        : '01.08.1990'}
-                  </Typography>
-                  <input
-                    {...register('birthDate')}
-                    onChange={(e) =>
-                      setbirthDateText(e.target.value.split('-').reverse().join('.'))
-                    }
-                    id='birthDate'
-                    className='border-neutral-500/[1] w-full rounded-lg border p-3'
-                    type='date'
-                  />
-                </div>
-              </label>
-            </div>
-          </div>
-          <div className='mb-6 flex w-full flex-col gap-5'>
-            <Typography
-              variant='subtitle4'
-              className='font-medium leading-[1.88rem]'
-            >
-              Контакты
-            </Typography>
-            <div className='flex flex-col gap-5 md:flex-row'>
-              <label htmlFor='email' className='flex flex-col gap-1 md:w-[50%]'>
-                <Typography className='text-xl font-medium leading-8'>
-                  Email*
-                </Typography>
-                <input
-                  {...register('email')}
-                  id='email'
-                  className='border-neutral-500/[1] w-full rounded-lg border p-3 text-base font-normal leading-6'
-                  type='text'
-                  placeholder={`${user ? user.email : 'example@gmail.com'}`}
-                />
-                {errors.email && (
-                  <Typography variant='s' className='text-red-primary-800'>
-                    {errors.email.message}
-                  </Typography>
-                )}
-              </label>
-              <label htmlFor='phone' className='flex flex-col gap-1 md:w-[50%]'>
-                <Typography className='text-xl font-medium leading-8'>
-                  Телефон*
-                </Typography>
-                <input
-                  {...register('phone')}
-                  id='phone'
-                  className='border-neutral-500/[1] w-full rounded-lg border p-3 text-base font-normal leading-6'
-                  type='text'
-                  placeholder={`${user ? `${user.phone_number}` : '+7(***)*******'}`}
-                  autoComplete='off'
-                />
-                {errors.phone && (
-                  <Typography variant='s' className='text-red-primary-800'>
-                    {errors.phone.message}
-                  </Typography>
-                )}
-              </label>
-            </div>
-          </div>
-          <div className='w-full text-center md:flex md:flex-row-reverse md:justify-between'>
-            <ButtonCustom
-              className='mb-4 w-full md:max-w-[9.50rem] md:px-7 md:py-3 xl:px-7 xl:py-5'
-              variant='primary'
-              size='s'
-              type='button'
-              onClick={handleChangeProfile}
-            >
-              Сохранить
-            </ButtonCustom>
-            <button
-              className='text-[#E94C4C] transition hover:text-red-primary-800 focus:text-red-primary-800 focus-visible:text-red-primary-800 active:text-red-primary-400'
-              onClick={handleDeleteProfile}
-              type='button'
-            >
-              <Typography
-                variant='s-bold'
-                className='text-lg font-normal lg:text-xl'
-              >
-                Удалить профиль
-              </Typography>
-            </button>
-          </div>
+                >
+                  <div className='absolute inset-0 z-0 rounded-full transition duration-500 ease-in-out group-hover:bg-white group-hover:opacity-40 group-hover:backdrop-blur-[1px]' />
 
-          <div className='hidden md:absolute md:-bottom-28 md:right-[28%] md:block xl:hidden'>
-            <SvgSprite name='frog-on-chair' />
-          </div>
-          <div className='hidden xl:absolute xl:-bottom-[5.50rem] xl:-left-[3.38rem] xl:block'>
-            <SvgSprite name='frog-on-suitcase' />
-          </div>
+                  <input
+                    {...register('image')}
+                    onChange={(e) => previewFile(e)}
+                    ref={inputImg}
+                    type='file'
+                    id='image'
+                    className='hidden'
+                    accept='image/*'
+                    multiple={false}
+                  />
+
+                  <div className='relative z-10'>
+                    {user?.avatar || previewAvatar ? (
+                      <SvgSprite
+                        name='edit-image'
+                        width={40}
+                        height={40}
+                        className='cursor-pointer'
+                      />
+                    ) : (
+                      <SvgSprite
+                        name='add-image'
+                        width={40}
+                        height={40}
+                        className='cursor-pointer'
+                      />
+                    )}
+                  </div>
+                </label>
+                {errors.image && (
+                  <Typography variant='s' className='mx-auto text-red-primary-800'>
+                    {errors.image.message}
+                  </Typography>
+                )}
+                <div className='flex flex-col gap-5 md:w-[65.53%]'>
+                  <label htmlFor='firstName' className='flex flex-col gap-1'>
+                    <Typography className='text-xl font-medium leading-8'>
+                      Имя*
+                    </Typography>
+                    <input
+                      {...register('firstName')}
+                      id='firstName'
+                      className='w-full rounded-lg border border-grey-700 p-3 text-base font-normal leading-6 text-grey-950 transition hover:border-blue-600 focus:border-blue-600 focus:outline-none focus-visible:border-blue-600 focus-visible:outline-none active:border-blue-600'
+                      type='text'
+                      placeholder='Введите имя'
+                    />
+                    {errors.firstName && (
+                      <Typography variant='s' className='text-red-primary-800'>
+                        {errors.firstName.message}
+                      </Typography>
+                    )}
+                  </label>
+
+                  <label htmlFor='lastName' className='flex flex-col gap-1'>
+                    <Typography className='text-xl font-medium leading-8'>
+                      Фамилия*
+                    </Typography>
+                    <input
+                      {...register('lastName')}
+                      id='lastName'
+                      className='w-full rounded-lg border border-grey-700 p-3 text-base font-normal leading-6 text-grey-950 transition hover:border-blue-600 focus:border-blue-600 focus:outline-none focus-visible:border-blue-600 focus-visible:outline-none active:border-blue-600'
+                      type='text'
+                      placeholder='Введите фамилию'
+                    />
+                    {errors.lastName && (
+                      <Typography variant='s' className='text-red-primary-800'>
+                        {errors.lastName.message}
+                      </Typography>
+                    )}
+                  </label>
+
+                  <label htmlFor='birthDateText' className='flex flex-col gap-1'>
+                    <Typography className='text-xl font-medium leading-8'>
+                      Дата рождения
+                    </Typography>
+                    <div className='relative min-h-[50px] rounded-lg border border-grey-700 text-grey-950 transition focus-within:border-blue-600 hover:border-blue-600 focus:border-blue-600 active:border-blue-600'>
+                      <input
+                        onChange={(e) => handleChangeBirthdate(e, true)}
+                        id='birthDate'
+                        className='absolute right-[1px] top-0 z-10 max-h-[48px] max-w-[50px] cursor-pointer rounded-lg p-3 text-base focus:outline-none'
+                        type='date'
+                        value={birthDateValue}
+                      />
+                      <input
+                        {...register('birthDate')}
+                        onChange={(e) => handleChangeBirthdate(e, false)}
+                        id='birthDateText'
+                        className='absolute bottom-0 left-0 right-[35px] top-0 w-full rounded-lg p-3 text-base focus:outline-none'
+                        type='text'
+                        maxLength={10}
+                        placeholder='ДД.ММ.ГГГГ'
+                      />
+                    </div>
+                    {errors.birthDate && (
+                      <Typography variant='s' className='text-red-primary-800'>
+                        {errors.birthDate.message}
+                      </Typography>
+                    )}
+                  </label>
+                </div>
+              </div>
+              <div className='mb-6 flex w-full flex-col gap-5'>
+                <Typography
+                  variant='subtitle4'
+                  className='font-medium leading-[1.88rem]'
+                >
+                  Контакты
+                </Typography>
+                <div className='flex flex-col gap-5 md:flex-row'>
+                  <label htmlFor='email' className='flex flex-col gap-1 md:w-[50%]'>
+                    <Typography className='text-xl font-medium leading-8'>
+                      Email*
+                    </Typography>
+                    <input
+                      {...register('email')}
+                      id='email'
+                      className='w-full rounded-lg border border-grey-700 p-3 text-base font-normal leading-6 text-grey-950 transition hover:border-blue-600 focus:border-blue-600 focus:outline-none focus-visible:border-blue-600 focus-visible:outline-none active:border-blue-600'
+                      type='text'
+                      placeholder='Введите email'
+                    />
+                    {errors.email && (
+                      <Typography variant='s' className='text-red-primary-800'>
+                        {errors.email.message}
+                      </Typography>
+                    )}
+                  </label>
+                  <label htmlFor='phone' className='flex flex-col gap-1 md:w-[50%]'>
+                    <Typography className='text-xl font-medium leading-8'>
+                      Телефон*
+                    </Typography>
+                    <input
+                      {...register('phone')}
+                      id='phone'
+                      className='w-full rounded-lg border border-grey-700 p-3 text-base font-normal leading-6 text-grey-950 transition hover:border-blue-600 focus:border-blue-600 focus:outline-none focus-visible:border-blue-600 focus-visible:outline-none active:border-blue-600'
+                      type='text'
+                      placeholder='Введите телефон'
+                      autoComplete='off'
+                    />
+                    {errors.phone && (
+                      <Typography variant='s' className='text-red-primary-800'>
+                        {errors.phone.message}
+                      </Typography>
+                    )}
+                  </label>
+                </div>
+              </div>
+              <div className='w-full text-center md:flex md:flex-row-reverse md:justify-between'>
+                <ButtonCustom
+                  className='mb-4 w-full md:max-w-[9.50rem] md:px-7 md:py-3 xl:px-7 xl:py-5'
+                  variant='primary'
+                  size='s'
+                  type='submit'
+                  // onClick={handleChangeProfile}
+                >
+                  Сохранить
+                </ButtonCustom>
+                <button
+                  className='text-[#E94C4C] transition hover:text-red-primary-800 focus:text-red-primary-800 focus-visible:text-red-primary-800 active:text-red-primary-400'
+                  onClick={handleDeleteProfile}
+                  type='button'
+                >
+                  <Typography
+                    variant='s-bold'
+                    className='text-lg font-normal lg:text-xl'
+                  >
+                    Удалить профиль
+                  </Typography>
+                </button>
+              </div>
+
+              <div className='hidden md:absolute md:-bottom-28 md:right-[28%] md:block xl:hidden'>
+                <SvgSprite name='frog-on-chair' />
+              </div>
+              <div className='hidden xl:absolute xl:-bottom-[5.50rem] xl:-left-[3.38rem] xl:block'>
+                <SvgSprite name='frog-on-suitcase' />
+              </div>
+            </>
+          )}
         </form>
       </div>
     </section>
