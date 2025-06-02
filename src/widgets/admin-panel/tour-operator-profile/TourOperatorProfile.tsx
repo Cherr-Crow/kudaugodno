@@ -2,8 +2,9 @@
 import { useEffect, useState, useRef } from 'react';
 
 import { useRouter } from 'next/navigation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { AppDispatch } from '@/rtk/store';
 import { selectUserId } from '@/rtk/userSlice';
 import { useLogoutMutation } from '@/servicesApi/authApi';
 import {
@@ -12,6 +13,7 @@ import {
   useGetUserDataQuery,
   useUpdateUserMutation,
 } from '@/servicesApi/userApi';
+import { userApi } from '@/servicesApi/userApi';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
@@ -24,94 +26,127 @@ function isCompany(user: ITourist | ICompany): user is ICompany {
 export function TourOperatorProfile() {
   const userId = useSelector(selectUserId);
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [isMenuVisible, setIsVisible] = useState<boolean>(false);
   const [companyName, setCompanyName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
-  const [avatar, setAvatar] = useState<FileList | null>(null);
+  const [previewAvatar, setPreviewAvatar] = useState<string | null>(null);
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
-  const [emailPlaceholder, setEmailPlaceholder] = useState('example@gmail.com');
-  const [bgStyle, setBgStyle] = useState<React.CSSProperties>({});
-
-  const containerImg = useRef<HTMLDivElement>(null);
   const inputImg = useRef<HTMLInputElement>(null);
 
-  const { data: user } = useGetUserDataQuery(undefined, { skip: !userId });
+  const { data: user, refetch } = useGetUserDataQuery(undefined, { skip: !userId });
   const { data: users } = useGetAllUsersDataQuery(undefined, { skip: !userId });
   ({ users });
   const [changeCompanyData] = useUpdateUserMutation();
   const [logout] = useLogoutMutation();
   const [deleteCompanyProfile] = useDeleteUserMutation();
 
-  const handleEditProfile = async () => {
-    setIsVisible(false);
+  const getCompanyName = (): string | undefined => {
+    if (user && isCompany(user) && user.company_name) return user.company_name;
+    return undefined;
+  };
 
-    let companyNameFromUser;
+  const formDataToChangeRequest = (isChangeImage: boolean = false) => {
+    const companyNameFromUser = getCompanyName();
 
-    if (
-      user &&
-      isCompany(user) &&
-      user.company_name &&
-      (user.role === 'TOUR_OPERATOR' || user.role === 'HOTELIER')
-    ) {
-      companyNameFromUser = user.company_name;
-    }
-
-    const data = {
-      first_name: user?.first_name,
-      last_name: user?.last_name,
-      phone_number: phone ? phone : user?.phone_number,
-      email: email ? email : user?.email,
-      company_name: companyName ? companyName : companyNameFromUser,
-      // avatar: avatar ? avatar[0] : user?.avatar,
-    };
+    const data = isChangeImage
+      ? {
+          first_name: user?.first_name,
+          last_name: user?.last_name,
+          phone_number: user?.phone_number,
+          email: user?.email,
+          company_name: companyNameFromUser,
+        }
+      : {
+          first_name: user?.first_name,
+          last_name: user?.last_name,
+          phone_number: phone ? phone : user?.phone_number,
+          email: email ? email : user?.email,
+          company_name: companyName ? companyName : companyNameFromUser,
+        };
 
     const formData = new FormData();
 
-    if (avatar) {
-      formData.append('avatar', avatar[0]);
-    }
-
     for (const [key, value] of Object.entries(data)) {
-      if (value !== undefined && value !== null) {
-        formData.append(key, value as string | Blob);
+      if (value !== undefined) {
+        formData.append(key, value);
       }
     }
 
-    if (user?.id) {
-      try {
-        await changeCompanyData(formData).unwrap();
-      } catch {}
+    return formData;
+  };
+
+  const fillUserFields = () => {
+    if (!user || !isCompany(user)) return;
+    setCompanyName(user.company_name || '');
+    setEmail(user.email || '');
+    setPhone(user.phone_number || '');
+  };
+
+  const exitEditMode = () => {
+    setIsVisible(false);
+    setIsEditMode(false);
+  };
+
+  const handleEditProfile = async () => {
+    const isDataChanged =
+      (user &&
+        companyName &&
+        isCompany(user) &&
+        companyName !== user?.company_name) ||
+      (phone && phone !== user?.phone_number) ||
+      (email && email !== user?.email);
+
+    if (!isDataChanged) {
+      console.log('Данные не изменились. Запрос не отправляется.');
+      exitEditMode();
+      return;
     }
+
+    const formData = formDataToChangeRequest();
+
+    try {
+      const updatedData = await changeCompanyData(formData).unwrap();
+      // код ниже явно обновляет кэш юзера, чтобы мы заполнили value уже новыми измененными данными, а не подставляли закэшированные
+      dispatch(
+        userApi.util.updateQueryData('getUserData', undefined, (draft) => {
+          Object.assign(draft, updatedData);
+        }),
+      );
+    } catch {}
+    exitEditMode();
   };
 
   const handleDeleteCompany = async () => {
-    if (user?.id) {
-      try {
-        await deleteCompanyProfile().unwrap();
-        router.push('/auth-page');
-      } catch {}
-    }
+    try {
+      await deleteCompanyProfile().unwrap();
+      router.push('/auth-page');
+    } catch {}
   };
 
-  function previewFile() {
-    const preview = containerImg.current;
-    const file = inputImg.current?.files?.[0];
-    const reader = new FileReader();
+  function previewFile(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-    reader.onload = () => {
-      if (typeof reader.result === 'string' && preview) {
-        preview.style.backgroundImage = `url(${reader.result as string})`;
-        preview.style.backgroundPosition = 'center';
-        preview.style.backgroundSize = 'cover';
-        preview.style.backgroundRepeat = 'no-repeat';
+    const reader = new FileReader();
+    reader.onload = async () => {
+      if (typeof reader.result === 'string') {
+        setPreviewAvatar(reader.result);
+
+        const formData = formDataToChangeRequest(true);
+        formData.append('avatar', file);
+
+        try {
+          await changeCompanyData(formData).unwrap();
+          refetch();
+        } catch {}
       }
     };
 
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    reader.readAsDataURL(file);
   }
 
   const handleLogout = async () => {
@@ -122,17 +157,7 @@ export function TourOperatorProfile() {
   };
 
   useEffect(() => {
-    if (user?.email) {
-      setEmailPlaceholder(user.email);
-    }
-    if (user?.avatar) {
-      setBgStyle({
-        backgroundImage: `url('${user.avatar}')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      });
-    }
+    fillUserFields();
   }, [user]);
 
   if (!user) {
@@ -171,12 +196,34 @@ export function TourOperatorProfile() {
           </button>
           {isMenuVisible && (
             <div className='z-1 absolute right-0 top-11 flex flex-col rounded-[20px] border-2 border-grey-50 bg-white shadow-lg md:top-[3.75rem]'>
-              <button
-                className='rounded-[20px] px-4 py-2 text-left hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
-                onClick={handleEditProfile}
-              >
-                Редактировать
-              </button>
+              {isEditMode ? (
+                <>
+                  <button
+                    className='rounded-[20px] px-4 py-2 text-left hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
+                    onClick={handleEditProfile}
+                  >
+                    Сохранить
+                  </button>
+                  <button
+                    className='rounded-[20px] px-4 py-2 text-left hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
+                    onClick={() => {
+                      exitEditMode(), fillUserFields();
+                    }}
+                  >
+                    Отменить изменения
+                  </button>
+                </>
+              ) : (
+                <button
+                  className='rounded-[20px] px-4 py-2 text-left hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
+                  onClick={() => {
+                    setIsEditMode(true), setIsVisible(false);
+                  }}
+                >
+                  Редактировать
+                </button>
+              )}
+
               <button
                 className='rounded-[20px] px-4 py-2 text-left text-red-primary-800 hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
                 onClick={handleLogout}
@@ -197,27 +244,50 @@ export function TourOperatorProfile() {
           className='flex flex-col md:flex-row md:justify-between'
           action='PUT'
         >
-          <div
-            ref={containerImg}
-            className='mb-5 ml-auto mr-auto flex h-44 w-44 cursor-pointer items-center justify-center rounded-full bg-[#C5DAFF] md:m-0 md:h-[140px] md:w-[140px]'
-            style={bgStyle}
+          <label
+            htmlFor='image'
+            className='group relative mb-5 ml-auto mr-auto flex h-[180px] w-[180px] cursor-pointer items-center justify-center overflow-hidden rounded-full bg-[#C5DAFF] md:m-0 md:h-[140px] md:w-[140px] lg:h-[180px] lg:w-[180px] lg:gap-10'
+            style={{
+              backgroundImage: previewAvatar
+                ? `url('${previewAvatar}')`
+                : user?.avatar
+                  ? `url('${user.avatar}')`
+                  : undefined,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+            }}
           >
-            <label htmlFor='image'>
-              <input
-                onChange={(e) => {
-                  previewFile();
-                  setAvatar(e.target.files);
-                }}
-                ref={inputImg}
-                type='file'
-                id='image'
-                className='hidden'
-                accept='image/*'
-                multiple={false}
-              />
-              <SvgSprite name='add-image' className='cursor-pointer' />
-            </label>
-          </div>
+            <div className='absolute inset-0 z-0 rounded-full transition duration-500 ease-in-out group-hover:bg-white group-hover:opacity-40 group-hover:backdrop-blur-[1px]' />
+
+            <input
+              onChange={(e) => previewFile(e)}
+              ref={inputImg}
+              type='file'
+              id='image'
+              className='hidden'
+              accept='image/*'
+              multiple={false}
+            />
+
+            <div className='relative z-10'>
+              {user?.avatar || previewAvatar ? (
+                <SvgSprite
+                  name='edit-image'
+                  width={40}
+                  height={40}
+                  className='cursor-pointer'
+                />
+              ) : (
+                <SvgSprite
+                  name='add-image'
+                  width={40}
+                  height={40}
+                  className='cursor-pointer'
+                />
+              )}
+            </div>
+          </label>
           <div className='w-full md:w-[70%] lg:w-[80%]'>
             <div className='mb-4 w-full'>
               <label
@@ -228,16 +298,18 @@ export function TourOperatorProfile() {
               </label>
               <input
                 id='tour-operator-name'
-                className='transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none md:pt-3'
+                className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out md:pt-3 ${isEditMode ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
                 onChange={(e) => {
                   setCompanyName(e.target.value);
                 }}
+                value={companyName}
+                disabled={!isEditMode}
                 type='text'
                 name='name'
-                placeholder={`${user && isCompany(user) ? user.company_name : 'Название туроператора'}`}
+                placeholder='Название туроператора'
               />
             </div>
-            <div className='mb-4 w-full'>
+            {/* <div className='mb-4 w-full'>
               <label
                 className='mb-2 inline-block text-[20px] font-medium md:mb-1'
                 htmlFor='address'
@@ -251,7 +323,7 @@ export function TourOperatorProfile() {
                 name='address'
                 placeholder='Введите адрес туроператора'
               />
-            </div>
+            </div> */}
             <div className='mb-4 w-full'>
               <label
                 className='mb-2 block text-[20px] font-medium md:mb-1'
@@ -261,13 +333,15 @@ export function TourOperatorProfile() {
               </label>
               <input
                 id='tour-operator-email'
-                className='transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none md:pt-3'
+                className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out md:pt-3 ${isEditMode ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
                 onChange={(e) => {
                   setEmail(e.target.value);
                 }}
+                value={email}
+                disabled={!isEditMode}
                 type='email'
                 name='email'
-                placeholder={emailPlaceholder}
+                placeholder='Введите почту'
               />
             </div>
             <div className='mb-4 w-full'>
@@ -279,13 +353,15 @@ export function TourOperatorProfile() {
               </label>
               <input
                 id='tour-operator-phone'
-                className='transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none md:pt-3'
+                className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out md:pt-3 ${isEditMode ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
                 onChange={(e) => {
                   setPhone(e.target.value);
                 }}
+                value={phone}
+                disabled={!isEditMode}
                 type='phone'
                 name='phone'
-                placeholder={`${user ? user.phone_number : '+7(9**)*******'}`}
+                placeholder='Введите номер в формате +7(9**)*******'
               />
             </div>
           </div>
