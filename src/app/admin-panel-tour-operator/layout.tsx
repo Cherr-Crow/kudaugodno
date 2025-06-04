@@ -32,9 +32,9 @@ export default function AdminPanelTourOperatorLayout({
     <Suspense>
       <section className='grid h-full'>
         <TourOperatorPanelTitle />
-        <div className='container flex h-full gap-5 py-10'>
+        <div className='container flex h-full items-start gap-5 py-10'>
           {openDashboard && (
-            <div className='hidden h-full md:flex'>
+            <div className='hidden md:flex'>
               <AdminPanelDashboard />
             </div>
           )}
