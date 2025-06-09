@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { InputMask, Mask } from '@react-input/mask';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
@@ -21,7 +22,7 @@ import { isoToDateFormat } from '@/shared/utils/isoToDateFormat';
 
 // Размер загружаемой фотографии 1MB
 const MAX_FILE_SIZE = 1 * 1024 * 1024;
-
+const phoneRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
 // Схема ZOD типизации и валидации для формы
 const FormSchema = z.object({
   image: z
@@ -111,38 +112,23 @@ const FormSchema = z.object({
     }),
   phone: z
     .string()
-    .refine((it) => it.length != 0, { message: 'Введите номер телефона' })
-    .refine(
-      (it) => {
-        for (let i = 0; i < it.length; i++) {
-          if (it[i] == ' ') return false;
-        }
-
-        return true;
-      },
-      { message: 'Номер не должен содержать пробелы' },
-    )
-    .refine((it) => it[0] == '+', {
-      message: 'Номер телефона должен начинаться с +7',
-    })
-    .refine((it) => it[1] == '7', {
-      message: 'Номер телефона должен начинаться с +7',
-    })
-    .refine(
-      (it) => {
-        const regexPattern = /^[0-9+]+$/;
-
-        return regexPattern.test(it);
-      },
-      { message: 'Телефон должен содержать только цифры и начинаться с +7' },
-    )
-    .refine((it) => it.length < 13, { message: 'Некорректный номер' }),
+    .trim()
+    .nonempty({ message: 'Введите номер телефона' })
+    .startsWith('+7', { message: 'Номер телефона должен начинаться с +7' })
+    .regex(phoneRegex, {
+      message: 'Номер должен быть в формате +7 (999) 999-99-99',
+    }),
 });
 
 // Тип формы исходя из схемы ZOD
 type FormData = z.infer<typeof FormSchema>;
 
 export function PersonalData() {
+  const mask = new Mask({
+    mask: '+_ (___) ___-__-__',
+    replacement: { _: /\d/ },
+  });
+
   const router = useRouter();
   const userId = useSelector(selectUserId);
 
@@ -209,7 +195,7 @@ export function PersonalData() {
         firstName: user.first_name || '',
         lastName: user.last_name || '',
         email: user.email || '',
-        phone: user.phone_number || '',
+        phone: mask.format(user.phone_number) || '',
         birthDate: user.birth_date?.split('-').reverse().join('.') || '',
       });
     }
@@ -497,7 +483,9 @@ export function PersonalData() {
                     <Typography className='text-xl font-medium leading-8'>
                       Телефон*
                     </Typography>
-                    <input
+                    <InputMask
+                      mask='+7 (___) ___-__-__'
+                      replacement={{ _: /\d/ }}
                       {...register('phone')}
                       id='phone'
                       className='w-full rounded-lg border border-grey-700 p-3 text-base font-normal leading-6 text-grey-950 transition hover:border-blue-600 focus:border-blue-600 focus:outline-none focus-visible:border-blue-600 focus-visible:outline-none active:border-blue-600'

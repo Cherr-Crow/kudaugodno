@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { InputMask } from '@react-input/mask';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
@@ -120,28 +121,6 @@ export function RegisterForTourist() {
     router.back();
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-
-    const cleaned = input.replace(/\D/g, '');
-
-    let formatted = '';
-    if (cleaned.length > 0) {
-      formatted = `+7 (${cleaned.substring(1, 4)}`;
-    }
-    if (cleaned.length >= 4) {
-      formatted += `) ${cleaned.substring(4, 7)}`;
-    }
-    if (cleaned.length >= 7) {
-      formatted += `-${cleaned.substring(7, 9)}`;
-    }
-    if (cleaned.length >= 9) {
-      formatted += `-${cleaned.substring(9, 11)}`;
-    }
-
-    setValue('phone', formatted);
-  };
-
   const handleChangeBirthdate = (
     e: React.ChangeEvent<HTMLInputElement>,
     isFromCalendar: boolean,
@@ -203,10 +182,11 @@ export function RegisterForTourist() {
                 <label className='mb-1' htmlFor='phone'>
                   <Typography variant='l-bold'>Телефон</Typography>
                 </label>
-                <input
+                <InputMask
+                  mask='+7 (___) ___-__-__'
+                  replacement={{ _: /\d/ }}
                   {...register('phone')}
                   className='transition-border w-full rounded-lg border border-grey-700 bg-transparent px-3 py-2 hover:border-blue-600 focus:border-blue-600 focus:outline-none'
-                  onChange={handleInputChange}
                   id='phone'
                   type='phone'
                   placeholder='+7 (999) 678-22-22'

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
+import { InputMask } from '@react-input/mask';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
@@ -200,7 +201,9 @@ export function Header({ className }: IHeader) {
                         Оставьте ваш телефон и мы перезвоним в удобное вам время
                       </Typography>
 
-                      <input
+                      <InputMask
+                        mask='+7 (___) ___-__-__'
+                        replacement={{ _: /\d/ }}
                         type='tel'
                         placeholder='+7 (900) 000-00-00'
                         className='mb-2 rounded-lg border border-grey-300 px-3 py-3 text-sm'
@@ -810,8 +813,9 @@ export function Header({ className }: IHeader) {
                               время
                             </Typography>
 
-                            <input
-                              type='tel'
+                            <InputMask
+                              mask='+7 (___) ___-__-__'
+                              replacement={{ _: /\d/ }}
                               placeholder='+7 (900) 000-00-00'
                               className='mb-2 rounded-lg border border-grey-300 px-3 py-3 text-sm'
                             />
