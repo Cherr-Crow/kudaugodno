@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
 
+import { InputMask, Mask } from '@react-input/mask';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -24,6 +25,10 @@ function isCompany(user: ITourist | ICompany): user is ICompany {
 }
 
 export function TourOperatorProfile() {
+  const mask = new Mask({
+    mask: '+_ (___) ___-__-__',
+    replacement: { _: /\d/ },
+  });
   const userId = useSelector(selectUserId);
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
@@ -83,7 +88,7 @@ export function TourOperatorProfile() {
     if (!user || !isCompany(user)) return;
     setCompanyName(user.company_name || '');
     setEmail(user.email || '');
-    setPhone(user.phone_number || '');
+    setPhone(mask.format(user.phone_number) || '');
   };
 
   const exitEditMode = () => {
@@ -351,7 +356,9 @@ export function TourOperatorProfile() {
               >
                 Телефон
               </label>
-              <input
+              <InputMask
+                mask='+7 (___) ___-__-__'
+                replacement={{ _: /\d/ }}
                 id='tour-operator-phone'
                 className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out md:pt-3 ${isEditMode ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
                 onChange={(e) => {
@@ -420,7 +427,9 @@ export function TourOperatorProfile() {
           >
             Телефон
           </label>
-          <input
+          <InputMask
+            mask='+7 (___) ___-__-__'
+            replacement={{ _: /\d/ }}
             id='tour-operator-user-phone'
             className='transition-border mb-3 w-full rounded-[10px] border border-grey-700 px-3 py-3 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none'
             type='phone'

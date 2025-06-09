@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
+import { InputMask } from '@react-input/mask';
 import Link from 'next/link';
 
 import { useCreateNewCompanyMutation } from '@/servicesApi/userApi';
@@ -370,7 +371,9 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                 <Typography className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'>
                   Телефон
                 </Typography>
-                <input
+                <InputMask
+                  mask='+7 (___) ___-__-__'
+                  replacement={{ _: /\d/ }}
                   id='tel'
                   className='h-[55px] w-full rounded-[8px] px-[15px] md:h-[47px] md:border md:border-grey-950 md:bg-transparent'
                   type='tel'

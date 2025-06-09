@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
+import { InputMask } from '@react-input/mask';
 import { redirect, useSearchParams } from 'next/navigation';
 
 import { FilterYear } from '@/shared/filter-year';
@@ -80,7 +81,9 @@ export default function EditApplication() {
           >
             Телефон
           </label>
-          <input
+          <InputMask
+            mask='+7 (___) ___-__-__'
+            replacement={{ _: /\d/ }}
             id='tour-operator-phone'
             className='transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none md:pt-3'
             type='phone'
