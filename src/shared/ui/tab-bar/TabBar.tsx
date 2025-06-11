@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
@@ -34,7 +34,7 @@ export function TabBar({
       {tabs.map((tab, index) => (
         <li
           key={nanoid()}
-          className={`relative flex cursor-pointer items-center rounded-full px-4 py-1 md:px-10 md:py-4 ${active === tab ? 'text-black' : 'text-white'} transition-all duration-300 ease-in-out`}
+          className='text-black relative flex cursor-pointer items-center rounded-full px-4 py-1 pr-5 transition-all duration-300 ease-in-out md:px-10 md:py-4 md:pr-[41px]'
           onClick={() => handleTabClick(tab)}
         >
           {/* Псевдоэлемент для фона */}
