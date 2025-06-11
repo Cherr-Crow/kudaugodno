@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
@@ -44,7 +44,6 @@ export default function Dates() {
 
   return (
     <div className=''>
-      <Typography variant='h4'>Даты тура</Typography>
       <ul className='my-6 flex gap-3'>
         {years.map((el) => (
           <li

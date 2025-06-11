@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
@@ -9,7 +9,7 @@ import { Typography } from '@/shared/ui/typography';
 
 import { ITourOperatorPanelTitle } from './TourOperatorPanelTitle.types';
 
-const tabsHotelAdded = ['Отель', 'Номера', 'Даты'];
+const tabsHotelAdded = ['Отель', 'Питание', 'Номера', 'Даты'];
 
 export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
   const patch = usePathname();
@@ -53,7 +53,6 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
   }, [patch]);
 
   const handleTabName = (tabName: string) => {
-    console.log(id);
     if (!id) return;
 
     switch (tabName) {
@@ -66,7 +65,12 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
         );
         break;
       case 'Даты':
-        // router.push('/admin-panel-tour-operator/hotels/change-hotel/dates');
+        router.push(
+          `/admin-panel-tour-operator/hotels/change-hotel/dates/?id=${id}`,
+        );
+        break;
+      case 'Питание':
+        // router.push(`/admin-panel-tour-operator/hotels/change-hotel/food/?id=${id}`);
         break;
       default:
         break;
