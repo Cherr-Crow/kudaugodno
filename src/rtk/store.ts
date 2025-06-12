@@ -6,6 +6,7 @@ import { flightsApi } from '@/servicesApi/flightsApi';
 import { hotelsApi } from '@/servicesApi/hotelsApi';
 import { insurancesApi } from '@/servicesApi/insurancesApi';
 import { roomsApi } from '@/servicesApi/roomsApi';
+import { subscribeApi } from '@/servicesApi/subscribeApi';
 import { toursApi } from '@/servicesApi/toursApi';
 import { userApi } from '@/servicesApi/userApi';
 
@@ -13,6 +14,7 @@ import { userSlice } from './userSlice';
 
 export const store = configureStore({
   reducer: {
+    [subscribeApi.reducerPath]: subscribeApi.reducer,
     [userSlice.reducerPath]: userSlice.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
@@ -25,6 +27,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware().concat(
+      subscribeApi.middleware,
       userApi.middleware,
       authApi.middleware,
       hotelsApi.middleware,
