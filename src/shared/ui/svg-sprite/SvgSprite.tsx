@@ -20,7 +20,7 @@ export function SvgSprite({
       onClick={onClick}
       color={color}
     >
-      <use href={`sprite.svg#${name}`} />
+      <use href={`/sprite.svg#${name}`} />
     </svg>
   );
 }
