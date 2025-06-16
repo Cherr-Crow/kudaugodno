@@ -77,7 +77,8 @@ input[type='date'] {
 }
 
 input[type='date']::-webkit-calendar-picker-indicator {
-  opacity: 0.3;
+  display: none;
+  appearance: none;
 }
 
 input[type='date']::-webkit-datetime-edit {

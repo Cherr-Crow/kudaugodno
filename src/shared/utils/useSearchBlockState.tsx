@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useSearchParams } from 'next/navigation';
+
+import { getNumericValue } from './getNumericValue';
 type SearchBlockDefaults = {
   defaultType?: string;
   defaultDepartureCity?: string;
@@ -11,7 +13,6 @@ type SearchBlockDefaults = {
   defaultArrivalCountry?: string;
   defaultHotelName?: string;
   defaultCheckInDate?: string;
-  defaultCheckOutDate?: string;
   defaultNights?: string;
   defaultGuests?: string;
 };
@@ -35,11 +36,6 @@ const formatNumberWithSuffix = (num: string, type: 'guests' | 'nights') => {
   return num; // Возвращаем оригинальное значение, если не найдено
 };
 
-const getNumericValue = (str: string): string | null => {
-  const match = str.match(/\d+/);
-  return match ? match[0] : null;
-};
-
 export const useSearchBlockState = ({
   defaultType = '',
   defaultDepartureCity = '',
@@ -47,7 +43,6 @@ export const useSearchBlockState = ({
   defaultArrivalCountry = '',
   defaultHotelName = '',
   defaultCheckInDate = '',
-  defaultCheckOutDate = '',
   defaultNights = 'Количество ночей',
   defaultGuests = 'Количество гостей',
 }: SearchBlockDefaults = {}) => {
@@ -59,7 +54,6 @@ export const useSearchBlockState = ({
   const [arrivalCountry, setArrivalCountry] = useState(defaultArrivalCountry);
   const [hotelName, setHotelName] = useState(defaultHotelName);
   const [checkInDate, setCheckInDate] = useState(defaultCheckInDate);
-  const [checkOutDate, setCheckOutDate] = useState(defaultCheckOutDate);
   const [nights, setNights] = useState(defaultNights);
   const [guests, setGuests] = useState(defaultGuests);
 
@@ -73,7 +67,6 @@ export const useSearchBlockState = ({
       setArrivalCountry(searchParams.get('arrivalCountry') || defaultArrivalCountry);
       setHotelName(searchParams.get('hotelName') || defaultHotelName);
       setCheckInDate(searchParams.get('checkInDate') || defaultCheckInDate);
-      setCheckOutDate(searchParams.get('checkOutDate') || defaultCheckOutDate);
       setNights(
         formatNumberWithSuffix(
           searchParams.get('nights') || defaultNights,
@@ -100,7 +93,6 @@ export const useSearchBlockState = ({
     if (arrivalCountry) params.set('arrivalCountry', arrivalCountry);
     if (hotelName) params.set('hotelName', hotelName);
     if (checkInDate) params.set('checkInDate', checkInDate);
-    if (checkOutDate) params.set('checkOutDate', checkOutDate);
 
     const nightsNumber = getNumericValue(nights);
     if (nightsNumber) params.set('nights', nightsNumber);
@@ -120,7 +112,6 @@ export const useSearchBlockState = ({
     arrivalCountry,
     hotelName,
     checkInDate,
-    checkOutDate,
     nights,
     guests,
     setHotelName,
@@ -128,7 +119,6 @@ export const useSearchBlockState = ({
     setWhere,
     setArrivalCountry,
     setCheckInDate,
-    setCheckOutDate,
     setNights,
     setGuests,
     updateUrlParams,

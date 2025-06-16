@@ -18,6 +18,7 @@ import { FilterTypeOfMeals } from '@/shared/filter-type-of-meals';
 import { HotelComponentMap } from '@/shared/hotel-component-map';
 import { HotelComponentPhotoSlider } from '@/shared/hotel-component-photo-slider';
 import { Rating } from '@/shared/rating';
+import { BackgroundOverlay } from '@/shared/ui/background-overlay';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SearchBlock } from '@/shared/ui/search-block';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
@@ -92,9 +93,16 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
 
   const [tab, setTab] = useState<'Туры' | 'Отели'>(initialTab);
 
-  // Load data to filter from URL
+  const [isClient, setIsClient] = useState(false);
 
   const searchParams = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Load data to filter from URL
 
   // Инициализация компонента стейтов для SearchTour
   const searchState = useSearchBlockState({
@@ -102,19 +110,7 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
     defaultNights: '7 ночей',
     defaultGuests: '2 гостя',
   });
-  const { updateUrlParams, ...searchProps } = searchState;
-
-  // Обновление URL
-  useEffect(() => {
-    updateUrlParams(router);
-  }, [
-    searchProps.departureCity,
-    searchProps.where,
-    searchProps.checkInDate,
-    searchProps.checkOutDate,
-    searchProps.nights,
-    searchProps.guests,
-  ]);
+  const { ...searchProps } = searchState;
 
   useEffect(() => {
     const selectedCitiesParam = searchParams.get('where');
@@ -459,13 +455,6 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
     /* Роутинг*/
   }
 
-  const [isClient, setIsClient] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
   const handleRouting = (
     hotelId: number,
     hotelName: string,
@@ -497,15 +486,21 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
   }
 
   return (
-    <div className='hotel-catalog-page container flex flex-col justify-center'>
+    <div className='hotel-catalog-page relative flex flex-col justify-center'>
       <div
-        className={`mb-[10px] flex w-full rounded-bl-[20px] rounded-br-[20px] bg-blue-600 p-10 md:h-[90%] md:rounded-bl-[100px] md:rounded-br-[100px]`}
+        className={`relative flex w-full px-10 pb-4 pt-4 md:mb-[30px] md:px-[80px] md:pb-[74px] md:pt-[80px] lg:pb-[48px] lg:pt-[48px]`}
       >
-        {searchProps.isInitialized && (
-          <SearchBlock tab={tab} setTab={setTab} {...searchProps} />
-        )}
+        <BackgroundOverlay
+          className={`h-[100%] bg-[url('/plain.svg')] bg-contain bg-[position:60px_40px] bg-no-repeat`}
+        />
+        <SearchBlock
+          className='gap-4 md:gap-3'
+          tab={tab}
+          setTab={setTab}
+          {...searchProps}
+        />
       </div>
-      <div className='flex w-full flex-col md:flex-row'>
+      <div className='container flex w-full flex-col md:flex-row'>
         <aside
           className={`w-full p-4 md:w-1/4 ${filtersVisible ? 'block' : 'hidden'} lg:block`}
         >
