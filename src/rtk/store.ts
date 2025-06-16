@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { applicationsApi } from '@/servicesApi/applicationsApi';
 import { authApi } from '@/servicesApi/authApi';
+import { discountsApi } from '@/servicesApi/discountApi';
 import { flightsApi } from '@/servicesApi/flightsApi';
 import { hotelsApi } from '@/servicesApi/hotelsApi';
 import { insurancesApi } from '@/servicesApi/insurancesApi';
@@ -14,6 +15,7 @@ import { userSlice } from './userSlice';
 
 export const store = configureStore({
   reducer: {
+    [discountsApi.reducerPath]: discountsApi.reducer,
     [subscribeApi.reducerPath]: subscribeApi.reducer,
     [userSlice.reducerPath]: userSlice.reducer,
     [userApi.reducerPath]: userApi.reducer,
@@ -27,6 +29,7 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware().concat(
+      discountsApi.middleware,
       subscribeApi.middleware,
       userApi.middleware,
       authApi.middleware,
