@@ -14,6 +14,7 @@ import { Accordeon } from '@/shared/ui/accordeon';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
 import { Select } from '@/shared/ui/select';
+import { useToast } from '@/shared/ui/toast/toastService';
 import { Typography } from '@/shared/ui/typography';
 import { IHotel } from '@/types/hotel';
 import {
@@ -36,6 +37,7 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
   const [changeHotel, { data: cangeValueHotel, isError }] = useChangeHotelMutation();
   const route = useRouter();
   const path = usePathname();
+  const { showToast } = useToast();
 
   const [name, setName] = useState(data?.name || ''); // название отеля
   const [starCategory, setStarCategory] = useState(data?.star_category || 0); // количество звёзд
@@ -144,8 +146,12 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
       width: latitude,
       longitude: longitude,
     };
-
-    changeHotel({ body: _obj, id: hotelId });
+    try {
+      changeHotel({ body: _obj, id: hotelId });
+      showToast('Данные успешно сохранены', 'success');
+    } catch {
+      showToast('Ошибка сервера', 'error');
+    }
   };
 
   useEffect(() => {

@@ -16,6 +16,7 @@ import { NamedInput } from '@/shared/ui/named-input';
 import { InputDateForSearchBlock } from '@/shared/ui/search-block/input-date-for-search-block';
 import { Select } from '@/shared/ui/select';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { useToast } from '@/shared/ui/toast/toastService';
 import { Typography } from '@/shared/ui/typography';
 import { airports } from '@/temp/airports-mock';
 import { IFlight } from '@/types/flight';
@@ -44,6 +45,7 @@ type IFlightForm = {
 export default function AddedFlights() {
   const router = useRouter();
   const idFlight = useSearchParams().get('id');
+  const { showToast } = useToast();
 
   const [trigger, { data }] = useLazyGetOneFlightQuery();
   const [changeFlight] = useChangeFlightMutation();
@@ -122,12 +124,15 @@ export default function AddedFlights() {
     try {
       if (!idFlight) {
         await addFlight(_flight).unwrap();
+        showToast('Данные успешно сохранены', 'success');
       } else {
         await changeFlight({ body: _flight, id: +idFlight }).unwrap();
+        showToast('Данные успешно сохранены', 'success');
       }
       setSuccessModal(true);
     } catch (error) {
       console.error(error);
+      showToast('Ошибка сервера', 'error');
     }
   };
 

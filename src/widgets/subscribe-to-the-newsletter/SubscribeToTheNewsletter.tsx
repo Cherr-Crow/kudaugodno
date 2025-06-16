@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 
 import { useSendMailingMutation } from '@/servicesApi/subscribeApi';
 import { ButtonCustom } from '@/shared/ui/button-custom/ButtonCustom';
+import { useToast } from '@/shared/ui/toast/toastService';
 import { Typography } from '@/shared/ui/typography';
 
 import { ISubscribeToTheNewsletter } from './SubscribeToTheNewsletter.types';
@@ -11,10 +12,10 @@ import { ISubscribeToTheNewsletter } from './SubscribeToTheNewsletter.types';
 export function SubscribeToTheNewsletter({}: ISubscribeToTheNewsletter) {
   const [email, setEmail] = useState<string>('');
   const [isEmailValid, setIsEmailValid] = useState<boolean>(true);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [sendMailing, { isLoading }] = useSendMailingMutation();
+
+  const { showToast } = useToast();
 
   function emailValid(email: string) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -22,17 +23,14 @@ export function SubscribeToTheNewsletter({}: ISubscribeToTheNewsletter) {
   }
 
   const handleClick = async () => {
-    setSuccessMessage(null);
-    setErrorMessage(null);
     emailValid(email);
-
     if (isEmailValid && email !== '') {
       try {
         await sendMailing({ email, mailing: true }).unwrap();
-        setSuccessMessage('Вы успешно подписались!');
+        showToast('Спасибо за подписку!', 'success');
         setEmail('');
-      } catch {
-        setErrorMessage('Упс! Что-то пошло не так...');
+      } catch (error) {
+        console.error(error);
       }
     }
   };
@@ -50,6 +48,7 @@ export function SubscribeToTheNewsletter({}: ISubscribeToTheNewsletter) {
           >
             Новостная рассылка
           </Typography>
+
           <Typography className='mb-6 block font-normal text-white md:mb-8 md:text-[32px] md:font-thin md:leading-tight md:text-blue-200 lg:mb-8 lg:pr-[0px] lg:text-[32px]'>
             Подпишитесь, чтобы первыми узнавать о новых турах, скидках и промокодах
           </Typography>
@@ -88,16 +87,6 @@ export function SubscribeToTheNewsletter({}: ISubscribeToTheNewsletter) {
             {!isEmailValid && (
               <Typography className='mb-[5px] mt-1 block text-nowrap text-[19px] font-normal text-red-primary-800 md:text-[18px] lg:text-[20px]'>
                 Некорректный адрес почты
-              </Typography>
-            )}
-            {successMessage && (
-              <Typography className='mb-[5px] mt-1 block text-nowrap text-[19px] font-normal text-green-400 md:text-[18px] lg:text-[20px]'>
-                {successMessage}
-              </Typography>
-            )}
-            {errorMessage && (
-              <Typography className='text-red-500 mb-[5px] mt-1 block text-nowrap text-[19px] font-normal md:text-[18px] lg:text-[20px]'>
-                {errorMessage}
               </Typography>
             )}
 

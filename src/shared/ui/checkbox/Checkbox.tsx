@@ -46,7 +46,7 @@ const Checkbox: React.FC<ICheckbox> = ({
           isDisabled
             ? 'cursor-not-allowed border-grey-600 bg-grey-100'
             : checked
-              ? 'border-0 bg-blue-600'
+              ? 'border-0 bg-blue-600 text-white'
               : 'border-grey-600 bg-grey-100'
         } ${!isDisabled && 'focus:outline-2 focus:outline-blue-600'}`}
         disabled={isDisabled}

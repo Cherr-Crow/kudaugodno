@@ -17,6 +17,8 @@ import {
 import { userApi } from '@/servicesApi/userApi';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { useToast } from '@/shared/ui/toast/toastService';
+import { ToastType } from '@/shared/ui/toast/ToastType.types';
 import { Typography } from '@/shared/ui/typography';
 import { ICompany, ITourist } from '@/types/users';
 
@@ -32,6 +34,7 @@ export function TourOperatorProfile() {
   const userId = useSelector(selectUserId);
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
+  const { showToast } = useToast();
 
   const [isMenuVisible, setIsVisible] = useState<boolean>(false);
   const [companyName, setCompanyName] = useState<string>('');
@@ -39,6 +42,11 @@ export function TourOperatorProfile() {
   const [phone, setPhone] = useState<string>('');
   const [previewAvatar, setPreviewAvatar] = useState<string | null>(null);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
+
+  const [bills, setBills] = useState(false);
+  const [digest, setDigest] = useState(false);
+  const [bookingInfo, setBookingInfo] = useState(false);
+  const [bookingNotices, setBookingNotices] = useState(false);
 
   const inputImg = useRef<HTMLInputElement>(null);
 
@@ -164,6 +172,18 @@ export function TourOperatorProfile() {
   useEffect(() => {
     fillUserFields();
   }, [user]);
+
+  const handleChangeMailing = (stateSetter: (value: boolean) => void) => {
+    return (checked: boolean) => {
+      stateSetter(checked);
+
+      const toastMessage = checked ? `Включили рассылку!` : `Отключили рассылку!`;
+
+      const toastType: ToastType = checked ? 'success' : 'info';
+
+      showToast(toastMessage, toastType);
+    };
+  };
 
   if (!user) {
     return (
@@ -456,25 +476,44 @@ export function TourOperatorProfile() {
         </Typography>
         <form action='PUT'>
           <div className='mb-3 flex'>
-            <Checkbox id='bills' />
+            <Checkbox
+              id='bills'
+              isChecked={bills}
+              onChange={handleChangeMailing(setBills)}
+            />
             <label className='text-[16px]' htmlFor='bills'>
               Сверки и счета
             </label>
           </div>
+
           <div className='mb-3 flex'>
-            <Checkbox id='digest' />
+            <Checkbox
+              id='digest'
+              isChecked={digest}
+              onChange={handleChangeMailing(setDigest)}
+            />
             <label className='text-[16px]' htmlFor='digest'>
               Дайджест
             </label>
           </div>
+
           <div className='mb-3 flex'>
-            <Checkbox id='bookingInfo' />
+            <Checkbox
+              id='bookingInfo'
+              isChecked={bookingInfo}
+              onChange={handleChangeMailing(setBookingInfo)}
+            />
             <label className='text-[16px]' htmlFor='bookingInfo'>
               Информация о бронированиях
             </label>
           </div>
+
           <div className='flex'>
-            <Checkbox id='bookingNotices' />
+            <Checkbox
+              id='bookingNotices'
+              isChecked={bookingNotices}
+              onChange={handleChangeMailing(setBookingNotices)}
+            />
             <label className='text-[16px]' htmlFor='bookingNotices'>
               Смс-уведомления о бронированиях
             </label>
