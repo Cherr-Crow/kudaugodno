@@ -12,6 +12,7 @@ import {
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { Select } from '@/shared/ui/select';
+import { useToast } from '@/shared/ui/toast/toastService';
 import { Typography } from '@/shared/ui/typography';
 
 import { IInsurance } from './Insurance.types';
@@ -33,6 +34,7 @@ const insuranceCompanies = [
 
 export function Insurance({}: IInsurance) {
   const userId = useSelector(selectUserId);
+  const { showToast } = useToast();
 
   const [visibleDeparture, setVisibleDeparture] = useState<boolean>(false);
   const [medicalCompany, setMedicalCompany] = useState<string>('');
@@ -62,7 +64,12 @@ export function Insurance({}: IInsurance) {
       medical: medicalCompany ? medicalCompany : '',
       not_leaving: departureCompany ? departureCompany : '',
     };
-    changeInsurances(changeData);
+    try {
+      changeInsurances(changeData);
+      showToast('Данные успешно сохранены', 'success');
+    } catch {
+      showToast('Ошибка сервера', 'error');
+    }
   };
 
   const handleCancel = () => {

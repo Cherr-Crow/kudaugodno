@@ -1,26 +1,13 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
 import Head from 'next/head';
 import './globals.css';
 
 import StoreProvider from '@/rtk/StoreProvider';
+import { AdaptiveToastContainer } from '@/shared/ui/toast/AdaptiveToastContainer';
 import { Footer } from '@/widgets/footer';
 import { Header } from '@/widgets/header';
 
-const futura = localFont({
-  src: [
-    {
-      path: './fonts/FuturaPTBook.otf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: './fonts/FuturaPT-Medium.woff',
-      weight: '500',
-      style: 'normal',
-    },
-  ],
-});
+import { futura } from './fonts/futura';
 
 export const metadata: Metadata = {
   title: 'Куда угодно',
@@ -54,6 +41,7 @@ export default function RootLayout({
         <body className={`${futura.className} flex min-h-screen flex-col`}>
           <Header />
           <main className='grow'> {children}</main>
+          <AdaptiveToastContainer />
           <Footer className='shrink-0' />
           <div id='modal'></div>
         </body>

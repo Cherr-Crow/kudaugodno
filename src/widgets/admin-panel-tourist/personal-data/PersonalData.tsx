@@ -17,6 +17,7 @@ import {
 import { useGetUserDataQuery } from '@/servicesApi/userApi';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { useToast } from '@/shared/ui/toast/toastService';
 import { Typography } from '@/shared/ui/typography';
 import { isoToDateFormat } from '@/shared/utils/isoToDateFormat';
 
@@ -131,6 +132,7 @@ export function PersonalData() {
 
   const router = useRouter();
   const userId = useSelector(selectUserId);
+  const { showToast } = useToast();
 
   const [previewAvatar, setPreviewAvatar] = useState<string | null>(null);
   const [birthDateValue, setBirthDateValue] = useState<string>('');
@@ -259,6 +261,7 @@ export function PersonalData() {
 
     if (!isDataChanged) {
       console.log('Данные не изменились. Запрос не отправляется.');
+      showToast('Данные успешно сохранены', 'success');
       return;
     }
 
@@ -287,7 +290,10 @@ export function PersonalData() {
 
     try {
       await changeTouristProfile(formData).unwrap();
-    } catch {}
+      showToast('Данные успешно сохранены', 'success');
+    } catch {
+      showToast('Ошибка сервера', 'error');
+    }
   };
 
   const handleDeleteProfile = async () => {

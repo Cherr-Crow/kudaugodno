@@ -12,10 +12,12 @@ import { Checkbox } from '@/shared/ui/checkbox';
 import { InputDateForSearchBlock } from '@/shared/ui/search-block/input-date-for-search-block';
 import { Select } from '@/shared/ui/select';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { useToast } from '@/shared/ui/toast/toastService';
 import { Typography } from '@/shared/ui/typography';
 
 export default function AddTourPage() {
   const router = useRouter();
+  const { showToast } = useToast();
   const { data: FlightData } = useGetFlightsQuery({});
   console.log(FlightData);
   const { data: HotelData } = useGetHotelsQuery({});
@@ -68,7 +70,13 @@ export default function AddTourPage() {
   const handleBack = () => {
     router.back();
   };
-  const handleSave = async () => {};
+  const handleSave = async () => {
+    try {
+      showToast('Данные успешно сохранены', 'success');
+    } catch {
+      showToast('Ошибка сервера', 'error');
+    }
+  };
 
   const hotelOptions =
     HotelData?.results.map((hotel) => {

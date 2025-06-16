@@ -93,7 +93,11 @@ export type NameSvg =
   | 'guest-adult'
   | 'guest-child'
   | 'single-bed'
-  | 'edit-image';
+  | 'edit-image'
+  | 'success'
+  | 'error'
+  | 'warning-fill'
+  | 'info';
 
 // при добавлении нового типа svg, переносите его и в svgNameList для отображения в ПК плз.
 
@@ -183,4 +187,8 @@ export const svgNameList = [
   'guest-child',
   'single-bed',
   'edit-image',
+  'success',
+  'error',
+  'warning-fill',
+  'info',
 ];
