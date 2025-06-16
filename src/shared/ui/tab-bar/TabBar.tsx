@@ -30,38 +30,41 @@ export function TabBar({
   };
 
   return (
-    <ul className={`${className ?? ''} flex w-fit rounded-full ${Style[variant]}`}>
+    <ul
+      className={`${className ?? ''} z-0 flex h-[33px] w-[185px] rounded-full md:h-[48px] md:w-[250px] lg:-ml-2 lg:w-[250px] ${Style[variant]}`}
+    >
       {tabs.map((tab, index) => (
         <li
           key={nanoid()}
-          className='text-black relative flex cursor-pointer items-center rounded-full px-4 py-1 pr-5 transition-all duration-300 ease-in-out md:px-10 md:py-4 md:pr-[41px]'
+          className={`relative flex w-full cursor-pointer items-center rounded-full ${active === tab ? 'text-black' : 'text-white'} transition-all duration-300 ease-in-out`}
           onClick={() => handleTabClick(tab)}
         >
           {/* Псевдоэлемент для фона */}
           <span
-            className={`duration-600 absolute inset-0 z-0 h-full transform rounded-full bg-white transition-transform ease-in-out ${
+            className={`duration-600 absolute ${tab === 'Отели' ? 'translate-x-[4px] md:translate-x-[8px] lg:translate-x-[8px]' : ''} inset-0 z-10 w-[89px] transform rounded-full bg-white transition-transform ease-in-out md:h-full md:w-[116px] ${
               active === tab ? 'scale-x-100' : 'scale-x-0'
             } origin-left`}
           />
 
-          {/* Иконка SVG */}
-          {svgTab && (
-            <SvgSprite
-              name={svgTab[index]}
-              color={`${active === tab ? 'black' : 'white'}`}
-              width={20}
-              height={20}
-              className='z-5 relative'
-            />
-          )}
+          <div className='ml-[17px] flex w-full flex-row gap-1 md:ml-[17px]'>
+            {/* Иконка SVG */}
+            {svgTab && (
+              <SvgSprite
+                name={svgTab[index]}
+                color={`${active === tab ? 'black' : 'white'}`}
+                width={21}
+                height={21}
+                className={`relative z-10 w-4 md:w-7`}
+              />
+            )}
 
-          {/* Текст */}
-          <Typography
-            variant='m-bold'
-            className={`${svgTab ? 'ml-2' : ''} z-5 relative`}
-          >
-            {tab}
-          </Typography>
+            {/* Текст */}
+            <Typography
+              className={`relative z-10 text-sm font-medium md:text-[20px]`}
+            >
+              {tab}
+            </Typography>
+          </div>
         </li>
       ))}
     </ul>

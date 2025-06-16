@@ -36,7 +36,6 @@ function HotelPageContent() {
     searchProps.departureCity,
     searchProps.where,
     searchProps.checkInDate,
-    searchProps.checkOutDate,
     searchProps.nights,
     searchProps.guests,
   ]);
@@ -101,13 +100,11 @@ function HotelPageContent() {
           },
         ]}
       />
-      {searchProps.isInitialized && (
-        <SearchTour
-          className={'mb-[40px] border-solid shadow-lg xl:mb-[313px]'}
-          hotel={hotel}
-          {...searchProps}
-        />
-      )}
+      <SearchTour
+        className={'mb-[40px] border-solid shadow-lg xl:mb-[313px]'}
+        hotel={hotel}
+        {...searchProps}
+      />
       <HotelBlockPhotosReview hotel={hotel} />
       <HotelRoomsList hotelId={hotel.id} rooms={filteredRooms} />
       <HotelAmenities amenities={amenities} />

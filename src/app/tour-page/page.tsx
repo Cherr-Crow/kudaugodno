@@ -55,7 +55,6 @@ function CatalogToursContent() {
     searchProps.departureCity,
     searchProps.where,
     searchProps.checkInDate,
-    searchProps.checkOutDate,
     searchProps.nights,
     searchProps.guests,
   ]);

@@ -1,3 +1,5 @@
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+
 import { IHotel } from '@/types/hotel';
 
 type DivProps = React.ComponentPropsWithoutRef<'div'>;
@@ -20,4 +22,5 @@ export interface ISearchTour extends DivProps {
   setCheckOutDate?: (value: string) => void;
   setNights?: (value: string) => void;
   setGuests?: (value: string) => void;
+  updateUrlParams?: (router: AppRouterInstance, hotelId?: number | null) => void;
 }

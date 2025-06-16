@@ -12,6 +12,7 @@ import { ISelect } from './Select.types';
 
 export function Select({
   className,
+  arrowClass,
   options,
   getValue,
   color,
@@ -32,6 +33,7 @@ export function Select({
   }
 
   enum Size {
+    'default' = 'rounded-full py-0 px-0',
     'small' = 'rounded-md py-2 px-4',
     'medium' = 'rounded-full p-4',
     'mobile' = 'rounded-[20px] w-20 h-[30px] px-5 md:w-[52px] md:px-3 lg:w-[83px] lg:p-5',
@@ -71,33 +73,30 @@ export function Select({
   }, [selectedOption]);
 
   return (
-    <div
-      className={`relative w-fit cursor-pointer ${className} ui-select`}
-      ref={dropdownRef}
-    >
+    <div className={`w-fit cursor-pointer ${className} ui-select`} ref={dropdownRef}>
       <div
-        className={`flex items-center justify-between ${Size[size]} ${color ? Background[color] : 'bg-transparent'}`}
+        className={`relative flex items-center justify-between gap-6 md:justify-normal lg:gap-20 ${Size[size]} ${color ? Background[color] : 'bg-transparent'}`}
         onClick={handleToggle}
       >
         <input
           type='text'
           value={selectedOption}
           readOnly
-          className='pointer-events-none w-4/5 cursor-pointer bg-transparent outline-none'
+          className='pointer-events-none w-16 cursor-pointer bg-transparent font-medium outline-none md:font-semibold'
           id={id}
           name='select'
         />
         <SvgSprite
           name='arrow'
           width={20}
-          className={`cursor-pointer ${isOpen ? '-rotate-90' : 'rotate-90'} ${
+          className={`cursor-pointer ${arrowClass} ${isOpen ? '-rotate-90' : 'rotate-90'} ${
             screen?.width < 1280 && arrowHidden && 'hidden'
           }`}
         />
       </div>
       {isOpen && (
-        <PopupWindow className='top-[110%] w-full'>
-          <ul className='dropdown-list max-h-60 overflow-scroll overflow-x-hidden py-2'>
+        <PopupWindow className='right-0 top-[110%] w-full'>
+          <ul className='dropdown-list z-100 max-h-60 overflow-scroll overflow-x-hidden py-2'>
             {options.map((option) => (
               <li
                 key={nanoid()}

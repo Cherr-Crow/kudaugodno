@@ -2,6 +2,7 @@ import React from 'react';
 
 import { ISelectForSearchBlock } from './SelectForSearchBlock.types';
 import { Select } from '../ui/select';
+import { Typography } from '../ui/typography';
 
 type SelectType = 'guests' | 'nights';
 
@@ -16,10 +17,10 @@ export function SelectForSearchBlock({
   type,
   startValue,
 }: Props) {
+  const placeholder = type === 'guests' ? 'Гостей' : 'Ночей';
   const generateOptions = (type: SelectType): string[] => {
     if (type === 'guests') {
       return [
-        'Количество гостей',
         '1 гость',
         '2 гостя',
         '3 гостя',
@@ -35,7 +36,6 @@ export function SelectForSearchBlock({
 
     if (type === 'nights') {
       return [
-        'Количество ночей',
         '1 ночь',
         '2 ночи',
         '3 ночи',
@@ -59,13 +59,29 @@ export function SelectForSearchBlock({
   };
 
   return (
-    <div className={`w-full ${className ?? ''}`}>
-      <Select
-        options={options}
-        onSelect={handleSelectChange}
-        startValue={startValue}
-        className='z-5 w-full'
-      />
+    <div
+      className={`relative flex h-full w-full justify-items-stretch ${className ?? ''}`}
+    >
+      <div className='flex h-full w-full flex-col justify-center'>
+        {startValue && (
+          <>
+            <Typography className='text-sm text-grey-400 md:text-base lg:hidden'>
+              {placeholder}
+            </Typography>
+            <Typography className='hidden text-grey-400 lg:block lg:text-base'>
+              {type === 'guests' ? 'Количество гостей' : 'Количество ночей'}
+            </Typography>
+          </>
+        )}
+        <Select
+          size='default'
+          options={options}
+          onSelect={handleSelectChange}
+          startValue={startValue}
+          arrowClass='absolute right-1 -top-2 md:right-3 md:-top-3 lg:right-4'
+          className='z-60 w-full'
+        />
+      </div>
     </div>
   );
 }

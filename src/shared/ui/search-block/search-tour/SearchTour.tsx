@@ -1,4 +1,7 @@
+'use client';
 import React, { useEffect, useState } from 'react';
+
+import { useRouter } from 'next/navigation';
 
 import { Modal } from '@/shared/modal';
 import { SelectForSearchBlock } from '@/shared/select-for-search-block';
@@ -7,6 +10,7 @@ import { InputDateForSearchBlock } from '@/shared/ui/search-block/input-date-for
 import { InputForSearchBlock } from '@/shared/ui/search-block/input-for-search-block';
 import { Typography } from '@/shared/ui/typography';
 import { getDateNow } from '@/shared/utils/getDateNow';
+import { getNumericValue } from '@/shared/utils/getNumericValue';
 
 import { ISearchTour } from './SearchTour.types';
 
@@ -16,7 +20,6 @@ export function SearchTour({
   departureCity = '',
   where = '',
   checkInDate = `${getDateNow(+5)}`,
-  checkOutDate = '',
   nights = '7 ночей',
   guests = '2 гостя',
   setDepartureCity,
@@ -24,91 +27,96 @@ export function SearchTour({
   setHotelName,
   setArrivalCountry,
   setCheckInDate,
-  setCheckOutDate,
   setNights,
   setGuests,
 }: ISearchTour) {
-  const [isFormValid, setIsFormValid] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [errModal, setErrModal] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // Локальное состояние
+  const [localDepartureCity, setLocalDepartureCity] = useState(departureCity);
+  const [localWhere, setLocalWhere] = useState(where);
+  const [localCheckInDate, setLocalCheckInDate] = useState(checkInDate);
+  const [localNights, setLocalNights] = useState(nights);
+  const [localGuests, setLocalGuests] = useState(guests);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const handleSetDepartureCity = (event: string) => {
-    setDepartureCity?.(event);
+  // Check validity
+
+  const router = useRouter();
+
+  const checkFormValidity = () => {
+    const checkInDateValid = localCheckInDate.trim() !== '';
+    const nightsValid =
+      localNights.trim() !== '' && localNights !== 'Количество ночей';
+    const guestsValid =
+      localGuests.trim() !== '' && localGuests !== 'Количество гостей';
+
+    const valid =
+      localWhere.trim() !== '' &&
+      checkInDateValid &&
+      nightsValid &&
+      guestsValid &&
+      (type !== 'Туры' || localDepartureCity.trim() !== '');
+
+    return valid;
   };
 
-  const handleSetWhere = (event: string) => {
-    setWhere?.(event);
-  };
-
-  const handleSetCheckInDate = (event: string) => {
-    setCheckInDate?.(event);
-  };
-
-  const handleSetCheckOutDate = (event: string) => {
-    setCheckOutDate?.(event);
-  };
-
-  const handleSetNights = (event: string) => {
-    setNights?.(event === 'Количество ночей' ? '' : event);
-  };
-
-  const handleSetGuests = (event: string) => {
-    setGuests?.(event === 'Количество гостей' ? '' : event);
-  };
+  // Handle search button
 
   const handleSearch = () => {
     const isValid = checkFormValidity();
 
     if (!isValid) {
-      if (
-        new Date(checkInDate).setHours(0, 0, 0, 0) >=
-        new Date(checkOutDate).setHours(0, 0, 0, 0)
-      ) {
-        setErrorMessage('Дата прибытия не может быть позже даты отправления');
-      } else {
-        setErrorMessage('Пожалуйста, заполните все поля формы');
-      }
+      setErrorMessage('Пожалуйста, заполните все поля формы');
       setErrModal(true);
       return;
     }
 
     setErrorMessage('');
     setErrModal(false);
+
+    setIsSubmitted(true);
   };
 
-  // Check validity
+  useEffect(() => {
+    if (!isSubmitted) return;
 
-  const checkFormValidity = () => {
-    const checkInDateValid = checkInDate.trim() !== '';
-    const nightsValid = nights.trim() !== '' && nights !== 'Количество ночей';
-    const guestsValid = guests.trim() !== '' && guests !== 'Количество гостей';
+    setDepartureCity?.(localDepartureCity);
+    setWhere?.(localWhere);
+    setCheckInDate?.(localCheckInDate);
+    setNights?.(localNights);
+    setGuests?.(localGuests);
 
-    const isValidDates =
-      new Date(checkInDate).setHours(0, 0, 0, 0) <
-      new Date(checkOutDate).setHours(0, 0, 0, 0);
+    // Переход по URL
+    const queryParams = new URLSearchParams({
+      where: localWhere,
+      nights: String(getNumericValue(localNights)),
+      guests: String(getNumericValue(localGuests)),
+      checkInDate: localCheckInDate,
+      ...(type === 'Туры' && { departureCity: localDepartureCity }),
+    });
 
-    const valid =
-      where.trim() !== '' &&
-      checkInDateValid &&
-      nightsValid &&
-      guestsValid &&
-      (type !== 'Туры' || departureCity.trim() !== '') &&
-      isValidDates;
+    const targetPath =
+      type === 'Туры'
+        ? `/catalog-tours?${queryParams.toString()}`
+        : `/catalog-hotels?${queryParams.toString()}`;
 
-    setIsFormValid(valid);
-    return valid;
-  };
+    router.push(targetPath);
+
+    setIsSubmitted(false);
+  }, [isSubmitted]);
 
   // Update SearchBlock, URL from hotel data
 
   useEffect(() => {
     if (hotel) {
-      setWhere?.(hotel.city || '');
+      setLocalWhere(hotel.city || '');
       setHotelName?.(hotel.name || '');
       setArrivalCountry?.(hotel.country || '');
     }
@@ -118,101 +126,117 @@ export function SearchTour({
 
   useEffect(() => {
     checkFormValidity();
-  }, [checkInDate, checkOutDate, nights, guests, where, departureCity]);
+  }, [localCheckInDate, localNights, localGuests, localWhere, localDepartureCity]);
 
   if (!isClient) return null;
 
   return (
-    <div className='md:flex md:justify-center'>
-      <div className='hidden h-full w-full max-w-[800px] gap-2 rounded-full border-solid bg-white py-1 pl-12 pr-1 shadow-lg md:flex md:justify-center'>
+    <div className='md:flex md:w-full md:justify-center'>
+      <div
+        className={`hidden w-full max-w-[1000px] gap-2 rounded-full border-solid bg-white py-3 pr-1 shadow-lg md:flex md:h-[64px] md:justify-between lg:h-[80px] lg:max-w-[1180px] lg:py-5`}
+      >
         {type === 'Туры' && (
           <InputForSearchBlock
-            placeholder='Город вылета'
-            value={departureCity}
-            getValue={handleSetDepartureCity}
-            className='border-r-2 border-grey-400'
+            placeholder='Откуда'
+            value={localDepartureCity}
+            getValue={setLocalDepartureCity}
+            type={type}
+            className='border-r-2 border-grey-400 pl-6 md:w-[154px] md:min-w-[154px] lg:min-w-[252px] lg:pl-12'
           />
         )}
         <InputForSearchBlock
           placeholder='Куда'
-          value={where}
-          getValue={handleSetWhere}
-          className='border-r-2 border-grey-400'
+          type={type}
+          value={localWhere}
+          getValue={setLocalWhere}
+          className={`border-r-2 border-grey-400 md:w-[130px] lg:pl-1 ${type !== 'Туры' ? 'pl-6 md:min-w-[181px] lg:min-w-[291px] lg:pl-12' : 'lg:pl-2'} md:min-w-[130px] lg:min-w-[212px]`}
         />
         <InputDateForSearchBlock
-          placeholder='Дата заезда'
-          className='border-r-2 border-grey-400'
-          startValue={checkInDate}
-          getValue={handleSetCheckInDate}
+          placeholder='Дата вылета'
+          className={`border-r-2 border-grey-400 md:w-[137px] lg:pl-1 ${type !== 'Туры' ? 'md:w-[185px] md:min-w-[130px] lg:min-w-[254px] lg:pl-2' : 'md:pl-1 lg:pl-2'} md:min-w-[135px] lg:w-[218px] lg:min-w-[212px]`}
+          startValue={localCheckInDate}
+          getValue={setLocalCheckInDate}
         />
-        <SelectForSearchBlock
-          type='nights'
-          className='border-r-2 border-grey-400'
-          startValue={nights}
-          getValue={handleSetNights}
-        />
-        <SelectForSearchBlock
-          type='guests'
-          className='border-r-2 border-grey-400'
-          startValue={guests}
-          getValue={handleSetGuests}
-        />
-        <div className='flex items-center'>
-          <ButtonCustom variant='primary' size='m' onClick={handleSearch}>
-            <Typography variant='m-bold'>Найти</Typography>
+        <div className='flex items-center align-middle'>
+          <SelectForSearchBlock
+            type='nights'
+            className={`border-r-2 border-grey-400 md:w-[122px] ${type !== 'Туры' ? 'md:w-[158px] md:min-w-[160px] lg:min-w-[244px] lg:pl-1' : 'md:pl-1 lg:pl-2'} md:min-w-[120px] lg:min-w-[180px]`}
+            startValue={localNights}
+            getValue={setLocalNights}
+          />
+        </div>
+        <div className='flex h-full items-center align-middle'>
+          <SelectForSearchBlock
+            type='guests'
+            startValue={localGuests}
+            getValue={setLocalGuests}
+            className={`md:w-[108px] lg:pl-2 ${type !== 'Туры' ? 'md:w-[158px] md:pl-3 lg:w-[240px] lg:min-w-[238px]' : 'md:pl-1 lg:pl-2'} md:w-[115px] lg:w-[188px] lg:max-w-[170px]`}
+          />
+        </div>
+        <div className='flex items-center align-middle'>
+          <ButtonCustom
+            variant='primary'
+            className='w-full md:px-[28px] md:py-[12px] lg:py-[20px]'
+            size='m'
+            onClick={handleSearch}
+          >
+            <Typography
+              variant='m-bold'
+              className='text-[16px] font-semibold lg:text-[20px]'
+            >
+              Найти
+            </Typography>
           </ButtonCustom>
         </div>
       </div>
-      <div className='grid w-full grid-cols-2 gap-x-4 gap-y-3 md:hidden'>
+      <div className='container grid w-[100vw] grid-cols-2 gap-x-4 gap-y-[12px] md:hidden'>
         {type === 'Туры' && (
           <InputForSearchBlock
             placeholder='Город вылета'
-            value={departureCity}
-            getValue={handleSetDepartureCity}
-            className='col-span-2 w-full rounded-lg bg-white p-4'
+            value={localDepartureCity}
+            getValue={setLocalDepartureCity}
+            className='md:text-md col-span-2 h-[56px] max-h-[56px] w-full justify-between rounded-lg bg-white p-4'
           />
         )}
         <InputForSearchBlock
           placeholder='Куда'
-          value={where}
-          getValue={handleSetWhere}
-          className='col-span-2 w-full rounded-lg bg-white p-4'
-        />
-        <SelectForSearchBlock
-          type='nights'
-          className='col-span-2 w-full rounded-lg bg-white px-4'
-          startValue={nights}
-          getValue={handleSetNights}
+          value={localWhere}
+          getValue={setLocalWhere}
+          className='md:text-md col-span-2 h-[56px] max-h-[56px] w-full justify-between rounded-lg bg-white p-4'
         />
         <SelectForSearchBlock
           type='guests'
-          className='col-span-2 w-full rounded-lg bg-white px-4'
-          startValue={guests}
-          getValue={handleSetGuests}
+          className='col-span-2 h-14 w-full rounded-lg bg-white px-4 py-[6px]'
+          startValue={localGuests}
+          getValue={setLocalGuests}
         />
         <InputDateForSearchBlock
-          placeholder='Дата заезда'
-          className='w-full rounded-lg bg-white p-4'
+          placeholder='Вылет'
+          className='h-full w-full rounded-lg bg-white px-[16px] py-[6px] md:h-full'
           min={new Date().toISOString().split('T')[0]}
-          startValue={checkInDate}
-          getValue={handleSetCheckInDate}
+          startValue={localCheckInDate}
+          getValue={setLocalCheckInDate}
         />
-        <InputDateForSearchBlock
-          placeholder='Дата выезда'
-          className='w-full rounded-lg bg-white p-4'
-          min={new Date().toISOString().split('T')[0]}
-          startValue={checkOutDate}
-          getValue={handleSetCheckOutDate}
-        />
-        <ButtonCustom
-          variant='primary'
-          size='m'
-          onClick={handleSearch}
-          disabled={!isFormValid}
-          className='col-span-2 w-full'
-        >
-          <Typography variant='m-bold'>Найти</Typography>
-        </ButtonCustom>
+        <div className='flex items-center align-middle md:h-full'>
+          <SelectForSearchBlock
+            type='nights'
+            className='h-full w-full rounded-lg bg-white px-4 py-[6px]'
+            startValue={localNights}
+            getValue={setLocalNights}
+          />
+        </div>
+        <div className='col-span-2 mt-1 h-[44px]'>
+          <ButtonCustom
+            variant='primary'
+            size='m'
+            onClick={handleSearch}
+            className='flex h-full w-full items-center justify-center'
+          >
+            <Typography variant='m-bold' className='font-medium'>
+              Найти
+            </Typography>
+          </ButtonCustom>
+        </div>
       </div>
       <Modal isOpen={errModal} getState={setErrModal} err>
         <ul>
