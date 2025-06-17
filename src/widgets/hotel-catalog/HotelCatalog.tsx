@@ -1,7 +1,7 @@
 /* eslint-disable no-commented-code/no-commented-code */
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -455,6 +455,23 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
     /* Роутинг*/
   }
 
+  const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  {
+    /* Подгрузка*/
+  }
+
+  const [loadCount, setLoadCount] = useState(20);
+
+  const handleLoadMore = () => {
+    setLoadCount((prev) => prev + 10);
+  };
+
   const handleRouting = (
     hotelId: number,
     hotelName: string,
@@ -560,7 +577,7 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
           </button>
         </div>
 
-        <main className='mx-auto w-full max-w-md p-4 md:max-w-xl lg:w-3/4 lg:max-w-none'>
+        <main className='mx-auto flex w-full max-w-md flex-col p-4 md:max-w-xl lg:w-3/4 lg:max-w-none'>
           {/* Мобильная версия кнопок*/}
           <div className='mb-4 flex md:hidden'>
             {isMapVisible ? (
@@ -620,10 +637,10 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
           {isMapVisible ? (
             <HotelComponentMap />
           ) : (
-            <div className='hotels-list grid gap-6 md:grid-cols-1'>
+            <div className='hotels-list mb-5 grid gap-6 md:grid-cols-1 lg:mb-8'>
               {sortedHotels.length > 0 ? (
                 <>
-                  {sortedHotels.map((hotel, index) => {
+                  {sortedHotels.slice(0, loadCount).map((hotel, index) => {
                     const filteredRoom = hotel.rooms.find(
                       // (room) =>
                       //   room.price >= appliedFilters.price[0] &&
@@ -852,6 +869,21 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
                 </div>
               )}
             </div>
+          )}
+          {sortedHotels.length > loadCount && (
+            <ButtonCustom
+              size='m'
+              variant='tetriary'
+              className='self-center md:px-8 md:py-4 lg:px-14 lg:py-5'
+              onClick={handleLoadMore}
+            >
+              <Typography
+                variant='m'
+                className='font-semibold lg:text-[20px] lg:font-medium lg:leading-8'
+              >
+                Показать ещё
+              </Typography>
+            </ButtonCustom>
           )}
         </main>
       </div>
