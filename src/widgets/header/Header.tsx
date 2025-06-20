@@ -4,31 +4,44 @@ import React, { useEffect, useState } from 'react';
 
 import { InputMask } from '@react-input/mask';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useSelector } from 'react-redux';
+// import { useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
 
+import {
+  closeAuthModal,
+  openAuthModal,
+  selectAuthModalStatus,
+} from '@/rtk/authModalSlice';
 import { selectUserId } from '@/rtk/userSlice';
+import { useLogoutMutation } from '@/servicesApi/authApi';
 import { useGetUserDataQuery } from '@/servicesApi/userApi';
+import { Modal } from '@/shared/modal';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { PopupWindow } from '@/shared/ui/popup-window';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
 
 import { IHeader } from './Header.types';
+import { AuthRegisterModal } from '../auth-register-modal/AuthRegisterModal';
 
 export function Header({ className }: IHeader) {
+  const dispatch = useDispatch();
+  const isOpenAuthModal = useSelector(selectAuthModalStatus);
+
   const userId = useSelector(selectUserId);
-  const router = useRouter();
+  // const router = useRouter();
   const [openUser, setOpenUser] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
   const [openSupportMenu, setOpenSupportMenu] = useState(false);
   const [openBurgerMenu, setOpenBurgerMenu] = useState(false);
+  // const [isOpenAuthModal, setIsOpenAuthModal] = useState<boolean>(false);
   const [activeMenu, setActiveMenu] = useState<
     'user' | 'support' | 'business' | null
   >(null);
   const [isMobile, setIsMobile] = useState(false);
 
   const { data: user } = useGetUserDataQuery(undefined, { skip: !userId });
+  const [logout] = useLogoutMutation();
 
   const closeAllMenus = () => {
     setOpenUser(false);
@@ -491,10 +504,19 @@ export function Header({ className }: IHeader) {
                   if (user) {
                     toggleUserMenu(e);
                   } else {
-                    router.push('/auth-page');
+                    dispatch(openAuthModal());
                   }
                 }}
               >
+                <Modal
+                  isOpen={isOpenAuthModal}
+                  getState={() => dispatch(closeAuthModal())}
+                  isNewVariation={true}
+                  auth={true}
+                  hasScrollbar={true}
+                >
+                  <AuthRegisterModal />
+                </Modal>
                 {!user?.avatar && (
                   <SvgSprite name='user' width={24} color='#1a1f4c' />
                 )}
@@ -514,57 +536,59 @@ export function Header({ className }: IHeader) {
                   <Typography>Панель туроператора</Typography>
                 </Link>
                 <Link
-                  href='/#'
+                  href='/admin-panel-tourist/trips'
                   onClick={toggleUserMenu}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Поездки</Typography>
                 </Link>
                 <Link
-                  href='/auth-page'
+                  href='/admin-panel-tourist/personal-data'
                   onClick={toggleUserMenu}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Личные данные</Typography>
                 </Link>
                 <Link
-                  href='/#'
+                  href='/admin-panel-tourist/simplify-booking'
                   onClick={toggleUserMenu}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Упростить бронирование</Typography>
                 </Link>
                 <Link
-                  href='/#'
+                  href='/admin-panel-tourist/favorites'
                   onClick={toggleUserMenu}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Избранное</Typography>
                 </Link>
                 <Link
-                  href='/#'
+                  href='/admin-panel-tourist/reviews'
                   onClick={toggleUserMenu}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Мои отзывы и статьи</Typography>
                 </Link>
                 <Link
-                  href='/#'
+                  href='/admin-panel-tourist/loyalty-program'
                   onClick={toggleUserMenu}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Программа Лояльности</Typography>
                 </Link>
                 <Link
-                  href='/#'
+                  href='/admin-panel-tourist/settings'
                   onClick={toggleUserMenu}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Настройки</Typography>
                 </Link>
                 <Link
-                  href='/#'
-                  onClick={toggleUserMenu}
+                  href='/'
+                  onClick={(e) => {
+                    toggleUserMenu(e), logout();
+                  }}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography className='flex items-center gap-2 align-middle text-blue-950'>
@@ -663,18 +687,21 @@ export function Header({ className }: IHeader) {
                           />
                         </Link>
                       ) : (
-                        <Link
+                        <div
+                          // {/* <Link */}
                           onClick={(e) => {
                             handleToggle('user');
                             toggleBurgerMenu(e);
                             closeAllMenus();
+                            dispatch(openAuthModal());
                           }}
-                          className={`flex ${activeMenu === 'user' ? 'font-bold' : 'font-semibold'} flex-row items-center justify-start gap-2 px-4 py-[18px] text-blue-600 hover:bg-blue-100`}
-                          href='/auth-page'
+                          className={`flex ${activeMenu === 'user' ? 'font-bold' : 'font-semibold'} cursor-pointer flex-row items-center justify-start gap-2 px-4 py-[18px] text-blue-600 hover:bg-blue-100`}
+                          // href='/auth-page'
                         >
                           <SvgSprite name={'enter-icon'} width={14} height={16} />{' '}
                           Войти в Личный кабинет
-                        </Link>
+                          {/* </Link> */}
+                        </div>
                       )}
 
                       {activeMenu === 'user' && (
@@ -687,57 +714,59 @@ export function Header({ className }: IHeader) {
                             <Typography>Панель туроператора</Typography>
                           </Link>
                           <Link
-                            href='/#'
+                            href='/admin-panel-tourist/trips'
                             onClick={toggleUserMenu}
                             className='px-4 py-[8px] text-blue-950 hover:bg-grey-100'
                           >
                             <Typography>Поездки</Typography>
                           </Link>
                           <Link
-                            href='/auth-page'
+                            href='/admin-panel-tourist/personal-data'
                             onClick={toggleUserMenu}
                             className='px-4 py-[8px] text-blue-950 hover:bg-grey-100'
                           >
                             <Typography>Личные данные</Typography>
                           </Link>
                           <Link
-                            href='/#'
+                            href='/admin-panel-tourist/simplify-booking'
                             onClick={toggleUserMenu}
                             className='px-4 py-[8px] text-blue-950 hover:bg-grey-100'
                           >
                             <Typography>Упростить бронирование</Typography>
                           </Link>
                           <Link
-                            href='/#'
+                            href='/admin-panel-tourist/favorites'
                             onClick={toggleUserMenu}
                             className='px-4 py-[8px] text-blue-950 hover:bg-grey-100'
                           >
                             <Typography>Избранное</Typography>
                           </Link>
                           <Link
-                            href='/#'
+                            href='/admin-panel-tourist/reviews'
                             onClick={toggleUserMenu}
                             className='px-4 py-[8px] text-blue-950 hover:bg-grey-100'
                           >
                             <Typography>Мои отзывы и статьи</Typography>
                           </Link>
                           <Link
-                            href='/#'
+                            href='/admin-panel-tourist/loyalty-program'
                             onClick={toggleUserMenu}
                             className='px-4 py-[8px] text-blue-950 hover:bg-grey-100'
                           >
                             <Typography>Программа Лояльности</Typography>
                           </Link>
                           <Link
-                            href='/#'
+                            href='/admin-panel-tourist/settings'
                             onClick={toggleUserMenu}
                             className='px-4 py-[8px] text-blue-950 hover:bg-grey-100'
                           >
                             <Typography>Настройки</Typography>
                           </Link>
                           <Link
-                            href='/#'
-                            onClick={toggleUserMenu}
+                            href='/'
+                            onClick={(e) => {
+                              toggleUserMenu(e), logout();
+                            }}
                             className='px-4 py-[8px] text-blue-950 hover:bg-grey-100'
                           >
                             <Typography className='flex items-center gap-2 align-middle text-blue-950'>

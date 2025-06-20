@@ -299,7 +299,7 @@ export function PersonalData() {
   const handleDeleteProfile = async () => {
     try {
       await deleteTouristProfile().unwrap();
-      router.push('/auth-page');
+      router.push('/');
     } catch {}
   };
 

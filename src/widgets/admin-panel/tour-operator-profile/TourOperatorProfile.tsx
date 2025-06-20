@@ -136,7 +136,7 @@ export function TourOperatorProfile() {
   const handleDeleteCompany = async () => {
     try {
       await deleteCompanyProfile().unwrap();
-      router.push('/auth-page');
+      router.push('/');
     } catch {}
   };
 
@@ -165,7 +165,7 @@ export function TourOperatorProfile() {
   const handleLogout = async () => {
     try {
       logout();
-      router.push('/auth-page');
+      router.push('/');
     } catch {}
   };
 

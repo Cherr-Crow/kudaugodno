@@ -7,4 +7,5 @@ export interface IModal extends DivProps {
   err?: boolean;
   isNewVariation?: boolean;
   hasScrollbar?: boolean;
+  auth?: boolean;
 }

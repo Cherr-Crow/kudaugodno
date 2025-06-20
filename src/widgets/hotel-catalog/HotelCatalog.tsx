@@ -455,9 +455,6 @@ export function HotelCatalog({ initialTab, hotels }: HotelCatalogProps) {
     /* Роутинг*/
   }
 
-  const [isClient, setIsClient] = useState(false);
-  const router = useRouter();
-
   useEffect(() => {
     setIsClient(true);
   }, []);
