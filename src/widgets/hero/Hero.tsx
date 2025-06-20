@@ -11,7 +11,7 @@ import { getDateNow } from '@/shared/utils/getDateNow';
 import { useSearchBlockState } from '@/shared/utils/useSearchBlockState';
 
 import { IHero } from './Hero.types';
-import { Wzhuh } from '../wzhuh';
+import { WzhuhBanner } from '../wzhuh';
 
 export function Hero({ className }: IHero) {
   const windowWidth = useScreen();
@@ -54,7 +54,7 @@ export function Hero({ className }: IHero) {
 
           <SearchBlock tab={tab} setTab={setTab} {...searchProps} />
         </div>
-        <Wzhuh className='mt-[64px] hidden md:flex lg:mt-[91px]' />
+        <WzhuhBanner className='mt-[64px] hidden md:flex lg:mt-[91px]' />
       </div>
     </section>
   );

@@ -2,6 +2,7 @@ type DivProps = React.ComponentPropsWithoutRef<'article'>;
 
 export interface IOfferCard extends DivProps {
   offer: IHotelMiniData | ITourMiniData;
+  needHotelBadges?: boolean;
 }
 
 export interface IHotelMiniData {
@@ -30,6 +31,7 @@ export interface ITourMiniData {
   user_rating: number;
   star_category: number;
   min_price: number;
+  discount: number | null;
   start_date: string;
   end_date: string;
   // + поле по количеству гостей

@@ -7,14 +7,14 @@ import { HotOffer } from '@/widgets/hot-offer';
 import { OurAdvantages } from '@/widgets/our-advantages';
 import { PopularDestinations } from '@/widgets/popular-destinations';
 import { SubscribeToTheNewsletter } from '@/widgets/subscribe-to-the-newsletter';
-import { Wzhuh } from '@/widgets/wzhuh';
+import { WzhuhBanner } from '@/widgets/wzhuh';
 
 export default async function Home() {
   return (
     <Suspense fallback={<div>Загрузка...</div>}>
       <div className='flex flex-col gap-3'>
         <Hero />
-        <Wzhuh className='p3 container md:hidden' />
+        <WzhuhBanner className='p3 container md:hidden' />
         {/* TODO: блоки "HotOffer" оживить после подключения бэкенда*/}
         {/* <HotOffer
         type='tour'
