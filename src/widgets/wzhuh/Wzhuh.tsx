@@ -1,50 +1,92 @@
+'use client';
+
 import React from 'react';
+import { useEffect, useState } from 'react';
 
-import { ButtonCustom } from '@/shared/ui/button-custom';
-import { SvgSprite } from '@/shared/ui/svg-sprite';
-import { Typography } from '@/shared/ui/typography';
+import { useSearchParams, useRouter } from 'next/navigation';
 
-import { IWzhuh } from './Wzhuh.types';
+import { useLazyGetWzhuhQuery } from '@/servicesApi/wzhuhApi';
+import { WzhuhError } from '@/widgets/wzhuh/WzhuhError';
+import { WzhuhLoader } from '@/widgets/wzhuh/WzhuhLoader';
+import { WzhuhResult } from '@/widgets/wzhuh/WzhuhResult';
+import { WzhuhSearchBlock } from '@/widgets/wzhuh/WzhuhSearchBlock';
 
-export function Wzhuh({ className }: IWzhuh) {
+export function Wzhuh() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const city = searchParams.get('city');
+  const id = searchParams.get('id');
+
+  const [fetchWzhuh, { data }] = useLazyGetWzhuhQuery();
+
+  const [animationComplete, setAnimationComplete] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
+  const [initStarted, setInitStarted] = useState(() => !!(id || city));
+
+  const shouldShowResult = animationComplete && dataLoaded && id && data;
+  const shouldShowLoader = initStarted && !animationComplete;
+  const shouldShowError = animationComplete && dataLoaded && hasError;
+
+  useEffect(() => {
+    if (id || city) {
+      runFullLoad(Number(id) ?? city);
+    }
+  }, []);
+
+  const runFullLoad = async (param: string | number) => {
+    setInitStarted(true);
+    setAnimationComplete(false);
+    setDataLoaded(false);
+    setHasError(false);
+
+    const delay = new Promise((resolve) => setTimeout(resolve, 1700));
+
+    try {
+      const result = await fetchWzhuh(param).unwrap();
+      if (typeof param === 'string' && result?.id) {
+        router.push(`?city=${encodeURIComponent(param)}&id=${result.id}`);
+      }
+    } catch {
+      setHasError(true);
+    } finally {
+      await delay;
+      setAnimationComplete(true);
+      setDataLoaded(true);
+    }
+  };
+
+  const handleSearch = (inputCity: string) => {
+    runFullLoad(inputCity);
+  };
+
+  const handleResetError = () => {
+    setHasError(false);
+  };
+
   return (
-    <div className={`${className} pt-2 md:pt-0`}>
-      <div className='mx-auto flex w-full flex-col items-center justify-center gap-8 rounded-[30px] bg-blue-50 py-4 md:flex-row md:justify-start md:gap-[110px] md:rounded-[40px] md:pb-[50px] md:pl-[110px] md:pt-1 lg:gap-[77px] lg:pb-[5px] lg:pl-[80px]'>
-        <div className='flex flex-col items-center text-center md:mt-12 md:items-start md:gap-[14px] md:text-start lg:mt-0 lg:gap-[24px] xl:ml-[170px]'>
-          <Typography
-            variant='h5'
-            className='mr-8 text-[22px] md:mr-0 md:pt-[5px] md:text-[30px] lg:pt-[10px] lg:text-[40px] lg:tracking-wide'
-          >
-            Псс....Не знаете куда и зачем?
-          </Typography>
-          <Typography
-            variant='m'
-            className='mb-3 md:mb-0 md:text-[22px] lg:text-[32px]'
-          >
-            Нажми и отправим куда-угодно
-          </Typography>
-          <ButtonCustom
-            className='px-[31px] py-[20px] lg:py-[11px]'
-            variant='wzhuh'
-            size='m'
-          >
-            <div className='flex h-1 w-16 items-center justify-center gap-2 text-[20px] md:h-9 md:w-28 md:text-[40px] lg:h-12'>
-              <Typography variant='l-bold' className='text-white'>
-                Вжух
-              </Typography>
-              <SvgSprite name='magic-wand' width={30} color='#fff' />
-            </div>
-          </ButtonCustom>
-        </div>
-
-        <div className='-mt-10 hidden h-auto w-[161px] md:order-2 md:block md:w-[161px] lg:w-[189px]'>
-          <img
-            src='/frog_main.png'
-            alt='Лягушка с чемоданом'
-            className='object-contain'
+    <section className='mb-10 mt-[24px] md:mb-[60px] md:mt-12 lg:mb-20 lg:mt-[60px]'>
+      <div className='container'>
+        {shouldShowLoader ? (
+          <WzhuhLoader />
+        ) : shouldShowResult ? (
+          <WzhuhResult
+            data={data}
+            city={city ?? ''}
+            onGenerateAgain={handleSearch}
           />
-        </div>
+        ) : shouldShowError ? (
+          <WzhuhError onRepeat={handleResetError} />
+        ) : (
+          <div className='relative overflow-hidden rounded-[20px] bg-blue-200 bg-[url("/wzhuh-search-block-375.png")] bg-[length:110%_110%] bg-[position:62%_5%] bg-no-repeat shadow-lg md:bg-[url("/wzhuh-search-block-960.png")] lg:bg-[url("/wzhuh-search-block-1440.png")]'>
+            <div className='absolute bottom-[5px] right-[-15px] hidden md:block md:h-[170px] md:w-[192px] lg:bottom-[-54px] lg:right-[-7px] lg:h-[235px] lg:w-[237px]'>
+              <img src='/frog_with_purse.png' alt='Лягушечка с кошельком' />
+            </div>
+            <WzhuhSearchBlock onSearch={handleSearch} />
+          </div>
+        )}
       </div>
-    </div>
+    </section>
   );
 }
