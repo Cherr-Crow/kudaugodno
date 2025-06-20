@@ -1,0 +1,1 @@
+export { AuthRegisterModal } from './AuthRegisterModal';

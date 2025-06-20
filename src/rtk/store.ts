@@ -11,12 +11,14 @@ import { subscribeApi } from '@/servicesApi/subscribeApi';
 import { toursApi } from '@/servicesApi/toursApi';
 import { userApi } from '@/servicesApi/userApi';
 
+import { authModalSlice } from './authModalSlice';
 import { userSlice } from './userSlice';
 
 export const store = configureStore({
   reducer: {
     [discountsApi.reducerPath]: discountsApi.reducer,
     [subscribeApi.reducerPath]: subscribeApi.reducer,
+    [authModalSlice.reducerPath]: authModalSlice.reducer,
     [userSlice.reducerPath]: userSlice.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
