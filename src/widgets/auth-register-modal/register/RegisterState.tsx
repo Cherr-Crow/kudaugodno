@@ -10,8 +10,10 @@ import { selectEmail } from '@/rtk/userSlice';
 import { useCreateNewTouristMutation } from '@/servicesApi/userApi';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { useToast } from '@/shared/ui/toast/toastService';
 import { Typography } from '@/shared/ui/typography';
 import { isoToDateFormat } from '@/shared/utils/isoToDateFormat';
+import { isRegisterError } from '@/shared/utils/isRegisterError';
 import { ITourist } from '@/types/users';
 
 const nameRegex = /^[a-zA-Zа-яА-ЯёЁ'-]+$/;
@@ -74,6 +76,8 @@ export function RegisterState() {
 
   const email = useSelector(selectEmail);
 
+  const { showToast } = useToast();
+
   const {
     register,
     setValue,
@@ -110,7 +114,15 @@ export function RegisterState() {
 
     try {
       await createTourist(formData).unwrap();
-    } catch {}
+    } catch (err) {
+      if (isRegisterError(err)) {
+        const { email } = err.data;
+        if (email.includes('Пользователь с таким Email уже существует.')) {
+          showToast('Эта почта уже занята', 'error');
+          return;
+        }
+      }
+    }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

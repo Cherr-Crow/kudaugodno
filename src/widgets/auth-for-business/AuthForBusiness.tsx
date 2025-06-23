@@ -11,7 +11,9 @@ import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { timeForComponent } from '@/shared/ui/time-for-component/time';
+import { useToast } from '@/shared/ui/toast/toastService';
 import { Typography } from '@/shared/ui/typography';
+import { isRegisterError } from '@/shared/utils/isRegisterError';
 
 import { IAuthForBusiness } from './AuthForBusiness.types';
 
@@ -41,6 +43,8 @@ export function AuthForBusiness({}: IAuthForBusiness) {
   const [seconds, setSeconds] = useState<number>(15);
 
   const [registerCompany] = useCreateNewCompanyMutation();
+
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (!startTimer) return;
@@ -133,58 +137,51 @@ export function AuthForBusiness({}: IAuthForBusiness) {
   };
 
   const handleOpenModal = async () => {
-    if (
-      isHotelNameValid &&
-      hotelName !== '' &&
-      isNameValid &&
-      name !== '' &&
-      isLastNameValid &&
-      lastName !== '' &&
-      isEmailValid &&
-      email !== '' &&
-      phone.length == 18 &&
-      role !== ''
-    ) {
-      const data = {
-        role: role,
-        first_name: name,
-        last_name: lastName,
-        email: email,
-        phone_number: phone,
-        company_name: hotelName,
-      };
+    const data = {
+      role: role,
+      first_name: name,
+      last_name: lastName,
+      email: email,
+      phone_number: phone,
+      company_name: hotelName,
+    };
 
-      const formData = new FormData();
-      if (file !== null) {
-        formData.append('documents', file[0]);
+    const formData = new FormData();
+    if (file !== null) {
+      formData.append('documents', file[0]);
+    }
+
+    for (const [key, value] of Object.entries(data)) {
+      formData.append(key, value);
+    }
+
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
+    console.log(formData instanceof FormData);
+
+    try {
+      await registerCompany(formData).unwrap();
+      setIsOpenModal(true);
+      setStartTimer(true);
+      setSeconds(15);
+
+      setHotelName('');
+      setName('');
+      setLastName('');
+      setEmail('');
+      setPhone('');
+      setFile(null);
+      setIsFormValid(true);
+    } catch (err) {
+      if (isRegisterError(err)) {
+        const { email } = err.data;
+        if (email.includes('Пользователь с таким Email уже существует.')) {
+          showToast('Эта почта уже занята', 'error');
+          return;
+        }
       }
-
-      for (const [key, value] of Object.entries(data)) {
-        formData.append(key, value);
-      }
-
-      for (const [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-      }
-
-      console.log(formData instanceof FormData);
-
-      try {
-        await registerCompany(formData).unwrap();
-        setIsOpenModal(true);
-        setStartTimer(true);
-        setSeconds(15);
-
-        setHotelName('');
-        setName('');
-        setLastName('');
-        setEmail('');
-        setPhone('');
-        setFile(null);
-        setIsFormValid(true);
-      } catch {}
-    } else {
-      setIsFormValid(false);
     }
   };
 
