@@ -50,8 +50,8 @@ function HotelPageContent() {
         return;
       }
       const filtered = hotel.rooms.filter((room) => {
-        const roomCapacity = room.number_of_adults;
-        return guests === roomCapacity;
+        const roomCapacity = room.number_of_adults + room.number_of_children;
+        return guests <= roomCapacity;
       });
 
       setFilteredRooms(filtered);
