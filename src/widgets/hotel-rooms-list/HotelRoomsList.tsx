@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 'use client';
 
 import React, { useState } from 'react';
@@ -13,8 +12,8 @@ import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Typography } from '@/shared/ui/typography';
 import { RoomType } from '@/types/room';
 
-import { RoomModal } from '../room-modal';
 import { HotelRoomsListProps } from './HotelRoomsList.types';
+import { RoomModal } from '../room-modal';
 
 export const HotelRoomsList: React.FC<HotelRoomsListProps> = ({
   rooms,
@@ -23,6 +22,10 @@ export const HotelRoomsList: React.FC<HotelRoomsListProps> = ({
   const [visibleCards, setVisibleCards] = useState<number>(
     Math.min(rooms.length, 5),
   );
+
+  React.useEffect(() => {
+    setVisibleCards(Math.min(rooms.length, 5));
+  }, [rooms]);
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
