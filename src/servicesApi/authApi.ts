@@ -3,12 +3,13 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { clearUser, setUser } from '@/rtk/userSlice';
 import { BASE_URL } from '@/temp/domen_nikita';
 
-import { getAccessToken } from './getAccessToken';
-
 export const authApi = createApi({
   reducerPath: 'authApi',
   tagTypes: ['auth'],
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: BASE_URL,
+    credentials: 'include',
+  }),
   endpoints: (build) => ({
     getCode: build.mutation<void, { email: string }>({
       query: (body) => ({
@@ -19,6 +20,7 @@ export const authApi = createApi({
           'Content-Type': 'application/json',
         },
         body,
+        credentials: 'omit',
       }),
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
@@ -48,9 +50,6 @@ export const authApi = createApi({
               ? JSON.parse(response.data)
               : response.data;
 
-          localStorage.setItem('access', JSON.stringify(data.access));
-          localStorage.setItem('refresh', JSON.stringify(data.refresh));
-
           localStorage.setItem('id', JSON.stringify(data.id));
           localStorage.setItem('role', data.role);
 
@@ -62,23 +61,12 @@ export const authApi = createApi({
     }),
     logout: build.mutation<void, void>({
       query: () => {
-        const refreshToken = localStorage.getItem('refresh');
-        let parsedRefresh;
-
-        if (refreshToken) {
-          parsedRefresh = JSON.parse(refreshToken);
-        } else {
-          throw new Error('Refresh token is missing');
-        }
-
         return {
           url: 'auth/logout/',
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${getAccessToken()}`,
           },
-          body: { refresh: parsedRefresh },
         };
       },
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {

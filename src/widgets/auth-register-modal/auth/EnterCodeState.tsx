@@ -129,7 +129,6 @@ export function EnterCodeState() {
                 email: email,
                 code: `${input1 + input2 + input3 + input4}`,
               }).unwrap();
-              console.log('handle', resp);
               dispatch(closeAuthModal());
               if (isRespFields(resp)) {
                 const redirectUrl =

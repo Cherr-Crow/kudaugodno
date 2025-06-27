@@ -9,11 +9,7 @@ import { useSelector } from 'react-redux';
 import { z } from 'zod';
 
 import { selectUserId } from '@/rtk/userSlice';
-import {
-  useDeleteUserMutation,
-  useGetAllUsersDataQuery,
-  useUpdateUserMutation,
-} from '@/servicesApi/userApi';
+import { useDeleteUserMutation, useUpdateUserMutation } from '@/servicesApi/userApi';
 import { useGetUserDataQuery } from '@/servicesApi/userApi';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
@@ -138,7 +134,6 @@ export function PersonalData() {
   const [birthDateValue, setBirthDateValue] = useState<string>('');
 
   const { data: user, refetch } = useGetUserDataQuery(undefined, { skip: !userId });
-  const { data: users } = useGetAllUsersDataQuery(undefined, { skip: !userId });
   const [changeTouristProfile] = useUpdateUserMutation();
   const [deleteTouristProfile] = useDeleteUserMutation();
 
@@ -206,18 +201,6 @@ export function PersonalData() {
   // INPUT для загрузки фото пользователя
   const inputImg = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (user) {
-      console.log(user);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (users) {
-      console.log(users);
-    }
-  }, [users]);
-
   function previewFile(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -250,7 +233,6 @@ export function PersonalData() {
       : null;
 
     const values = getValues();
-    console.log(values);
 
     const isDataChanged =
       (values.firstName && values.firstName !== user?.first_name) ||
@@ -284,10 +266,6 @@ export function PersonalData() {
       formData.append('birth_date', clientBirthDate ?? '');
     }
 
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-
     try {
       await changeTouristProfile(formData).unwrap();
       showToast('Данные успешно сохранены', 'success');
@@ -308,7 +286,6 @@ export function PersonalData() {
     isFromCalendar: boolean,
   ) => {
     const date: string = e.target.value;
-    console.log(date, date.length);
     if (isFromCalendar) {
       // YYYY-MM-DD от календаря
       setBirthDateValue(date);
