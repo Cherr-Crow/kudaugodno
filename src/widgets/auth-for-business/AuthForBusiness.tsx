@@ -55,7 +55,6 @@ export function AuthForBusiness({}: IAuthForBusiness) {
 
     const i = setInterval(() => {
       setSeconds((seconds) => seconds - 1);
-      console.log(seconds);
     }, 1000);
     return () => {
       clearInterval(i);
@@ -65,8 +64,6 @@ export function AuthForBusiness({}: IAuthForBusiness) {
   let contentButton: React.ReactNode;
 
   function validateName(name: string) {
-    console.log(name);
-
     const regex = /^[a-zA-Zа-яА-ЯёЁ\s'-]+$/;
     if (!regex.test(name)) {
       return false;
@@ -116,7 +113,6 @@ export function AuthForBusiness({}: IAuthForBusiness) {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    console.log(e.target.files);
     setFile(() => e.target.files);
 
     if (e.target.value !== '' && e.target.value !== null) {
@@ -154,12 +150,6 @@ export function AuthForBusiness({}: IAuthForBusiness) {
     for (const [key, value] of Object.entries(data)) {
       formData.append(key, value);
     }
-
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
-
-    console.log(formData instanceof FormData);
 
     try {
       await registerCompany(formData).unwrap();

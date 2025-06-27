@@ -259,7 +259,7 @@ export function TourOperatorProfile() {
                 className='rounded-[20px] px-4 py-2 text-left text-red-primary-800 hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
                 onClick={handleDeleteCompany}
               >
-                Удалить профиль
+                Деактивировать профиль
               </button>
             </div>
           )}

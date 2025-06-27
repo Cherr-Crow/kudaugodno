@@ -5,8 +5,6 @@ import { clearUser } from '@/rtk/userSlice';
 import { BASE_URL } from '@/temp/domen_nikita';
 import { ITourist, ICompany } from '@/types/users';
 
-import { getAccessToken } from './getAccessToken';
-
 // Единый api-slice для пользователя-туриста и для пользователя-компании, чтобы уменьшить количество проверок в компонентах для оптимизации кода.
 // В части эндпоинтов происходит проверка роли пользователя, чтобы подставить корректное значение в адрес запроса - users или companies. Таким образом, эндоинты универсальны и автоматически определяют, к какой группе запросов обращаться.
 // Пример для понимания - getUserData. В зависимости от того, какой пользователь залогинился - запоминается его роль - "USER" или "TOUR_OPERATOR" | "HOTELIER", после чего во все используемые запросы подставляется корректный путь, ничего передавать не надо. Нужный id пользователя также подставляется автоматически.
@@ -14,22 +12,21 @@ import { getAccessToken } from './getAccessToken';
 export const userApi = createApi({
   reducerPath: 'userApi',
   tagTypes: ['User', 'Users'],
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: BASE_URL,
+    credentials: 'include',
+  }),
   endpoints: (build) => ({
     getUserData: build.query<ITourist | ICompany, void>({
       query: () => {
         const role = getRoleFromStore();
         const id = getUserIdFromStore();
-        const token = getAccessToken();
 
         return {
           url: `${role}/${id}/`,
           method: 'GET',
           headers: {
             accept: 'application/json',
-            ...(token && {
-              Authorization: `Bearer ${token}`,
-            }),
           },
         };
       },
@@ -46,13 +43,11 @@ export const userApi = createApi({
     getAllUsersData: build.query<ITourist[] | ICompany[], void>({
       query: () => {
         const role = getRoleFromStore();
-        const token = getAccessToken();
 
         return {
           url: `${role}/`,
           headers: {
             accept: 'application/json',
-            Authorization: `Bearer ${token}`,
           },
         };
       },
@@ -72,6 +67,7 @@ export const userApi = createApi({
           url: 'users/',
           method: 'POST',
           body: formData,
+          credentials: 'omit',
         };
       },
       async onQueryStarted(arg, { queryFulfilled }) {
@@ -90,6 +86,7 @@ export const userApi = createApi({
           url: 'companies/',
           method: 'POST',
           body: formData,
+          credentials: 'omit',
         };
       },
       async onQueryStarted(arg, { queryFulfilled }) {
@@ -106,13 +103,12 @@ export const userApi = createApi({
       query: (formData) => {
         const role = getRoleFromStore();
         const id = getUserIdFromStore();
-        const token = getAccessToken();
 
         return {
           url: `${role}/${id}/`,
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${token}`,
+            accept: 'application/json',
           },
           body: formData,
         };
@@ -131,14 +127,12 @@ export const userApi = createApi({
       query: () => {
         const role = getRoleFromStore();
         const id = getUserIdFromStore();
-        const token = getAccessToken();
 
         return {
           url: `${role}/${id}/`,
           method: 'DELETE',
           headers: {
             accept: '*/*',
-            Authorization: `Bearer ${token}`,
           },
         };
       },

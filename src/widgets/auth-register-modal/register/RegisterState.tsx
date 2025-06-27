@@ -83,6 +83,7 @@ export function RegisterState() {
     setValue,
     getValues,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(FormSchema),
@@ -96,7 +97,6 @@ export function RegisterState() {
 
   const handleCreateNewUser = async () => {
     const values = getValues();
-    console.log(values);
 
     const data: ITourist = {
       first_name: values.firstName,
@@ -114,6 +114,7 @@ export function RegisterState() {
 
     try {
       await createTourist(formData).unwrap();
+      reset();
     } catch (err) {
       if (isRegisterError(err)) {
         const { email } = err.data;
@@ -152,7 +153,6 @@ export function RegisterState() {
     isFromCalendar: boolean,
   ) => {
     const date: string = e.target.value;
-    console.log(date, date.length);
     if (isFromCalendar) {
       // YYYY-MM-DD от календаря
       setBirthDateValue(date);
