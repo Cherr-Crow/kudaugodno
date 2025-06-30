@@ -1,36 +1,13 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 
-import { useGetHotelsQuery } from '@/servicesApi/hotelsApi';
-import { HotelCatalog } from '@/widgets/hotel-catalog';
+import { FilterCatalog } from '@/widgets/filter-catalog';
 
-export default function CatalogTours() {
-  const {
-    data: hotels,
-    error,
-    isLoading,
-  } = useGetHotelsQuery({ limit: 10, offset: 0 });
+export default function CatalogHotels() {
   const [isClient, setIsClient] = useState(false);
-
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  if (isLoading) {
-    return <div className='pt-[40px] text-center text-[32px]'>Загрузка...!!!</div>;
-  }
-
-  if (error || !hotels?.results) {
-    return (
-      <div className='text-red-600 pt-[40px] text-center text-[32px]'>
-        Ошибка загрузки
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      {isClient && <HotelCatalog hotels={hotels.results} initialTab='Туры' />}
-    </div>
-  );
+  return <div>{isClient && <FilterCatalog initialTab='Туры' />}</div>;
 }
