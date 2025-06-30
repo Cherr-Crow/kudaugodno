@@ -66,7 +66,7 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
       meals,
       roomsQuantity: roomsQuantity.toString(),
     };
-    console.log(searchData);
+    // console.log(searchData);
     localStorage.setItem('searchData', JSON.stringify(searchData));
 
     const url = type === 'Туры' ? '/tour-booking' : '/hotel-booking';
