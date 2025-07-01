@@ -17,7 +17,6 @@ export function RoomCards({
   roomId,
   tour_operator,
   guests,
-  nights,
   formatted_date,
   startDate,
   endDate,
@@ -72,10 +71,17 @@ export function RoomCards({
     return 'ночей';
   }
 
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const tourNights = Math.ceil((+end - +start) / (1000 * 60 * 60 * 24));
+
   return (
-    <div className='mb-5 flex min-h-[259px] max-w-[1800px] flex-col items-stretch justify-between rounded-2xl p-5 pb-[76px] pt-4 shadow-md md:flex-row md:pb-6'>
+    <div className='mb-5 flex min-h-[259px] max-w-[1800px] flex-col items-stretch justify-between rounded-2xl p-5 pt-4 shadow-md md:flex-row md:pb-6'>
       <div className='flex flex-col md:mr-[18px] md:w-[37%] lg:w-[46.6%]'>
-        <Typography variant='h5' className='mb-2 text-blue-950 lg:mb-4 lg:text-3xl'>
+        <Typography
+          variant='h5'
+          className='mb-1 text-blue-950 md:mb-3 lg:mb-4 lg:text-3xl'
+        >
           {name}
         </Typography>
         <div className='mb-[10px] w-full md:mb-0'>
@@ -88,7 +94,7 @@ export function RoomCards({
       </div>
       <div className='w-full md:flex md:justify-between lg:flex-row lg:justify-between'>
         <div className='mb-[19px] flex flex-col justify-end md:mb-0'>
-          <div className='flex items-center'>
+          <div className='flex items-center lg:mb-2'>
             <SvgSprite
               name='cutlery_items'
               width={40}
@@ -101,7 +107,7 @@ export function RoomCards({
               {meal}
             </Typography>
           </div>
-          <div className='mb-4 flex items-center space-x-2 text-blue-950 sm:flex md:mb-3'>
+          <div className='mb-5 flex items-center space-x-2 text-blue-950 sm:flex md:mb-5'>
             <SvgSprite
               name='airplane'
               width={35}
@@ -109,14 +115,14 @@ export function RoomCards({
               color='#1a1f4c'
               className='w-[24px] lg:ml-[3px] lg:mr-[2px]'
             />
-            <div className='md:flex md:flex-col lg:flex-row'>
+            <div className='flex flex-col lg:flex-row'>
               <Typography
                 variant='l-bold'
                 className='md:text-lg'
               >{`Прямой ${flight_info.type.toLocaleLowerCase()} рейс`}</Typography>
               <Typography
-                variant='l'
-                className='md:pl-1 md:text-lg'
+                variant='m'
+                className='pl-1'
               >{` ${flight_info.airline}`}</Typography>
             </div>
           </div>
@@ -142,11 +148,11 @@ export function RoomCards({
               <Typography
                 variant='m'
                 className='whitespace-nowrap pl-2 text-blue-950 lg:text-xl'
-              >{`(${nights} ${getNights(nights)})`}</Typography>
+              >{`(${tourNights} ${getNights(tourNights)})`}</Typography>
             </div>
           </div>
         </div>
-        <div className='flex flex-col justify-end md:mb-[47px] lg:mb-[47px] lg:h-full lg:flex-col'>
+        <div className='flex flex-col justify-end md:mb-12 md:mr-[6px] lg:mr-[1px] lg:h-full lg:flex-col'>
           <Typography
             variant='h5'
             className='mb-1 self-center whitespace-nowrap text-blue-600 lg:mr-0 lg:text-blue-950'
@@ -157,7 +163,7 @@ export function RoomCards({
             variant='primary'
             size='s'
             type='submit'
-            className='self-center py-[6px] md:px-[20px] md:py-[12px] lg:mb-[35px] lg:px-[30px] lg:py-5'
+            className='self-center px-[20px] py-[6px] md:px-[21px] md:py-[12px] lg:mb-[33px] lg:px-[32px] lg:py-5'
             style={{ gridArea: 'btnSubmit' }}
             onClick={handleBooking}
           >
