@@ -14,7 +14,6 @@ export interface ITour {
   arrival_city: string;
   tour_operator: string | null;
   hotel: Omit<IHotel, 'rooms'>;
-  // room: RoomType[];
   rooms: RoomType[];
   type_of_meals: MealType[];
   price: number;
