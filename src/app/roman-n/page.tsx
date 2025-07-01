@@ -325,6 +325,7 @@ const testTour: ITour = {
     flight_type: 'Прямой',
     description: 'Возвратный прямой рейс',
   },
+
   departure_country: 'Россия',
   departure_city: 'Москва',
   arrival_country: 'Египет',
@@ -584,11 +585,18 @@ export default function RomanN() {
               <h2 className='mb-3 w-fit bg-blue-400'>RoomCards</h2>
               <RoomCards
                 name='Standard Room'
-                start_date='5 окт, сб'
-                end_date='12 окт, сб'
+                startDate='5 окт, сб'
+                endDate='12 окт, сб'
                 tour_operator='Fun&Sun'
-                price='240894'
-                services={['eat', 'airplane']}
+                total_price={240894}
+                guests={2}
+                nights={7}
+                photos={[{ photo: 'gjgjgj' }]}
+                meal={'jjj'}
+                flight_info={{
+                  type: 'чартерный',
+                  airline: 'airoflot',
+                }}
               />
             </div>
 

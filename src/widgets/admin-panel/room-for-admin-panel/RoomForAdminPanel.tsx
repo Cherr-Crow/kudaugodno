@@ -17,9 +17,9 @@ import { Typography } from '@/shared/ui/typography';
 import { CheckBoxBlock } from '@/widgets/admin-panel/check-box-block';
 // import { DiscountBlock } from '@/widgets/admin-panel/discount-block';
 import { PhotosRoom } from '@/widgets/admin-panel/photos-room';
-// import { UnavailableBlock } from '@/widgets/admin-panel/unavailable-block';
 
 import { IRoomForAdminPanel } from './RoomForAdminPanel.types';
+// import { UnavailableBlock } from '@/widgets/admin-panel/unavailable-block';
 
 export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
   const hotelId = useSearchParams().get('id');
