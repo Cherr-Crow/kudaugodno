@@ -86,15 +86,14 @@ function CatalogToursContent() {
       return;
     }
 
-    const filteredTours = tours;
-    // .filter((tour) => {
-    //   if (!tour.start_date || !tour.end_date || !tour.rooms?.length) return false;
+    const filteredTours = tours.filter((tour) => {
+      if (!tour.start_date || !tour.end_date || !tour.rooms?.length) return false;
 
-    //   const start = new Date(tour.start_date);
-    //   const end = new Date(tour.end_date);
-    //   const tourNights = Math.ceil((+end - +start) / (1000 * 60 * 60 * 24));
-    //   return tourNights === nights;
-    // });
+      const start = new Date(tour.start_date);
+      const end = new Date(tour.end_date);
+      const tourNights = Math.ceil((+end - +start) / (1000 * 60 * 60 * 24));
+      return tourNights >= nights;
+    });
 
     const filteredRooms =
       hotel.rooms?.filter((room) => guests <= (room.number_of_adults ?? 0)) ?? [];
@@ -122,7 +121,6 @@ function CatalogToursContent() {
           roomId: matchingRoom.id,
           tour_operator: tour.tour_operator ?? 'Без оператора',
           guests,
-          nights,
           startDate: tour.start_date,
           endDate: tour.end_date,
           formatted_date: `${new Date(tour.start_date).getDate()}-${new Date(tour.end_date).getDate()} ${new Date(tour.start_date).toLocaleString('ru', { month: 'long' })}`,
