@@ -8,6 +8,13 @@ import {
   IApplicationRequest,
 } from '@/types/application';
 
+interface IPaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
 export const applicationsApi = createApi({
   reducerPath: 'applicationsApi',
   tagTypes: ['applications'],
@@ -18,52 +25,61 @@ export const applicationsApi = createApi({
       { limit?: number; offset?: number }
     >({
       query: ({ limit, offset }) =>
-        `applications/tours/?${limit && 'limit=' + limit}${offset && '&offset=' + offset}`,
+        `applications/tours/?${limit ? 'limit=' + limit : ''}${offset ? '&offset=' + offset : ''}`,
+      transformResponse: (response: IPaginatedResponse<IApplicationTour>) =>
+        response.results,
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ phone_number }: { phone_number: string }) => ({
+              ...result.map(({ id }) => ({
                 type: 'applications' as const,
-                phone_number,
+                id,
               })),
               { type: 'applications', id: 'LIST' },
             ]
           : [{ type: 'applications', id: 'LIST' }],
     }),
+
     getHotelApplications: build.query<
       IApplicationHotel[],
       { limit?: number; offset?: number }
     >({
       query: ({ limit, offset }) =>
-        `applications/hotels/?${limit && 'limit=' + limit}${offset && '&offset=' + offset}`,
+        `applications/hotels/?${limit ? 'limit=' + limit : ''}${offset ? '&offset=' + offset : ''}`,
+      transformResponse: (response: IPaginatedResponse<IApplicationHotel>) =>
+        response.results,
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ phone_number }: { phone_number: string }) => ({
+              ...result.map(({ id }) => ({
                 type: 'applications' as const,
-                phone_number,
+                id,
               })),
               { type: 'applications', id: 'LIST' },
             ]
           : [{ type: 'applications', id: 'LIST' }],
     }),
+
     getApplications: build.query<
       IApplication[],
       { limit?: number; offset?: number }
     >({
       query: ({ limit, offset }) =>
-        `applications/?${limit && 'limit=' + limit}${offset && '&offset=' + offset}`,
+        `applications/?${limit ? 'limit=' + limit : ''}${offset ? '&offset=' + offset : ''}`,
+      transformResponse: (response: IPaginatedResponse<IApplication>) =>
+        response.results,
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ phone_number }: { phone_number: string }) => ({
+              ...result.map(({ id }) => ({
                 type: 'applications' as const,
-                phone_number,
+                id,
               })),
               { type: 'applications', id: 'LIST' },
             ]
           : [{ type: 'applications', id: 'LIST' }],
     }),
+
     addApplication: build.mutation<IApplication, IApplicationRequest>({
       query: (body) => ({
         url: 'applications/',
@@ -76,10 +92,12 @@ export const applicationsApi = createApi({
       }),
       invalidatesTags: [{ type: 'applications', id: 'LIST' }],
     }),
+
     getOneApplication: build.query<IApplication, number | void>({
       query: (id) => `flights/${id ?? ''}`,
       providesTags: [{ type: 'applications', id: 'LIST' }],
     }),
+
     changeApplication: build.mutation<
       IApplication,
       {
@@ -98,6 +116,7 @@ export const applicationsApi = createApi({
       }),
       invalidatesTags: [{ type: 'applications', id: 'LIST' }],
     }),
+
     deleteApplication: build.mutation({
       query: (id: number) => ({
         url: `applications/${id}/`,
