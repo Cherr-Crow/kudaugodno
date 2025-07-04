@@ -1,8 +1,7 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useGetTourApplicationsQuery } from '@/servicesApi/applicationsApi';
-import { useGetToursQuery } from '@/servicesApi/toursApi';
 import { FilterYear } from '@/shared/filter-year';
 import { ApplicationCard } from '@/shared/ui/application-card';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
@@ -11,13 +10,7 @@ import { Typography } from '@/shared/ui/typography';
 export default function ApplicationsPage() {
   const [years] = useState<string[]>(['2025']);
 
-  const applicationsQuery = useGetTourApplicationsQuery({ limit: 10, offset: 0 });
-  const { data, status } = useGetToursQuery({ limit: 10, offset: 0 });
-
-  useEffect(() => {
-    console.log(data);
-  }, [status]);
-
+  const { data = [] } = useGetTourApplicationsQuery({});
   return (
     <div className='w-full'>
       <div className='flex flex-col'>
@@ -38,15 +31,13 @@ export default function ApplicationsPage() {
             />
           </form>
         </div>
-        {applicationsQuery.data &&
-          status &&
-          data &&
-          applicationsQuery.data.map((item, i) => (
+        {data &&
+          data.map((item, i) => (
             <ApplicationCard
               key={i}
               application={item}
-              tour={data.results[0]}
-              status={status}
+              tour={item.tour}
+              status={item.status}
             ></ApplicationCard>
           ))}
       </div>
