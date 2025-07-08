@@ -7,6 +7,10 @@ export interface ITourist {
   avatar?: string;
   birth_date: string;
   role?: 'TOURIST';
+  currency?: 'RUB' | 'EUR' | 'USD';
+  language?: 'RU' | 'EN';
+  notifications_enabled?: boolean;
+  preferred_contact_channel?: 'Телефон' | 'Email';
 }
 
 export interface ICompany {

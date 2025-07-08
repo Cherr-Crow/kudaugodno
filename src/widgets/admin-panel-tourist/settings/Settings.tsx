@@ -2,42 +2,42 @@
 
 import { useEffect, useState } from 'react';
 
+import {
+  useLazyGetUserDataQuery,
+  useUpdateUserMutation,
+} from '@/servicesApi/userApi';
 import { Select } from '@/shared/ui/select';
 import { Switcher } from '@/shared/ui/switcher';
 import { Typography } from '@/shared/ui/typography';
+import { ITourist, ICompany } from '@/types/users';
 
-const userSettings = {
-  currency: '$',
-  language: 'RU',
-  notifications: false,
-  connection: 'Почта',
-};
+import {
+  CURRENCIES,
+  LANGUAGES,
+  CONNECTIONS,
+  mapUiToApiValueFromList,
+  mapApiToUiValueFromList,
+} from './settingsMap';
+import { SettingsSkeleton } from './SettingsSkeleton';
 
-const CURRENCIES = ['₽', '$', '€'] as const;
-type Currency = (typeof CURRENCIES)[number];
+function isTourist(user: ITourist | ICompany): user is ITourist {
+  return 'currency' in user;
+}
 
-const LANGUAGES = ['RU', 'EN'] as const;
-type Language = (typeof LANGUAGES)[number];
-
-const CONNECTIONS = ['Телефон', 'Почта'] as const;
-type Connection = (typeof CONNECTIONS)[number];
+type Currency = (typeof CURRENCIES)[number]['label'];
+type Language = (typeof LANGUAGES)[number]['label'];
+type Connection = (typeof CONNECTIONS)[number]['label'];
 
 function isCurrency(value: unknown): value is Currency {
-  return (
-    typeof value === 'string' && (CURRENCIES as readonly string[]).includes(value)
-  );
+  return typeof value === 'string' && CURRENCIES.some((c) => c.label === value);
 }
 
 function isLanguage(value: unknown): value is Language {
-  return (
-    typeof value === 'string' && (LANGUAGES as readonly string[]).includes(value)
-  );
+  return typeof value === 'string' && LANGUAGES.some((c) => c.label === value);
 }
 
 function isConnection(value: unknown): value is Connection {
-  return (
-    typeof value === 'string' && (CONNECTIONS as readonly string[]).includes(value)
-  );
+  return typeof value === 'string' && CONNECTIONS.some((c) => c.label === value);
 }
 
 export function Settings() {
@@ -45,28 +45,46 @@ export function Settings() {
   const [language, setLanguage] = useState<Language>('RU');
   const [notifications, setNotifications] = useState<boolean>(true);
   const [connection, setConnection] = useState<Connection>('Телефон');
+  const [isInitialized, setIsInitialized] = useState<boolean>(false);
+
+  const [getUserData, { data: user, isLoading }] = useLazyGetUserDataQuery();
+  const [changeTouristProfile] = useUpdateUserMutation();
 
   useEffect(() => {
-    if (!userSettings) return;
-
-    if (isCurrency(userSettings.currency)) {
-      setCurrency(userSettings.currency);
-    }
-
-    if (isLanguage(userSettings.language)) {
-      setLanguage(userSettings.language);
-    }
-
-    if (typeof userSettings.notifications === 'boolean') {
-      setNotifications(userSettings.notifications);
-    }
-
-    if (isConnection(userSettings.connection)) {
-      setConnection(userSettings.connection);
+    if (typeof window !== 'undefined') {
+      // пока оставляю этот костыль, так как нам важно, чтобы ls успел прогрузиться до запроса. После внедрения функции FetchMe уберу
+      setTimeout(() => {
+        getUserData();
+      }, 1000);
     }
   }, []);
 
-  const handleChangeSetting = <
+  useEffect(() => {
+    if (!user || !isTourist(user)) return;
+
+    if (isTourist(user)) {
+      if (user.currency) {
+        setCurrency(mapApiToUiValueFromList(CURRENCIES, user.currency) as Currency);
+      }
+      if (user.language) {
+        setLanguage(mapApiToUiValueFromList(LANGUAGES, user.language) as Language);
+      }
+      if (user.notifications_enabled) {
+        setNotifications(user.notifications_enabled);
+      }
+      if (user.preferred_contact_channel) {
+        setConnection(
+          mapApiToUiValueFromList(
+            CONNECTIONS,
+            user.preferred_contact_channel,
+          ) as Connection,
+        );
+      }
+      setIsInitialized(true);
+    }
+  }, [user]);
+
+  const handleChangeSetting = async <
     T extends 'currency' | 'language' | 'notifications' | 'connection',
   >(
     key: T,
@@ -74,29 +92,51 @@ export function Settings() {
   ) => {
     switch (key) {
       case 'currency':
-        if (isCurrency(value)) setCurrency(value);
+        setCurrency(value as Currency);
         break;
       case 'language':
-        if (isLanguage(value)) setLanguage(value);
+        setLanguage(value as Language);
         break;
       case 'connection':
-        if (isConnection(value)) setConnection(value);
+        setConnection(value as Connection);
         break;
       case 'notifications':
-        if (typeof value === 'boolean') setNotifications(value);
+        setNotifications(value as boolean);
         break;
     }
 
-    const settingsToSend = {
-      currency,
-      language,
-      notifications,
-      connection,
-      [key]: value,
-    };
+    if (user) {
+      const settingsToSend = {
+        first_name: user.first_name,
+        last_name: user.last_name,
+        phone_number: user.phone_number,
+        email: user.email,
+        currency: mapUiToApiValueFromList(
+          CURRENCIES,
+          key === 'currency' ? (value as string) : currency,
+        ),
+        language: mapUiToApiValueFromList(
+          LANGUAGES,
+          key === 'language' ? (value as string) : language,
+        ),
+        notifications_enabled:
+          key === 'notifications' ? (value as boolean) : notifications,
+        preferred_contact_channel: mapUiToApiValueFromList(
+          CONNECTIONS,
+          key === 'connection' ? (value as string) : connection,
+        ),
+      };
 
-    // Имитация отправки на сервер
-    console.log('PATCH /user/settings', settingsToSend);
+      const formData = new FormData();
+
+      for (const [key, value] of Object.entries(settingsToSend)) {
+        formData.append(key, typeof value === 'boolean' ? String(value) : value);
+      }
+
+      try {
+        await changeTouristProfile(formData).unwrap();
+      } catch {}
+    }
   };
 
   return (
@@ -110,81 +150,79 @@ export function Settings() {
           >
             Настройки
           </Typography>
-          <div className='mb-4 flex items-center justify-between rounded-[20px] border border-grey-100 bg-white px-5 py-5 shadow-lg md:pb-6 md:pt-4'>
-            <Typography variant='m' className='md:text-xl'>
-              Валюта
-            </Typography>
-            {userSettings && (
-              <Select
-                options={[...CURRENCIES]}
-                onSelect={(e) => {
-                  if (isCurrency(e)) {
-                    setCurrency(e);
-                    handleChangeSetting('currency', e);
-                  }
-                }}
-                startValue={currency}
-                color='blue'
-                size='small'
-                className='max-h-[42px] max-w-[83px] rounded-[20px]'
-              />
-            )}
-          </div>
-          <div className='mb-4 flex items-center justify-between rounded-[20px] border border-grey-100 bg-white px-5 py-4 shadow-lg md:pb-5 md:pt-4'>
-            <Typography variant='m' className='md:text-xl'>
-              Язык
-            </Typography>
-            {userSettings && (
-              <Select
-                options={[...LANGUAGES]}
-                onSelect={(e) => {
-                  if (isLanguage(e)) {
-                    setLanguage(e);
-                    handleChangeSetting('language', e);
-                  }
-                }}
-                startValue={language}
-                color='blue'
-                size='small'
-                className='max-h-[42px] max-w-[83px] rounded-[20px] p-0'
-              />
-            )}
-          </div>
-          <div className='mb-4 flex items-center justify-between rounded-[20px] border border-grey-100 bg-white px-5 pb-5 pt-4 shadow-lg md:pb-4 md:pt-5'>
-            <Typography variant='m' className='md:text-xl'>
-              Оповещения
-            </Typography>
-            {userSettings && (
-              <Switcher
-                className=''
-                isActive={notifications}
-                onToggle={(val: boolean) => {
-                  if (typeof val === 'boolean') setNotifications(val);
-                  handleChangeSetting('notifications', val);
-                }}
-              />
-            )}
-          </div>
-          <div className='flex flex-wrap items-center justify-between rounded-[20px] border border-grey-100 bg-white px-4 py-4 shadow-lg md:pl-5 md:pt-6'>
-            <Typography variant='m' className='mb-4 md:text-xl'>
-              Приоритетный канал связи с оператором
-            </Typography>
-            {userSettings && (
-              <Select
-                options={[...CONNECTIONS]}
-                startValue={connection}
-                onSelect={(e) => {
-                  if (isConnection(e)) {
-                    setConnection(e);
-                    handleChangeSetting('connection', e);
-                  }
-                }}
-                color='blue'
-                size='small'
-                className='ml-auto max-h-[42px] max-w-[137px] rounded-[20px] p-0'
-              />
-            )}
-          </div>
+          {isLoading || !isInitialized ? (
+            <SettingsSkeleton />
+          ) : (
+            <>
+              <div className='mb-4 flex items-center justify-between rounded-[20px] border border-grey-100 bg-white px-5 py-5 shadow-lg md:py-5'>
+                <Typography variant='m' className='md:text-xl'>
+                  Валюта
+                </Typography>
+                <Select
+                  options={CURRENCIES.map((c) => c.label)}
+                  onSelect={(e) => {
+                    if (isCurrency(e)) {
+                      setCurrency(e);
+                      handleChangeSetting('currency', e);
+                    }
+                  }}
+                  value={currency}
+                  color='blue'
+                  size='settings'
+                  className='relative max-h-[42px] max-w-[83px] rounded-[20px]'
+                />
+              </div>
+              <div className='mb-4 flex items-center justify-between rounded-[20px] border border-grey-100 bg-white px-5 py-4 shadow-lg md:py-5'>
+                <Typography variant='m' className='md:text-xl'>
+                  Язык
+                </Typography>
+                <Select
+                  options={LANGUAGES.map((c) => c.label)}
+                  onSelect={(e) => {
+                    if (isLanguage(e)) {
+                      setLanguage(e);
+                      handleChangeSetting('language', e);
+                    }
+                  }}
+                  value={language}
+                  color='blue'
+                  size='settings'
+                  className='relative max-h-[42px] max-w-[97px] rounded-[20px] p-0'
+                />
+              </div>
+              <div className='mb-4 flex items-center justify-between rounded-[20px] border border-grey-100 bg-white px-5 pb-5 pt-4 shadow-lg md:py-6'>
+                <Typography variant='m' className='md:text-xl'>
+                  Оповещения
+                </Typography>
+                <Switcher
+                  className=''
+                  isActive={notifications}
+                  onToggle={(val: boolean) => {
+                    if (typeof val === 'boolean') setNotifications(val);
+                    handleChangeSetting('notifications', val);
+                  }}
+                />
+              </div>
+              <div className='flex flex-wrap items-center justify-between rounded-[20px] border border-grey-100 bg-white px-4 py-4 shadow-lg md:py-[18px] md:pl-5'>
+                <Typography variant='m' className='mb-4 md:mb-0 md:text-xl'>
+                  Приоритетный канал связи с оператором
+                </Typography>
+                <Select
+                  options={CONNECTIONS.map((c) => c.label)}
+                  value={connection}
+                  onSelect={(e) => {
+                    if (isConnection(e)) {
+                      setConnection(e);
+                      handleChangeSetting('connection', e);
+                    }
+                  }}
+                  color='blue'
+                  size='settings'
+                  className='relative ml-auto max-h-[42px] max-w-[137px] rounded-[20px] p-0'
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
       <div className='hidden md:absolute md:bottom-[-20px] md:right-[45%] md:block lg:right-[10%]'>

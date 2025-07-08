@@ -21,6 +21,8 @@ export function Select({
   id,
   startValue,
   onSelect,
+  value,
+  disabled,
 }: ISelect & { onSelect?: (value: string) => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(startValue ?? options[0]);
@@ -38,7 +40,14 @@ export function Select({
     'medium' = 'rounded-full p-4',
     'mobile' = 'rounded-[20px] w-20 h-[30px] px-5 md:w-[52px] md:px-3 lg:w-[83px] lg:p-5',
     'meals' = 'rounded-[20px] w-[180px] h-[30px] px-5 md:w-[164px] md:px-3 lg:w-[180px] lg:p-5',
+    'settings' = 'rounded-[20px] px-4 py-2 flex gap-0',
   }
+
+  useEffect(() => {
+    if (value !== undefined) {
+      setSelectedOption(value);
+    }
+  }, [value]);
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -75,28 +84,31 @@ export function Select({
   return (
     <div className={`w-fit cursor-pointer ${className} ui-select`} ref={dropdownRef}>
       <div
-        className={`relative flex items-center justify-between gap-6 md:justify-normal lg:gap-20 ${Size[size]} ${color ? Background[color] : 'bg-transparent'}`}
-        onClick={handleToggle}
+        className={`relative flex items-center justify-between gap-6 ${Size[size]} ${color ? Background[color] : 'bg-transparent'}`}
+        onClick={disabled ? undefined : handleToggle}
       >
         <input
           type='text'
           value={selectedOption}
           readOnly
-          className='pointer-events-none w-16 cursor-pointer bg-transparent font-medium outline-none md:font-semibold'
+          className='pointer-events-none w-full cursor-pointer bg-transparent font-medium outline-none md:font-semibold'
           id={id}
           name='select'
         />
-        <SvgSprite
-          name='arrow'
-          width={20}
-          className={`cursor-pointer ${arrowClass} ${isOpen ? '-rotate-90' : 'rotate-90'} ${
-            screen?.width < 1280 && arrowHidden && 'hidden'
-          }`}
-        />
+        {!disabled && (
+          <SvgSprite
+            name='arrow'
+            width={size === 'settings' ? 32 : 20}
+            strokeWidth={size === 'settings' ? 2 : 1}
+            className={`cursor-pointer ${arrowClass} ${isOpen ? '-rotate-90' : 'rotate-90'} ${
+              screen?.width < 1280 && arrowHidden && 'hidden'
+            }`}
+          />
+        )}
       </div>
-      {isOpen && (
+      {isOpen && !disabled && (
         <PopupWindow className='right-0 top-[110%] w-full'>
-          <ul className='dropdown-list z-100 max-h-60 overflow-scroll overflow-x-hidden py-2'>
+          <ul className='dropdown-list z-100 max-h-60 overflow-y-auto overflow-x-hidden py-2'>
             {options.map((option) => (
               <li
                 key={nanoid()}

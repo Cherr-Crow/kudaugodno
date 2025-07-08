@@ -156,6 +156,7 @@ export const userApi = createApi({
 
 export const {
   useGetUserDataQuery,
+  useLazyGetUserDataQuery,
   useGetAllUsersDataQuery,
   useCreateNewTouristMutation,
   useCreateNewCompanyMutation,
