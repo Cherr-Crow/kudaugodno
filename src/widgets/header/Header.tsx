@@ -1,3 +1,4 @@
+/* eslint-disable no-commented-code/no-commented-code */
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -53,8 +54,12 @@ export function Header({ className }: IHeader) {
 
   const toggleUserMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
-    closeAllMenus();
-    setOpenUser((prev) => !prev);
+    if (openUser) {
+      closeAllMenus();
+    } else {
+      closeAllMenus();
+      setOpenUser(true);
+    }
   };
   const toggleNotificationsMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -68,8 +73,12 @@ export function Header({ className }: IHeader) {
   };
   const toggleBurgerMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
-    closeAllMenus();
-    setOpenBurgerMenu((prev) => !prev);
+    if (openBurgerMenu) {
+      closeAllMenus();
+    } else {
+      closeAllMenus();
+      setOpenBurgerMenu(true);
+    }
   };
 
   const handleToggle =
@@ -308,7 +317,6 @@ export function Header({ className }: IHeader) {
               <div
                 onClick={(e) => {
                   toggleNotificationsMenu(e);
-                  closeAllMenus();
                 }}
                 className='flex w-[20px] items-center justify-center'
               >
@@ -483,9 +491,8 @@ export function Header({ className }: IHeader) {
               <div
                 onClick={(e) => {
                   toggleUserMenu(e);
-                  closeAllMenus();
                 }}
-                className='flex h-[40px] w-[40px] items-center justify-center'
+                className='flex h-[40px] w-[40px] cursor-pointer items-center justify-center'
               >
                 <SvgSprite name='cross' width={16} height={16} />
               </div>
@@ -501,7 +508,7 @@ export function Header({ className }: IHeader) {
                   backgroundRepeat: 'no-repeat',
                 }}
                 onClick={(e) => {
-                  if (user) {
+                  if (!user) {
                     toggleUserMenu(e);
                   } else {
                     dispatch(openAuthModal());
@@ -530,56 +537,72 @@ export function Header({ className }: IHeader) {
               >
                 <Link
                   href='/admin-panel-tour-operator'
-                  onClick={toggleUserMenu}
+                  onClick={(e) => {
+                    toggleUserMenu(e);
+                  }}
                   className='mt-0.5 px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Панель туроператора</Typography>
                 </Link>
                 <Link
                   href='/admin-panel-tourist/trips'
-                  onClick={toggleUserMenu}
+                  onClick={(e) => {
+                    toggleUserMenu(e);
+                  }}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Поездки</Typography>
                 </Link>
                 <Link
                   href='/admin-panel-tourist/personal-data'
-                  onClick={toggleUserMenu}
+                  onClick={(e) => {
+                    toggleUserMenu(e);
+                  }}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Личные данные</Typography>
                 </Link>
                 <Link
                   href='/admin-panel-tourist/simplify-booking'
-                  onClick={toggleUserMenu}
+                  onClick={(e) => {
+                    toggleUserMenu(e);
+                  }}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Упростить бронирование</Typography>
                 </Link>
                 <Link
                   href='/admin-panel-tourist/favorites'
-                  onClick={toggleUserMenu}
+                  onClick={(e) => {
+                    toggleUserMenu(e);
+                  }}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Избранное</Typography>
                 </Link>
                 <Link
                   href='/admin-panel-tourist/reviews'
-                  onClick={toggleUserMenu}
+                  onClick={(e) => {
+                    toggleUserMenu(e);
+                  }}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Мои отзывы и статьи</Typography>
                 </Link>
                 <Link
                   href='/admin-panel-tourist/loyalty-program'
-                  onClick={toggleUserMenu}
+                  onClick={(e) => {
+                    toggleUserMenu(e);
+                  }}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Программа Лояльности</Typography>
                 </Link>
                 <Link
                   href='/admin-panel-tourist/settings'
-                  onClick={toggleUserMenu}
+                  onClick={(e) => {
+                    toggleUserMenu(e);
+                  }}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
                   <Typography>Настройки</Typography>
@@ -605,7 +628,6 @@ export function Header({ className }: IHeader) {
               <div
                 onClick={(e) => {
                   toggleBurgerMenu(e);
-                  closeAllMenus();
                 }}
                 className='flex h-[32px] w-[32px] items-center justify-center'
               >
@@ -638,7 +660,6 @@ export function Header({ className }: IHeader) {
                     href='/catalog-tours'
                     onClick={(e) => {
                       toggleBurgerMenu(e);
-                      closeAllMenus();
                     }}
                     className='px-4 py-[14px] text-blue-950 hover:bg-blue-100'
                   >
@@ -648,7 +669,6 @@ export function Header({ className }: IHeader) {
                     href='/catalog-hotels'
                     onClick={(e) => {
                       toggleBurgerMenu(e);
-                      closeAllMenus();
                     }}
                     className='px-4 py-[14px] text-blue-950 hover:bg-blue-100'
                   >
@@ -658,7 +678,6 @@ export function Header({ className }: IHeader) {
                     href='/blog-page'
                     onClick={(e) => {
                       toggleBurgerMenu(e);
-                      closeAllMenus();
                     }}
                     className='px-4 py-[12px] text-blue-950 hover:bg-blue-100'
                   >
@@ -692,7 +711,6 @@ export function Header({ className }: IHeader) {
                           onClick={(e) => {
                             handleToggle('user');
                             toggleBurgerMenu(e);
-                            closeAllMenus();
                             dispatch(openAuthModal());
                           }}
                           className={`flex ${activeMenu === 'user' ? 'font-bold' : 'font-semibold'} cursor-pointer flex-row items-center justify-start gap-2 px-4 py-[18px] text-blue-600 hover:bg-blue-100`}
@@ -910,7 +928,6 @@ export function Header({ className }: IHeader) {
                           <ButtonCustom
                             onClick={(e) => {
                               toggleBurgerMenu(e);
-                              closeAllMenus();
                             }}
                             type='button'
                             className='mt-3 w-full rounded px-4 py-2 text-lg text-blue-950'
