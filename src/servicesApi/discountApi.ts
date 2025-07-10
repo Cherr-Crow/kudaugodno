@@ -18,7 +18,18 @@ export const discountsApi = createApi({
       query: (tourId) => `stocks/${tourId}/`,
       providesTags: (result, _error, id) => [{ type: 'discounts', id }],
     }),
+    getAllDiscounts: build.query<IDiscount[], void>({
+      query: () => 'stocks/',
+      transformResponse: (response: { results: IDiscount[] }) => response.results,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'discounts' as const, id })),
+              { type: 'discounts', id: 'LIST' },
+            ]
+          : [{ type: 'discounts', id: 'LIST' }],
+    }),
   }),
 });
 
-export const { useGetDiscountByTourIdQuery } = discountsApi;
+export const { useGetDiscountByTourIdQuery, useGetAllDiscountsQuery } = discountsApi;

@@ -12,6 +12,8 @@ import { IHotOffer } from './HotOffer.types';
 export function HotOffer({ className, link, title, type }: IHotOffer) {
   const { data: selection } = useGetWhatAboutHotelsQuery();
 
+  console.log(selection);
+
   const handleSaveId = (id: number) => {
     localStorage.setItem('selectedHotelId', `${id}`);
   };
@@ -61,9 +63,7 @@ export function HotOffer({ className, link, title, type }: IHotOffer) {
                 key={i}
                 onClick={() => handleSaveId(offer.id)}
               >
-                <Link href={`hotel-page?type=Отели&hotelId=${offer.id}`}>
-                  <OfferCard offer={offer} />
-                </Link>
+                <OfferCard offer={offer} needHotelBadges={false} />
               </li>
             ))}
         </ul>
