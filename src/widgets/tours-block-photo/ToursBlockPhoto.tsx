@@ -289,7 +289,7 @@ export function ToursBlockPhoto({ hotel }: IToursBlockPhoto) {
                     className='col-snap-1 justify-end self-center lg:flex'
                   >
                     <Typography variant='s-bold'>
-                      {`${hotel.rooms[0].dates[0].price}₽ за ${hotel.rooms[0].number_of_adults === 1 ? '1-го' : `${hotel.rooms[0].number_of_adults}-х`}`}
+                      {`${hotel.rooms[0].calendar_dates[0].price}₽ за ${hotel.rooms[0].number_of_adults === 1 ? '1-го' : `${hotel.rooms[0].number_of_adults}-х`}`}
                     </Typography>
                   </ButtonCustom>
                 </div>

@@ -14,13 +14,14 @@ type Path = {
 type BreadcrumbsProps = {
   paths: Path[];
   color?: 'grey' | 'white';
+  className?: string;
 };
 
-export function Breadcrumbs({ paths, color = 'grey' }: BreadcrumbsProps) {
+export function Breadcrumbs({ paths, color = 'grey', className }: BreadcrumbsProps) {
   const router = useRouter();
 
   return (
-    <div className='invisible mb-10 mt-6 lg:visible'>
+    <div className={`invisible mb-10 mt-6 lg:visible ${className ? className : ''}`}>
       <ul className='flex flex-row flex-wrap gap-1'>
         {paths.map((crumb, i) => {
           const isLast = i === paths.length - 1;

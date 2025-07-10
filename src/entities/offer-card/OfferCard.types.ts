@@ -13,9 +13,13 @@ export interface IHotelMiniData {
   country: string;
   user_rating: string;
   star_category: number;
-  min_price: number;
+  original_price: number;
+  discount: number | null;
+  discountedPrice: number;
   distance_to_the_sea?: number;
   distance_to_the_center: number;
+  nightsCount: number;
+  amenities_common: string[];
 }
 
 export interface ITourCard extends DivProps {
@@ -30,9 +34,11 @@ export interface ITourMiniData {
   country: string;
   user_rating: number;
   star_category: number;
-  min_price: number;
+  original_price: number;
   discount: number | null;
   start_date: string;
   end_date: string;
-  // + поле по количеству гостей
+  arrival_country: string;
+  discountedPrice: number;
+  nightsCount: number;
 }

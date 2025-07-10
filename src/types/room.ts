@@ -14,7 +14,7 @@ export type RoomType = {
   amenities_view: string[];
   rules: RulesType[];
   // date: AvailableDates[];
-  dates: AvailableDates[];
+  calendar_dates: AvailableDates[];
   photo: photoType[];
 };
 
@@ -40,7 +40,7 @@ type AvailableDates = {
   start_date: string;
   end_date: string;
   available_for_booking: boolean;
-  stock: boolean; // акция
-  share_size: number; // величина акции, если значение < 1, то это проценты, если > 1, то абсолютное значение скидки
+  discount: boolean; // акция
+  discount_amount: number; // величина акции, если значение < 1, то это проценты, если > 1, то абсолютное значение скидки
   price: number;
 };
