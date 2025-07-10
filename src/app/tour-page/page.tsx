@@ -24,8 +24,8 @@ import { ToursBlockPhoto } from '@/widgets/tours-block-photo';
 function CatalogToursContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  // const hotelId = Number(searchParams.get('hotelId')) ?? null;
-  const tourId = Number(searchParams.get('tourId')) ?? null;
+  const hotelId = Number(searchParams.get('hotelId')) ?? null;
+  // const tourId = Number(searchParams.get('tourId')) ?? null;
   const [allRooms, setAllRooms] = useState<IRoomCards[]>([]);
   const [visibleRooms, setVisibleRooms] = useState<IRoomCards[]>([]);
   const [roomsToShow, setRoomsToShow] = useState(5);

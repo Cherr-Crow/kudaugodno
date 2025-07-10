@@ -3,8 +3,12 @@ import React, { useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
+import { HotelPhotoBlock } from '@/shared/hotel-photo-block';
+import { HotelPhotoModal } from '@/shared/hotel-photo-modal/HotelPhotoModal';
 import { Modal } from '@/shared/modal';
 import { Rating } from '@/shared/rating';
+import { SettlementConditionsCard } from '@/shared/settlement-conditions-card';
+import { SettlementConditionsModal } from '@/shared/settlement-conditions-modal';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { ModalTours } from '@/shared/ui/modal-tours';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
@@ -17,6 +21,7 @@ export function ToursBlockPhoto({ hotel }: IToursBlockPhoto) {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isOpenModalMap, setIsOpenModalMap] = useState(false);
   const [showAllPhoto, setShowAllPhoto] = useState<boolean>(false);
+  const [showSettlementsModal, setShowSettlementsModal] = useState<boolean>(false);
 
   const handleClickAllPhoto = () => {
     setShowAllPhoto(true);
@@ -43,7 +48,7 @@ export function ToursBlockPhoto({ hotel }: IToursBlockPhoto) {
   return (
     <>
       {hotel && (
-        <div className='lg:p-4 lg:pl-4 lg:pr-4'>
+        <div className=''>
           <div key={hotel.id + nanoid()}>
             <div className='grid py-4'>
               <div className='order-1 xl:order-2'>
@@ -71,93 +76,10 @@ export function ToursBlockPhoto({ hotel }: IToursBlockPhoto) {
               </div>
             </div>
 
-            {!showAllPhoto && hotel.photo ? (
-              <div className='grid h-[182px] grid-cols-1 gap-4 py-4 md:h-auto lg:grid-cols-2'>
-                <img
-                  src={hotel.photo[0]?.photo}
-                  alt={`Hotel ${hotel.name} hotel-photo`}
-                  className='hidden h-full w-full rounded-3xl object-cover shadow-md lg:block'
-                />
-
-                <div className='flex gap-4 overflow-x-auto md:grid md:grid-cols-2'>
-                  <img
-                    src={hotel.photo[1]?.photo}
-                    alt={`Hotel ${hotel.name} hotel-photo`}
-                    className='flex-shrink-0 rounded-3xl object-cover shadow-md md:w-full'
-                  />
-                  <img
-                    src={hotel.photo[2]?.photo}
-                    alt={`Hotel ${hotel.name} hotel-photo`}
-                    className='flex-shrink-0 rounded-3xl object-cover shadow-md md:w-full'
-                  />
-                  <img
-                    src={hotel.photo[3]?.photo}
-                    alt={`Hotel ${hotel.name} hotel-photo`}
-                    className='flex-shrink-0 rounded-3xl object-cover shadow-md md:w-full'
-                  />
-
-                  <div className='relative w-48 flex-shrink-0 rounded-3xl p-2 shadow-md md:w-full'>
-                    <div
-                      className='absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transform bg-cover bg-center'
-                      style={{
-                        backgroundImage: `url(${hotel.photo[4]?.photo})`,
-                        opacity: 0.6,
-                      }}
-                    />
-
-                    <ButtonCustom
-                      onClick={handleClickAllPhoto}
-                      variant='tetriary'
-                      size='m'
-                      className='absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform items-center justify-center gap-1 rounded-3xl bg-blue-200 p-3 pl-4 pr-4 md:min-w-[180px]'
-                    >
-                      <div className='flex items-center gap-3'>
-                        <SvgSprite name='image' width={20} />
-                        <Typography variant='m-bold'>Все фотографии</Typography>
-                      </div>
-                    </ButtonCustom>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className='py-4'>
-                <ul className='grid h-[480px] gap-4 overflow-y-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
-                  {hotel.photo &&
-                    hotel.photo.map((photo) => (
-                      <li key={nanoid()}>
-                        <img
-                          src={photo.photo}
-                          alt={`Hotel ${hotel.name} hotel-photo`}
-                          className='h-[230px] w-[300px] rounded-3xl object-cover shadow-md lg:block'
-                        />
-                      </li>
-                    ))}
-                  <li
-                    key={nanoid()}
-                    className='relative h-[230px] w-[300px] flex-shrink-0 rounded-3xl p-2 shadow-md md:w-full'
-                  >
-                    <div
-                      className='absolute left-1/2 top-1/2 h-full w-full -translate-x-1/2 -translate-y-1/2 transform rounded-3xl bg-cover bg-center'
-                      style={{
-                        backgroundImage: `url(${hotel.photo ? hotel.photo[0]?.photo : ''})`,
-                        opacity: 0.6,
-                      }}
-                    />
-                    <ButtonCustom
-                      onClick={handleClickBackPhoto}
-                      variant='tetriary'
-                      size='m'
-                      className='absolute left-1/2 top-1/2 z-10 flex -translate-x-1/2 -translate-y-1/2 transform cursor-pointer items-center justify-center gap-1 rounded-3xl bg-blue-200 p-3 pl-4 pr-4 md:min-w-40'
-                    >
-                      <div className='flex items-center gap-3'>
-                        <SvgSprite name='cross' width={15} />
-                        <Typography variant='m-bold'>Назад</Typography>
-                      </div>
-                    </ButtonCustom>
-                  </li>
-                </ul>
-              </div>
-            )}
+            <HotelPhotoBlock
+              photos={hotel.photo.slice(0, 5)}
+              onShowAllPhoto={handleClickAllPhoto}
+            />
 
             <div className='grid grid-cols-1 gap-4 py-4 lg:grid-cols-1'>
               <div className='grid grid-cols-1 gap-4 lg:grid-cols-4'>
@@ -190,33 +112,13 @@ export function ToursBlockPhoto({ hotel }: IToursBlockPhoto) {
                     />
                   </div>
                 </div>
-                <div className='h-44 flex-1 rounded-2xl p-6 shadow-md md:h-56'>
-                  <div className='flex gap-8 md:flex-col md:gap-2'>
-                    <SvgSprite name='amenity-check-in' width={32} />
-                    <Typography variant='l' className='mb-2'>
-                      Условия заселения
-                    </Typography>
-                  </div>
-                  <div className='flex flex-col'>
-                    <Typography variant='m' className='text-gray-600'>
-                      Заселение: {hotel.check_in_time}
-                    </Typography>
-                    <Typography variant='m' className='text-gray-600 mb-3'>
-                      Выселение: {hotel.check_out_time}
-                    </Typography>
-                  </div>
-                  <div className='group flex items-center gap-0.5'>
-                    <Typography variant='l' className='cursor-pointer text-blue-600'>
-                      Все условия
-                    </Typography>
-                    <SvgSprite
-                      name='arrow'
-                      width={20}
-                      className='transition-transform duration-200 group-hover:translate-x-1'
-                      color='#4757ea'
-                    />
-                  </div>
-                </div>
+
+                <SettlementConditionsCard
+                  check_in_time={hotel.check_in_time}
+                  check_out_time={hotel.check_out_time}
+                  onShowModal={() => setShowSettlementsModal(true)}
+                />
+
                 <div className='h-44 flex-1 justify-around rounded-2xl p-6 shadow-md md:h-56'>
                   <div className='flex gap-8 md:flex-col md:gap-2'>
                     <SvgSprite
@@ -298,6 +200,32 @@ export function ToursBlockPhoto({ hotel }: IToursBlockPhoto) {
           </div>
         </div>
       )}
+      <Modal
+        isOpen={showAllPhoto}
+        getState={handleClickBackPhoto}
+        isNewVariation={true}
+        isHotelPhotoModal={true}
+      >
+        <HotelPhotoModal
+          name={hotel.name}
+          star_category={hotel.star_category}
+          user_rating={hotel.user_rating}
+          country={hotel.country}
+          city={hotel.city}
+          photos={hotel.photo}
+        />
+      </Modal>
+      <Modal
+        isOpen={showSettlementsModal}
+        getState={() => setShowSettlementsModal(false)}
+        isNewVariation={true}
+        isSmallModal={true}
+      >
+        <SettlementConditionsModal
+          check_in_time={hotel.check_in_time}
+          check_out_time={hotel.check_out_time}
+        />
+      </Modal>
       {
         <Modal getState={setIsOpenModal} isOpen={isOpenModal}>
           <ModalTours type={'trip'} />

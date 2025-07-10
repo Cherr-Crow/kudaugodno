@@ -1,0 +1,1 @@
+export { HotelPhotoBlock } from './HotelPhotoBlock';

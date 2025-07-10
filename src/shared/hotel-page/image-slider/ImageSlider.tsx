@@ -9,17 +9,12 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
+import { photoType } from '@/types/hotel';
 
 interface ImageSliderProps {
-  images: photoTypeRoom[];
+  images: photoType[];
   // onClick: () => void
 }
-
-type photoTypeRoom = {
-  id: number;
-  photo: string;
-  room: number;
-};
 
 const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   const swiperRef = useRef<any>(null);

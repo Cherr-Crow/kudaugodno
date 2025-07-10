@@ -9,11 +9,11 @@ import { SearchTour } from '@/shared/ui/search-block/search-tour';
 import { getDateNow } from '@/shared/utils/getDateNow';
 import { useSearchBlockState } from '@/shared/utils/useSearchBlockState';
 import { HotelAmenities } from '@/widgets/hotel-amenities';
-import { HotelBlockPhotosReview } from '@/widgets/hotel-block-photos-review';
+import { HotelPageContent } from '@/widgets/hotel-page-content';
 import { HotelRoomsList } from '@/widgets/hotel-rooms-list';
 import { HotelRules } from '@/widgets/hotel-rules';
 
-function HotelPageContent() {
+function HotelPage() {
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -85,6 +85,8 @@ function HotelPageContent() {
     rules: Array.isArray(hotel.rules) ? hotel.rules : [],
   };
 
+  console.log(hotel);
+
   return (
     <section className='container rounded-bl-[20px] rounded-br-[20px] xl:rounded-bl-[100px] xl:rounded-br-[100px]'>
       <Breadcrumbs
@@ -100,12 +102,14 @@ function HotelPageContent() {
           },
         ]}
       />
-      <SearchTour
-        className={'mb-[40px] border-solid shadow-lg xl:mb-[313px]'}
-        hotel={hotel}
-        {...searchProps}
-      />
-      <HotelBlockPhotosReview hotel={hotel} />
+      {searchProps.isInitialized && (
+        <SearchTour
+          className={'mb-[40px] border-solid shadow-lg xl:mb-[313px]'}
+          hotel={hotel}
+          {...searchProps}
+        />
+      )}
+      <HotelPageContent hotel={hotel} />
       <HotelRoomsList hotelId={hotel.id} rooms={filteredRooms} />
       <HotelAmenities amenities={amenities} />
       <HotelRules rules={rules} />
@@ -113,14 +117,14 @@ function HotelPageContent() {
   );
 }
 
-export default function HotelPage() {
+export default function HotelPageSuspense() {
   return (
     <Suspense
       fallback={
         <div className='pt-[40px] text-center text-[32px]'>Загрузка отеля...</div>
       }
     >
-      <HotelPageContent />
+      <HotelPage />
     </Suspense>
   );
 }
