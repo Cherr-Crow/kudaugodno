@@ -8,4 +8,6 @@ export interface IModal extends DivProps {
   isNewVariation?: boolean;
   hasScrollbar?: boolean;
   auth?: boolean;
+  isHotelPhotoModal?: boolean;
+  isSmallModal?: boolean;
 }

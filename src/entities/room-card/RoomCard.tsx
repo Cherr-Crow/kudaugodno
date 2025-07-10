@@ -66,7 +66,6 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
       meals,
       roomsQuantity: roomsQuantity.toString(),
     };
-    // console.log(searchData);
     localStorage.setItem('searchData', JSON.stringify(searchData));
 
     const url = type === 'Туры' ? '/tour-booking' : '/hotel-booking';
@@ -111,6 +110,8 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
 
     return `${startDay}-${endDay} ${month}`;
   };
+
+  console.log(room);
 
   return (
     <div className='relative w-full md:flex md:h-full md:min-h-[268px] md:p-5'>

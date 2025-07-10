@@ -5,4 +5,5 @@ export interface IRating extends UlProps {
   setRating?: (arg: number) => void;
   gap?: number;
   starSize?: number;
+  emptyStarsInclude?: boolean;
 }

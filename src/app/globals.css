@@ -113,6 +113,24 @@ input[type='date']::-webkit-datetime-edit {
   background: var(--grey-300);
 }
 
+.scrollbar-blue::-webkit-scrollbar {
+  width: 16px;
+}
+
+.scrollbar-blue::-webkit-scrollbar-track {
+  border-radius: 8px;
+  background-color: var(--grey-50);
+}
+
+.scrollbar-blue::-webkit-scrollbar-thumb {
+  background-color: var(--blue-300);
+  border-radius: 8px;
+}
+
+.scrollbar-blue::-webkit-scrollbar-thumb:hover {
+  background-color: var(--blue-400);
+}
+
 @layer utilities {
   .inner-border-active::after {
     content: '';
