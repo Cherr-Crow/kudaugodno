@@ -17,8 +17,8 @@ import { ISearchTour } from './SearchTour.types';
 export function SearchTour({
   type,
   hotel,
-  departureCity = '',
-  where = '',
+  departureCity = 'Москва',
+  where = 'Турция',
   checkInDate = `${getDateNow(+5)}`,
   nights = '7 ночей',
   guests = '2 гостя',
@@ -152,7 +152,7 @@ export function SearchTour({
           className={`border-r-2 border-grey-400 md:w-[130px] lg:pl-1 ${type !== 'Туры' ? 'pl-6 md:min-w-[181px] lg:min-w-[291px] lg:pl-12' : 'lg:pl-2'} md:min-w-[130px] lg:min-w-[212px]`}
         />
         <InputDateForSearchBlock
-          placeholder='Дата вылета'
+          placeholder='Когда'
           className={`border-r-2 border-grey-400 md:w-[137px] lg:pl-1 ${type !== 'Туры' ? 'md:w-[185px] md:min-w-[130px] lg:min-w-[254px] lg:pl-2' : 'md:pl-1 lg:pl-2'} md:min-w-[135px] lg:w-[218px] lg:min-w-[212px]`}
           startValue={localCheckInDate}
           getValue={setLocalCheckInDate}
@@ -211,7 +211,7 @@ export function SearchTour({
           getValue={setLocalGuests}
         />
         <InputDateForSearchBlock
-          placeholder='Вылет'
+          placeholder='Когда'
           className='h-full w-full rounded-lg bg-white px-[16px] py-[6px] md:h-full'
           min={new Date().toISOString().split('T')[0]}
           startValue={localCheckInDate}

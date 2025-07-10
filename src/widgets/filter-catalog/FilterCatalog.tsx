@@ -95,6 +95,8 @@ export function FilterCatalog({ initialTab }: HotelCatalogProps) {
 
   // Инициализация компонента стейтов для SearchTour
   const searchState = useSearchBlockState({
+    defaultDepartureCity: 'Москва',
+    defaultWhere: 'Турция',
     defaultCheckInDate: `${getDateNow(+5)}`,
     defaultNights: '7 ночей',
     defaultGuests: '2 гостя',

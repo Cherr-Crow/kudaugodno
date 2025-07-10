@@ -1,3 +1,4 @@
+/* eslint-disable no-commented-code/no-commented-code */
 import { useEffect, useMemo, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
@@ -104,6 +105,16 @@ export function CatalogList({
       const isCitySelected =
         selectedCities.length === 0 || selectedCities.includes(hotel.city);
 
+      const isWhereSelected =
+        !searchProps.where ||
+        searchProps.where === '' ||
+        (isTour
+          ? (item as ITour).arrival_country
+              ?.toLowerCase()
+              .includes(searchProps.where.toLowerCase())
+          : hotel.country?.toLowerCase().includes(searchProps.where.toLowerCase()));
+
+      console.log(item);
       const isRecreationTypeSelected =
         recreationType.length === 0 || recreationType.includes(hotel.type_of_rest);
 
@@ -171,8 +182,8 @@ export function CatalogList({
         isMealTypeSelected &&
         isAmenitiesSelected &&
         isGuestsSelected &&
-        isTourOperatorSelected
-
+        isTourOperatorSelected &&
+        isWhereSelected
         // && isNightsSelected
       );
     });
