@@ -5,7 +5,7 @@ import { IHotel } from '@/types/hotel';
 import { SvgSprite } from '../ui/svg-sprite';
 
 interface HotelComponentPhotoSliderProps {
-  hotel: IHotel;
+  hotel: Omit<IHotel, 'rooms'>;
 }
 
 export function HotelComponentPhotoSlider({

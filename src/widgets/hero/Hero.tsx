@@ -19,6 +19,8 @@ export function Hero({ className }: IHero) {
   const [tab, setTab] = useState<'Туры' | 'Отели'>('Туры');
 
   const searchState = useSearchBlockState({
+    defaultDepartureCity: 'Москва',
+    defaultWhere: 'Турция',
     defaultCheckInDate: `${getDateNow(+5)}`,
     defaultNights: '7 ночей',
     defaultGuests: '2 гостя',
