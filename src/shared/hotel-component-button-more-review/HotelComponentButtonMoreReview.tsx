@@ -1,3 +1,4 @@
+/* eslint-disable no-commented-code/no-commented-code */
 import React, { useState } from 'react';
 
 import { IHotel } from '@/types/hotel';

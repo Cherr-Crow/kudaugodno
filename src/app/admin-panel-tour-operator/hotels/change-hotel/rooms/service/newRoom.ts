@@ -23,5 +23,5 @@ export const newRoom: Omit<RoomType, 'id' | 'photo'> = {
   amenities_bathroom: [],
   amenities_view: [],
   rules: [],
-  dates: [],
+  calendar_dates: [],
 };

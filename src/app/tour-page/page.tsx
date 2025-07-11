@@ -6,8 +6,7 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
-import { useGetToursByHotelQuery } from '@/servicesApi/toursApi';
+import { useGetOneTourQuery, useGetToursByHotelQuery } from '@/servicesApi/toursApi';
 import { Breadcrumbs } from '@/shared/breadcrumbs';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { OtherTours } from '@/shared/ui/other-tours/OtherTours';
@@ -25,13 +24,46 @@ import { ToursBlockPhoto } from '@/widgets/tours-block-photo';
 function CatalogToursContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const hotelId = Number(searchParams.get('hotelId')) ?? null;
-  // const tourId = Number(searchParams.get('tourId')) ?? null;
   const [allRooms, setAllRooms] = useState<IRoomCards[]>([]);
   const [visibleRooms, setVisibleRooms] = useState<IRoomCards[]>([]);
   const [roomsToShow, setRoomsToShow] = useState(5);
   const [hotel, setHotel] = useState<IHotel | null>(null);
   const [tours, setTours] = useState<ITour[]>([]);
+
+  const tourId = Number(searchParams.get('tourId'));
+
+  const {
+    data: tourData,
+    isLoading: isTourLoading,
+    isError: isTourError,
+  } = useGetOneTourQuery(tourId!, {
+    skip: !tourId || tourId <= 0,
+  });
+
+  const hotelId = tourData?.hotel?.id;
+  const hotelData = tourData?.hotel;
+
+  console.log(tourId);
+
+  const {
+    data: toursData,
+    isLoading: isToursLoading,
+    isError: isToursError,
+  } = useGetToursByHotelQuery(
+    { hotelId: hotelId as number, limit: 10 },
+    { skip: !hotelId },
+  );
+
+  console.log('tourData:', tourData);
+
+  useEffect(() => {
+    if (hotelData && !isTourLoading && !isTourError)
+      setHotel({ ...hotelData, rooms: [] });
+  }, [hotelData]);
+
+  useEffect(() => {
+    if (toursData) setTours(toursData.results);
+  }, [toursData?.results]);
 
   // Инициализация компонента стейтов для SearchTour
   const searchState = useSearchBlockState({
@@ -44,7 +76,9 @@ function CatalogToursContent() {
 
   // Обновление URL
   useEffect(() => {
-    updateUrlParams(router, hotelId);
+    if (!isTourLoading && !isTourError && tourData && tourId) {
+      updateUrlParams(router, tourId);
+    }
   }, [
     searchProps.departureCity,
     searchProps.where,
@@ -53,27 +87,6 @@ function CatalogToursContent() {
     searchProps.guests,
   ]);
 
-  const {
-    data: hotelData,
-    isLoading: isHotelLoading,
-    isError: isHotelError,
-  } = useGetOneHotelQuery(hotelId);
-
-  const {
-    data: toursData,
-    isLoading: isToursLoading,
-    isError: isToursError,
-  } = useGetToursByHotelQuery({ hotelId, limit: 10 }, { skip: !hotelId });
-
-  useEffect(() => {
-    if (hotelData) setHotel(hotelData);
-  }, [hotelData]);
-  console.log('hotel rooms', hotel?.rooms);
-  useEffect(() => {
-    if (toursData) setTours(toursData.results);
-  }, [toursData?.results]);
-
-  console.log('tour', tours);
   // Фильтрация туров
   useEffect(() => {
     if (!tours || !hotel) return;
@@ -132,6 +145,7 @@ function CatalogToursContent() {
             airline: tour.flight_to.airline,
           },
           total_price: Number(tour.price) + Number(meal.price),
+          nights,
         })) ?? []
       );
     });
@@ -140,7 +154,7 @@ function CatalogToursContent() {
     setVisibleRooms(mapped.slice(0, roomsToShow));
   }, [tours, hotel, hotelId, searchProps.guests, searchProps.nights, roomsToShow]);
 
-  if (isHotelLoading || isToursLoading) {
+  if (isTourLoading || isToursLoading) {
     return <div className='pt-[40px] text-center text-[32px]'>Загрузка...</div>;
   }
 
@@ -148,7 +162,7 @@ function CatalogToursContent() {
     return <div className='pt-[40px] text-center text-[32px]'>Данных нет.</div>;
   }
 
-  if (isHotelError || isToursError) {
+  if (isTourError || isToursError) {
     return (
       <div className='pt-[40px] text-center text-[32px]'>
         Ошибка при загрузке туров.

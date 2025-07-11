@@ -135,14 +135,14 @@ const testRooms: RoomType[] = [
       { name: 'Курение запрещено', option: true },
       { name: 'Домашние животные разрешены', option: false },
     ],
-    dates: [
+    calendar_dates: [
       {
         id: 1,
         start_date: '2024-07-01',
         end_date: '2024-07-10',
         available_for_booking: true,
-        stock: true,
-        share_size: 0.2,
+        discount: true,
+        discount_amount: '0.2',
         price: 42000,
       },
       {
@@ -150,8 +150,8 @@ const testRooms: RoomType[] = [
         start_date: '2024-07-15',
         end_date: '2024-07-25',
         available_for_booking: true,
-        stock: false,
-        share_size: 0,
+        discount: false,
+        discount_amount: '0',
         price: 47000,
       },
     ],
@@ -186,14 +186,14 @@ const testRooms: RoomType[] = [
       { name: 'Курение запрещено', option: true },
       { name: 'Разрешены вечеринки', option: false },
     ],
-    dates: [
+    calendar_dates: [
       {
         id: 3,
         start_date: '2024-08-01',
         end_date: '2024-08-07',
         available_for_booking: false,
-        stock: true,
-        share_size: 5000,
+        discount: true,
+        discount_amount: '5000',
         price: 80000,
       },
       {
@@ -201,8 +201,8 @@ const testRooms: RoomType[] = [
         start_date: '2024-08-10',
         end_date: '2024-08-20',
         available_for_booking: true,
-        stock: false,
-        share_size: 0,
+        discount: false,
+        discount_amount: '0',
         price: 85000,
       },
     ],

@@ -53,14 +53,14 @@ export const hotels: IHotel[] = [
             option: true,
           },
         ],
-        dates: [
+        calendar_dates: [
           {
             id: 1,
             start_date: '2024-07-01',
             end_date: '2024-07-10',
             available_for_booking: true,
-            stock: true,
-            share_size: 0.2,
+            discount: true,
+            discount_amount: '0.2',
             price: 42000,
           },
           {
@@ -68,8 +68,8 @@ export const hotels: IHotel[] = [
             start_date: '2024-07-15',
             end_date: '2024-07-25',
             available_for_booking: true,
-            stock: false,
-            share_size: 0,
+            discount: false,
+            discount_amount: '0',
             price: 47000,
           },
         ],

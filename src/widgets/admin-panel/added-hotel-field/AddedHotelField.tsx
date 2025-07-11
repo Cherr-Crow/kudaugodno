@@ -1,3 +1,4 @@
+/* eslint-disable no-commented-code/no-commented-code */
 'use client';
 
 import React, { useEffect, useState } from 'react';
