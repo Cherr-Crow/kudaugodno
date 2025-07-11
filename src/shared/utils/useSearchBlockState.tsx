@@ -85,7 +85,11 @@ export const useSearchBlockState = ({
   }, [searchParams, isInitialized]);
 
   // Обновляем URL при изменении полей
-  const updateUrlParams = (router: AppRouterInstance, hotelId?: number | null) => {
+  const updateUrlParams = (
+    router: AppRouterInstance,
+    hotelId?: number | null,
+    tourId?: number | null,
+  ) => {
     const params = new URLSearchParams();
     if (type) params.set('type', type);
     if (departureCity) params.set('departureCity', departureCity);
@@ -100,7 +104,12 @@ export const useSearchBlockState = ({
     const guestsNumber = getNumericValue(guests);
     if (guestsNumber) params.set('guests', guestsNumber);
 
-    if (hotelId) params.set('hotelId', hotelId.toString());
+    if (tourId != null) {
+      params.set('tourId', tourId.toString());
+    }
+    if (hotelId != null) {
+      params.set('hotelId', hotelId.toString());
+    }
 
     router.replace(`${window.location.pathname}?${params.toString()}`);
   };

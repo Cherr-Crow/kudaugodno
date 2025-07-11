@@ -70,15 +70,15 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
       ? Math.abs(Number(discountData.discount_amount))
       : 0;
 
-  const roomDateWithStock = room?.dates.find(
-    (d) => d.stock && todayISO >= d.start_date && todayISO <= d.end_date,
+  const roomDateWithStock = room?.calendar_dates.find(
+    (d) => d.discount && todayISO >= d.start_date && todayISO <= d.end_date,
   );
   const rawRoomDiscount =
-    roomDateWithStock && roomDateWithStock.share_size
-      ? Math.abs(Number(roomDateWithStock.share_size))
+    roomDateWithStock && roomDateWithStock.discount_amount
+      ? Math.abs(Number(roomDateWithStock.discount_amount))
       : 0;
 
-  const stayPrice = data.tour?.price ?? room?.dates[0].price ?? 0;
+  const stayPrice = data.tour?.price ?? room?.calendar_dates[0].price ?? 0;
   const taxes = 0;
   const promoDiscount = 0;
   const resortFee = (data.resortFee || 0) * nightsNum * guestsNum;

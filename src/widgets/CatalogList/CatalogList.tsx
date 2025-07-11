@@ -94,7 +94,7 @@ export function CatalogList({
             (item as ITour).price >= price[0] &&
             (item as ITour).price <= price[1]
           : rooms.some((room) => {
-              const roomPrice = room.dates?.[0]?.price;
+              const roomPrice = room.calendar_dates?.[0]?.price;
               return (
                 typeof roomPrice === 'number' &&
                 roomPrice >= price[0] &&
@@ -114,7 +114,6 @@ export function CatalogList({
               .includes(searchProps.where.toLowerCase())
           : hotel.country?.toLowerCase().includes(searchProps.where.toLowerCase()));
 
-      console.log(item);
       const isRecreationTypeSelected =
         recreationType.length === 0 || recreationType.includes(hotel.type_of_rest);
 
@@ -223,23 +222,32 @@ export function CatalogList({
     setLoadCount((prev) => prev + 10);
   };
 
-  const handleRouting = (
-    hotelId: number,
-    hotelName: string,
-    hotelCountry: string,
-    tab: string,
-  ) => {
+  const handleRouting = ({
+    tourId,
+    hotelId,
+    hotelName,
+    hotelCountry,
+    tab,
+  }: {
+    hotelId?: number | null;
+    tourId?: number | null;
+    hotelName: string;
+    hotelCountry: string;
+    tab: string;
+  }) => {
     const encodedName = encodeURIComponent(hotelName);
-    const encodedId = encodeURIComponent(hotelId);
+    const encodedHotelId = hotelId ? encodeURIComponent(hotelId) : null;
+    const encodedTourId = tourId ? encodeURIComponent(tourId) : null;
     const encodedCountry = encodeURIComponent(hotelCountry);
     const encodedType = encodeURIComponent(tab);
-    if (tab === 'Туры') {
+
+    if (tab === 'Туры' && encodedTourId) {
       router.push(
-        `/tour-page?type=${encodedType}&tourId=${encodedId}&tourName=${encodedName}&arrivalCountry=${encodedCountry}`,
+        `/tour-page?type=${encodedType}&tourId=${encodedTourId}&arrivalCountry=${encodedCountry}`,
       );
     } else {
       router.push(
-        `/hotel-page?type=${encodedType}&hotelId=${encodedId}&hotelName=${encodedName}&arrivalCountry=${encodedCountry}`,
+        `/hotel-page?type=${encodedType}&hotelId=${encodedHotelId}&hotelName=${encodedName}&arrivalCountry=${encodedCountry}`,
       );
     }
   };
@@ -330,14 +338,16 @@ export function CatalogList({
                     </div>
 
                     <div
-                      onClick={() =>
-                        handleRouting(
-                          isTour ? item.id : hotel.id,
-                          hotel.name,
-                          hotel.country,
+                      onClick={() => {
+                        handleRouting({
+                          tourId: isTour ? item.id : null,
+                          hotelId: hotel.id,
+                          hotelName: hotel.name,
+                          hotelCountry: hotel.country,
                           tab,
-                        )
-                      }
+                        });
+                        console.log('Clicked tour ID:', item.id);
+                      }}
                       style={{ cursor: 'pointer' }}
                       className='hotel-info relative z-10 w-full rounded-lg p-4 md:ml-[-16px] md:w-3/5'
                     >
@@ -442,13 +452,15 @@ export function CatalogList({
                           </Typography>
                         ) : (
                           rooms &&
-                          rooms.some((room) => Array.isArray(room.dates)) && (
+                          rooms.some((room) =>
+                            Array.isArray(room.calendar_dates),
+                          ) && (
                             <Typography
                               variant='h4'
                               className='text-[16px] text-blue-600 md:text-lg'
                             >
-                              {rooms[0].dates?.[0]?.price
-                                ? `${rooms[0].dates[0].price} ₽`
+                              {rooms[0].calendar_dates?.[0]?.price
+                                ? `${rooms[0].calendar_dates[0].price} ₽`
                                 : 'Цена не указана'}
                             </Typography>
                           )

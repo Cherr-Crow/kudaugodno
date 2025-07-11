@@ -1,3 +1,4 @@
+/* eslint-disable no-commented-code/no-commented-code */
 import React from 'react';
 
 import { IHotel } from '@/types/hotel';

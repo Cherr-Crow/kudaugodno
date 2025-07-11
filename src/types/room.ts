@@ -1,3 +1,4 @@
+/* eslint-disable no-commented-code/no-commented-code */
 export type RoomType = {
   id: number;
   category: string;
@@ -41,6 +42,6 @@ type AvailableDates = {
   end_date: string;
   available_for_booking: boolean;
   discount: boolean; // акция
-  discount_amount: number; // величина акции, если значение < 1, то это проценты, если > 1, то абсолютное значение скидки
+  discount_amount: string | null; // величина акции, если значение < 1, то это проценты, если > 1, то абсолютное значение скидки
   price: number;
 };

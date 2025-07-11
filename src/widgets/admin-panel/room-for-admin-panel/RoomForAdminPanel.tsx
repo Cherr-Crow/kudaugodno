@@ -1,3 +1,4 @@
+/* eslint-disable no-commented-code/no-commented-code */
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -27,7 +28,7 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
   const [delRoom] = useDelRoomHotelMutation();
   const [changeRoom] = useChangeRoomHotelMutation();
 
-  const [price, setPrice] = useState<number>(room.dates[0].price);
+  const [price, setPrice] = useState<number>(room.calendar_dates[0].price);
   const [typeOfMeals, setTypeOfMeals] = useState<string>('Без питания');
   const [numberOfAdults, setNumberOfAdults] = useState<number>(
     room.number_of_adults,
@@ -168,14 +169,14 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
       amenities_bathroom: amenitiesBathroom,
       amenities_view: amenitiesView,
       rules: [{ name: 'Курение запрещено', option: true }],
-      dates: [
+      calendar_dates: [
         {
           id: 1,
           start_date: '2024-07-01',
           end_date: '2024-07-10',
           available_for_booking: true,
-          stock: true,
-          share_size: 0.2,
+          discount: true,
+          discount_amount: '0.2',
           price: 42000,
         },
       ],
@@ -260,7 +261,7 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
                   name='Цена'
                   title='Цена'
                   type='number'
-                  startValue={room.dates[0].price}
+                  startValue={room.calendar_dates[0].price}
                   getValue={(val) => handlePriceChange(val as number)}
                 />
                 <div>

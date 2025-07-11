@@ -1,3 +1,4 @@
+/* eslint-disable no-commented-code/no-commented-code */
 /* eslint-disable react/no-children-prop */
 'use client';
 import React, { useEffect, useState } from 'react';
@@ -211,7 +212,7 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
                   variant='m-bold'
                   className='font-medium md:text-lg lg:text-xl'
                 >
-                  {formatNumberToPriceInRub(room.dates[0].price, 'word')}
+                  {formatNumberToPriceInRub(room.calendar_dates[0].price, 'word')}
                 </Typography>
 
                 <div className='md:text-nowrap'>
