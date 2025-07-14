@@ -6,6 +6,7 @@ import { discountsApi } from '@/servicesApi/discountApi';
 import { flightsApi } from '@/servicesApi/flightsApi';
 import { hotelsApi } from '@/servicesApi/hotelsApi';
 import { insurancesApi } from '@/servicesApi/insurancesApi';
+import { popularToursApi } from '@/servicesApi/popularApi';
 import { roomsApi } from '@/servicesApi/roomsApi';
 import { subscribeApi } from '@/servicesApi/subscribeApi';
 import { toursApi } from '@/servicesApi/toursApi';
@@ -30,6 +31,7 @@ export const store = configureStore({
     [insurancesApi.reducerPath]: insurancesApi.reducer,
     [applicationsApi.reducerPath]: applicationsApi.reducer,
     [roomsApi.reducerPath]: roomsApi.reducer,
+    [popularToursApi.reducerPath]: popularToursApi.reducer,
   },
   middleware: (getDefaultMiddlware) =>
     getDefaultMiddlware().concat(
@@ -44,6 +46,7 @@ export const store = configureStore({
       insurancesApi.middleware,
       applicationsApi.middleware,
       roomsApi.middleware,
+      popularToursApi.middleware,
     ),
 });
 

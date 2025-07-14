@@ -1,10 +1,8 @@
 import { Suspense } from 'react';
 
-import { Typography } from '@/shared/ui/typography';
 import { AdvertisingBanner } from '@/widgets/advertising-banner';
 import { Hero } from '@/widgets/hero';
 import { HotOffer } from '@/widgets/hot-offer';
-import { OurAdvantages } from '@/widgets/our-advantages';
 import { PopularDestinations } from '@/widgets/popular-destinations';
 import { SubscribeToTheNewsletter } from '@/widgets/subscribe-to-the-newsletter';
 import { WzhuhBanner } from '@/widgets/wzhuh';
@@ -29,14 +27,14 @@ export default async function Home() {
         />
         <AdvertisingBanner />
         <PopularDestinations />
-        <OurAdvantages>
+        {/* <OurAdvantages>
           <Typography
             variant='h4'
             className='mb-5 text-[22px] font-semibold lg:text-[32px]'
           >
             Зачем ехать в тур с нами?
           </Typography>
-        </OurAdvantages>
+        </OurAdvantages> */}
         <SubscribeToTheNewsletter />
       </div>
     </Suspense>
