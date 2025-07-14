@@ -7,7 +7,7 @@ import { AdaptiveToastContainer } from '@/shared/ui/toast/AdaptiveToastContainer
 import { Footer } from '@/widgets/footer';
 import { Header } from '@/widgets/header';
 
-import { futura } from './fonts/futura';
+import { jost } from './fonts';
 
 export const metadata: Metadata = {
   title: 'Куда угодно',
@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <StoreProvider>
-      <html lang='ru'>
+      <html lang='ru' className={jost.className}>
         <Head>
           <link
             rel='icon'
@@ -29,16 +29,9 @@ export default function RootLayout({
             type='image/<generated>'
             sizes='<generated>'
           />
-          <link
-            rel='prefetch'
-            href='/fonts/FuturaPTBook.otf'
-            as='font'
-            type='font/otf'
-            crossOrigin='anonymous'
-          />
           <link rel='prefetch' href='/globals.css' as='style' />
         </Head>
-        <body className={`${futura.className} flex min-h-screen flex-col`}>
+        <body className='flex min-h-screen flex-col'>
           <Header />
           <main className='grow'> {children}</main>
           <AdaptiveToastContainer />
