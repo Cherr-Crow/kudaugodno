@@ -97,7 +97,8 @@ export type NameSvg =
   | 'success'
   | 'error'
   | 'warning-fill'
-  | 'info';
+  | 'info'
+  | 'logo-god';
 
 // при добавлении нового типа svg, переносите его и в svgNameList для отображения в ПК плз.
 
@@ -191,4 +192,5 @@ export const svgNameList = [
   'error',
   'warning-fill',
   'info',
+  'logo-god',
 ];
