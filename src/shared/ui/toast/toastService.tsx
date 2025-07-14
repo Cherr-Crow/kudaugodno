@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-import { futura } from '@/app/fonts/futura';
+import { jost } from '@/app/fonts';
 import { useIsMobile } from '@/shared/hooks/useIsMobile';
 
 import { Toast } from './Toast';
@@ -27,7 +27,7 @@ export const useToast = () => {
     const bgColor = isMobile ? toastColors[type] : '!bg-grey-50';
 
     const id = toast(<Toast message={message} type={type} id={undefined} />, {
-      className: `overflow-hidden !min-h-14 ${bgColor} md:!h-16 md:!max-w-[300px] md:!rounded-l-2xl md:!rounded-r-none md:mr-[-16px] ${futura.className}`,
+      className: `overflow-hidden !min-h-14 ${bgColor} md:!h-16 md:!max-w-[300px] md:!rounded-l-2xl md:!rounded-r-none md:mr-[-16px] ${jost.className}`,
       progressClassName: toastProgressColors[type],
     });
 
