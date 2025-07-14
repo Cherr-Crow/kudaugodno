@@ -590,7 +590,6 @@ export default function RomanN() {
                 tour_operator='Fun&Sun'
                 total_price={240894}
                 guests={2}
-                nights={7}
                 photos={[{ photo: 'gjgjgj' }]}
                 meal={'jjj'}
                 flight_info={{
