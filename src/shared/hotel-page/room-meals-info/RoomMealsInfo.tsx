@@ -14,7 +14,6 @@ export const RoomMealsInfo: React.FC<RoomMealsInfoProps> = ({
 
   useEffect(() => {
     const names = meals.map((meal) => meal.name);
-    names.unshift('Без питания');
     setOptions(names);
   }, [meals]);
 

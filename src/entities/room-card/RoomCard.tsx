@@ -34,7 +34,7 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
   const [checkInDate, setCheckInDate] = useState('');
   const [nights, setNights] = useState('Количество ночей');
   const [guests, setGuests] = useState('Количество гостей');
-  const [meals, setMeals] = useState<string>('Без питания');
+  const [meals, setMeals] = useState<string>('');
   const [roomsQuantity, setRoomsQuantity] = useState<number>(1);
 
   const quantityOfRooms = Array.from({ length: room.quantity_rooms }, (_, i) =>

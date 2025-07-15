@@ -1,0 +1,1 @@
+export { FilterHotelCards } from './FilterHotelCards';

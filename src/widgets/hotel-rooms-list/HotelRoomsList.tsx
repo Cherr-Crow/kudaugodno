@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { skipToken } from '@reduxjs/toolkit/query/react';
 
 import { RoomCard } from '@/entities/room-card';
 import { ClickWrapper } from '@/entities/room-card/ClickWrapper';
 import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
+import { FilterHotelCards } from '@/shared/filter-hotel-cards';
 import { Modal } from '@/shared/modal';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Typography } from '@/shared/ui/typography';
@@ -45,13 +46,56 @@ export const HotelRoomsList: React.FC<HotelRoomsListProps> = ({
     setVisibleCards(Math.min(rooms.length, 5));
   };
 
-  const isShowMore = visibleCards < rooms.length;
-  const shouldShowButton = rooms.length > 5;
+  const [selectedFilters, setSelectedFilters] = useState<{
+    category: string[];
+    meals: string[];
+    guests: number[];
+  }>({
+    category: [],
+    meals: [],
+    guests: [],
+  });
+
+  const filteredRooms = useMemo(() => {
+    return rooms.filter((room) => {
+      const matchCategory =
+        selectedFilters.category.length === 0 ||
+        selectedFilters.category.includes(room.category);
+
+      const matchMeal =
+        selectedFilters.meals.length === 0 ||
+        room.type_of_meals.some((meal) => selectedFilters.meals.includes(meal.name));
+
+      const totalGuests = room.number_of_adults + room.number_of_children;
+      const matchGuests =
+        selectedFilters.guests.length === 0 ||
+        selectedFilters.guests.includes(totalGuests);
+
+      return matchCategory && matchMeal && matchGuests;
+    });
+  }, [rooms, selectedFilters]);
+
+  React.useEffect(() => {
+    setVisibleCards(Math.min(filteredRooms.length, 5));
+  }, [filteredRooms]);
+
+  const isShowMore = visibleCards < filteredRooms.length;
+  const shouldShowButton = filteredRooms.length > 5;
 
   return (
     <>
+      <div className='mb-5 items-center justify-between lg:mb-8 lg:flex'>
+        <Typography variant='h3' className=''>
+          Варианты номеров
+        </Typography>
+        <FilterHotelCards
+          rooms={rooms}
+          selectedFilters={selectedFilters}
+          setSelectedFilters={setSelectedFilters}
+        />
+      </div>
       <ul className='flex flex-col gap-3 md:gap-5'>
-        {rooms.slice(0, visibleCards).map((room) => (
+        {filteredRooms.slice(0, visibleCards).map((room) => (
           <li
             key={room.id}
             className='relative z-0 rounded-[20px] bg-white transition-transform duration-300 hover:scale-[1.02] md:border md:border-grey-50 md:shadow-md'
