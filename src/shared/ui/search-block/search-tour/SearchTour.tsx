@@ -104,8 +104,8 @@ export function SearchTour({
 
     const targetPath =
       type === 'Туры'
-        ? `/catalog-tours?${queryParams.toString()}`
-        : `/catalog-hotels?${queryParams.toString()}`;
+        ? `/catalog?tab=Туры?${queryParams.toString()}`
+        : `/catalog?tab=Отели?${queryParams.toString()}`;
 
     router.push(targetPath);
 

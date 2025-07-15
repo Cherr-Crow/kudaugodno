@@ -17,12 +17,12 @@ export default async function Home() {
         {/* <HotOffer
         type='tour'
         title='Ой... А эти туры скоро разберут'
-        link='/catalog-tours'
+        link='/catalog?tab=Туры'
       /> */}
         <HotOffer
           type='hotel'
           title='Что насчет...'
-          link='/catalog-hotels'
+          link='/catalog?tab=Отели'
           className='pb-8 md:pb-12 lg:pb-[70px]'
         />
         <AdvertisingBanner />

@@ -150,10 +150,10 @@ export function Header({ className }: IHeader) {
           {/*</div>*/}
         </Link>
         <nav className='hidden gap-9 md:flex'>
-          <Link href='/catalog-tours' className='link_hover'>
+          <Link className='link_hover' href='/catalog?tab=Туры'>
             <Typography variant='l-bold'>Туры</Typography>
           </Link>
-          <Link className='link_hover' href='/catalog-hotels'>
+          <Link className='link_hover' href='/catalog?tab=Отели'>
             <Typography variant='l-bold'>Отели</Typography>
           </Link>
           <Link className='link_hover' href='/blog-page'>
@@ -657,7 +657,7 @@ export function Header({ className }: IHeader) {
                   className='flex w-[100%] min-w-[100vw] flex-col overflow-y-auto rounded-tl-none rounded-tr-none md:mt-0'
                 >
                   <Link
-                    href='/catalog-tours'
+                    href='/catalog?tab=Туры'
                     onClick={(e) => {
                       toggleBurgerMenu(e);
                     }}
@@ -666,7 +666,7 @@ export function Header({ className }: IHeader) {
                     <Typography>Туры</Typography>
                   </Link>
                   <Link
-                    href='/catalog-hotels'
+                    href='/catalog?tab=Отели'
                     onClick={(e) => {
                       toggleBurgerMenu(e);
                     }}

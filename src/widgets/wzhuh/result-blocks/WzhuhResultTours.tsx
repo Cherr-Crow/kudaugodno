@@ -21,7 +21,7 @@ export function WzhuhResultTours({ tours }: WzhuhResultToursProps) {
           </Typography>
           <div className=''>
             <Link
-              href='/catalog-tours'
+              href='/catalog?tab=Туры'
               className='flex items-center pr-2 md:gap-5 md:pr-4 lg:gap-6 lg:pr-4'
             >
               <Typography className='hidden md:block md:text-lg md:font-medium'>

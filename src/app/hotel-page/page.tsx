@@ -91,10 +91,10 @@ function HotelPage() {
     <section className='container rounded-bl-[20px] rounded-br-[20px] xl:rounded-bl-[100px] xl:rounded-br-[100px]'>
       <Breadcrumbs
         paths={[
-          { label: 'Отели', href: '/catalog-hotels' },
+          { label: 'Отели', href: '/catalog?tab=Отели' },
           {
             label: `${hotel.country}, ${hotel.city}`,
-            href: `/catalog-hotels?where=${hotel.city}`,
+            href: `/catalog?tab=Отели?where=${hotel.city}`,
           },
           {
             label: `${hotel.name}`,

@@ -1,13 +1,14 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { FilterCatalog } from '@/widgets/filter-catalog';
 
-export default function CatalogHotels() {
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
+export default function CatalogPage() {
+  const router = useRouter();
 
-  return <div>{isClient && <FilterCatalog initialTab='Отели' />}</div>;
+  const handleTabChange = (newTab: 'Туры' | 'Отели') => {
+    router.push(`/catalog?tab=${newTab}`);
+  };
+
+  return <FilterCatalog onTabChange={handleTabChange} />;
 }

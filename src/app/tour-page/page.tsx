@@ -174,10 +174,10 @@ function CatalogToursContent() {
     <div className='container'>
       <Breadcrumbs
         paths={[
-          { label: 'Туры', href: '/catalog-tours' },
+          { label: 'Туры', href: '/catalog?tab=Туры' },
           {
             label: `${hotel?.country}, ${hotel?.city}`,
-            href: `/catalog-tours?where=${hotel?.city}`,
+            href: `/catalog?tab=Туры?where=${hotel?.city}`,
           },
           {
             label: `${hotel?.name}`,

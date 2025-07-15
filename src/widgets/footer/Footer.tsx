@@ -65,10 +65,10 @@ export function Footer({ className }: IFooter) {
             <Link href='/about-us'>
               <Typography className='lg:text-xl lg:font-medium'>О нас</Typography>
             </Link>
-            <Link href='/catalog-tours'>
+            <Link href='/catalog?tab=Туры'>
               <Typography className='lg:text-xl lg:font-medium'>Туры</Typography>
             </Link>
-            <Link href='/catalog-hotels'>
+            <Link href='/catalog?tab=Отели'>
               <Typography className='lg:text-xl lg:font-medium'>Отели</Typography>
             </Link>
             <Link href='/blog'>

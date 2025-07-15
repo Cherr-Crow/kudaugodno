@@ -3,7 +3,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { FilterAirportDistance } from '@/shared/filter-airport-distance';
 import { FilterAmenities } from '@/shared/filter-amenities';
@@ -24,11 +24,11 @@ import { getDateNow } from '@/shared/utils/getDateNow';
 import { useSearchBlockState } from '@/shared/utils/useSearchBlockState';
 import CatalogData from '@/widgets/catalog-data/CatalogData';
 
-type HotelCatalogProps = {
-  initialTab: 'Туры' | 'Отели';
+type CatalogProps = {
+  onTabChange?: (tab: 'Туры' | 'Отели') => void;
 };
 
-export function FilterCatalog({ initialTab }: HotelCatalogProps) {
+export function FilterCatalog({ onTabChange }: CatalogProps) {
   {
     /* Отзывы*/
   }
@@ -87,11 +87,24 @@ export function FilterCatalog({ initialTab }: HotelCatalogProps) {
     tourOperators: [] as string[],
   });
 
-  const [tab, setTab] = useState<'Туры' | 'Отели'>(initialTab);
-
-  // Load data to filter from URL
-
   const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const getTabFromParams = () =>
+    searchParams.get('tab') === 'Отели' ? 'Отели' : 'Туры';
+
+  const [tab, setTab] = useState<'Туры' | 'Отели'>(getTabFromParams);
+
+  useEffect(() => {
+    setTab(getTabFromParams());
+  }, [searchParams]);
+
+  const handleTabChange = (newTab: 'Туры' | 'Отели') => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('tab', newTab);
+    router.push(`?${params.toString()}`);
+    onTabChange?.(newTab);
+  };
 
   // Инициализация компонента стейтов для SearchTour
   const searchState = useSearchBlockState({
@@ -349,7 +362,7 @@ export function FilterCatalog({ initialTab }: HotelCatalogProps) {
         <SearchBlock
           className='gap-4 md:gap-3'
           tab={tab}
-          setTab={setTab}
+          setTab={handleTabChange}
           {...searchProps}
         />
       </div>
