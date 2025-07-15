@@ -32,7 +32,7 @@ export function WzhuhResultHotels({
 
         <div className='lg:flex lg:items-center'>
           <Link
-            href={`/catalog-hotels?where=${arrival_city}`}
+            href={`/catalog?tab=Отели?where=${arrival_city}`}
             className='flex pr-1 md:gap-5 md:pr-4 lg:items-center lg:gap-5 lg:pr-4'
           >
             <Typography className='hidden md:block md:text-lg md:font-semibold'>

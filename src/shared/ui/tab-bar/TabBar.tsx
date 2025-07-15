@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { nanoid } from 'nanoid';
 
@@ -14,10 +14,19 @@ export function TabBar({
   tabs,
   svgTab,
   setTab,
+  activeTab,
   getActiveTab,
   variant = 'primary',
 }: ITabBar) {
-  const [active, setActive] = useState(setTab ? setTab : tabs[0]);
+  const [active, setActive] = useState(activeTab ?? setTab ?? tabs[0]);
+
+  useEffect(() => {
+    if (activeTab !== undefined) {
+      setActive(activeTab);
+    } else if (setTab !== undefined) {
+      setActive(setTab);
+    }
+  }, [activeTab, setTab]);
 
   enum Style {
     primary = 'bg-green-300 p-2',

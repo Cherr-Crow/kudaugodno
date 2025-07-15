@@ -6,6 +6,7 @@ export interface ITabBar extends UlProps {
   tabs: string[];
   svgTab?: NameSvg[];
   setTab?: string;
+  activeTab?: string;
   tabIndex?: (tab: string) => void;
   getActiveTab(tab: string): void;
   variant?: 'primary' | 'secondary';

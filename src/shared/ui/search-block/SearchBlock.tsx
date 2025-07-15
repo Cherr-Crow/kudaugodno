@@ -30,6 +30,10 @@ export function SearchBlock({
   const [isClient, setIsClient] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  useEffect(() => {
+    setTabState(initialTab ?? 'Туры');
+  }, [initialTab]);
+
   const handleTabChange = (newTab: 'Туры' | 'Отели') => {
     setTabState(newTab);
     if (setTab) {
@@ -54,7 +58,7 @@ export function SearchBlock({
           <TabBar
             tabs={['Туры', 'Отели']}
             svgTab={['airplane', 'sofa']}
-            setTab={tab}
+            activeTab={tab}
             getActiveTab={handleTabChange}
             variant='secondary'
           />
