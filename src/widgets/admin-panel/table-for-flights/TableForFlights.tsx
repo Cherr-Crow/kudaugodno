@@ -4,8 +4,8 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/navigation';
 
 import { useDeleteFlightMutation } from '@/servicesApi/flightsApi';
+import { FilterAdmin } from '@/shared/filter-admin';
 import { ContextMenu } from '@/shared/ui/context-menu';
-import { FilterAdmin } from '@/shared/ui/filter-admin';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { isoToDateFormat } from '@/shared/utils/isoToDateFormat';
 

@@ -10,10 +10,11 @@ import { Typography } from '@/shared/ui/typography';
 import { calculateNights } from '@/shared/utils/calculateNights';
 import { formatDateRange } from '@/shared/utils/formatDateRange';
 import { formatDistance } from '@/shared/utils/formatDistance';
-import { formatNumberToPriceInRub } from '@/shared/utils/formatNumberToPriceInRub';
+// import { formatNumberToPriceInRub } from '@/shared/utils/formatNumberToPriceInRub';
 import { getOfferUrl } from '@/shared/utils/getOfferUrl';
+import { IHotelMiniData } from '@/types/hotel';
+import { ITourMiniData } from '@/types/tour';
 
-import { IHotelMiniData, ITourMiniData } from './OfferCard.types';
 import { IOfferCard } from './OfferCard.types';
 
 function isHotel(offer: IHotelMiniData | ITourMiniData): offer is IHotelMiniData {
@@ -33,7 +34,7 @@ export function OfferCard({ offer, needHotelBadges }: IOfferCard) {
   const hotelBadges = isTour(offer) ? [] : offer.amenities_common;
   const displayBadges = isTour(offer) ? tourBadges : hotelBadges;
 
-  const displayPrice = formatNumberToPriceInRub(offer.discountedPrice);
+  // const displayPrice = formatNumberToPriceInRub(offer.discountedPrice);
 
   return (
     <article className='relative flex h-full flex-col overflow-hidden rounded-[20px] bg-white shadow-lg md:min-h-[482px]'>
@@ -51,7 +52,7 @@ export function OfferCard({ offer, needHotelBadges }: IOfferCard) {
       </div>
       <div className=''>
         <img
-          src={offer.photo}
+          src={offer.photo[0].photo}
           alt='Фото отеля'
           className='h-[199px] w-full bg-cover object-cover md:h-[278px] lg:h-[298px]'
         />
@@ -86,9 +87,11 @@ export function OfferCard({ offer, needHotelBadges }: IOfferCard) {
         </div>
         {isHotel(offer) && (
           <div className='flex flex-col text-grey-600'>
-            <Typography>
-              {`${formatDistance(offer.distance_to_the_center)} от центра`}
-            </Typography>
+            {offer.distance_to_the_center && (
+              <Typography>
+                {`${formatDistance(offer.distance_to_the_center)} от центра`}
+              </Typography>
+            )}
             {offer.distance_to_the_sea && (
               <Typography className='mt-[-7px]'>
                 {`${formatDistance(offer.distance_to_the_sea)} от моря`}
@@ -99,17 +102,17 @@ export function OfferCard({ offer, needHotelBadges }: IOfferCard) {
         <div
           className={`mt-auto flex items-center ${isTour(offer) ? 'mb-[10px] gap-2 md:mb-[14px] lg:mb-[18px]' : 'mb-[9px] gap-1 md:mb-[11px] lg:mb-[13px]'}`}
         >
-          <Typography
+          {/* <Typography
             variant='l-bold'
             className={`font-semibold text-red-primary-800 md:text-xl`}
           >
             от {displayPrice}
-          </Typography>
-          {offer.discount && (
+          </Typography> */}
+          {/* {offer.discount && (
             <Typography className='text-sm text-grey-300 md:text-[18px] md:font-medium'>
               <s>{formatNumberToPriceInRub(offer.original_price)}</s>
             </Typography>
-          )}
+          )} */}
           <Typography className='text-grey-600'>
             {isHotel(offer)
               ? 'за сутки'

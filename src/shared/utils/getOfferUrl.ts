@@ -1,7 +1,5 @@
-import {
-  IHotelMiniData,
-  ITourMiniData,
-} from '@/entities/offer-card/OfferCard.types';
+import { IHotelMiniData } from '@/types/hotel';
+import { ITourMiniData } from '@/types/tour';
 
 export function getOfferUrl(offer: IHotelMiniData | ITourMiniData): string {
   const isHotel = 'distance_to_the_center' in offer;

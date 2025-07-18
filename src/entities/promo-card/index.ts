@@ -1,1 +1,1 @@
-export { PromoCard } from './PromoCard';
+export { PromoCardList } from './PromoCard';

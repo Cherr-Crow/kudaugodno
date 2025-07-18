@@ -3,14 +3,12 @@ import Link from 'next/link';
 import { OfferCard } from '@/entities/offer-card';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
-import { IHotelMiniDataWzhuh } from '@/types/wzhuh';
-
-import { adaptHotelWzhuhToMiniData } from '../adaptersToMiniData';
+import { IHotelMiniData } from '@/types/hotel';
 
 type WzhuhResultHotelsProps = {
   arrival_city: string;
   description_hotel: string;
-  hotels: IHotelMiniDataWzhuh[];
+  hotels: IHotelMiniData[];
 };
 
 export function WzhuhResultHotels({
@@ -50,10 +48,7 @@ export function WzhuhResultHotels({
               key={hotel.id}
               className='max-h-[364px] min-w-[284px] md:max-h-[554px] md:min-w-[380px] lg:min-w-[370px]'
             >
-              <OfferCard
-                offer={adaptHotelWzhuhToMiniData(hotel)}
-                needHotelBadges={true}
-              />
+              <OfferCard offer={hotel} needHotelBadges={true} />
             </li>
           ))}
       </ul>

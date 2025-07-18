@@ -3,17 +3,22 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useScreen } from 'usehooks-ts';
 
 import { OfferCard } from '@/entities/offer-card';
-import { useGetHotelsQuery } from '@/servicesApi/hotelsApi';
+import { useGetAllDiscountsQuery } from '@/servicesApi/discountApi';
+import { useGetToursQuery } from '@/servicesApi/toursApi';
 import { Breadcrumbs } from '@/shared/breadcrumbs';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
-import { IHotelMiniData } from '@/types/hotel';
+import { mapTourToMiniData } from '@/shared/utils/mapTourToMiniData';
 
-export default function StocksHotelsPage() {
+export function StocksTours() {
+  const searchParams = useSearchParams();
+  const country = searchParams.get('country');
+
   const screen = useScreen();
   const [cardsToShow, setCardsToShow] = useState(4);
 
@@ -30,13 +35,31 @@ export default function StocksHotelsPage() {
 
   const increment = initialCount;
 
-  const { data: hotelsData } = useGetHotelsQuery({});
+  const { data: toursData } = useGetToursQuery({});
+  const { data: discounts } = useGetAllDiscountsQuery();
 
-  const enrichedHotels: IHotelMiniData[] = hotelsData?.results ?? [];
+  const discountMap = Object.fromEntries((discounts ?? []).map((d) => [d.id, d]));
 
-  const visible = enrichedHotels.slice(0, cardsToShow);
+  const enrichedTours = (toursData?.results ?? [])
+    .map((tour) => {
+      const discount = discountMap[tour.id];
+      const amount = discount?.active_stock
+        ? Number(discount.discount_amount)
+        : null;
+      return mapTourToMiniData(tour, amount);
+    })
+    .filter((t) => {
+      if (t.discount === null) return false;
+      if (!country) return true;
 
-  const hasMore = cardsToShow < enrichedHotels.length;
+      return (
+        t.arrival_country.toLowerCase() === decodeURIComponent(country).toLowerCase()
+      );
+    });
+
+  const visibleTours = enrichedTours.slice(0, cardsToShow);
+
+  const hasMore = cardsToShow < enrichedTours.length;
 
   return (
     <div className='mx-auto max-w-[1440px]'>
@@ -46,7 +69,9 @@ export default function StocksHotelsPage() {
           paths={[
             { label: 'Акции', href: '/stocks' },
             {
-              label: 'Отели по специальной цене',
+              label: country
+                ? `Туры по специальной цене - ${country}`
+                : 'Туры по специальной цене',
             },
           ]}
         />
@@ -55,26 +80,28 @@ export default function StocksHotelsPage() {
             <SvgSprite name='arrow' className='rotate-180' />
           </Link>
           <Typography variant='h1' className='text-blue-950 md:text-5xl lg:text-7xl'>
-            Отели по специальной цене
+            {country
+              ? `Туры по специальной цене - ${country}`
+              : 'Туры по специальной цене'}
           </Typography>
         </div>
 
         <ul
           className={`${hasMore ? '' : 'pb-10 md:pb-20'} grid grid-cols-1 gap-3 md:grid md:grid-cols-2 md:gap-5 lg:grid-cols-3`}
         >
-          {visible.map((hotel) => (
-            <li key={hotel.id}>
-              <OfferCard offer={hotel} needHotelBadges={true} />
+          {visibleTours.map((tour) => (
+            <li key={tour.id}>
+              <OfferCard offer={tour} />
             </li>
           ))}
         </ul>
         {hasMore && (
-          <div className='mt-4 flex items-center justify-center pb-10 md:mt-7 md:pb-20 lg:mt-9'>
+          <div className='mt-8 flex items-center justify-center pb-10 md:pb-20'>
             <ButtonCustom
               variant='tetriary'
-              size='s'
+              size='m'
               type='button'
-              className='md:py-[14px] lg:px-14 lg:py-6'
+              className='mt-2 xl:mt-0'
               style={{ gridArea: 'btnSubmit' }}
               onClick={() => setCardsToShow((prev) => prev + increment)}
             >

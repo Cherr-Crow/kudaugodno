@@ -64,7 +64,9 @@ export const HotelRoomsList: React.FC<HotelRoomsListProps> = ({
 
       const matchMeal =
         selectedFilters.meals.length === 0 ||
-        room.type_of_meals.some((meal) => selectedFilters.meals.includes(meal.name));
+        ['Без питания', 'Завтрак включен', 'Всё включено'].some((meal) =>
+          selectedFilters.meals.includes(meal),
+        );
 
       const totalGuests = room.number_of_adults + room.number_of_children;
       const matchGuests =

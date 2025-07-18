@@ -144,8 +144,8 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
       rules,
       is_active: isActive,
       // room_categories: ['Стандарт', 'Полулюкс', 'Люкс', 'Апартаменты', 'Студия'],
-      width: latitude,
-      longitude: longitude,
+      width: Number(latitude),
+      longitude: Number(longitude),
     };
     try {
       changeHotel({ body: _obj, id: hotelId });

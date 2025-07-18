@@ -9,7 +9,7 @@ import { Rating } from '@/shared/rating';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
-import { IHotel } from '@/types/hotel';
+import { IHotel, IHotelMiniData } from '@/types/hotel';
 import { ITour } from '@/types/tour';
 
 export interface ICatalog {
@@ -39,7 +39,7 @@ export interface ICatalog {
 }
 
 interface HotelCardProps extends ICatalog {
-  data: IHotel[] | ITour[];
+  data: IHotelMiniData[] | ITour[];
 }
 
 export function CatalogList({
@@ -61,16 +61,16 @@ export function CatalogList({
   const filterHotels = () =>
     data.filter((item) => {
       const isTour = tab === 'Туры';
-      const hotel = isTour ? (item as ITour)?.hotel : (item as IHotel);
-      const rooms = isTour ? (item as ITour)?.rooms : (item as IHotel)?.rooms;
+      const hotel = isTour ? (item as ITour)?.hotel : (item as IHotelMiniData);
+      // const rooms = isTour ? (item as ITour)?.rooms : (item as IHotel)?.rooms;
       const {
         selectedCities,
-        recreationType,
-        placeType,
-        price,
+        // recreationType,
+        // placeType,
+        // price,
         rating,
         starCategory,
-        mealType,
+        // mealType,
         amenities,
         airportDistance,
         tourOperators,
@@ -87,20 +87,20 @@ export function CatalogList({
             (airportDistance === 'До 100 км' &&
               hotel.distance_to_the_airport <= 100000)));
 
-      const isWithinPriceRange =
-        (price[0] !== 0 || price[1] !== 0) &&
-        (isTour
-          ? typeof (item as ITour).price === 'number' &&
-            (item as ITour).price >= price[0] &&
-            (item as ITour).price <= price[1]
-          : rooms.some((room) => {
-              const roomPrice = room.calendar_dates?.[0]?.price;
-              return (
-                typeof roomPrice === 'number' &&
-                roomPrice >= price[0] &&
-                roomPrice <= price[1]
-              );
-            }));
+      // const isWithinPriceRange =
+      //   (price[0] !== 0 || price[1] !== 0) &&
+      //   (isTour
+      //     ? typeof (item as ITour).total_price === 'string' &&
+      //     Number((item as ITour).total_price) >= price[0] &&
+      //     Number((item as ITour).total_price) <= price[1]
+      //     : rooms.some((room) => {
+      //       const roomPrice = room.calendar_dates?.[0]?.price;
+      //       return (
+      //         typeof roomPrice === 'number' &&
+      //         roomPrice >= price[0] &&
+      //         roomPrice <= price[1]
+      //       );
+      //     }));
 
       const isCitySelected =
         selectedCities.length === 0 || selectedCities.includes(hotel.city);
@@ -114,11 +114,11 @@ export function CatalogList({
               .includes(searchProps.where.toLowerCase())
           : hotel.country?.toLowerCase().includes(searchProps.where.toLowerCase()));
 
-      const isRecreationTypeSelected =
-        recreationType.length === 0 || recreationType.includes(hotel.type_of_rest);
+      // const isRecreationTypeSelected =
+      //   recreationType.length === 0 || recreationType.includes(hotel.type_of_rest);
 
-      const isPlaceTypeSelected =
-        placeType.length === 0 || placeType.includes(hotel.place);
+      // const isPlaceTypeSelected =
+      //   placeType.length === 0 || placeType.includes(hotel.place);
 
       const isWithinRatingRange =
         (rating[0] === 0 && rating[1] === 0) ||
@@ -135,11 +135,11 @@ export function CatalogList({
             (item as ITour).tour_operator?.toLowerCase() ?? '',
           ));
 
-      const isMealTypeSelected =
-        mealType.length === 0 ||
-        rooms.some((room) =>
-          room.type_of_meals.some((meal) => mealType.includes(meal.name)),
-        );
+      // const isMealTypeSelected =
+      //   mealType.length === 0 ||
+      //   rooms.some((room) =>
+      //     room.type_of_meals.some((meal) => mealType.includes(meal.name)),
+      //   );
 
       const isAmenitiesSelected =
         amenities.length === 0 ||
@@ -147,18 +147,18 @@ export function CatalogList({
           hotel.amenities_common.some((cat) => cat.includes(amenity)),
         );
 
-      const isGuestsSelected =
-        searchProps.guests === 'Гостей' ||
-        searchProps.guests === undefined ||
-        rooms.some((room) => {
-          const totalGuests =
-            (room.number_of_adults || 0) + (room.number_of_children || 0);
-          const guestsNumber =
-            searchProps.guests === 'Любое'
-              ? 0
-              : parseInt(searchProps.guests || '0', 10);
-          return totalGuests >= guestsNumber;
-        });
+      // const isGuestsSelected =
+      //   searchProps.guests === 'Гостей' ||
+      //   searchProps.guests === undefined ||
+      //   rooms.some((room) => {
+      //     const totalGuests =
+      //       (room.number_of_adults || 0) + (room.number_of_children || 0);
+      //     const guestsNumber =
+      //       searchProps.guests === 'Любое'
+      //         ? 0
+      //         : parseInt(searchProps.guests || '0', 10);
+      //     return totalGuests >= guestsNumber;
+      //   });
 
       // const isNightsSelected =
       //   searchProps.nights === null ||
@@ -173,14 +173,14 @@ export function CatalogList({
       return (
         isWithinAirportDistance &&
         isCitySelected &&
-        isRecreationTypeSelected &&
-        isPlaceTypeSelected &&
-        isWithinPriceRange &&
+        // isRecreationTypeSelected &&
+        // isPlaceTypeSelected &&
+        // isWithinPriceRange &&
         isWithinRatingRange &&
         isStarCategorySelected &&
-        isMealTypeSelected &&
+        // isMealTypeSelected &&
         isAmenitiesSelected &&
-        isGuestsSelected &&
+        // isGuestsSelected &&
         isTourOperatorSelected &&
         isWhereSelected
         // && isNightsSelected
@@ -334,7 +334,7 @@ export function CatalogList({
                       <button className='absolute right-2 top-2 z-10 rounded-full bg-blue-50 p-3 lg:hidden'>
                         <SvgSprite name='heart-outline' width={15} />
                       </button>
-                      <HotelComponentPhotoSlider hotel={hotel} />
+                      <HotelComponentPhotoSlider photos={hotel.photo} />
                     </div>
 
                     <div
@@ -439,7 +439,7 @@ export function CatalogList({
                           <Typography variant='m-bold'>
                             {isTour
                               ? item.type_of_meals[0].name
-                              : rooms[0].type_of_meals[0].name}
+                              : ['Без питания', 'Завтрак включен', 'Всё включено']}
                           </Typography>
                         </div>
 
@@ -448,7 +448,9 @@ export function CatalogList({
                             variant='h4'
                             className='text-[16px] text-blue-600 md:text-lg'
                           >
-                            {item.price ? `${item.price} ₽` : 'Цена не указана'}
+                            {item.total_price
+                              ? `${item.total_price} ₽`
+                              : 'Цена не указана'}
                           </Typography>
                         ) : (
                           rooms &&
