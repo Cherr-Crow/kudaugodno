@@ -1,16 +1,5 @@
-import { ITourMiniData } from '@/entities/offer-card/OfferCard.types';
-import { IHotelMiniData } from '@/entities/offer-card/OfferCard.types';
-
-export interface ITourMiniDataWzhuh extends Omit<ITourMiniData, 'min_price'> {
-  sale: null | number;
-  price: string;
-  number_of_days: number;
-}
-
-export interface IHotelMiniDataWzhuh
-  extends Omit<IHotelMiniData, 'min_price' | 'distance_to_the_center'> {
-  price: string;
-}
+import { IHotelMiniData } from './hotel';
+import { ITourMiniData } from './tour';
 
 export interface IWzhuh {
   id: number;
@@ -20,8 +9,8 @@ export interface IWzhuh {
   description: string;
   best_time_to_travel: string;
   suitable_for_whom: string;
-  tours: ITourMiniDataWzhuh[];
-  hotels: IHotelMiniDataWzhuh[];
+  tours: ITourMiniData[];
+  hotels: IHotelMiniData[];
   description_hotel: string;
   description_blog: string;
   is_published: boolean;

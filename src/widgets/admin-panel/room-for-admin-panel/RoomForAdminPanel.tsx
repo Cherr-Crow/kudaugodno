@@ -28,7 +28,7 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
   const [delRoom] = useDelRoomHotelMutation();
   const [changeRoom] = useChangeRoomHotelMutation();
 
-  const [price, setPrice] = useState<number>(room.calendar_dates[0].price);
+  const [price, setPrice] = useState<string>(room.calendar_dates[0].price);
   const [typeOfMeals, setTypeOfMeals] = useState<string>('Без питания');
   const [numberOfAdults, setNumberOfAdults] = useState<number>(
     room.number_of_adults,
@@ -69,7 +69,7 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
   // const [praceDiscount, setPraceDiscount] = useState<number>(0);
 
   const handlePriceChange = (value: number) => {
-    setPrice(value);
+    setPrice(String(value));
   };
 
   const handleTypeOfMealsChange = (value: string) => {
@@ -155,8 +155,8 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
       category: room.category,
       price,
       type_of_meals: [
-        { id: 1, name: 'Завтрак', price: 500 },
-        { id: 2, name: 'Полупансион', price: 1500 },
+        { id: 1, name: 'Завтрак', price: '500' },
+        { id: 2, name: 'Полупансион', price: '1500' },
       ],
       number_of_adults: numberOfAdults,
       number_of_children: numberOfChildren,
@@ -177,7 +177,7 @@ export function RoomForAdminPanel({ room }: IRoomForAdminPanel) {
           available_for_booking: true,
           discount: true,
           discount_amount: '0.2',
-          price: 42000,
+          price: '42000',
         },
       ],
       // discount,

@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useWindowSize } from 'usehooks-ts';
 
 import { OfferCard } from '@/entities/offer-card';
-import { IHotelMiniData } from '@/entities/offer-card/OfferCard.types';
 import { PromoCardList } from '@/entities/promo-card/PromoCard';
 import { IDiscount, useGetAllDiscountsQuery } from '@/servicesApi/discountApi';
 import { useGetHotelsQuery } from '@/servicesApi/hotelsApi';
@@ -15,9 +14,9 @@ import { SearchBlock } from '@/shared/ui/search-block';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
 import { formatNumberToPriceInRub } from '@/shared/utils/formatNumberToPriceInRub';
-import { mapHotelToMiniData } from '@/shared/utils/mapHotelToMiniData';
 import { mapTourToMiniData } from '@/shared/utils/mapTourToMiniData';
 import type { EnrichedTourMini } from '@/shared/utils/mapTourToMiniData';
+import { IHotelMiniData } from '@/types/hotel';
 
 type EnrichedTour = EnrichedTourMini;
 
@@ -63,13 +62,7 @@ export default function Stocks() {
     return enrichedTours.slice(0, count);
   }, [isDesktop, enrichedTours]);
 
-  const enrichedHotels: IHotelMiniData[] = useMemo(() => {
-    if (!Array.isArray(hotelsData?.results)) return [];
-
-    return hotelsData.results
-      .map(mapHotelToMiniData)
-      .filter((h): h is IHotelMiniData => h !== null);
-  }, [hotelsData]);
+  const enrichedHotels: IHotelMiniData[] = hotelsData?.results ?? [];
 
   const hotelsToRender = useMemo(() => {
     const count = isDesktop ? 3 : 4;

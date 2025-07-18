@@ -1,4 +1,6 @@
 'use client';
+import { Suspense } from 'react';
+
 import { useRouter } from 'next/navigation';
 
 import { FilterCatalog } from '@/widgets/filter-catalog';
@@ -10,5 +12,9 @@ export default function CatalogPage() {
     router.push(`/catalog?tab=${newTab}`);
   };
 
-  return <FilterCatalog onTabChange={handleTabChange} />;
+  return (
+    <Suspense fallback={<div>Загрузка...</div>}>
+      <FilterCatalog onTabChange={handleTabChange} />
+    </Suspense>
+  );
 }

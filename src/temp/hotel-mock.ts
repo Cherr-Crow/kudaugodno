@@ -33,13 +33,13 @@ export const hotels: IHotel[] = [
         amenities_view: ['Wi-Fi'],
         single_bed: null,
         double_bed: 1,
-        type_of_meals: [
-          {
-            id: 1,
-            name: 'Полный пансион',
-            price: 1000,
-          },
-        ],
+        // type_of_meals: [
+        //   {
+        //     id: 1,
+        //     name: 'Полный пансион',
+        //     price: '1000',
+        //   },
+        // ],
         photo: [
           { id: 1, photo: 'room1.png', room: 0 },
           { id: 2, photo: 'room2.png', room: 0 },
@@ -61,7 +61,7 @@ export const hotels: IHotel[] = [
             available_for_booking: true,
             discount: true,
             discount_amount: '0.2',
-            price: 42000,
+            price: '42000',
           },
           {
             id: 2,
@@ -70,7 +70,7 @@ export const hotels: IHotel[] = [
             available_for_booking: true,
             discount: false,
             discount_amount: '0',
-            price: 47000,
+            price: '47000',
           },
         ],
       },
@@ -106,7 +106,7 @@ export const hotels: IHotel[] = [
     amenities_sports_and_recreation: [],
     amenities_for_children: [],
     is_active: true,
-    width: '-1.272748',
-    longitude: '36.827871',
+    width: -1.272748,
+    longitude: 36.827871,
   },
 ];

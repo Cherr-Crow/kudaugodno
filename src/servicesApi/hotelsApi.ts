@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { IHotelMiniData } from '@/entities/offer-card/OfferCard.types';
+// import { IHotelMiniData } from '@/entities/offer-card/OfferCard.types';
 import { BASE_URL } from '@/temp/domen_nikita';
-import { IHotel } from '@/types/hotel';
+import { IHotel, IHotelMiniData } from '@/types/hotel';
 import { PhotoHotel } from '@/types/photo_hotel';
 import { RoomType } from '@/types/room';
 
@@ -10,7 +10,7 @@ interface IResponceListHotels {
   count: number;
   next: null;
   previous: null;
-  results: IHotel[];
+  results: IHotelMiniData[];
 }
 
 export const hotelsApi = createApi({

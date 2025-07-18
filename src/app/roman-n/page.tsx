@@ -117,10 +117,10 @@ const testRooms: RoomType[] = [
   {
     id: 1,
     category: 'Стандарт',
-    type_of_meals: [
-      { id: 1, name: 'Завтрак', price: 500 },
-      { id: 2, name: 'Полупансион', price: 1500 },
-    ],
+    // type_of_meals: [
+    //   { id: 1, name: 'Завтрак', price: '500' },
+    //   { id: 2, name: 'Полупансион', price: '1500' },
+    // ],
     number_of_adults: 2,
     number_of_children: 1,
     single_bed: 1,
@@ -143,7 +143,7 @@ const testRooms: RoomType[] = [
         available_for_booking: true,
         discount: true,
         discount_amount: '0.2',
-        price: 42000,
+        price: '42000',
       },
       {
         id: 2,
@@ -152,7 +152,7 @@ const testRooms: RoomType[] = [
         available_for_booking: true,
         discount: false,
         discount_amount: '0',
-        price: 47000,
+        price: '47000',
       },
     ],
     photo: [
@@ -171,7 +171,7 @@ const testRooms: RoomType[] = [
   {
     id: 2,
     category: 'Люкс',
-    type_of_meals: [{ id: 3, name: 'Ультра всё включено', price: 3000 }],
+    // type_of_meals: [{ id: 3, name: 'Ультра всё включено', price: '3000' }],
     number_of_adults: 3,
     number_of_children: 0,
     single_bed: 0,
@@ -194,7 +194,7 @@ const testRooms: RoomType[] = [
         available_for_booking: false,
         discount: true,
         discount_amount: '5000',
-        price: 80000,
+        price: '80000',
       },
       {
         id: 4,
@@ -203,7 +203,7 @@ const testRooms: RoomType[] = [
         available_for_booking: true,
         discount: false,
         discount_amount: '0',
-        price: 85000,
+        price: '85000',
       },
     ],
     photo: [
@@ -254,8 +254,8 @@ const testHotel: IHotel = {
     },
   ],
   is_active: true,
-  width: '-66.788006',
-  longitude: '-24.565295',
+  width: -66.788006,
+  longitude: -24.565295,
   photo: [
     {
       id: 1,
@@ -337,31 +337,42 @@ const testTour: ITour = {
     {
       id: 1,
       name: 'Всё включено',
-      price: 2500,
+      price: '2500',
     },
     {
       id: 2,
       name: 'Только завтраки',
-      price: 1200,
+      price: '1200',
     },
   ],
-  price: 120000,
+  total_price: '120000',
   transfer: true,
   is_active: true,
   created_at: '2024-06-01T12:00:00',
   updated_at: '2024-06-01T12:30:00',
+  discount_amount: '500',
+  discount_start_date: '2024-06-10',
+  discount_end_date: '2024-07-01',
+  markup_amount: '7500',
+  publish_start_date: '2024-06-10',
+  publish_end_date: '2024-07-01',
 };
 
 const testApplication: IApplicationTour = {
   id: 1001,
   email: 'user@example.com',
   phone_number: '+7 999 123-45-67',
-  visa: true,
-  med_insurance: true,
-  cancellation_insurance: false,
+  visa_count: 2,
+  visa_price_per_one: '2000',
+  visa_total_price: '4000',
+  med_insurance_count: 2,
+  med_insurance_price_per_one: '3000',
+  med_insurance_total_price: '6000',
+  cancellation_insurance_total: '3000',
   wishes: 'Хотим номер с видом на море и ранний заезд',
   status: 'Новая',
   tour: testTour,
+  price: '60000',
   quantity_guests: [
     {
       pk: 1,

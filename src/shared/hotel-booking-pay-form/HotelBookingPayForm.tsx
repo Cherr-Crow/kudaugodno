@@ -78,7 +78,9 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
       ? Math.abs(Number(roomDateWithStock.discount_amount))
       : 0;
 
-  const stayPrice = data.tour?.price ?? room?.calendar_dates[0].price ?? 0;
+  const stayPrice = Number(
+    data.tour?.total_price ?? room?.calendar_dates[0].price ?? 0,
+  );
   const taxes = 0;
   const promoDiscount = 0;
   const resortFee = (data.resortFee || 0) * nightsNum * guestsNum;

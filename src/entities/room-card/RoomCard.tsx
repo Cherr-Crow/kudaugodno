@@ -164,7 +164,18 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
               className='hidden md:flex'
             />
             <RoomMealsInfo
-              meals={room.type_of_meals}
+              meals={[
+                {
+                  id: 1,
+                  name: 'Завтрак включен',
+                  price: '1500',
+                },
+                {
+                  id: 2,
+                  name: 'Всё включено',
+                  price: '4500',
+                },
+              ]}
               className='mb-2 w-[180px] text-center md:mb-0 md:max-w-[164px] lg:max-w-[180px]'
               onMealsChange={(value) => {
                 setMeals(value), console.log(value);
@@ -212,7 +223,10 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
                   variant='m-bold'
                   className='font-medium md:text-lg lg:text-xl'
                 >
-                  {formatNumberToPriceInRub(room.calendar_dates[0].price, 'word')}
+                  {formatNumberToPriceInRub(
+                    Number(room.calendar_dates[0].price),
+                    'word',
+                  )}
                 </Typography>
 
                 <div className='md:text-nowrap'>

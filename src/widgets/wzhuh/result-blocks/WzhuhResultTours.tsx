@@ -3,12 +3,10 @@ import Link from 'next/link';
 import { OfferCard } from '@/entities/offer-card';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
-import { ITourMiniDataWzhuh } from '@/types/wzhuh';
-
-import { adaptTourWzhuhToMiniData } from '../adaptersToMiniData';
+import { ITourMiniData } from '@/types/tour';
 
 type WzhuhResultToursProps = {
-  tours: ITourMiniDataWzhuh[];
+  tours: ITourMiniData[];
 };
 
 export function WzhuhResultTours({ tours }: WzhuhResultToursProps) {
@@ -40,7 +38,7 @@ export function WzhuhResultTours({ tours }: WzhuhResultToursProps) {
               key={tour.id}
               className='min-h-[372px] min-w-[284px] md:min-h-[530px] md:min-w-[380px] lg:min-h-[530px] lg:min-w-[366px]'
             >
-              <OfferCard offer={adaptTourWzhuhToMiniData(tour)} />
+              <OfferCard offer={tour} />
             </li>
           ))}
       </ul>

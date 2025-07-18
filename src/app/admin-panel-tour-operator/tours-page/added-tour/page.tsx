@@ -84,14 +84,14 @@ export default function AddTourPage() {
       return `${name}`;
     }) || [];
 
-  const hotelCategories =
-    HotelData?.results.flatMap((hotel) => {
-      const categories = hotel.rooms.map((room) => {
-        const { category } = room;
-        return `${category}`;
-      });
-      return categories;
-    }) || [];
+  // const hotelCategories =
+  //   HotelData?.results.flatMap((hotel) => {
+  //     const categories = hotel.rooms.map((room) => {
+  //       const { category } = room;
+  //       return `${category}`;
+  //     });
+  //     return categories;
+  //   }) || [];
 
   const formatTime = (timeString: string) => {
     return timeString.slice(0, 5);
@@ -229,7 +229,7 @@ export default function AddTourPage() {
                 // startValue={hotelOptions}
               />
             </div>
-            <div className='mb-3 mb-5 flex'>
+            <div className='mb-5 flex'>
               <Checkbox id='' />
               <label className='text-[16px]' htmlFor=''>
                 Доступен трансфер
@@ -240,7 +240,7 @@ export default function AddTourPage() {
               <Select
                 size='small'
                 color='blue'
-                options={hotelCategories}
+                options={['Стандарт', 'Люкс']}
                 className='w-full'
                 // getValue={handleChoseCategory}
                 // startValue={choseCategory}

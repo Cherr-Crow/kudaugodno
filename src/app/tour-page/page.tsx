@@ -129,7 +129,8 @@ function CatalogToursContent() {
         return [];
 
       return (
-        matchingRoom.type_of_meals?.map((meal) => ({
+        // matchingRoom.type_of_meals?.map((meal) => ({
+        {
           name: matchingRoom.category,
           tourId: tour.id,
           roomId: matchingRoom.id,
@@ -139,14 +140,15 @@ function CatalogToursContent() {
           endDate: tour.end_date,
           formatted_date: `${new Date(tour.start_date).getDate()}-${new Date(tour.end_date).getDate()} ${new Date(tour.start_date).toLocaleString('ru', { month: 'long' })}`,
           photos: matchingRoom.photo,
-          meal: meal.name,
+          meal: 'Без питания',
           flight_info: {
             type: tour.flight_to.flight_type,
             airline: tour.flight_to.airline,
           },
-          total_price: Number(tour.price) + Number(meal.price),
+          total_price: Number(tour.total_price),
           nights,
-        })) ?? []
+        }
+        // })) ?? []
       );
     });
 

@@ -5,7 +5,7 @@ export interface IRoomCards extends DivProps {
   tourId?: number;
   roomId?: number;
   tour_operator: string;
-  nights: number;
+  // nights: number;
   guests: number;
   formatted_date?: string;
   startDate: string;

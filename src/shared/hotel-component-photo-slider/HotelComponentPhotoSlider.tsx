@@ -1,29 +1,28 @@
 import React, { useState } from 'react';
 
-import { IHotel } from '@/types/hotel';
+import { photoType } from '@/types/hotel';
 
 import { SvgSprite } from '../ui/svg-sprite';
-
 interface HotelComponentPhotoSliderProps {
-  hotel: Omit<IHotel, 'rooms'>;
+  photos: photoType[];
 }
 
 export function HotelComponentPhotoSlider({
-  hotel,
+  photos,
 }: HotelComponentPhotoSliderProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const nextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % hotel.photo.length);
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % photos.length);
   };
 
   const prevImage = () => {
     setCurrentImageIndex(
-      (prevIndex) => (prevIndex - 1 + hotel.photo.length) % hotel.photo.length,
+      (prevIndex) => (prevIndex - 1 + photos.length) % photos.length,
     );
   };
 
-  if (!hotel.photo || hotel.photo.length === 0) {
+  if (!photos || photos.length === 0) {
     return (
       <div className='mb-4 w-full md:mb-0 md:mr-4 md:w-2/5'>Нет фотографий</div>
     );
@@ -38,11 +37,11 @@ export function HotelComponentPhotoSlider({
           transition: 'transform 1s ease-in-out',
         }}
       >
-        {hotel.photo.map((photo, index) => (
+        {photos.map((photo, index) => (
           <img
             key={index}
             src={photo?.photo || '/placeholder-image.png'}
-            alt={hotel.name}
+            alt={`Фото отеля${index}`}
             className='h-full w-full rounded-l-lg object-cover'
           />
         ))}

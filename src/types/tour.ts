@@ -1,5 +1,5 @@
 import { IFlight } from './flight';
-import { IHotel } from './hotel';
+import { IHotel, photoType } from './hotel';
 import { MealType, RoomType } from './room';
 
 export interface ITour {
@@ -16,14 +16,31 @@ export interface ITour {
   hotel: Omit<IHotel, 'rooms'>;
   rooms: RoomType[];
   type_of_meals: MealType[];
-  price: number;
+  total_price: string;
   transfer: boolean;
   is_active: boolean;
   created_at: string;
   updated_at: string;
+  discount_amount: string;
+  discount_start_date: string;
+  discount_end_date: string;
+  markup_amount: string;
+  publish_start_date: string;
+  publish_end_date: string;
 }
-
-// стандартный договор с подчёркиванием вместо персональных данных - загрузка документа
-// мед страховка - загрузка документа
-// страховка от не выезда - загрузка документа
-// бонусы - что это такое и от куда берётся при бронировании и расчёте её стоимости
+export interface ITourMiniData {
+  id: number;
+  name: string;
+  photo: photoType[];
+  city: string;
+  country: string;
+  user_rating: number;
+  star_category: number;
+  original_price: number;
+  discount: number | null;
+  start_date: string;
+  end_date: string;
+  arrival_country: string;
+  discountedPrice: number;
+  nightsCount: number;
+}
