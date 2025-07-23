@@ -26,9 +26,7 @@ export function PopularDestinations({ className }: IPopularDestinations) {
   }
 
   return (
-    <section
-      className={`${className} pt-7 md:pb-40 md:pt-[46px] lg:pb-[152px] lg:pt-16`}
-    >
+    <section className={`${className} -mb-3 md:mb-0`}>
       <div className='container mx-auto'>
         <div className='mb-5 md:mb-6 lg:mb-6'>
           <Typography
@@ -47,7 +45,7 @@ export function PopularDestinations({ className }: IPopularDestinations) {
           {data.map((destination, index) => (
             <li
               key={index}
-              className='relative mb-9 h-[222px] w-[284px] flex-shrink-0 overflow-hidden rounded-3xl bg-white shadow-lg transition-shadow duration-300 hover:shadow-lg md:mb-0 md:w-full lg:w-full'
+              className='relative mb-3 h-[222px] w-[284px] flex-shrink-0 overflow-hidden rounded-3xl bg-white shadow-lg transition-shadow duration-300 hover:shadow-lg md:mb-0 md:w-full lg:w-full'
               style={{
                 boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
               }}

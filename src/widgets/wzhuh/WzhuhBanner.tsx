@@ -9,7 +9,7 @@ import { IWzhuh } from './Wzhuh.types';
 
 export function WzhuhBanner({ className }: IWzhuh) {
   return (
-    <div className={`${className} pt-2 md:pt-0`}>
+    <div className={`${className}`}>
       <div className='mx-auto flex w-full flex-col items-center justify-center gap-8 rounded-[30px] bg-blue-50 py-4 md:flex-row md:justify-start md:gap-[110px] md:rounded-[40px] md:pb-[50px] md:pl-[110px] md:pt-1 lg:gap-[77px] lg:pb-[5px] lg:pl-[80px]'>
         <div className='flex flex-col items-center text-center md:mt-12 md:items-start md:gap-[14px] md:text-start lg:mt-0 lg:gap-[24px] xl:ml-[170px]'>
           <Typography

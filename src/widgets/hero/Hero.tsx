@@ -35,7 +35,7 @@ export function Hero({ className }: IHero) {
   if (!isClient) return null;
 
   return (
-    <section className={`${className ?? ''} relative h-[100%] pb-10 md:mb-20`}>
+    <section className={`${className ?? ''} relative h-[100%] pb-10 md:pb-0`}>
       <BackgroundOverlay
         className={`h-[100%] bg-[url('/plain.svg')] bg-no-repeat md:h-[81.5%] lg:h-[87.5%] lg:bg-[position:30px_80px]`}
       />
