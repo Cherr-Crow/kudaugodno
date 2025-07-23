@@ -36,7 +36,7 @@ export function HotOffer({ className, link, title, type }: IHotOffer) {
   return (
     <section className={className}>
       <div className='container'>
-        <div className='mb-5 flex items-center justify-between md:mb-8'>
+        <div className='mb-5 flex items-center justify-between md:mb-6 lg:mb-5'>
           {hotels && Array.isArray(hotels) && hotels.length > 0 && (
             <Typography
               variant='l'
@@ -46,12 +46,13 @@ export function HotOffer({ className, link, title, type }: IHotOffer) {
             </Typography>
           )}
           {link && (
-            <div className='hidden items-center gap-5 md:flex md:pr-2 lg:gap-6 lg:pr-3'>
-              <Link href={link}>
-                <Typography className='md:text-lg'>Смотреть больше</Typography>
-              </Link>
+            <Link
+              href={link}
+              className='hidden items-center gap-5 py-3 md:flex md:pr-2 lg:gap-6 lg:pr-3'
+            >
+              <Typography className='md:text-lg'>Смотреть больше</Typography>
               <SvgSprite name='arrow-pointer' width={15} />
-            </div>
+            </Link>
           )}
         </div>
         <ul className='grid gap-3 md:grid-cols-2 md:gap-5 lg:grid-cols-3'>
@@ -68,14 +69,15 @@ export function HotOffer({ className, link, title, type }: IHotOffer) {
             ))}
         </ul>
         {link && (
-          <div className='mt-6 flex items-center justify-end gap-4 pr-4 md:hidden'>
-            <Link href={link}>
-              <Typography variant='m-bold' className='text-grey-950 md:text-2xl'>
-                Смотреть больше
-              </Typography>
-            </Link>
+          <Link
+            href={link}
+            className='mt-6 flex items-center justify-end gap-4 pr-4 md:hidden'
+          >
+            <Typography variant='m-bold' className='text-grey-950 md:text-2xl'>
+              Смотреть больше
+            </Typography>
             <SvgSprite name='arrow-pointer' width={15} color='#363636' />
-          </div>
+          </Link>
         )}
       </div>
     </section>
