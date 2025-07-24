@@ -171,6 +171,8 @@ export function AuthForBusiness({}: IAuthForBusiness) {
           showToast('Эта почта уже занята', 'error');
           return;
         }
+      } else {
+        showToast('Ошибка сервера', 'error');
       }
     }
   };
@@ -180,7 +182,7 @@ export function AuthForBusiness({}: IAuthForBusiness) {
       <div>
         <label
           htmlFor='file'
-          className='mb-9 inline-block h-[43px] cursor-pointer md:mb-7'
+          className='mb-[24px] block h-[43px] cursor-pointer md:mb-[36px] lg:mb-[41px]'
         >
           <ButtonCustom
             type='button'
@@ -207,7 +209,10 @@ export function AuthForBusiness({}: IAuthForBusiness) {
     );
   } else {
     contentButton = (
-      <label htmlFor='file' className='mb-7 block h-[43px] cursor-pointer'>
+      <label
+        htmlFor='file'
+        className='mb-[24px] block h-[43px] cursor-pointer md:mb-[36px] lg:mb-[41px]'
+      >
         <ButtonCustom
           type='button'
           className='flex min-w-[150px] items-center justify-between bg-white py-[7px] pr-[12px]'
@@ -217,18 +222,21 @@ export function AuthForBusiness({}: IAuthForBusiness) {
           <Typography variant='s-bold' className='mr-3'>
             {buttonText}
           </Typography>
-          <SvgSprite onClick={handleButtonDelete} name='cross' width={12} />
+          <SvgSprite onClick={handleButtonDelete} name='cross-circled' width={24} />
         </ButtonCustom>
       </label>
     );
   }
 
   return (
-    <section className='py-[80px] md:py-[80px]'>
-      <div className='mx-auto min-h-[960px] rounded-[20px] border-blue-700 md:min-h-[640px] md:max-w-[1180px] md:border-[50px]'>
-        <div className='relative h-[100%] min-h-[960px] max-w-[1100px] items-center bg-blue-50 bg-right-bottom px-2 py-[28px] md:m-[-10px] md:min-h-[1022px] md:rounded-[20px] md:bg-[url(/authforbisback.jpg)]'>
-          <div className='mx-auto flex h-[100%] min-h-[468px] max-w-[540px] flex-col items-center md:max-w-[582px] md:pt-[45px]'>
-            <Typography className='mb-7 w-[80%] text-center text-[32px]/[110%] font-black text-grey-950 md:mb-11 md:w-[100%] md:text-[48px] md:font-semibold'>
+    <section>
+      <div className='mx-auto min-h-[960px] rounded-[20px] border-blue-600 md:min-h-[640px] md:max-w-[100%] md:rounded-[100px] md:rounded-bl-none md:rounded-br-none md:border-[90px] lg:border-x-[140px]'>
+        <div className='relative h-[100%] min-h-[1025px] items-center rounded-t-3xl bg-blue-50 bg-[url(/authforbisback.jpg)] bg-[position:109.5%_-400%] bg-no-repeat px-4 py-[28px] md:m-[-10px] md:min-h-[1022px] md:rounded-[20px] md:bg-[position:107%_-13px] lg:md:bg-[position:104%_99%] lg:bg-[length:120%]'>
+          <div className='mx-auto flex h-[100%] min-h-[468px] max-w-[540px] flex-col items-center md:max-w-[528px] md:pt-[45px] lg:max-w-[580px]'>
+            <Typography
+              variant='m'
+              className='-mt-[6px] mb-4 w-[80%] text-nowrap text-center text-xl font-black tracking-[0.001em] text-grey-950 md:mb-[50px] md:mt-[51px] md:w-[105%] md:text-[48px] md:font-semibold md:tracking-[0.001em] lg:-mt-2 lg:mb-[50px]'
+            >
               Заявка на подключение
             </Typography>
             <form
@@ -236,27 +244,33 @@ export function AuthForBusiness({}: IAuthForBusiness) {
               method='post'
               encType='multipart/form-data'
             >
-              <Typography className='mb-2 block text-[21px] font-semibold text-grey-950'>
+              <Typography className='mb-1 block text-lg font-semibold tracking-[0.001em] text-grey-950 md:text-[20px] lg:mb-0'>
                 Выберите тип
               </Typography>
-              <div className='mb-3 flex'>
+              <div className='mb-1 flex md:mb-2'>
                 <Checkbox
                   label='Туроператор'
                   onChange={() => setRole('TOUR_OPERATOR')}
                   isChecked={role === 'TOUR_OPERATOR'}
-                  className='my-1 mr-7'
+                  className='my-1 mr-[20px] text-2xl tracking-[0.03em] text-blue-950'
                 />
                 <Checkbox
                   label='Отельер'
                   onChange={() => setRole('HOTELIER')}
                   isChecked={role === 'HOTELIER'}
-                  className='my-1'
+                  className='my-1 text-2xl tracking-[0.03em] text-blue-950'
                 />
               </div>
 
-              <label htmlFor='hotelName' className='mb-[17px] block'>
-                <Typography className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'>
-                  Название
+              <label
+                htmlFor='hotelName'
+                className='mb-[9px] block md:mb-3 lg:mb-[16px]'
+              >
+                <Typography
+                  variant='subtitle4'
+                  className='mb-1 block text-[18px] font-semibold tracking-[0.001em] text-grey-950 md:mb-0 lg:text-[19px] lg:tracking-[0.01em]'
+                >
+                  Название отеля / туроператора
                 </Typography>
                 {!isHotelNameValid && (
                   <Typography className='mb-[3px] mt-[-16px] block text-nowrap font-normal text-red-primary-800'>
@@ -265,7 +279,7 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                 )}
                 <input
                   id='hotelName'
-                  className='h-[55px] w-full rounded-[8px] px-[15px] md:h-[47px] md:border md:border-grey-950 md:bg-transparent'
+                  className='h-[40px] w-full rounded-[8px] px-[15px] md:h-[42px] md:border md:border-grey-950 md:bg-transparent lg:h-[50px]'
                   type='text'
                   name='hotelName'
                   placeholder='Отель Ромашка/Туроператор РомашкаАвиа'
@@ -279,8 +293,8 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   value={hotelName}
                 />
               </label>
-              <label htmlFor='firstName' className='mb-[17px] block'>
-                <Typography className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'>
+              <label htmlFor='firstName' className='mb-[10px] block md:mb-4'>
+                <Typography className='mb-1 block text-lg font-semibold text-grey-950 md:mb-[2px] md:text-lg lg:text-[19px] lg:tracking-[0.01em]'>
                   Имя
                 </Typography>
                 {!isNameValid && (
@@ -290,7 +304,7 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                 )}
                 <input
                   id='firstName'
-                  className='h-[55px] w-full rounded-[8px] px-[15px] md:h-[47px] md:border md:border-grey-950 md:bg-transparent'
+                  className='h-[40px] w-full rounded-[8px] px-[15px] md:h-[42px] md:border md:border-grey-950 md:bg-transparent lg:h-[50px]'
                   type='text'
                   name='firstName'
                   placeholder='Иван'
@@ -304,8 +318,8 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   value={name}
                 />
               </label>
-              <label htmlFor='lastName' className='mb-[17px] block'>
-                <Typography className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'>
+              <label htmlFor='lastName' className='mb-[10px] block md:mb-[14px]'>
+                <Typography className='mb-1 block text-lg font-semibold text-grey-950 md:mb-0 md:text-lg lg:text-[19px] lg:tracking-[0.01em]'>
                   Фамилия
                 </Typography>
                 {!isLastNameValid && (
@@ -315,7 +329,7 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                 )}
                 <input
                   id='lastName'
-                  className='h-[55px] w-full rounded-[8px] px-[15px] md:h-[47px] md:border md:border-grey-950 md:bg-transparent'
+                  className='h-[40px] w-full rounded-[8px] px-[15px] md:h-[42px] md:border md:border-grey-950 md:bg-transparent lg:h-[50px]'
                   type='text'
                   name='lastName'
                   placeholder='Иванов'
@@ -329,8 +343,11 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   value={lastName}
                 />
               </label>
-              <label htmlFor='email' className='mb-[17px] block'>
-                <Typography className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'>
+              <label
+                htmlFor='email'
+                className='mb-[12px] block md:mb-[16px] lg:mb-[16px]'
+              >
+                <Typography className='mb-1 block text-lg font-semibold text-grey-950 md:text-lg lg:mb-[6px] lg:text-[19px] lg:tracking-[0.01em]'>
                   Email
                 </Typography>
                 {!isEmailValid && (
@@ -340,7 +357,7 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                 )}
                 <input
                   id='email'
-                  className='h-[55px] w-full rounded-[8px] px-[15px] md:h-[47px] md:border md:border-grey-950 md:bg-transparent'
+                  className='h-[40px] w-full rounded-[8px] px-[15px] md:-mt-1 md:h-[42px] md:border md:border-grey-950 md:bg-transparent lg:h-[50px]'
                   type='email'
                   name='email'
                   placeholder='example@gmail.com'
@@ -354,15 +371,15 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   value={email}
                 />
               </label>
-              <label htmlFor='tel' className='mb-5 block'>
-                <Typography className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-3'>
+              <label htmlFor='tel' className='mb-[9px] block md:mb-[14px]'>
+                <Typography className='mb-1 block text-lg font-semibold text-grey-950 md:text-lg lg:text-[19px] lg:tracking-[0.01em]'>
                   Телефон
                 </Typography>
                 <InputMask
                   mask='+7 (___) ___-__-__'
                   replacement={{ _: /\d/ }}
                   id='tel'
-                  className='h-[55px] w-full rounded-[8px] px-[15px] md:h-[47px] md:border md:border-grey-950 md:bg-transparent'
+                  className='h-[40px] w-full rounded-[8px] px-[15px] md:h-[42px] md:border md:border-grey-950 md:bg-transparent lg:h-[50px]'
                   type='tel'
                   name='tel'
                   placeholder='+7 (999) 678-22-22'
@@ -370,10 +387,10 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   value={phone}
                 />
               </label>
-              <Typography className='mb-1 block text-[21px] font-semibold text-grey-950 md:mb-2'>
+              <Typography className='text-md mt-[14px] block font-semibold tracking-[0.001em] text-grey-950 md:text-[19px] md:tracking-[0.01em]'>
                 Добавить документы
               </Typography>
-              <Typography className='mb-3 block text-[16px] font-normal text-grey-800'>
+              <Typography className='mb-[6px] block text-[16px] font-normal tracking-[0.001em] text-grey-800 md:mb-2 md:mt-1 md:tracking-[0.001em] lg:mb-[21px] lg:w-[60%] lg:tracking-[0.01em]'>
                 Прикрепите документы об отеле/туроператоре (необязательно)
               </Typography>
 
@@ -391,7 +408,7 @@ export function AuthForBusiness({}: IAuthForBusiness) {
                   onClick={handleOpenModal}
                   variant='primary'
                   size='m'
-                  className='h-[70px] w-full px-[35px] py-[7px] md:mx-auto md:block md:w-auto md:px-[32px] md:py-[20px] lg:py-[20px]'
+                  className='h-[70px] w-full px-[35px] py-[7px] md:mx-auto md:mt-[8px] md:block md:w-auto md:px-[23px] md:py-[20px] lg:mt-3 lg:py-[20px]'
                 >
                   <Typography className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'>
                     Отправить заявку
@@ -406,28 +423,56 @@ export function AuthForBusiness({}: IAuthForBusiness) {
           </div>
         </div>
       </div>
-      <Modal isOpen={isOpenModal} getState={handleCloseModal}>
-        <div className='relative m-auto min-h-[478px] max-w-[348px] rounded-[20px] bg-[url("/authModal375.jpg")] px-5 py-16 md:min-h-[480px] md:max-w-[800px] md:bg-[url("/authModal800.jpg")] md:px-[120px] md:py-12 lg:min-h-[638px] lg:max-w-[1180px] lg:bg-[url("/authModal1024.jpg")] lg:py-[110px]'>
-          <Typography className='m-auto mb-6 block w-[80%] text-center text-[18px] font-semibold tracking-wide md:w-[100%] md:text-[24px] lg:text-[32px]'>
+      <Modal
+        hasScrollbar={false}
+        isOpen={isOpenModal}
+        className='relative min-h-[546px] max-w-[343px] rounded-[20px] bg-cover bg-no-repeat px-4 py-14 md:min-h-[531px] md:max-w-[800px] md:px-[60px] md:py-12 lg:min-h-[623px] lg:max-w-[1180px] lg:py-[40px]'
+        getState={handleCloseModal}
+        crossClassName='right-[23px] z-10 top-[19px] md:right-[38px] md:top-[33px]'
+      >
+        <div className='absolute inset-0 z-0 bg-blue-100'>
+          <img
+            src='bg-modal.png'
+            alt='bg-modal.png'
+            className='h-full w-full object-cover md:object-[0_-140px]'
+          />
+        </div>
+
+        <div className='relative z-10'>
+          <Typography className='m-auto mb-[19px] block text-center text-xl font-semibold leading-6 tracking-[0.01em] md:mb-[24px] md:mt-[17px] md:text-[28px] md:tracking-[0.001em] lg:mb-[27px] lg:mt-[27px] lg:text-[32px] lg:tracking-[0.001em]'>
             Ваши данные отправлены администратору сайта
           </Typography>
-          <Typography className='text-4 m-auto mb-4 block text-center font-normal md:mb-5 md:text-[19px] lg:mb-6 lg:w-[60%] lg:text-[19px]/[150%]'>
-            Скоро администратор свяжется с вами по указанной почте. Если всё в
-            порядке, вы получите доступ к Личному кабинету туроператора.
+
+          <Typography className='text-4 m-auto mb-[22px] block text-center font-normal leading-5 md:mb-[18px] md:text-[19px] md:leading-6 lg:mb-[25px] lg:w-[69%] lg:text-[20px] lg:leading-8'>
+            Скоро администратор свяжется с вами по указанной почте. Если все в
+            порядке, вы получите доступ к Личному кабинету туроператора. А пока вы
+            можете подготовить документы, которые понадобятся для дальнейшей
+            регистрации
           </Typography>
+
           <ButtonCustom
             type='button'
             variant='primary'
             size='m'
-            className='m-auto block h-[70px] px-[30px] py-[7px] md:mx-auto md:block md:w-auto md:px-[30px] md:py-[12px] lg:px-[100px] lg:py-[20px]'
+            className='m-auto block h-[70px] w-full px-[34px] py-[8px] md:mx-auto md:block md:w-auto md:px-[24px] md:py-[14px] lg:px-[26px] lg:py-[22px]'
           >
             <Link
-              className='text-nowrap text-base font-semibold text-grey-950 md:text-[20px] lg:text-green-950'
+              className='flex gap-2 text-nowrap text-base font-semibold tracking-[0.001em] text-grey-950 md:text-[16px] md:tracking-[0.01em] lg:text-[19px] lg:tracking-[0.01em] lg:text-green-950'
               href={'/'}
             >
-              На главную
+              <SvgSprite
+                name='arrow-download'
+                width={24}
+                strokeWidth={2}
+                color='black'
+              />
+              Скачать список документов
             </Link>
           </ButtonCustom>
+          <SvgSprite
+            className='m-auto mt-8 h-[150px] w-[150px] md:mt-8 md:h-[178px] md:w-[178px] lg:h-[220px] lg:w-[220px]'
+            name='frog-modal'
+          />
         </div>
       </Modal>
     </section>

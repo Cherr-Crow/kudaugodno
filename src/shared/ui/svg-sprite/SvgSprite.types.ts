@@ -98,6 +98,10 @@ export type NameSvg =
   | 'error'
   | 'warning-fill'
   | 'info'
+  | 'arrow-download'
+  | 'frog-modal'
+  | 'cross-circled'
+  | 'circle'
   | 'logo-god';
 
 // при добавлении нового типа svg, переносите его и в svgNameList для отображения в ПК плз.
@@ -192,5 +196,9 @@ export const svgNameList = [
   'error',
   'warning-fill',
   'info',
+  'arrow-download',
+  'frog-modal',
+  'cross-circled',
+  'circle',
   'logo-god',
 ];
