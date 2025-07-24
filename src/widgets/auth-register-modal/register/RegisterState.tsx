@@ -115,16 +115,22 @@ export function RegisterState() {
     try {
       await createTourist(formData).unwrap();
       reset();
+      showToast('Успешная регистрация!', 'success');
     } catch (err) {
       if (isRegisterError(err)) {
         const { email } = err.data;
         if (email.includes('Пользователь с таким Email уже существует.')) {
           showToast('Эта почта уже занята', 'error');
-          return;
+        } else {
+          showToast('Сбой отправки данных', 'error');
         }
+      } else {
+        showToast('Сбой отправки данных', 'error');
       }
     }
   };
+
+  // если ошибка не с
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;

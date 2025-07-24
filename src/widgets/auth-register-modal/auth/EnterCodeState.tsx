@@ -8,6 +8,7 @@ import { selectEmail } from '@/rtk/userSlice';
 import { useGetCodeMutation, useConfirmCodeMutation } from '@/servicesApi/authApi';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { timeForComponent } from '@/shared/ui/time-for-component/time';
+import { useToast } from '@/shared/ui/toast/toastService';
 import { Typography } from '@/shared/ui/typography';
 
 function isRespFields(
@@ -29,6 +30,7 @@ function isRespFields(
 
 export function EnterCodeState() {
   const dispatch = useDispatch();
+  const { showToast } = useToast();
 
   const email = useSelector(selectEmail);
   const router = useRouter();
@@ -130,6 +132,8 @@ export function EnterCodeState() {
                 code: `${input1 + input2 + input3 + input4}`,
               }).unwrap();
               dispatch(closeAuthModal());
+              showToast('Успешная авторизация!', 'success');
+
               if (isRespFields(resp)) {
                 const redirectUrl =
                   resp.role === 'USER'
@@ -137,7 +141,9 @@ export function EnterCodeState() {
                     : '/admin-panel-tour-operator';
                 await router.push(redirectUrl);
               }
-            } catch {}
+            } catch {
+              showToast('Сбой отправки данных', 'error');
+            }
           };
           handleConfirmCode();
         }
