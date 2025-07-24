@@ -305,7 +305,7 @@ export function Header({ className }: IHeader) {
             </div>
           </div>
           <a
-            href='/company-registration'
+            href='/for-business'
             className='mr-1 hidden items-center gap-1 rounded-lg text-[#4757EA] transition hover:shadow-md focus:shadow-md focus:outline-none focus-visible:shadow-md active:text-grey-950 md:flex'
           >
             <SvgSprite name='for-business' width={24} color='currentColor' />
@@ -943,7 +943,7 @@ export function Header({ className }: IHeader) {
                     {/* Бизнесу */}
 
                     <Link
-                      href='/company-registration'
+                      href='/for-business'
                       onClick={handleToggle('business')}
                       className={`relative flex ${activeMenu === 'business' ? 'font-extrabold' : 'font-semibold'} mt-3 flex-row items-center justify-between gap-2 px-4 py-[18px] text-blue-600 hover:bg-blue-100`}
                     >

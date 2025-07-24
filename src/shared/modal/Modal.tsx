@@ -17,6 +17,8 @@ export function Modal({
   isNewVariation,
   hasScrollbar,
   auth,
+  className,
+  crossClassName,
   isHotelPhotoModal,
   isSmallModal = false,
 }: IModal) {
@@ -54,7 +56,7 @@ export function Modal({
       <SvgSprite
         name='cross'
         width={isHotelPhotoModal ? 10 : 16}
-        className={`absolute ${isNewVariation ? 'right-5 top-6 lg:right-10 lg:top-10 lg:w-6' : 'right-4 top-4'} ${auth ? `right-[20px] top-[20px] md:right-[31px] md:top-[31px] md:z-[1] lg:right-[31px] lg:top-[31px] lg:h-[15px] lg:w-[15px]` : ''} ${isHotelPhotoModal ? 'md:right-10 md:top-10 md:w-4 lg:!w-4' : ''} ${isSmallModal ? 'md:right-[50px] md:top-[34px] lg:right-[30px] lg:top-[36px] lg:w-5' : ''} cursor-pointer`}
+        className={`absolute ${crossClassName} ${isNewVariation ? 'right-5 top-6 lg:right-10 lg:top-10 lg:w-6' : 'right-4 top-4'} ${auth ? `right-[20px] top-[20px] md:right-[31px] md:top-[31px] md:z-[1] lg:right-[31px] lg:top-[31px] lg:h-[15px] lg:w-[15px]` : ''} ${isHotelPhotoModal ? 'md:right-10 md:top-10 md:w-4 lg:!w-4' : ''} ${isSmallModal ? 'md:right-[50px] md:top-[34px] lg:right-[30px] lg:top-[36px] lg:w-5' : ''} cursor-pointer`}
         color='#888'
         onClick={handleClose}
         strokeWidth={2}
@@ -71,7 +73,7 @@ export function Modal({
       ref={window}
     >
       <PopupWindow
-        className={`relative -translate-x-1/2 ${isNewVariation ? 'left-1/2 z-20 max-h-[calc(100vh-2rem)] min-w-[343px] overflow-y-hidden rounded-[20px]' : 'left-1/2 top-1/2 max-h-[calc(100vh-2rem)] -translate-y-1/2 overflow-y-scroll p-10'} ${isSmallModal ? 'top-1/2 -translate-y-1/2' : ''} ${err && 'bg-gradient-to-tl from-red-primary-400'} ${auth ? `top-1/2 -translate-y-1/2 rounded-xl md:rounded-[20px]` : ''}`}
+        className={`${className} relative -translate-x-1/2 ${isNewVariation ? 'left-1/2 z-20 max-h-[calc(100vh-2rem)] min-w-[343px] overflow-y-hidden rounded-[20px]' : 'left-1/2 top-1/2 max-h-[calc(100vh-2rem)] -translate-y-1/2 overflow-y-scroll p-10'} ${isSmallModal ? 'top-1/2 -translate-y-1/2' : ''} ${err && 'bg-gradient-to-tl from-red-primary-400'} ${auth ? `top-1/2 -translate-y-1/2 rounded-xl md:rounded-[20px]` : ''}`}
         ref={popap}
       >
         {hasScrollbar ? (
