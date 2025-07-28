@@ -1,11 +1,16 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { clearUser, setUser } from '@/rtk/userSlice';
 import { BASE_URL } from '@/temp/domen_nikita';
+import { ICompany, ITourist } from '@/types/users';
+
+interface IFetchMeResponse {
+  message: string;
+  user: ITourist | ICompany;
+}
 
 export const authApi = createApi({
   reducerPath: 'authApi',
-  tagTypes: ['auth'],
+  tagTypes: ['auth', 'User'],
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
     credentials: 'include',
@@ -41,23 +46,35 @@ export const authApi = createApi({
         },
         body,
       }),
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const response = await queryFulfilled;
           console.log('Верификация прошла успешно!', response);
-          const data =
-            typeof response.data === 'string'
-              ? JSON.parse(response.data)
-              : response.data;
-
-          localStorage.setItem('id', JSON.stringify(data.id));
-          localStorage.setItem('role', data.role);
-
-          dispatch(setUser({ id: data.id, role: data.role }));
         } catch (error) {
           console.error('Ошибка при верификации кода:', error);
         }
       },
+    }),
+    fetchMe: build.query<IFetchMeResponse, void>({
+      query: () => {
+        return {
+          url: 'auth/fetch_me/',
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        };
+      },
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          const res = await queryFulfilled;
+          console.log('Текущий пользователь получен успешно!', res);
+        } catch (error) {
+          console.error('Ошибка при получении текущего пользователя', error);
+        }
+      },
+      providesTags: (result) =>
+        result ? [{ type: 'User', id: 'me' }] : [{ type: 'User' }],
     }),
     logout: build.mutation<void, void>({
       query: () => {
@@ -69,12 +86,10 @@ export const authApi = createApi({
           },
         };
       },
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(arg, { queryFulfilled }) {
         try {
           await queryFulfilled;
           console.log('Логаут прошел успешно!');
-          localStorage.clear();
-          dispatch(clearUser());
         } catch (error) {
           console.error('Ошибка при логауте:', error);
         }
@@ -83,5 +98,9 @@ export const authApi = createApi({
   }),
 });
 
-export const { useGetCodeMutation, useConfirmCodeMutation, useLogoutMutation } =
-  authApi;
+export const {
+  useGetCodeMutation,
+  useConfirmCodeMutation,
+  useFetchMeQuery,
+  useLogoutMutation,
+} = authApi;
