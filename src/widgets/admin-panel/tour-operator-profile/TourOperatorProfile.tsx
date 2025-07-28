@@ -3,18 +3,12 @@ import { useEffect, useState, useRef } from 'react';
 
 import { InputMask, Mask } from '@react-input/mask';
 import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { AppDispatch } from '@/rtk/store';
-import { selectUserId } from '@/rtk/userSlice';
-import { useLogoutMutation } from '@/servicesApi/authApi';
-import {
-  useDeleteUserMutation,
-  useGetAllUsersDataQuery,
-  useGetUserDataQuery,
-  useUpdateUserMutation,
-} from '@/servicesApi/userApi';
-import { userApi } from '@/servicesApi/userApi';
+import { useFetchMeQuery, useLogoutMutation } from '@/servicesApi/authApi';
+import { authApi } from '@/servicesApi/authApi';
+import { useDeleteUserMutation, useUpdateUserMutation } from '@/servicesApi/userApi';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { useToast } from '@/shared/ui/toast/toastService';
@@ -31,7 +25,6 @@ export function TourOperatorProfile() {
     mask: '+_ (___) ___-__-__',
     replacement: { _: /\d/ },
   });
-  const userId = useSelector(selectUserId);
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { showToast } = useToast();
@@ -50,12 +43,17 @@ export function TourOperatorProfile() {
 
   const inputImg = useRef<HTMLInputElement>(null);
 
-  const { data: user, refetch } = useGetUserDataQuery(undefined, { skip: !userId });
-  const { data: users } = useGetAllUsersDataQuery(undefined, { skip: !userId });
-  ({ users });
+  const { data: fetchMeData, refetch } = useFetchMeQuery();
   const [changeCompanyData] = useUpdateUserMutation();
   const [logout] = useLogoutMutation();
   const [deleteCompanyProfile] = useDeleteUserMutation();
+
+  const user = fetchMeData?.user;
+  const userId = fetchMeData?.user.id;
+  const roleId =
+    fetchMeData?.user.role === 'TOUR_OPERATOR' ? 'TOUR_OPERATOR' : 'HOTELIER';
+
+  console.log(user);
 
   const getCompanyName = (): string | undefined => {
     if (user && isCompany(user) && user.company_name) return user.company_name;
@@ -121,23 +119,31 @@ export function TourOperatorProfile() {
 
     const formData = formDataToChangeRequest();
 
-    try {
-      const updatedData = await changeCompanyData(formData).unwrap();
-      // код ниже явно обновляет кэш юзера, чтобы мы заполнили value уже новыми измененными данными, а не подставляли закэшированные
-      dispatch(
-        userApi.util.updateQueryData('getUserData', undefined, (draft) => {
-          Object.assign(draft, updatedData);
-        }),
-      );
-    } catch {}
+    if (userId && roleId && user && isCompany(user)) {
+      try {
+        const updatedData = await changeCompanyData({
+          role: roleId,
+          id: userId,
+          formData: formData,
+        }).unwrap();
+        // код ниже явно обновляет кэш юзера, чтобы мы заполнили value уже новыми измененными данными, а не подставляли закэшированные
+        dispatch(
+          authApi.util.updateQueryData('fetchMe', undefined, (draft) => {
+            Object.assign(draft, updatedData);
+          }),
+        );
+      } catch {}
+    }
     exitEditMode();
   };
 
   const handleDeleteCompany = async () => {
-    try {
-      await deleteCompanyProfile().unwrap();
-      router.push('/');
-    } catch {}
+    if (userId && roleId) {
+      try {
+        await deleteCompanyProfile({ role: roleId, id: userId }).unwrap();
+        router.push('/');
+      } catch {}
+    }
   };
 
   function previewFile(event: React.ChangeEvent<HTMLInputElement>) {
@@ -152,10 +158,16 @@ export function TourOperatorProfile() {
         const formData = formDataToChangeRequest(true);
         formData.append('avatar', file);
 
-        try {
-          await changeCompanyData(formData).unwrap();
-          refetch();
-        } catch {}
+        if (userId && roleId && user && isCompany(user)) {
+          try {
+            await changeCompanyData({
+              role: roleId,
+              id: userId,
+              formData: formData,
+            }).unwrap();
+            refetch();
+          } catch {}
+        }
       }
     };
 

@@ -5,12 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { InputMask, Mask } from '@react-input/mask';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
 import { z } from 'zod';
 
-import { selectUserId } from '@/rtk/userSlice';
+import { useFetchMeQuery } from '@/servicesApi/authApi';
 import { useDeleteUserMutation, useUpdateUserMutation } from '@/servicesApi/userApi';
-import { useGetUserDataQuery } from '@/servicesApi/userApi';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { useToast } from '@/shared/ui/toast/toastService';
@@ -127,15 +125,17 @@ export function PersonalData() {
   });
 
   const router = useRouter();
-  const userId = useSelector(selectUserId);
   const { showToast } = useToast();
 
   const [previewAvatar, setPreviewAvatar] = useState<string | null>(null);
   const [birthDateValue, setBirthDateValue] = useState<string>('');
 
-  const { data: user, refetch } = useGetUserDataQuery(undefined, { skip: !userId });
+  const { data: fetchMeData, refetch } = useFetchMeQuery();
   const [changeTouristProfile] = useUpdateUserMutation();
   const [deleteTouristProfile] = useDeleteUserMutation();
+
+  const user = fetchMeData?.user;
+  const userId = user?.id;
 
   const formDataToChangeRequest = (isChangeImage: boolean = false) => {
     let data;
@@ -215,10 +215,16 @@ export function PersonalData() {
         const formData = formDataToChangeRequest(true);
         formData.append('avatar', file);
 
-        try {
-          await changeTouristProfile(formData).unwrap();
-          refetch();
-        } catch {}
+        if (userId) {
+          try {
+            await changeTouristProfile({
+              role: 'USER',
+              id: userId,
+              formData: formData,
+            }).unwrap();
+            refetch();
+          } catch {}
+        }
       }
     };
 
@@ -266,19 +272,27 @@ export function PersonalData() {
       formData.append('birth_date', clientBirthDate ?? '');
     }
 
-    try {
-      await changeTouristProfile(formData).unwrap();
-      showToast('Данные успешно сохранены', 'success');
-    } catch {
-      showToast('Ошибка сервера', 'error');
+    if (userId) {
+      try {
+        await changeTouristProfile({
+          role: 'USER',
+          id: userId,
+          formData: formData,
+        }).unwrap();
+        showToast('Данные успешно сохранены', 'success');
+      } catch {
+        showToast('Ошибка сервера', 'error');
+      }
     }
   };
 
   const handleDeleteProfile = async () => {
-    try {
-      await deleteTouristProfile().unwrap();
-      router.push('/');
-    } catch {}
+    if (userId) {
+      try {
+        await deleteTouristProfile({ role: 'USER', id: userId }).unwrap();
+        router.push('/');
+      } catch {}
+    }
   };
 
   const handleChangeBirthdate = (

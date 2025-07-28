@@ -13,9 +13,7 @@ import {
   openAuthModal,
   selectAuthModalStatus,
 } from '@/rtk/authModalSlice';
-import { selectUserId } from '@/rtk/userSlice';
-import { useLogoutMutation } from '@/servicesApi/authApi';
-import { useGetUserDataQuery } from '@/servicesApi/userApi';
+import { useFetchMeQuery, useLogoutMutation } from '@/servicesApi/authApi';
 import { Modal } from '@/shared/modal';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { PopupWindow } from '@/shared/ui/popup-window';
@@ -29,7 +27,6 @@ export function Header({ className }: IHeader) {
   const dispatch = useDispatch();
   const isOpenAuthModal = useSelector(selectAuthModalStatus);
 
-  const userId = useSelector(selectUserId);
   // const router = useRouter();
   const [openUser, setOpenUser] = useState(false);
   const [openNotifications, setOpenNotifications] = useState(false);
@@ -41,8 +38,10 @@ export function Header({ className }: IHeader) {
   >(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  const { data: user } = useGetUserDataQuery(undefined, { skip: !userId });
+  const { data: fetchMeData } = useFetchMeQuery();
   const [logout] = useLogoutMutation();
+
+  const user = fetchMeData?.user;
 
   const closeAllMenus = () => {
     setOpenUser(false);
@@ -509,9 +508,9 @@ export function Header({ className }: IHeader) {
                 }}
                 onClick={(e) => {
                   if (!user) {
-                    toggleUserMenu(e);
-                  } else {
                     dispatch(openAuthModal());
+                  } else {
+                    toggleUserMenu(e);
                   }
                 }}
               >

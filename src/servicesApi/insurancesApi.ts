@@ -1,26 +1,20 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { getUserIdFromStore } from '@/rtk/storeAccess';
 import { BASE_URL } from '@/temp/domen_nikita';
 import { IInsurance } from '@/types/insurance';
-
-import { getAccessToken } from './getAccessToken';
 
 export const insurancesApi = createApi({
   reducerPath: 'insurancesApi',
   tagTypes: ['insurance'],
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL, credentials: 'include' }),
   endpoints: (build) => ({
-    getInsuranceData: build.query<IInsurance, void>({
-      query: () => {
-        const id = getUserIdFromStore();
-
+    getInsuranceData: build.query<IInsurance, number>({
+      query: (id) => {
         return {
           url: `insurances/${id}`,
           method: 'GET',
           headers: {
             accept: 'application/json',
-            Authorization: `Bearer ${getAccessToken()}`,
           },
         };
       },
@@ -35,16 +29,16 @@ export const insurancesApi = createApi({
       providesTags: (result) =>
         result ? [{ type: 'insurance', id: result.id }] : [],
     }),
-    updateInsurances: build.mutation<IInsurance, Omit<IInsurance, 'id'>>({
-      query: (data) => {
-        const id = getUserIdFromStore();
-
+    updateInsurances: build.mutation<
+      IInsurance,
+      { id: number; data: Omit<IInsurance, 'id'> }
+    >({
+      query: ({ id, data }) => {
         return {
           url: `insurances/${id}/`,
           method: 'PUT',
           headers: {
             accept: 'application/json',
-            Authorization: `Bearer ${getAccessToken()}`,
           },
           body: { id, ...data },
         };
@@ -63,5 +57,8 @@ export const insurancesApi = createApi({
   }),
 });
 
-export const { useGetInsuranceDataQuery, useUpdateInsurancesMutation } =
-  insurancesApi;
+export const {
+  useGetInsuranceDataQuery,
+  useLazyGetInsuranceDataQuery,
+  useUpdateInsurancesMutation,
+} = insurancesApi;

@@ -2,11 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { useSelector } from 'react-redux';
-
-import { selectUserId } from '@/rtk/userSlice';
+import { useFetchMeQuery } from '@/servicesApi/authApi';
 import {
-  useGetInsuranceDataQuery,
+  useLazyGetInsuranceDataQuery,
   useUpdateInsurancesMutation,
 } from '@/servicesApi/insurancesApi';
 import { ButtonCustom } from '@/shared/ui/button-custom';
@@ -33,15 +31,23 @@ const insuranceCompanies = [
 ];
 
 export function Insurance({}: IInsurance) {
-  const userId = useSelector(selectUserId);
   const { showToast } = useToast();
 
   const [visibleDeparture, setVisibleDeparture] = useState<boolean>(false);
   const [medicalCompany, setMedicalCompany] = useState<string>('');
   const [departureCompany, setDepartureCompany] = useState<string>('');
 
-  const { data: insurance } = useGetInsuranceDataQuery(undefined, { skip: !userId });
+  const { data: fetchMeData } = useFetchMeQuery();
+
+  const [getInsuranceData, { data: insurance }] = useLazyGetInsuranceDataQuery();
   const [changeInsurances] = useUpdateInsurancesMutation();
+
+  useEffect(() => {
+    if (fetchMeData && fetchMeData.user.id) {
+      const userId = fetchMeData.user.id;
+      getInsuranceData(userId);
+    }
+  }, [fetchMeData]);
 
   useEffect(() => {
     if (insurance) {
@@ -64,11 +70,13 @@ export function Insurance({}: IInsurance) {
       medical: medicalCompany ? medicalCompany : '',
       not_leaving: departureCompany ? departureCompany : '',
     };
-    try {
-      changeInsurances(changeData);
-      showToast('Данные успешно сохранены', 'success');
-    } catch {
-      showToast('Ошибка сервера', 'error');
+    if (fetchMeData && fetchMeData.user.id) {
+      try {
+        changeInsurances({ id: fetchMeData.user.id, data: changeData });
+        showToast('Данные успешно сохранены', 'success');
+      } catch {
+        showToast('Ошибка сервера', 'error');
+      }
     }
   };
 
@@ -98,16 +106,14 @@ export function Insurance({}: IInsurance) {
               <Typography variant='h5' className='text-[16px] leading-[24px]'>
                 Страховая компания
               </Typography>
-              {medicalCompany !== '' && (
-                <Select
-                  options={[...insuranceCompanies, 'Не выбрано']}
-                  color='blue'
-                  size='small'
-                  className='w-full'
-                  getValue={(e) => setMedicalCompany(e)}
-                  startValue={medicalCompany !== '' ? medicalCompany : 'Не выбрано'}
-                />
-              )}
+              <Select
+                options={[...insuranceCompanies, 'Не выбрано']}
+                color='blue'
+                size='small'
+                className='relative w-full'
+                getValue={(e) => setMedicalCompany(e)}
+                startValue={medicalCompany || 'Не выбрано'}
+              />
             </div>
           </div>
         </div>
@@ -131,18 +137,14 @@ export function Insurance({}: IInsurance) {
                 <Typography variant='h5' className='text-[16px] leading-[24px]'>
                   Страховая компания
                 </Typography>
-                {medicalCompany !== '' && (
-                  <Select
-                    options={[...insuranceCompanies, 'Не выбрано']}
-                    color='blue'
-                    size='small'
-                    className='w-full'
-                    getValue={(e) => setDepartureCompany(e)}
-                    startValue={
-                      departureCompany !== '' ? departureCompany : 'Не выбрано'
-                    }
-                  />
-                )}
+                <Select
+                  options={[...insuranceCompanies, 'Не выбрано']}
+                  color='blue'
+                  size='small'
+                  className='relative w-full'
+                  getValue={(e) => setDepartureCompany(e)}
+                  startValue={departureCompany || 'Не выбрано'}
+                />
               </div>
             </div>
           )}

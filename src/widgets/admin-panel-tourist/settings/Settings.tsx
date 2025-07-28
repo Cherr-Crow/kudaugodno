@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-import {
-  useLazyGetUserDataQuery,
-  useUpdateUserMutation,
-} from '@/servicesApi/userApi';
+import { useFetchMeQuery } from '@/servicesApi/authApi';
+import { useUpdateUserMutation } from '@/servicesApi/userApi';
 import { Select } from '@/shared/ui/select';
 import { Switcher } from '@/shared/ui/switcher';
 import { Typography } from '@/shared/ui/typography';
@@ -47,17 +45,10 @@ export function Settings() {
   const [connection, setConnection] = useState<Connection>('Телефон');
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
 
-  const [getUserData, { data: user, isLoading }] = useLazyGetUserDataQuery();
+  const { data: userData, isLoading } = useFetchMeQuery();
   const [changeTouristProfile] = useUpdateUserMutation();
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // пока оставляю этот костыль, так как нам важно, чтобы ls успел прогрузиться до запроса. После внедрения функции FetchMe уберу
-      setTimeout(() => {
-        getUserData();
-      }, 1000);
-    }
-  }, []);
+  const user = userData?.user;
 
   useEffect(() => {
     if (!user || !isTourist(user)) return;
@@ -90,52 +81,56 @@ export function Settings() {
     key: T,
     value: T extends 'notifications' ? boolean : string,
   ) => {
-    switch (key) {
-      case 'currency':
-        setCurrency(value as Currency);
-        break;
-      case 'language':
-        setLanguage(value as Language);
-        break;
-      case 'connection':
-        setConnection(value as Connection);
-        break;
-      case 'notifications':
-        setNotifications(value as boolean);
-        break;
-    }
+    const settingToSend = (() => {
+      switch (key) {
+        case 'currency':
+          return {
+            currency: mapUiToApiValueFromList(CURRENCIES, value as string),
+          };
+        case 'language':
+          return {
+            language: mapUiToApiValueFromList(LANGUAGES, value as string),
+          };
+        case 'notifications':
+          return {
+            notifications_enabled: value as boolean,
+          };
+        case 'connection':
+          return {
+            preferred_contact_channel: mapUiToApiValueFromList(
+              CONNECTIONS,
+              value as string,
+            ),
+          };
+        default:
+          return {};
+      }
+    })();
 
     if (user) {
-      const settingsToSend = {
+      const changedData = {
         first_name: user.first_name,
         last_name: user.last_name,
         phone_number: user.phone_number,
         email: user.email,
-        currency: mapUiToApiValueFromList(
-          CURRENCIES,
-          key === 'currency' ? (value as string) : currency,
-        ),
-        language: mapUiToApiValueFromList(
-          LANGUAGES,
-          key === 'language' ? (value as string) : language,
-        ),
-        notifications_enabled:
-          key === 'notifications' ? (value as boolean) : notifications,
-        preferred_contact_channel: mapUiToApiValueFromList(
-          CONNECTIONS,
-          key === 'connection' ? (value as string) : connection,
-        ),
+        ...settingToSend,
       };
 
       const formData = new FormData();
 
-      for (const [key, value] of Object.entries(settingsToSend)) {
+      for (const [key, value] of Object.entries(changedData)) {
         formData.append(key, typeof value === 'boolean' ? String(value) : value);
       }
 
-      try {
-        await changeTouristProfile(formData).unwrap();
-      } catch {}
+      if (user.id) {
+        try {
+          await changeTouristProfile({
+            role: 'USER',
+            id: user.id,
+            formData: formData,
+          }).unwrap();
+        } catch {}
+      }
     }
   };
 
@@ -161,7 +156,7 @@ export function Settings() {
                 <Select
                   options={CURRENCIES.map((c) => c.label)}
                   onSelect={(e) => {
-                    if (isCurrency(e)) {
+                    if (isCurrency(e) && e !== currency) {
                       setCurrency(e);
                       handleChangeSetting('currency', e);
                     }
@@ -179,7 +174,7 @@ export function Settings() {
                 <Select
                   options={LANGUAGES.map((c) => c.label)}
                   onSelect={(e) => {
-                    if (isLanguage(e)) {
+                    if (isLanguage(e) && e !== language) {
                       setLanguage(e);
                       handleChangeSetting('language', e);
                     }
@@ -198,8 +193,10 @@ export function Settings() {
                   className=''
                   isActive={notifications}
                   onToggle={(val: boolean) => {
-                    if (typeof val === 'boolean') setNotifications(val);
-                    handleChangeSetting('notifications', val);
+                    if (typeof val === 'boolean' && val !== notifications) {
+                      setNotifications(val);
+                      handleChangeSetting('notifications', val);
+                    }
                   }}
                 />
               </div>
@@ -211,7 +208,7 @@ export function Settings() {
                   options={CONNECTIONS.map((c) => c.label)}
                   value={connection}
                   onSelect={(e) => {
-                    if (isConnection(e)) {
+                    if (isConnection(e) && e !== connection) {
                       setConnection(e);
                       handleChangeSetting('connection', e);
                     }

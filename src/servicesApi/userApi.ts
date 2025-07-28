@@ -1,13 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { getRoleFromStore, getUserIdFromStore } from '@/rtk/storeAccess';
-import { clearUser } from '@/rtk/userSlice';
+import { getApiPathByRole } from '@/shared/utils/getApiPathByRole';
 import { BASE_URL } from '@/temp/domen_nikita';
 import { ITourist, ICompany } from '@/types/users';
 
 // Единый api-slice для пользователя-туриста и для пользователя-компании, чтобы уменьшить количество проверок в компонентах для оптимизации кода.
-// В части эндпоинтов происходит проверка роли пользователя, чтобы подставить корректное значение в адрес запроса - users или companies. Таким образом, эндоинты универсальны и автоматически определяют, к какой группе запросов обращаться.
-// Пример для понимания - getUserData. В зависимости от того, какой пользователь залогинился - запоминается его роль - "USER" или "TOUR_OPERATOR" | "HOTELIER", после чего во все используемые запросы подставляется корректный путь, ничего передавать не надо. Нужный id пользователя также подставляется автоматически.
 
 export const userApi = createApi({
   reducerPath: 'userApi',
@@ -17,13 +14,15 @@ export const userApi = createApi({
     credentials: 'include',
   }),
   endpoints: (build) => ({
-    getUserData: build.query<ITourist | ICompany, void>({
-      query: () => {
-        const role = getRoleFromStore();
-        const id = getUserIdFromStore();
+    getUserData: build.query<
+      ITourist | ICompany,
+      { role: 'USER' | 'TOUR_OPERATOR' | 'HOTELIER'; id: number }
+    >({
+      query: ({ role, id }) => {
+        const rolePath = getApiPathByRole(role);
 
         return {
-          url: `${role}/${id}/`,
+          url: `${rolePath}/${id}/`,
           method: 'GET',
           headers: {
             accept: 'application/json',
@@ -40,12 +39,15 @@ export const userApi = createApi({
       },
       providesTags: (result) => (result ? [{ type: 'User' }] : []),
     }),
-    getAllUsersData: build.query<ITourist[] | ICompany[], void>({
-      query: () => {
-        const role = getRoleFromStore();
+    getAllUsersData: build.query<
+      ITourist[] | ICompany[],
+      { role: 'USER' | 'TOUR_OPERATOR' | 'HOTELIER' }
+    >({
+      query: ({ role }) => {
+        const rolePath = getApiPathByRole(role);
 
         return {
-          url: `${role}/`,
+          url: `${rolePath}/`,
           headers: {
             accept: 'application/json',
           },
@@ -99,13 +101,15 @@ export const userApi = createApi({
       },
       invalidatesTags: [{ type: 'Users' }],
     }),
-    updateUser: build.mutation<ITourist | ICompany, FormData>({
-      query: (formData) => {
-        const role = getRoleFromStore();
-        const id = getUserIdFromStore();
+    updateUser: build.mutation<
+      ITourist | ICompany,
+      { role: 'USER' | 'TOUR_OPERATOR' | 'HOTELIER'; id: number; formData: FormData }
+    >({
+      query: ({ role, id, formData }) => {
+        const rolePath = getApiPathByRole(role);
 
         return {
-          url: `${role}/${id}/`,
+          url: `${rolePath}/${id}/`,
           method: 'PUT',
           headers: {
             accept: 'application/json',
@@ -121,33 +125,33 @@ export const userApi = createApi({
           console.error('Ошибка при обновлении пользователя:', error);
         }
       },
-      invalidatesTags: () => [{ type: 'User', id: getUserIdFromStore() }],
+      invalidatesTags: [{ type: 'User', id: 'me' }],
     }),
-    deleteUser: build.mutation<void, void>({
-      query: () => {
-        const role = getRoleFromStore();
-        const id = getUserIdFromStore();
+    deleteUser: build.mutation<
+      void,
+      { role: 'USER' | 'TOUR_OPERATOR' | 'HOTELIER'; id: number }
+    >({
+      query: ({ role, id }) => {
+        const rolePath = getApiPathByRole(role);
 
         return {
-          url: `${role}/${id}/`,
+          url: `${rolePath}/${id}/`,
           method: 'DELETE',
           headers: {
             accept: '*/*',
           },
         };
       },
-      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      async onQueryStarted(arg, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           console.log('Пользователь удален!', data);
-          localStorage.clear();
-          dispatch(clearUser());
         } catch (error) {
           console.error('Ошибка при удалении пользователя:', error);
         }
       },
-      invalidatesTags: () => [
-        { type: 'User', id: getUserIdFromStore() },
+      invalidatesTags: (result, error, arg) => [
+        { type: 'User', id: arg.id },
         { type: 'Users' },
       ],
     }),
