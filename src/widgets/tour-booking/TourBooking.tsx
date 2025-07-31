@@ -471,6 +471,7 @@ export function TourBooking({ tourId }: ITourBooking) {
                           id={`date_born${index}`}
                           name='День рождения'
                           type='text'
+                          maskDate={true}
                           placeholder='27.12.1989'
                           value={mockData.guestsDetails[index]?.date_born || ''}
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -529,6 +530,7 @@ export function TourBooking({ tourId }: ITourBooking) {
                           id={`validity_international_passport${index}`}
                           name='Срок действия'
                           type='text'
+                          maskDate={true}
                           placeholder='14.12.2026'
                           value={
                             mockData.guestsDetails[index]

@@ -7,8 +7,12 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { useFetchMeQuery } from '@/servicesApi/authApi';
-import { useDeleteUserMutation, useUpdateUserMutation } from '@/servicesApi/userApi';
+import { selectUserId } from '@/rtk/userSlice';
+import {
+  useDeleteUserMutation,
+  useGetUserDataQuery,
+  useUpdateUserMutation,
+} from '@/servicesApi/userApi';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { useToast } from '@/shared/ui/toast/toastService';
@@ -433,13 +437,14 @@ export function PersonalData() {
                         type='date'
                         value={birthDateValue}
                       />
-                      <input
+                      <InputMask
                         {...register('birthDate')}
+                        mask='__.__.____'
+                        replacement={{ _: /\d/ }}
                         onChange={(e) => handleChangeBirthdate(e, false)}
                         id='birthDateText'
                         className='absolute bottom-0 left-0 right-[35px] top-0 w-full rounded-lg p-3 text-base focus:outline-none'
                         type='text'
-                        maxLength={10}
                         placeholder='ДД.ММ.ГГГГ'
                       />
                     </div>

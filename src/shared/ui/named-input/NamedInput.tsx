@@ -13,6 +13,10 @@ export function NamedInput(props: INamedInput) {
     mask: '+7 (___) ___-__-__',
     replacement: { _: /\d/ },
   });
+  const dateRef = useMask({
+    mask: '__.__.____',
+    replacement: { _: /\d/ },
+  });
   const {
     title,
     placeholder,
@@ -23,6 +27,7 @@ export function NamedInput(props: INamedInput) {
     startValue,
     disabled,
     onChange,
+    maskDate,
   } = props;
   const [value, setValue] = useState(startValue ?? '');
 
@@ -50,6 +55,7 @@ export function NamedInput(props: INamedInput) {
       {title && <Typography variant='l-bold'>{title}</Typography>}
       <input
         {...(type === 'tel' && { ref: phoneRef })}
+        {...(maskDate && { ref: dateRef })}
         type={type}
         className='w-full rounded-md border border-blue-600 px-4 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'
         placeholder={placeholder ?? ''}

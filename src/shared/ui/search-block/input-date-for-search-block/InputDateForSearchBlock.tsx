@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 
 import { Typography } from '@/shared/ui/typography';
 
-import { IInputDateForSearchBlock } from './InputDateForSearchBlock.types';
-import { isoToDateFormat } from '../../../utils/isoToDateFormat';
 import { SvgSprite } from '../../svg-sprite';
+// eslint-disable-next-line import/order
+import { IInputDateForSearchBlock } from './InputDateForSearchBlock.types';
 
 export function InputDateForSearchBlock({
   placeholder,
@@ -15,6 +15,18 @@ export function InputDateForSearchBlock({
   startValue,
 }: IInputDateForSearchBlock) {
   const [value, setValue] = useState<string>(startValue ?? '');
+  const [isFocused, setIsFocused] = useState(false);
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const russianDateFormat = new Intl.DateTimeFormat('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+  });
+
+  const formatDateToDayMonth = (isoDate: string): string => {
+    const date = new Date(isoDate);
+    return russianDateFormat.format(date);
+  };
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isoDate = e.target.value;
@@ -24,54 +36,60 @@ export function InputDateForSearchBlock({
 
   const handleClickDiv = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    const inputElement = e.currentTarget.querySelector('input') as HTMLInputElement;
-    if (inputElement) {
-      inputElement.showPicker?.();
-    }
+    inputRef.current?.showPicker?.();
+  };
+
+  const handleFocusDiv = () => {
+    setIsFocused(true);
+    inputRef.current?.showPicker?.();
   };
 
   useEffect(() => {
-    if (!startValue) return;
-    setValue(startValue);
+    setValue(startValue || '');
   }, [startValue]);
 
   return (
-    <>
-      <div
-        className={`relative h-full w-full ${className ?? ''}`}
-        onClick={handleClickDiv}
-      >
-        <div className='flex h-full flex-col justify-center'>
-          {value && (
-            <Typography className='text-sm text-grey-400 md:text-base'>
-              {placeholder}
-            </Typography>
-          )}
-          <Typography
-            className={`${value ? 'font-medium md:font-semibold' : 'text-sm text-grey-400 md:text-base'}`}
-          >
-            {value
-              ? isoToDateFormat(value)
-                  .split('.')
-                  .map((part, i) => (i === 2 ? part.slice(2) : part))
-                  .join('.')
-              : placeholder}
+    <div
+      tabIndex={0}
+      className={`relative h-full w-full outline-none ${className ?? ''}`}
+      onClick={handleClickDiv}
+      onFocus={handleFocusDiv}
+      onBlur={() => setIsFocused(false)}
+      aria-label='Выберите дату'
+    >
+      <div className='flex h-full flex-col justify-center'>
+        {value && (
+          <Typography className='text-sm text-grey-400 md:text-base'>
+            {placeholder}
           </Typography>
-        </div>
-        <input
-          type='date'
-          className='absolute left-0 top-8 w-full cursor-pointer appearance-none bg-transparent font-medium outline-none md:font-semibold'
-          placeholder={placeholder}
-          value={value}
-          onChange={handleChangeInput}
-        />
-        {/* Иконка */}
-        <SvgSprite
-          className='pointer-events-none absolute right-4 top-1/2 h-6 w-6 -translate-y-1/2 md:right-2 md:h-7 md:w-7 lg:right-4'
-          name={'calendar'}
-          color='grey'
-        />
+        )}
+        <Typography
+          className={`${value ? 'font-medium md:font-semibold' : 'text-sm text-grey-400 md:text-base'} `}
+        >
+          {value ? (
+            <span className={`${isFocused && 'bg-[#3367D1] text-white'}`}>
+              {formatDateToDayMonth(value)}
+            </span>
+          ) : (
+            placeholder
+          )}
+        </Typography>
       </div>
-    </>
+      <input
+        ref={inputRef}
+        type='date'
+        tabIndex={-1}
+        className='absolute inset-0 w-full cursor-pointer appearance-none bg-transparent font-medium outline-none md:font-semibold'
+        placeholder={placeholder}
+        value={value}
+        onChange={handleChangeInput}
+      />
+      {/* Иконка */}
+      <SvgSprite
+        className='pointer-events-none absolute right-4 top-1/2 h-6 w-6 -translate-y-1/2 md:right-2 md:h-7 md:w-7 lg:right-4'
+        name={'calendar'}
+        color='grey'
+      />
+    </div>
   );
 }
