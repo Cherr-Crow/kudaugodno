@@ -9,7 +9,7 @@ import { formatNumberToPriceInRub } from '@/shared/utils/formatNumberToPriceInRu
 import { IPopularDestinations } from './PopularDestinations.types';
 
 export function PopularDestinations({ className }: IPopularDestinations) {
-  const { data, error } = useGetPopularToursQuery();
+  const { data, error } = useGetPopularToursQuery({ limit: 6 });
 
   if (error) return <p className='flex justify-center'>Ошибка при загрузке</p>;
   if (!data)
@@ -59,7 +59,7 @@ export function PopularDestinations({ className }: IPopularDestinations) {
                 <Typography variant='l-bold'>
                   {destination.arrival_country}
                   <Typography variant='l-bold' className='ml-4 text-blue-600'>
-                    от {formatNumberToPriceInRub(destination.price)}
+                    от {formatNumberToPriceInRub(Number(destination.total_price))}
                   </Typography>
                 </Typography>
               </div>
