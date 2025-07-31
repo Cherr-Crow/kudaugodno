@@ -86,111 +86,119 @@ export default function AboutUs() {
           туристов уже выбрали нас
         </Typography>
       </Reviews>
-      <section className='container items-center md:flex md:flex-col lg:mb-12'>
+      <section className='container items-center md:flex md:flex-col lg:mb-12 lg:max-w-[1360px]'>
         <Typography
           variant='h2'
           className='mb-5 text-[20px] font-semibold leading-[30px] md:mb-6 md:text-[28px] md:leading-8 lg:mb-8 lg:text-[40px] lg:leading-[52px]'
         >
           Заказать тур или выбрать отель проще простого
         </Typography>
-        <ul className='flex flex-col gap-3 md:w-[526px] md:gap-5 lg:w-full lg:flex-row lg:gap-10'>
+        <ul className='flex w-full flex-col gap-3 md:flex-row md:flex-wrap md:gap-5 lg:flex-row lg:flex-nowrap lg:gap-10'>
           <li
-            className='flex h-[264px] w-full flex-col gap-3 rounded-3xl px-4 py-5 shadow-lg lg:h-[268px]'
+            className='flex h-[256px] w-full flex-col gap-3 rounded-3xl px-4 py-5 shadow-lg md:px-5 lg:h-[268px] lg:gap-[18px] lg:px-[22px] lg:pt-[24px]'
             style={{
               boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
             }}
           >
             <Typography
               variant='h2'
-              className='pl-2 text-base lg:text-2xl lg:font-bold'
+              className='pl-2 text-base leading-[18px] lg:text-2xl lg:font-bold lg:leading-[26px]'
             >
-              1. Выберите подходящий вариант
+              1. Выберите подходящий{' '}
+              <span className='hidden lg:ml-[15px] lg:inline'>&ensp;</span>вариант
             </Typography>
             <div className='relative'>
               <img
                 src='about-us-step1.png'
                 alt='step1'
-                className='h-44 w-full rounded-3xl object-cover lg:h-[168px] lg:w-[260px] lg:rotate-[-5deg]'
+                className='h-44 w-full rounded-3xl object-cover md:h-[166px] lg:ml-[-7px] lg:mt-[9px] lg:h-[168px] lg:w-[260px] lg:rotate-[-5deg]'
               />
               <Typography
                 variant='m-bold'
-                className='absolute right-0 top-5 flex gap-5 rounded-3xl bg-green-300 py-[10px] pl-7 pr-4 md:right-4 md:pl-[30px] md:pr-5 lg:right-0 lg:top-9 lg:text-[20px] lg:leading-[32px]'
+                className='absolute right-1 top-5 flex items-center gap-5 rounded-[30px] bg-green-300 py-[10px] pl-7 pr-4 md:right-4 md:h-[56px] md:pl-[30px] md:pr-5 md:leading-[40px] lg:left-[165px] lg:top-[37px] lg:h-[74px] lg:w-[155px] lg:rounded-[40px] lg:text-[20px] lg:leading-[55px]'
               >
                 240 894 ₽
                 <SvgSprite
                   name='arrow-pointer'
-                  className='color-green-950'
+                  className='color-green-950 lg:hidden'
                   color='currentColor'
                   width={14}
                 />
               </Typography>
               <Typography
-                variant='m'
-                className='absolute bottom-[-10px] left-5 rounded-3xl bg-blue-600 px-4 py-3 text-white lg:bottom-[-35px] lg:left-7 lg:rotate-[-5deg] lg:text-[20px] lg:leading-[32px]'
+                variant='s-bold'
+                className='absolute bottom-[-10px] left-[17px] rounded-3xl bg-blue-600 px-[13px] py-[14px] leading-[21px] text-white md:bottom-[-20px] md:left-8 lg:bottom-[-25px] lg:left-[20px] lg:rotate-[-5deg] lg:px-4 lg:py-3 lg:text-[20px] lg:leading-[26px]'
               >
                 Приключения в Китае
               </Typography>
             </div>
           </li>
           <li
-            className='flex h-[264px] w-full flex-col gap-3 rounded-3xl px-4 py-5 shadow-lg lg:h-[268px] lg:gap-10'
+            className='flex h-[271px] flex-col gap-3 rounded-3xl px-4 py-5 shadow-lg md:h-[262px] md:w-[calc(50%-10px)] md:px-5 lg:h-[268px] lg:w-full lg:gap-11 lg:px-[22px] lg:py-[24px]'
             style={{
               boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
             }}
           >
             <Typography
               variant='h2'
-              className='pl-2 text-base lg:text-2xl lg:font-bold'
+              className='pl-1 text-base leading-[21px] md:leading-[18px] lg:pl-2 lg:text-2xl lg:font-bold lg:leading-[26px]'
             >
               2. Забронируйте
             </Typography>
-            <div className='flex flex-col gap-2'>
-              <Typography variant='m' className='lg:text-[20px] lg:leading-[32px]'>
+            <div className='flex flex-col gap-3 md:gap-2 lg:gap-3'>
+              <Typography
+                variant='m'
+                className='leading-[20px] md:leading-[18px] lg:pl-[2px] lg:text-[20px] lg:leading-[22px]'
+              >
                 Куда: Китай
               </Typography>
               <Typography
                 variant='m'
-                className='rounded-lg bg-blue-600 px-2 py-3 text-white lg:max-w-[275px]'
+                className='h-[45px] rounded-lg bg-blue-600 px-2 py-3 text-white md:h-[42px] lg:h-[45px] lg:max-w-[275px]'
               >
                 Имя
               </Typography>
               <Typography
                 variant='m'
-                className='rounded-lg bg-blue-600 px-2 py-3 text-white lg:max-w-[275px]'
+                className='h-[45px] rounded-lg bg-blue-600 px-2 py-3 text-white md:h-[42px] lg:h-[45px] lg:max-w-[275px]'
               >
                 Фамилия
               </Typography>
               <Typography
                 variant='m-bold'
-                className='self-start rounded-3xl bg-green-300 px-7 py-[10px] lg:rotate-[5deg] lg:self-center lg:text-[20px] lg:leading-[32px]'
+                className='h-[38px] w-[171px] self-start rounded-3xl bg-green-300 px-7 py-[10px] max-xxs:mt-[12px] md:h-[56px] md:leading-[40px] lg:ml-[64px] lg:mt-[6px] lg:h-[74px] lg:w-[196px] lg:rotate-[5deg] lg:self-center lg:rounded-[40px] lg:text-[20px] lg:leading-[55px]'
               >
                 Забронировать
               </Typography>
             </div>
           </li>
           <li
-            className='flex h-[264px] w-full flex-col gap-3 rounded-3xl px-4 py-5 shadow-lg lg:h-[268px] lg:gap-[50px]'
+            className='flex h-[256px] flex-col gap-[16px] rounded-3xl px-4 py-5 shadow-lg md:h-[262px] md:w-[calc(50%-10px)] md:px-5 lg:h-[268px] lg:w-full lg:gap-[57px] lg:px-[22px] lg:py-[24px]'
             style={{
               boxShadow: '0 4px 10px rgba(0, 0, 0, 0.15)',
             }}
           >
             <Typography
               variant='h2'
-              className='pl-2 text-base lg:text-2xl lg:font-bold'
+              className='pl-2 text-base leading-[19px] lg:text-2xl lg:font-bold lg:leading-[26px]'
             >
-              3. Ждите сообщения от туроператора
+              3. Ждите сообщения от{' '}
+              <span className='hidden lg:ml-[15px] lg:inline'>&ensp;</span>
+              туроператора
             </Typography>
             <div className='relative flex flex-col gap-2'>
-              <img
-                src='about-us-bubble1.png'
-                alt='step3_bubble1'
-                className='self-start lg:absolute lg:left-[-50px]'
-              />
-              <img
-                src='about-us-bubble2.png'
-                alt='step3_bubble2'
-                className='self-end lg:absolute lg:bottom-[-175px]'
-              />
+              <Typography
+                variant='m'
+                className='h-[87px] w-[261px] self-start bg-[url("/about-us-bubble1.png")] bg-cover bg-no-repeat pl-[20px] pr-[38px] pt-[12px] leading-[21px] md:leading-[18px] lg:absolute lg:left-[-43px] lg:px-[29px] lg:leading-[21px]'
+              >
+                Здравствуйте, Анна! На связи Анекс Тур:)
+              </Typography>
+              <Typography
+                variant='m'
+                className='h-[87px] w-[261px] self-end bg-[url("/about-us-bubble2.png")] bg-cover bg-no-repeat pl-[38px] pr-[20px] pt-[12px] leading-[21px] text-white md:pl-[20px] md:pr-[38px] md:leading-[18px] lg:absolute lg:bottom-[-177px] lg:right-[-26px] lg:px-[29px] lg:leading-[21px]'
+              >
+                Здравствуйте! Готова ехать прямо сейчас
+              </Typography>
             </div>
           </li>
         </ul>
