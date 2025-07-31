@@ -1,8 +1,7 @@
-import React from 'react';
-
-import { ISelectForSearchBlock } from './SelectForSearchBlock.types';
 import { Select } from '../ui/select';
 import { Typography } from '../ui/typography';
+// eslint-disable-next-line import/order
+import { ISelectForSearchBlock } from './SelectForSearchBlock.types';
 
 type SelectType = 'guests' | 'nights';
 
@@ -69,7 +68,7 @@ export function SelectForSearchBlock({
               {placeholder}
             </Typography>
             <Typography className='hidden text-grey-400 lg:block lg:text-base'>
-              {type === 'guests' ? 'Количество гостей' : 'Количество ночей'}
+              {type === 'guests' ? 'Гостей' : 'Ночей'}
             </Typography>
           </>
         )}

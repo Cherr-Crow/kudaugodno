@@ -9,4 +9,5 @@ export interface INamedInput extends DivProps {
   startValue?: string | number;
   disabled?: boolean;
   value?: string;
+  maskDate?: boolean;
 }

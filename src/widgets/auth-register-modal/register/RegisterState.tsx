@@ -1,7 +1,8 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { InputMask } from '@react-input/mask';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { z } from 'zod';
@@ -273,13 +274,14 @@ export function RegisterState() {
             type='date'
             value={birthDateValue}
           />
-          <input
+          <InputMask
             {...register('birthDate')}
+            mask='__.__.____'
+            replacement={{ _: /\d/ }}
             onChange={(e) => handleChangeBirthdate(e, false)}
             id='birthDateText'
             className='absolute bottom-0 left-0 right-[35px] top-0 w-full rounded-lg bg-transparent px-3 py-[14px] text-base focus:outline-none'
             type='text'
-            maxLength={10}
             placeholder='ДД.ММ.ГГГГ'
           />
           <div className='pointer-events-none absolute right-3 top-1/2 z-20 h-7 w-7 -translate-y-1/2'>

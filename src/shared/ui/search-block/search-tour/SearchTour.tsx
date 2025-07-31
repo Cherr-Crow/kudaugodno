@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -52,10 +52,8 @@ export function SearchTour({
 
   const checkFormValidity = () => {
     const checkInDateValid = localCheckInDate.trim() !== '';
-    const nightsValid =
-      localNights.trim() !== '' && localNights !== 'Количество ночей';
-    const guestsValid =
-      localGuests.trim() !== '' && localGuests !== 'Количество гостей';
+    const nightsValid = localNights.trim() !== '' && localNights !== 'Ночей';
+    const guestsValid = localGuests.trim() !== '' && localGuests !== 'Гостей';
 
     const valid =
       localWhere.trim() !== '' &&
