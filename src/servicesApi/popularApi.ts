@@ -5,7 +5,7 @@ import { BASE_URL } from '@/temp/domen_nikita';
 export interface IPopularTour {
   arrival_country: string;
   photo: string;
-  price: number;
+  total_price: string;
   tours_count: number;
 }
 
@@ -14,10 +14,13 @@ export const popularToursApi = createApi({
   tagTypes: ['popularTours'],
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (build) => ({
-    getPopularTours: build.query<IPopularTour[], void>({
-      query: () => 'tours/populars/',
-      providesTags: ['popularTours'],
-    }),
+    getPopularTours: build.query<IPopularTour[], { limit: number; offset?: number }>(
+      {
+        query: ({ limit, offset = 0 }) =>
+          `tours/populars/?limit=${limit}&offset=${offset}`,
+        providesTags: ['popularTours'],
+      },
+    ),
   }),
 });
 

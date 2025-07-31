@@ -9,7 +9,7 @@ import { ISearchBlock } from './SearchBlock.types';
 import { SearchBlockSkeleton } from './SearchBlockSkeleton';
 
 export function SearchBlock({
-  tab: initialTab,
+  tab,
   setTab,
   departureCity,
   where,
@@ -26,19 +26,11 @@ export function SearchBlock({
   updateUrlParams,
   className,
 }: ISearchBlock) {
-  const [tab, setTabState] = useState<'Туры' | 'Отели'>(initialTab ?? 'Туры');
   const [isClient, setIsClient] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
-    setTabState(initialTab ?? 'Туры');
-  }, [initialTab]);
-
   const handleTabChange = (newTab: 'Туры' | 'Отели') => {
-    setTabState(newTab);
-    if (setTab) {
-      setTab(newTab);
-    }
+    if (setTab) setTab(newTab);
   };
   useEffect(() => {
     setIsClient(true);
