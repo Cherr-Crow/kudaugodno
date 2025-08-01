@@ -10,6 +10,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { RoomArea } from '@/shared/hotel-page/room-area';
 import { RoomBedsInfo } from '@/shared/hotel-page/room-beds-info';
 import { NumberOfGuestsIcons } from '@/shared/number-of-guests-icons/NumberOfGuestsIcons';
+import { SwiperNavButtons } from '@/shared/swiper-nav-buttons/SwiperNavButtons';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
 
@@ -53,7 +54,7 @@ export function RoomModal({ room, rules }: IRoomModal) {
           ref={swiperRef}
           loop={true}
           slidesPerView={1}
-          spaceBetween={0}
+          spaceBetween={12}
           thumbs={{ swiper: thumbsSwiper }}
           modules={[FreeMode, Navigation, Thumbs]}
           className='mySwiper2 h-full w-full rounded-[20px] lg:h-[622px]'
@@ -69,30 +70,12 @@ export function RoomModal({ room, rules }: IRoomModal) {
               </SwiperSlide>
             ))}
         </Swiper>
-        <div className='absolute left-0 right-0 z-10 hidden -translate-y-1/2 transform justify-between md:top-[51%] md:flex'>
-          <button
-            className='flex items-center justify-center rounded-full bg-white text-blue-600 opacity-70 shadow-md transition hover:opacity-80 active:bg-blue-600 active:text-white active:opacity-100 md:ml-6 md:h-[48px] md:w-[48px] lg:h-[50px] lg:w-[50px]'
-            onClick={() => {
-              swiperRef.current?.swiper.slidePrev();
-            }}
-          >
-            <SvgSprite
-              name='arrow'
-              width={24}
-              height={24}
-              strokeWidth={2}
-              className='rotate-180'
-            />
-          </button>
-          <button
-            className='flex items-center justify-center rounded-full bg-white text-blue-600 opacity-70 shadow-md transition hover:opacity-80 active:bg-blue-600 active:text-white active:opacity-100 md:mr-6 md:h-[48px] md:w-[48px]'
-            onClick={() => {
-              swiperRef.current?.swiper.slideNext();
-            }}
-          >
-            <SvgSprite name='arrow' width={24} height={24} strokeWidth={2} />
-          </button>
-        </div>
+        <SwiperNavButtons
+          onPrev={() => swiperRef.current?.swiper.slidePrev()}
+          onNext={() => swiperRef.current?.swiper.slideNext()}
+          size='h-[48px] w-[48px]'
+          offsetClass={{ left: 'md:ml-6', right: 'md:mr-6' }}
+        />
         <div className='hidden md:block'>
           <Swiper
             onSwiper={setThumbsSwiper}

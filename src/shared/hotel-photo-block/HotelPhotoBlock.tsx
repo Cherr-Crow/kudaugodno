@@ -1,5 +1,6 @@
+import { Swiper, SwiperSlide } from 'swiper/react';
+
 import { IHotelPhotoBlock } from './HotelPhotoBlock.types';
-import { ImageSlider } from '../hotel-page/image-slider';
 import { ButtonCustom } from '../ui/button-custom';
 import { SvgSprite } from '../ui/svg-sprite';
 import { Typography } from '../ui/typography';
@@ -45,7 +46,28 @@ export function HotelPhotoBlock({ photos, onShowAllPhoto }: IHotelPhotoBlock) {
 
       {/* слайдер для мобилки */}
       <div className='pb-3 md:hidden'>
-        <ImageSlider images={photos} />
+        <Swiper
+          navigation={false}
+          loop={true}
+          speed={500}
+          breakpoints={{
+            320: {
+              slidesPerView: 2,
+              spaceBetween: 12,
+            },
+          }}
+          className='z-1 absolute h-[148px]'
+        >
+          {photos.map((image, index) => (
+            <SwiperSlide key={index}>
+              <img
+                src={image.photo}
+                alt={`Фото ${index + 1}`}
+                className='h-full w-full rounded-[20px] object-cover'
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </>
   );

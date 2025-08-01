@@ -1,15 +1,17 @@
 /* eslint-disable no-commented-code/no-commented-code */
 /* eslint-disable react/no-children-prop */
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react';
 
-import { ImageSlider } from '@/shared/hotel-page/image-slider';
 import { RoomArea } from '@/shared/hotel-page/room-area';
 import { RoomBedsInfo } from '@/shared/hotel-page/room-beds-info';
 import { RoomMealsInfo } from '@/shared/hotel-page/room-meals-info';
 import { NumberOfGuestsIcons } from '@/shared/number-of-guests-icons/NumberOfGuestsIcons';
+import { SwiperNavButtons } from '@/shared/swiper-nav-buttons/SwiperNavButtons';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Select } from '@/shared/ui/select';
 import { Typography } from '@/shared/ui/typography';
@@ -25,6 +27,7 @@ interface IRoomCardProps {
 const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const swiperRef = useRef<SwiperRef>(null);
 
   const [type, setType] = useState<string>('');
   const [hotelName, setHotelName] = useState<string>('');
@@ -122,7 +125,45 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
       >{`Номер ${room.category}`}</Typography>
 
       <div className='slider relative mb-4 rounded-[20px] md:m-0 md:max-w-[267px] lg:max-w-[436px]'>
-        <ImageSlider images={room.photo} />
+        <div className='relative w-full rounded-[20px] bg-white'>
+          <Swiper
+            ref={swiperRef}
+            modules={[Navigation]}
+            navigation={false}
+            loop={true}
+            speed={500}
+            breakpoints={{
+              320: {
+                slidesPerView: 1.65,
+                spaceBetween: 16,
+              },
+              640: {
+                slidesPerView: 1,
+                spaceBetween: 10,
+              },
+            }}
+            className='z-1 absolute'
+          >
+            {room.photo.map((image, index) => (
+              <SwiperSlide key={index}>
+                <img
+                  src={image.photo}
+                  alt={`Фото ${index + 1}`}
+                  className='h-[150px] w-full rounded-[20px] object-cover md:h-[228px] md:max-w-[267px] lg:h-[228px] lg:max-w-[436px]'
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          <SwiperNavButtons
+            onPrev={() => swiperRef.current?.swiper.slidePrev()}
+            onNext={() => swiperRef.current?.swiper.slideNext()}
+            size='h-[32px] w-[32px] lg:h-[44px] lg:w-[44px]'
+            offsetClass={{
+              left: 'ml-8 md:ml-2 lg:ml-5',
+              right: 'ml-8 md:mr-2 lg:mr-5',
+            }}
+          />
+        </div>
       </div>
 
       <div className='rounded-[20px] border border-grey-50 p-5 text-blue-950 shadow-md md:h-full md:w-full md:border-none md:p-0 md:pl-5 md:shadow-none'>
