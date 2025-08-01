@@ -2,7 +2,6 @@ import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
 import { MyArticles } from '@/widgets/admin-panel-tourist/reviews/MyArticles';
-import { OurAdvantages } from '@/widgets/our-advantages';
 import { Reviews } from '@/widgets/reviews';
 
 export default function AboutUs() {
@@ -64,14 +63,6 @@ export default function AboutUs() {
           />
         </div>
       </section>
-      <OurAdvantages className='mb-[-4px] mt-[17px] md:mb-[-54px] md:mt-[0px] lg:mb-[-34px]'>
-        <Typography
-          variant='h2'
-          className='mb-5 text-[20px] font-semibold leading-[30px] md:mb-6 md:text-center md:text-[28px] md:leading-8 lg:text-[40px] lg:leading-[52px]'
-        >
-          Почему нам доверяют свой отпуск
-        </Typography>
-      </OurAdvantages>
       <Reviews>
         <Typography variant='m' className='md:text-2xl lg:text-[32px] lg:leading-10'>
           Мы радуемся каждому новому путешественнику
