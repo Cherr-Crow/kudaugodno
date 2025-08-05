@@ -1,7 +1,5 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-
 import { nanoid } from 'nanoid';
 
 import { SvgSprite } from '@/shared/ui/svg-sprite';
@@ -13,20 +11,11 @@ export function TabBar({
   className,
   tabs,
   svgTab,
-  setTab,
   activeTab,
   getActiveTab,
   variant = 'primary',
 }: ITabBar) {
-  const [active, setActive] = useState(activeTab ?? setTab ?? tabs[0]);
-
-  useEffect(() => {
-    if (activeTab !== undefined) {
-      setActive(activeTab);
-    } else if (setTab !== undefined) {
-      setActive(setTab);
-    }
-  }, [activeTab, setTab]);
+  const active = activeTab ?? tabs[0];
 
   enum Style {
     primary = 'bg-green-300 p-2',
@@ -34,8 +23,9 @@ export function TabBar({
   }
 
   const handleTabClick = (tab: string) => {
-    setActive(tab);
-    getActiveTab(tab);
+    if (getActiveTab) {
+      getActiveTab(tab);
+    }
   };
 
   return (

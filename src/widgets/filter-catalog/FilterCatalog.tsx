@@ -24,11 +24,7 @@ import { getDateNow } from '@/shared/utils/getDateNow';
 import { useSearchBlockState } from '@/shared/utils/useSearchBlockState';
 import CatalogData from '@/widgets/catalog-data/CatalogData';
 
-type CatalogProps = {
-  onTabChange?: (tab: 'Туры' | 'Отели') => void;
-};
-
-export function FilterCatalog({ onTabChange }: CatalogProps) {
+export function FilterCatalog() {
   {
     /* Отзывы*/
   }
@@ -90,20 +86,12 @@ export function FilterCatalog({ onTabChange }: CatalogProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const getTabFromParams = () =>
-    searchParams.get('tab') === 'Отели' ? 'Отели' : 'Туры';
-
-  const [tab, setTab] = useState<'Туры' | 'Отели'>(getTabFromParams);
-
-  useEffect(() => {
-    setTab(getTabFromParams());
-  }, [searchParams]);
+  const tab = searchParams.get('tab') === 'Отели' ? 'Отели' : 'Туры';
 
   const handleTabChange = (newTab: 'Туры' | 'Отели') => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set('tab', newTab);
-    router.push(`?${params.toString()}`);
-    onTabChange?.(newTab);
+    const currentParams = new URLSearchParams(window.location.search);
+    currentParams.set('tab', newTab);
+    router.push(`?${currentParams.toString()}`, { scroll: false });
   };
 
   // Инициализация компонента стейтов для SearchTour
