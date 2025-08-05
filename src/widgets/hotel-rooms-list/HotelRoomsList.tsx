@@ -6,7 +6,10 @@ import { skipToken } from '@reduxjs/toolkit/query/react';
 
 import { RoomCard } from '@/entities/room-card';
 import { ClickWrapper } from '@/entities/room-card/ClickWrapper';
-import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
+import {
+  useGetOneHotelQuery,
+  useGetHotelTypeOfMealsQuery,
+} from '@/servicesApi/hotelsApi';
 import { FilterHotelCards } from '@/shared/filter-hotel-cards';
 import { Modal } from '@/shared/modal';
 import { ButtonCustom } from '@/shared/ui/button-custom';
@@ -32,6 +35,7 @@ export const HotelRoomsList: React.FC<HotelRoomsListProps> = ({
   const [selectedRoom, setSelectedRoom] = useState<RoomType | null>(null);
 
   const { data: hotel } = useGetOneHotelQuery(hotelId ?? skipToken);
+  const { data: mealsData } = useGetHotelTypeOfMealsQuery(hotelId ?? skipToken);
 
   const handleOpenModal = (room: RoomType) => {
     setSelectedRoom(room);
@@ -90,23 +94,27 @@ export const HotelRoomsList: React.FC<HotelRoomsListProps> = ({
         <Typography variant='h3' className=''>
           Варианты номеров
         </Typography>
-        <FilterHotelCards
-          rooms={rooms}
-          selectedFilters={selectedFilters}
-          setSelectedFilters={setSelectedFilters}
-        />
+        {mealsData && (
+          <FilterHotelCards
+            rooms={rooms}
+            availableMeals={mealsData}
+            selectedFilters={selectedFilters}
+            setSelectedFilters={setSelectedFilters}
+          />
+        )}
       </div>
       <ul className='flex flex-col gap-3 md:gap-5'>
-        {filteredRooms.slice(0, visibleCards).map((room) => (
-          <li
-            key={room.id}
-            className='relative z-0 rounded-[20px] bg-white transition-transform duration-300 hover:scale-[1.02] md:border md:border-grey-50 md:shadow-md'
-          >
-            <ClickWrapper onClick={() => handleOpenModal(room)}>
-              <RoomCard hotelId={hotelId} room={room} />
-            </ClickWrapper>
-          </li>
-        ))}
+        {mealsData &&
+          filteredRooms.slice(0, visibleCards).map((room) => (
+            <li
+              key={room.id}
+              className='relative z-0 rounded-[20px] bg-white transition-transform duration-300 hover:scale-[1.02] md:border md:border-grey-50 md:shadow-md'
+            >
+              <ClickWrapper onClick={() => handleOpenModal(room)}>
+                <RoomCard hotelId={hotelId} room={room} availableMeals={mealsData} />
+              </ClickWrapper>
+            </li>
+          ))}
       </ul>
 
       <Modal

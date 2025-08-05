@@ -86,6 +86,7 @@ function HotelPage() {
   };
 
   console.log(hotel);
+  console.log('filtered rooms: ', filteredRooms);
 
   return (
     <section className='container rounded-bl-[20px] rounded-br-[20px] xl:rounded-bl-[100px] xl:rounded-br-[100px]'>
