@@ -131,6 +131,7 @@ export function EnterCodeState() {
                 email: email,
                 code: `${input1 + input2 + input3 + input4}`,
               }).unwrap();
+              showToast('Успешная авторизация!', 'success');
               dispatch(closeAuthModal());
               showToast('Успешная авторизация!', 'success');
 
