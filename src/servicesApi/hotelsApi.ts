@@ -1,10 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// import { IHotelMiniData } from '@/entities/offer-card/OfferCard.types';
 import { BASE_URL } from '@/temp/domen_nikita';
 import { IHotel, IHotelMiniData } from '@/types/hotel';
 import { PhotoHotel } from '@/types/photo_hotel';
-import { RoomType } from '@/types/room';
+import { MealType, RoomType } from '@/types/room';
 
 interface IResponceListHotels {
   count: number;
@@ -208,6 +207,17 @@ export const hotelsApi = createApi({
         }
       },
     }),
+    getHotelTypeOfMeals: build.query<MealType[], number>({
+      query: (id) => `hotels/${id}/type_of_meals/`,
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          const data = await queryFulfilled;
+          console.log('Типы питания отеля получены успешно!', data);
+        } catch (error) {
+          console.error('Ошибка при получении типов питания отеля:', error);
+        }
+      },
+    }),
   }),
 });
 
@@ -228,4 +238,5 @@ export const {
   useAddPhotoRoomMutation,
   useDelPhotoRoomMutation,
   useGetWhatAboutHotelsQuery,
+  useGetHotelTypeOfMealsQuery,
 } = hotelsApi;

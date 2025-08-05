@@ -1,7 +1,8 @@
-import { RoomType } from '@/types/room';
+import { MealType, RoomType } from '@/types/room';
 
 export interface FilterHotelCardsProps {
   rooms: RoomType[];
+  availableMeals: MealType[];
   selectedFilters: {
     category: string[];
     meals: string[];

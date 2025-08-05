@@ -63,14 +63,12 @@ const Popover = ({
 
 export const FilterHotelCards = ({
   rooms,
+  availableMeals,
   selectedFilters,
   setSelectedFilters,
 }: FilterHotelCardsProps) => {
   const roomCategories = Array.from(new Set(rooms.map((r) => r.category)));
-  const mealTypes = ['Без питания', 'Завтрак включен', 'Всё включено'];
-  //   Array.from(
-  //   new Set(rooms.flatMap((r) => r.type_of_meals.map((m) => m.name))),
-  // );
+  const mealTypes = availableMeals.map((meal) => meal.name);
   const guestsCounts = Array.from(
     new Set(rooms.map((r) => r.number_of_adults + r.number_of_children)),
   ).sort((a, b) => a - b);

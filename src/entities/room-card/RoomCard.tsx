@@ -17,14 +17,15 @@ import { Select } from '@/shared/ui/select';
 import { Typography } from '@/shared/ui/typography';
 import { formatNumberToPriceInRub } from '@/shared/utils/formatNumberToPriceInRub';
 import { getCheckOutDate } from '@/shared/utils/getCheckoutDate';
-import { RoomType } from '@/types/room';
+import { MealType, RoomType } from '@/types/room';
 
 interface IRoomCardProps {
   room: RoomType;
   hotelId?: number | null;
+  availableMeals: MealType[];
 }
 
-const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
+const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId, availableMeals }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const swiperRef = useRef<SwiperRef>(null);
@@ -205,18 +206,7 @@ const RoomCard: React.FC<IRoomCardProps> = ({ room, hotelId }) => {
               className='hidden md:flex'
             />
             <RoomMealsInfo
-              meals={[
-                {
-                  id: 1,
-                  name: 'Завтрак включен',
-                  price: '1500',
-                },
-                {
-                  id: 2,
-                  name: 'Всё включено',
-                  price: '4500',
-                },
-              ]}
+              meals={availableMeals}
               className='mb-2 w-[180px] text-center md:mb-0 md:max-w-[164px] lg:max-w-[180px]'
               onMealsChange={(value) => {
                 setMeals(value), console.log(value);

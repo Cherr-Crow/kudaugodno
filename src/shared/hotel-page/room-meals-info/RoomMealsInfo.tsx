@@ -28,7 +28,7 @@ export const RoomMealsInfo: React.FC<RoomMealsInfoProps> = ({
         onSelect={onMealsChange}
         color='blue'
         size='meals'
-        className='w-[180px] text-left text-[13px]'
+        className='relative w-[180px] text-left text-[13px]'
       />
     </div>
   );
