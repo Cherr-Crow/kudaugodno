@@ -6,7 +6,7 @@ type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
 export interface ISearchTour extends DivProps {
   type?: string;
-  hotel?: IHotel | null;
+  hotel?: Omit<IHotel, 'rooms'> | null;
   hotelName?: string;
   departureCity?: string;
   where?: string;
