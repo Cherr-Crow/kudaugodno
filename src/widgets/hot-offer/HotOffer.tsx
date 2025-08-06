@@ -55,12 +55,14 @@ export function HotOffer({ className, link, title, type }: IHotOffer) {
             </Link>
           )}
         </div>
-        <ul className='grid gap-3 md:grid-cols-2 md:gap-5 lg:grid-cols-3'>
+      </div>
+      <div className='hide-scroll overflow-x-auto md:container md:overflow-visible'>
+        <ul className='flex flex-nowrap gap-3 md:grid md:grid-cols-2 md:gap-5 lg:grid-cols-3'>
           {hotels &&
             hotels.length > 0 &&
             hotels.map((offer, i) => (
               <li
-                className={i === 2 ? 'md:hidden lg:block' : ''}
+                className={`mb-5 min-h-[372px] min-w-80 first:pl-4 last:pr-4 md:mb-0 md:first:pl-0 md:last:pr-0 ${i === 2 ? 'md:hidden lg:block' : ''}`}
                 key={i}
                 onClick={() => handleSaveId(offer.id)}
               >
@@ -68,6 +70,8 @@ export function HotOffer({ className, link, title, type }: IHotOffer) {
               </li>
             ))}
         </ul>
+      </div>
+      <div className='container'>
         {link && (
           <Link
             href={link}
