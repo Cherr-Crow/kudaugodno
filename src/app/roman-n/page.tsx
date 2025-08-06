@@ -12,7 +12,6 @@ import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { ModalTours } from '@/shared/ui/modal-tours';
 import { NamedInput } from '@/shared/ui/named-input';
-import { OtherTours } from '@/shared/ui/other-tours';
 import { PopupWindow } from '@/shared/ui/popup-window';
 import { RadioButton } from '@/shared/ui/radio-button';
 import { ReviewsCard } from '@/shared/ui/reviews-card';
@@ -566,11 +565,6 @@ export default function RomanN() {
                 placeholder='SU-12345'
                 disabled
               />
-            </div>
-
-            <div className='max-w-fit rounded-xl border border-dashed p-4'>
-              <h2 className='mb-3 w-fit bg-blue-400'>OtherTours</h2>
-              <OtherTours />
             </div>
 
             <div className='max-w-fit rounded-xl border border-dashed p-4'>

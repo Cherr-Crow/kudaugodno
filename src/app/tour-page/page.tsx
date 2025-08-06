@@ -3,34 +3,28 @@
 
 import React, { Suspense, useEffect, useState } from 'react';
 
-import { nanoid } from 'nanoid';
+import { skipToken } from '@reduxjs/toolkit/query';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useGetOneTourQuery, useGetToursByHotelQuery } from '@/servicesApi/toursApi';
+import { useGetRoomsHotelQuery } from '@/servicesApi/hotelsApi';
+import { useGetOneTourQuery } from '@/servicesApi/toursApi';
 import { Breadcrumbs } from '@/shared/breadcrumbs';
-import { ButtonCustom } from '@/shared/ui/button-custom';
-import { OtherTours } from '@/shared/ui/other-tours/OtherTours';
 import { ReviewsTours } from '@/shared/ui/reviews-tours';
-import { RoomCards } from '@/shared/ui/room-cards';
-import { IRoomCards } from '@/shared/ui/room-cards/RoomCards.types';
 import { SearchTour } from '@/shared/ui/search-block/search-tour';
-import { Typography } from '@/shared/ui/typography';
 import { getDateNow } from '@/shared/utils/getDateNow';
 import { useSearchBlockState } from '@/shared/utils/useSearchBlockState';
 import { IHotel } from '@/types/hotel';
-import { ITour } from '@/types/tour';
+import { RoomType } from '@/types/room';
+import { HotelRoomsList } from '@/widgets/hotel-rooms-list';
 import { ToursBlockPhoto } from '@/widgets/tours-block-photo';
 
 function CatalogToursContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [allRooms, setAllRooms] = useState<IRoomCards[]>([]);
-  const [visibleRooms, setVisibleRooms] = useState<IRoomCards[]>([]);
-  const [roomsToShow, setRoomsToShow] = useState(5);
-  const [hotel, setHotel] = useState<IHotel | null>(null);
-  const [tours, setTours] = useState<ITour[]>([]);
-
   const tourId = Number(searchParams.get('tourId'));
+
+  const [hotel, setHotel] = useState<Omit<IHotel, 'rooms'> | null>(null);
+  const [rooms, setRooms] = useState<RoomType[]>([]);
 
   const {
     data: tourData,
@@ -40,30 +34,17 @@ function CatalogToursContent() {
     skip: !tourId || tourId <= 0,
   });
 
-  const hotelId = tourData?.hotel?.id;
-  const hotelData = tourData?.hotel;
-
-  console.log(tourId);
-
-  const {
-    data: toursData,
-    isLoading: isToursLoading,
-    isError: isToursError,
-  } = useGetToursByHotelQuery(
-    { hotelId: hotelId as number, limit: 10 },
-    { skip: !hotelId },
+  const { data: roomsData, isLoading: isRoomsLoading } = useGetRoomsHotelQuery(
+    hotel?.id ?? skipToken,
   );
 
-  console.log('tourData:', tourData);
+  useEffect(() => {
+    if (tourData) setHotel(tourData.hotel);
+  }, [tourData]);
 
   useEffect(() => {
-    if (hotelData && !isTourLoading && !isTourError)
-      setHotel({ ...hotelData, rooms: [] });
-  }, [hotelData]);
-
-  useEffect(() => {
-    if (toursData) setTours(toursData.results);
-  }, [toursData?.results]);
+    if (roomsData) setRooms(roomsData.results);
+  }, [roomsData]);
 
   // Инициализация компонента стейтов для SearchTour
   const searchState = useSearchBlockState({
@@ -87,87 +68,18 @@ function CatalogToursContent() {
     searchProps.guests,
   ]);
 
-  // Фильтрация туров
-  useEffect(() => {
-    if (!tours || !hotel) return;
-
-    const nights = parseInt(searchProps.nights.match(/\d+/)?.[0] || '0');
-    const guests = parseInt(searchProps.guests.match(/\d+/)?.[0] || '0');
-
-    if (!nights || !guests) {
-      setAllRooms([]);
-      setVisibleRooms([]);
-      return;
-    }
-
-    const filteredTours = tours.filter((tour) => {
-      if (!tour.start_date || !tour.end_date || !tour.rooms?.length) return false;
-
-      const start = new Date(tour.start_date);
-      const end = new Date(tour.end_date);
-      const tourNights = Math.ceil((+end - +start) / (1000 * 60 * 60 * 24));
-      return tourNights >= nights;
-    });
-
-    const filteredRooms =
-      hotel.rooms?.filter((room) => guests <= (room.number_of_adults ?? 0)) ?? [];
-    const availableCategories = new Set(
-      filteredRooms.map((room) => room.category?.trim().toLowerCase()),
-    );
-
-    const filteredToursByRooms = filteredTours.filter((tour) => {
-      const category = tour.rooms?.[0]?.category?.trim().toLowerCase();
-      return category && availableCategories.has(category);
-    });
-
-    const mapped: IRoomCards[] = filteredToursByRooms.flatMap((tour) => {
-      const tourRoomCategory = tour.rooms?.[0]?.category;
-      const matchingRoom = hotel.rooms?.find(
-        (room) => room?.category === tourRoomCategory,
-      );
-      if (!matchingRoom || !tour.flight_to || !tour.start_date || !tour.end_date)
-        return [];
-
-      return (
-        // matchingRoom.type_of_meals?.map((meal) => ({
-        {
-          name: matchingRoom.category,
-          tourId: tour.id,
-          roomId: matchingRoom.id,
-          tour_operator: tour.tour_operator ?? 'Без оператора',
-          guests,
-          startDate: tour.start_date,
-          endDate: tour.end_date,
-          formatted_date: `${new Date(tour.start_date).getDate()}-${new Date(tour.end_date).getDate()} ${new Date(tour.start_date).toLocaleString('ru', { month: 'long' })}`,
-          photos: matchingRoom.photo,
-          meal: 'Без питания',
-          flight_info: {
-            type: tour.flight_to.flight_type,
-            airline: tour.flight_to.airline,
-          },
-          total_price: Number(tour.total_price),
-          nights,
-        }
-        // })) ?? []
-      );
-    });
-
-    setAllRooms(mapped);
-    setVisibleRooms(mapped.slice(0, roomsToShow));
-  }, [tours, hotel, hotelId, searchProps.guests, searchProps.nights, roomsToShow]);
-
-  if (isTourLoading || isToursLoading) {
+  if (isTourLoading) {
     return <div className='pt-[40px] text-center text-[32px]'>Загрузка...</div>;
   }
 
-  if (!toursData || !hotelData) {
+  if (!tourData) {
     return <div className='pt-[40px] text-center text-[32px]'>Данных нет.</div>;
   }
 
-  if (isTourError || isToursError) {
+  if (isTourError) {
     return (
       <div className='pt-[40px] text-center text-[32px]'>
-        Ошибка при загрузке туров.
+        Ошибка при загрузке тура.
       </div>
     );
   }
@@ -188,25 +100,14 @@ function CatalogToursContent() {
         ]}
       />
       {searchProps.isInitialized && <SearchTour hotel={hotel} {...searchProps} />}
-      <ToursBlockPhoto hotel={hotel} />
+      <ToursBlockPhoto hotel={hotel ? { ...hotel, rooms } : null} />
       <section className='mb-10 mt-10'>
-        <OtherTours hotel={hotel} tours={tours} />
-        {visibleRooms.map((room) => (
-          <RoomCards key={nanoid()} {...room} roomId={room.roomId} />
-        ))}
-        {visibleRooms.length < allRooms.length && (
-          <div className='mt-8 flex items-center justify-center'>
-            <ButtonCustom
-              variant='tetriary'
-              size='m'
-              type='button'
-              className='mt-2 xl:mt-0'
-              style={{ gridArea: 'btnSubmit' }}
-              onClick={() => setRoomsToShow((prev) => prev + 5)}
-            >
-              <Typography variant='l-bold'>Показать ещё</Typography>
-            </ButtonCustom>
+        {isRoomsLoading ? (
+          <div className='pt-[40px] text-center text-[32px]'>
+            Загрузка номеров...
           </div>
+        ) : (
+          rooms && <HotelRoomsList rooms={rooms} />
         )}
       </section>
       <ReviewsTours />
