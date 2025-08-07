@@ -9,18 +9,30 @@ export interface IPopularTour {
   tours_count: number;
 }
 
+export interface IPopularToursResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: IPopularTour[];
+}
+
 export const popularToursApi = createApi({
   reducerPath: 'popularToursApi',
   tagTypes: ['popularTours'],
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (build) => ({
-    getPopularTours: build.query<IPopularTour[], { limit: number; offset?: number }>(
-      {
-        query: ({ limit, offset = 0 }) =>
-          `tours/populars/?limit=${limit}&offset=${offset}`,
-        providesTags: ['popularTours'],
-      },
-    ),
+    getPopularTours: build.query<
+      IPopularTour[],
+      { limit?: number; offset?: number }
+    >({
+      query: ({ limit, offset } = {}) => ({
+        url: 'tours/populars/',
+        params: { limit, offset },
+      }),
+      providesTags: ['popularTours'],
+      transformResponse: (response: IPopularToursResponse): IPopularTour[] =>
+        response.results,
+    }),
   }),
 });
 
