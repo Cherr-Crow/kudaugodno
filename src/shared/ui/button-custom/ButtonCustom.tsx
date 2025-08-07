@@ -17,7 +17,7 @@ export function ButtonCustom({
     secondary = 'border-2 border-green-300 hover:border-green-200 active:border-green-500',
     tetriary = 'bg-blue-200 hover:bg-blue-100 active:bg-blue-400',
     danger = 'bg-red-primary-400  active:bg-red-primary-800',
-    wzhuh = 'bg-blue-600 hover:bg-blue-500 active:bg-blue-700',
+    wzhuh = 'bg-blue-500 hover:bg-blue-400 active:bg-blue-700',
   }
 
   enum sizes {

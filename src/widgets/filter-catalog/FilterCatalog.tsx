@@ -356,7 +356,7 @@ export function FilterCatalog() {
       </div>
       <div className='container flex w-full flex-col md:flex-row'>
         <aside
-          className={`w-full p-4 md:w-1/4 ${filtersVisible ? 'block' : 'hidden'} lg:block`}
+          className={`w-full pr-4 md:w-1/4 ${filtersVisible ? 'block' : 'hidden'} lg:block`}
         >
           <div className='filter-section mb-6 flex flex-col gap-1'>
             <div className='hidden flex-wrap items-center justify-between bg-white px-4 text-blue-950 md:flex lg:flex-nowrap'>
