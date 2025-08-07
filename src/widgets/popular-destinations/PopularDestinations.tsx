@@ -23,6 +23,8 @@ export function PopularDestinations({ className }: IPopularDestinations) {
     return `${count} туров`;
   }
 
+  console.log(data);
+
   return (
     <section className={`${className} -mb-3 md:mb-0`}>
       <div className='container mx-auto'>
