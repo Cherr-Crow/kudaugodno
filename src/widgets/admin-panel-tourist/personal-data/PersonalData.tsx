@@ -7,12 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { selectUserId } from '@/rtk/userSlice';
-import {
-  useDeleteUserMutation,
-  useGetUserDataQuery,
-  useUpdateUserMutation,
-} from '@/servicesApi/userApi';
+import { useFetchMeQuery } from '@/servicesApi/authApi';
+import { useDeleteUserMutation, useUpdateUserMutation } from '@/servicesApi/userApi';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { useToast } from '@/shared/ui/toast/toastService';

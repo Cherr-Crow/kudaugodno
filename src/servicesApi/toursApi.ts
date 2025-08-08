@@ -16,8 +16,15 @@ export const toursApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (build) => ({
     getTours: build.query<IResponceListTours, { limit?: number; offset?: number }>({
-      query: ({ limit, offset }) =>
-        `tours/?${limit && 'limit=' + limit}${offset && '&offset=' + offset}`,
+      query: ({ limit, offset }) => {
+        const params = new URLSearchParams();
+
+        if (limit !== undefined) params.set('limit', String(limit));
+        if (offset !== undefined) params.set('offset', String(offset));
+
+        const queryString = params.toString();
+        return `tours/${queryString ? '?' + queryString : ''}`;
+      },
       providesTags: (result) =>
         result
           ? [
