@@ -22,8 +22,6 @@ export default function ToursPage() {
   const [search, setSearch] = useState('');
   const [showArchived, setShowArchived] = useState(false);
 
-  console.log(data);
-
   const filteredTours = (tours ?? []).filter((tour) => {
     const matchesSearch = search.trim()
       ? tour.id.toString().includes(search.toLowerCase()) ||

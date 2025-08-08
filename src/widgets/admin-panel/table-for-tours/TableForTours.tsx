@@ -94,6 +94,25 @@ export function TableForTours({ tours }: ITableForTours) {
     return `${day}.${month}.${year}`;
   };
 
+  const renderFlightInfo = (
+    flight: {
+      flight_number: string;
+      airline: string;
+      departure_city: string;
+      departure_airport: string;
+      arrival_country: string;
+      arrival_airport: string;
+    },
+    className = '',
+  ) => {
+    return (
+      <p className={className}>
+        <span className='font-bold'>{flight.flight_number}</span>{' '}
+        {`${flight.airline}, ${flight.departure_city}, ${flight.departure_airport} – ${flight.arrival_country}, ${flight.arrival_airport}`}
+      </p>
+    );
+  };
+
   return (
     <div className='w-full overflow-x-auto'>
       <table className='w-full table-auto border-collapse'>
@@ -142,30 +161,27 @@ export function TableForTours({ tours }: ITableForTours) {
           </tr>
         </thead>
         <tbody>
-          {sortedTours.map((tour) => (
+          {sortedTours.map((tour, i) => (
             <tr
               className='border-b border-b-grey-100 align-top text-base text-grey-950 even:bg-grey-50 hover:bg-blue-50'
               key={nanoid()}
               onContextMenu={(event) => handleContextMenu(event, tour.id)}
             >
               <td className='pl-3 pt-3 text-left text-[12px] sm:text-[12px] md:text-base'>
-                {tour.id}
+                {i + 1}
               </td>
               <td className='pl-3 pt-3 text-left text-[12px] sm:text-[12px] md:text-base'>
-                {tour.arrival_country}
+                {tour.hotel.country}
               </td>
               <td className='pl-3 pt-3 text-left text-[12px] sm:text-[12px] md:text-base'>
-                {tour.arrival_city}
+                {tour.hotel.city}
               </td>
               <td className='pl-3 pt-3 text-left text-[12px] sm:text-[12px] md:text-base'>
                 {tour.hotel.name}
               </td>
               <td className='pl-3 pt-3 text-left text-[12px] sm:text-[12px] md:text-base'>
-                <span className='font-bold'>
-                  {tour.flight_to.departure_date.split(' ').slice(0, 2).join(' ')}
-                </span>
-                {tour.flight_to.departure_date.split(' ').slice(2).join(' ')} -{' '}
-                {tour.flight_from.departure_date}
+                {renderFlightInfo(tour.flight_to, 'mb-2')}
+                {renderFlightInfo(tour.flight_from)}
               </td>
               <td className='pl-3 pt-3 text-left text-[12px] sm:text-[12px] md:text-base'>
                 {`${formatDate(tour.start_date)} - ${formatDate(tour.end_date)}`}
