@@ -117,7 +117,9 @@ const testRooms: RoomType[] = [
     id: 1,
     category: 'Стандарт',
     // type_of_meals: [
+    // eslint-disable-next-line no-commented-code/no-commented-code
     //   { id: 1, name: 'Завтрак', price: '500' },
+    // eslint-disable-next-line no-commented-code/no-commented-code
     //   { id: 2, name: 'Полупансион', price: '1500' },
     // ],
     number_of_adults: 2,
@@ -170,6 +172,7 @@ const testRooms: RoomType[] = [
   {
     id: 2,
     category: 'Люкс',
+    // eslint-disable-next-line no-commented-code/no-commented-code
     // type_of_meals: [{ id: 3, name: 'Ультра всё включено', price: '3000' }],
     number_of_adults: 3,
     number_of_children: 0,

@@ -51,20 +51,23 @@ export function InputDateForSearchBlock({
   return (
     <div
       tabIndex={0}
-      className={`relative h-full w-full outline-none ${className ?? ''}`}
+      className={`relative w-full outline-none ${className ?? ''}`}
       onClick={handleClickDiv}
       onFocus={handleFocusDiv}
       onBlur={() => setIsFocused(false)}
       aria-label='Выберите дату'
     >
-      <div className='flex h-full flex-col justify-center'>
+      <div className='flex min-h-[50px] flex-col justify-center'>
         {value && (
-          <Typography className='text-sm text-grey-400 md:text-base'>
+          <Typography
+            variant='s'
+            className='h-[16px] text-grey-400 md:text-sm lg:text-sm'
+          >
             {placeholder}
           </Typography>
         )}
         <Typography
-          className={`${value ? 'font-medium md:font-semibold' : 'text-sm text-grey-400 md:text-base'} `}
+          className={`${value ? 'h-[18px] font-medium md:font-semibold' : 'text-[16px] text-grey-400 md:text-base'} `}
         >
           {value ? (
             <span className={`${isFocused && 'bg-[#3367D1] text-white'}`}>
@@ -79,7 +82,7 @@ export function InputDateForSearchBlock({
         ref={inputRef}
         type='date'
         tabIndex={-1}
-        className='absolute inset-0 w-full cursor-pointer appearance-none bg-transparent font-medium outline-none md:font-semibold'
+        className='cursor-pointerappearance-none h-full w-full bg-transparent font-medium outline-none md:font-semibold'
         placeholder={placeholder}
         value={value}
         onChange={handleChangeInput}

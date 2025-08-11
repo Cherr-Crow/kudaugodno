@@ -96,7 +96,7 @@ export function Select({
           type='text'
           value={selectedOption}
           readOnly
-          className='pointer-events-none w-full cursor-pointer bg-transparent font-medium tracking-tight outline-none md:tracking-normal'
+          className='pointer-events-none h-[18px] w-full cursor-pointer bg-transparent font-medium tracking-tight outline-none md:tracking-normal'
           id={id}
           name='select'
         />

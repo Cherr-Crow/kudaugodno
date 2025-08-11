@@ -54,7 +54,7 @@ export function SearchBlock({
   if (!isClient) return null;
 
   return (
-    <div className={`flex w-full flex-col items-center gap-3 ${className}`}>
+    <div className={`flex w-full flex-col items-center gap-6 md:gap-3 ${className}`}>
       {isLoaded ? (
         <>
           <TabBar

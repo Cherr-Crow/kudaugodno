@@ -26,14 +26,18 @@ export function InputForSearchBlock({
     <div className={`flex w-fit items-center gap-3 ${className ?? ''}`}>
       <div className='flex w-full flex-col'>
         {value && (
-          <Typography className='text-sm text-grey-400 md:text-base'>
+          <Typography variant='s' className='text-grey-400 md:text-sm lg:text-sm'>
             {placeholder}
           </Typography>
         )}
+        <Typography
+          className={`${value ? 'font-medium md:font-semibold' : 'text-[16px] text-grey-400 md:text-base'} `}
+        ></Typography>
+
         <input
           ref={inputRef}
           type='text'
-          className='w-full bg-transparent text-base font-medium outline-none placeholder:text-sm placeholder:font-normal md:font-semibold md:placeholder:text-base'
+          className='w-full bg-transparent text-base font-medium leading-[18px] outline-none placeholder:text-sm placeholder:font-normal md:font-semibold md:placeholder:text-base'
           placeholder={placeholder}
           value={value}
           onChange={handleChange}
@@ -46,7 +50,7 @@ export function InputForSearchBlock({
           width={20}
           color='#adadad'
           onClick={handleReset}
-          className={`${type !== 'Туры' ? 'md:mr-1 lg:mr-3' : ''} cursor-pointer md:mr-5`}
+          className={`${type !== 'Туры' ? 'md:mr-1 lg:mr-3' : ''} cursor-pointer md:mr-[13px] lg:mr-[18px]`}
         />
       )}
     </div>
