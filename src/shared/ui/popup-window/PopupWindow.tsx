@@ -26,7 +26,7 @@ export const PopupWindow: React.FC<IPopupWindow> = ({
   return (
     <div
       ref={popupRef}
-      className={`${className} absolute z-10 w-fit rounded-2xl bg-white shadow-xl`}
+      className={`${className} absolute z-20 w-fit rounded-2xl bg-white shadow-xl`}
       data-testid='pop-up-window'
       onClick={(e) => e.stopPropagation()}
     >

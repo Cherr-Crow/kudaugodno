@@ -8,6 +8,7 @@ import { HotelComponentMap } from '@/shared/hotel-component-map';
 import { HotelComponentPhotoSlider } from '@/shared/hotel-component-photo-slider';
 import { Rating } from '@/shared/rating';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { Select } from '@/shared/ui/select';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
 import { IHotel, IHotelMiniData } from '@/types/hotel';
@@ -59,6 +60,19 @@ export function CatalogList({
   {
     /* Сортировка*/
   }
+  type SortOption =
+    | 'По популярности'
+    | 'По рейтингу'
+    | 'Сначала дешевле'
+    | 'Сначала дороже';
+
+  const sortOptions: SortOption[] = [
+    'По популярности',
+    'По рейтингу',
+    'Сначала дешевле',
+    'Сначала дороже',
+  ];
+
   const filterHotels = () =>
     data.filter((item) => {
       const isTour = tab === 'Туры';
@@ -189,17 +203,41 @@ export function CatalogList({
     });
 
   const filteredData = useMemo(() => filterHotels(), [data, appliedFilters]);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [selectedSort, setSelectedSort] = useState<SortOption>('По популярности');
+
+  const getPrice = (item: ITour | IHotelMiniData): number => {
+    if ('tour_operator' in item) {
+      return Number(item.total_price) || 0;
+    }
+
+    return (
+      Number(item.min_price_with_discount || item.min_price_without_discount) || 0
+    );
+  };
+
   const sortedData = useMemo(() => {
     return [...filteredData].sort((a, b) => {
-      const ratingA = 'hotel' in a ? a.hotel.user_rating : a.user_rating;
-      const ratingB = 'hotel' in b ? b.hotel.user_rating : b.user_rating;
-      return sortOrder === 'asc' ? ratingA - ratingB : ratingB - ratingA;
-    });
-  }, [filteredData, sortOrder, tab]);
+      // Для рейтинга
+      if (selectedSort === 'По рейтингу') {
+        const ratingA = 'tour_operator' in a ? a.hotel.user_rating : a.user_rating;
+        const ratingB = 'tour_operator' in b ? b.hotel.user_rating : b.user_rating;
+        return ratingB - ratingA;
+      }
 
-  const toggleSortOrder = () => {
-    setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
+      // Для цены
+      const priceA = getPrice(a);
+      const priceB = getPrice(b);
+
+      if (selectedSort === 'Сначала дешевле') return priceA - priceB;
+      if (selectedSort === 'Сначала дороже') return priceB - priceA;
+
+      // По умолчанию (по популярности)
+      return 0;
+    });
+  }, [filteredData, selectedSort]);
+
+  const handleSortSelect = (option: string) => {
+    setSelectedSort(option as SortOption);
   };
 
   {
@@ -280,7 +318,7 @@ export function CatalogList({
         )}
       </div>
 
-      <div className='view-options mb-4 flex items-center justify-between gap-2'>
+      <div className='view-options mb-4 flex items-center justify-between gap-2 text-grey-950'>
         <div className='hidden gap-4 text-blue-950 md:flex'>
           <button
             onClick={() => setIsMapVisible((prev) => !prev)}
@@ -297,21 +335,24 @@ export function CatalogList({
             <Typography variant='s'>Карта</Typography>
           </button>
         </div>
-        <button
-          className='text-primary flex gap-1 rounded-lg border border-grey-100 bg-grey-50 px-2 py-1 font-medium'
-          onClick={toggleSortOrder}
-        >
-          <Typography variant='s'>По популярности</Typography>
-          <SvgSprite name='sort' width={20} />
-        </button>
+        <div className='flex items-center gap-6'>
+          <Select
+            options={sortOptions}
+            className='md flex gap-1 rounded-lg font-medium lg:border lg:border-grey-100'
+            onSelect={handleSortSelect}
+            Icon='sort'
+            size='catalog'
+            arrowClass='h-6 w-6'
+          ></Select>
 
-        <button
-          className='text-primary flex gap-1 rounded-lg border border-grey-100 bg-grey-50 px-2 font-medium lg:hidden'
-          onClick={handleToggleFilters}
-        >
-          <Typography variant='s'>Фильтры</Typography>
-          <SvgSprite name='filter' width={20} />
-        </button>
+          <button
+            className='text-primary flex gap-1 rounded-lg border border-grey-100 bg-grey-50 px-2 font-medium lg:hidden'
+            onClick={handleToggleFilters}
+          >
+            <Typography variant='s'>Фильтры</Typography>
+            <SvgSprite name='filter' width={20} />
+          </button>
+        </div>
       </div>
 
       {/* Блок с отелями */}

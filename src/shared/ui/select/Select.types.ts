@@ -1,3 +1,5 @@
+import { NameSvg } from '../svg-sprite/SvgSprite.types';
+
 export interface ISelect {
   className?: string;
   arrowClass?: string;
@@ -5,10 +7,18 @@ export interface ISelect {
   getValue?: (value: string) => void;
   color?: 'blue' | 'green';
   arrowHidden?: boolean;
-  size?: 'default' | 'small' | 'medium' | 'mobile' | 'meals' | 'settings';
+  size?:
+    | 'default'
+    | 'small'
+    | 'medium'
+    | 'mobile'
+    | 'meals'
+    | 'settings'
+    | 'catalog';
   id?: string;
   startValue?: string;
   onSelect?: (value: string) => void;
   value?: string;
   disabled?: boolean;
+  Icon?: NameSvg;
 }
