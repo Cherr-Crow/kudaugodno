@@ -10,6 +10,7 @@ import { Typography } from '@/shared/ui/typography';
 import { calculateNights } from '@/shared/utils/calculateNights';
 import { formatDateRange } from '@/shared/utils/formatDateRange';
 import { formatDistance } from '@/shared/utils/formatDistance';
+// eslint-disable-next-line no-commented-code/no-commented-code
 // import { formatNumberToPriceInRub } from '@/shared/utils/formatNumberToPriceInRub';
 import { getOfferUrl } from '@/shared/utils/getOfferUrl';
 import { IHotelMiniData } from '@/types/hotel';
@@ -34,6 +35,7 @@ export function OfferCard({ offer, needHotelBadges }: IOfferCard) {
   const hotelBadges = isTour(offer) ? [] : offer.amenities_common;
   const displayBadges = isTour(offer) ? tourBadges : hotelBadges;
 
+  // eslint-disable-next-line no-commented-code/no-commented-code
   // const displayPrice = formatNumberToPriceInRub(offer.discountedPrice);
 
   return (

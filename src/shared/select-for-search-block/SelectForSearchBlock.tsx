@@ -104,16 +104,13 @@ export function SelectForSearchBlock({
 
   return (
     <div
-      className={`relative flex h-full w-full justify-items-stretch ${className ?? ''}`}
+      className={`relative flex min-h-[50px] w-full justify-items-stretch md:h-full ${className ?? ''}`}
     >
       <div className='flex h-full w-full flex-col justify-center'>
         {startValue && (
           <>
-            <Typography className='text-sm text-grey-400 md:text-base lg:hidden'>
+            <Typography variant='s' className='text-grey-400'>
               {placeholder}
-            </Typography>
-            <Typography className='hidden text-grey-400 lg:block lg:text-base'>
-              {type === 'guests' ? 'Гостей' : 'Ночей'}
             </Typography>
           </>
         )}

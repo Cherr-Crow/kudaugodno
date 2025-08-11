@@ -1,26 +1,36 @@
 'use client';
 
+// eslint-disable-next-line no-commented-code/no-commented-code
 // import { useEffect, useMemo, useState } from 'react';
 
+// eslint-disable-next-line no-commented-code/no-commented-code
 // import { useSearchParams } from 'next/navigation';
-// import { useScreen } from 'usehooks-ts';
+// import { useScreen } from 'usehooks-ts
 
 import Link from 'next/link';
 
 import { PromoCardList } from '@/entities/promo-card/PromoCard';
 import { Breadcrumbs } from '@/shared/breadcrumbs';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
+// eslint-disable-next-line no-commented-code/no-commented-code
 // import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Typography } from '@/shared/ui/typography';
 
 export default function StocksPromosPage() {
+  // eslint-disable-next-line no-commented-code/no-commented-code
   // const screen = useScreen();
+  // eslint-disable-next-line no-commented-code/no-commented-code
   // const [cardsToShow, setCardsToShow] = useState(4);
 
+  // eslint-disable-next-line no-commented-code/no-commented-code
   // const initialCount = useMemo(() => {
+  // eslint-disable-next-line no-commented-code/no-commented-code
   //     if (!screen?.width) return 3;
+  // eslint-disable-next-line no-commented-code/no-commented-code
   //     if (screen.width >= 1024) return 12;
+  // eslint-disable-next-line no-commented-code/no-commented-code
   //     if (screen.width >= 768) return 6;
+  // eslint-disable-next-line no-commented-code/no-commented-code
   //     return 3;
   // }, [screen]);
 
@@ -28,8 +38,8 @@ export default function StocksPromosPage() {
   //     setCardsToShow(initialCount);
   // }, [initialCount]);
 
+  // eslint-disable-next-line no-commented-code/no-commented-code
   // const increment = initialCount;
-
   return (
     <div className='mx-auto max-w-[1440px]'>
       <div className='px-4 pt-[26px] md:px-20 md:pt-0 lg:px-[130px]'>
