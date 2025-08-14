@@ -4,8 +4,8 @@ import { BASE_URL } from '@/temp/domen_nikita';
 import {
   IApplication,
   IApplicationHotel,
-  IApplicationTour,
   IApplicationRequest,
+  IApplicationTour,
 } from '@/types/application';
 
 interface IPaginatedResponse<T> {
@@ -79,10 +79,21 @@ export const applicationsApi = createApi({
             ]
           : [{ type: 'applications', id: 'LIST' }],
     }),
-
-    addApplication: build.mutation<IApplication, IApplicationRequest>({
+    addTourApplication: build.mutation<IApplication, IApplicationRequest>({
       query: (body) => ({
-        url: 'applications/',
+        url: 'applications/tours/',
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body,
+      }),
+      invalidatesTags: [{ type: 'applications', id: 'LIST' }],
+    }),
+    addHotelApplication: build.mutation<IApplication, IApplicationRequest>({
+      query: (body) => ({
+        url: 'applications/hotels/',
         method: 'POST',
         headers: {
           accept: 'application/json',
@@ -130,7 +141,8 @@ export const applicationsApi = createApi({
 export const {
   useGetTourApplicationsQuery,
   useGetApplicationsQuery,
-  useAddApplicationMutation,
+  useAddTourApplicationMutation,
+  useAddHotelApplicationMutation,
   useGetOneApplicationQuery,
   useLazyGetOneApplicationQuery,
   useChangeApplicationMutation,
