@@ -96,7 +96,13 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
     ? stayPrice * rawDiscount + promoDiscount
     : rawDiscount + promoDiscount;
 
-  const subtotal = stayPrice + taxes + resortFee;
+  const subtotal =
+    stayPrice +
+    taxes +
+    resortFee +
+    Number(data.visa_total_price) +
+    Number(data.med_insurance_total_price) +
+    Number(data.cancellation_insurance_total);
   const totalPrice = Math.max(subtotal - discount, 0);
 
   const bookingPrice = {
@@ -117,9 +123,13 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
     phone: data.phone,
     email: data.email,
     wishes: data.wishes,
-    med_insurance: data?.med_insurance,
-    visa: data?.visa,
-    cancellation_insurance: data?.cancellation_insurance,
+    med_insurance_count: data.med_insurance_count,
+    med_insurance_price_per_one: data.med_insurance_price_per_one,
+    med_insurance_total_price: data.med_insurance_total_price,
+    visa_count: data.visa_count,
+    visa_price_per_one: data.visa_price_per_one,
+    visa_total_price: data.visa_total_price,
+    cancellation_insurance_total: data.cancellation_insurance_total,
     price: stayPrice,
     stayPrice: stayPrice,
     taxes: taxes,
@@ -150,9 +160,13 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
     email: data?.email || 'user@example.com',
     phone_number: data?.phone || '+7 999 978 22 22',
     quantity_guests: [data?.guests || 1],
-    visa: Boolean(data?.visa),
-    med_insurance: Boolean(data?.med_insurance),
-    cancellation_insurance: Boolean(data?.cancellation_insurance),
+    med_insurance_count: data.med_insurance_count,
+    med_insurance_price_per_one: data?.med_insurance_price_per_one,
+    med_insurance_total_price: data?.med_insurance_total_price,
+    visa_count: data.visa_count,
+    visa_price_per_one: data?.visa_price_per_one,
+    visa_total_price: data?.visa_total_price,
+    cancellation_insurance_total: data?.cancellation_insurance_total,
     wishes: data?.wishes || 'Без пожеланий',
   };
 
@@ -214,7 +228,6 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
           Стоимость бронирования
         </Typography>
       </div>
-
       {/* Детализация цены */}
       <div className='mb-2 flex justify-between'>
         <Typography variant='m' className='text-grey-800'>
@@ -224,6 +237,36 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
           {formatNumberToPriceInRub(Math.ceil(bookingPrice.stayPrice))}
         </Typography>
       </div>
+      {data.med_insurance_count > 0 && (
+        <div className='mb-2 flex justify-between'>
+          <Typography variant='m' className='text-grey-800'>
+            Медицинская страховка
+          </Typography>
+          <Typography variant='m' className='text-grey-800'>
+            {formatNumberToPriceInRub(Number(data.med_insurance_total_price))}
+          </Typography>
+        </div>
+      )}
+      {data.visa_count > 0 && (
+        <div className='mb-2 flex justify-between'>
+          <Typography variant='m' className='text-grey-800'>
+            Оформление визы
+          </Typography>
+          <Typography variant='m' className='text-grey-800'>
+            {formatNumberToPriceInRub(Number(data.visa_total_price))}
+          </Typography>
+        </div>
+      )}
+      {Number(data.cancellation_insurance_total) > 0 && (
+        <div className='mb-2 flex justify-between'>
+          <Typography variant='m' className='text-grey-800'>
+            Cтраховка от невыезда
+          </Typography>
+          <Typography variant='m' className='text-grey-800'>
+            {formatNumberToPriceInRub(Number(data.cancellation_insurance_total))}
+          </Typography>
+        </div>
+      )}
       <div className='mb-2 flex justify-between'>
         <Typography variant='m' className='text-grey-800'>
           Налоги и сборы
@@ -314,7 +357,6 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
           </div>
         </div>
       </div>
-
       {/* Кнопки */}
       <div className='flex flex-col justify-between gap-4'>
         <ButtonCustom
@@ -336,7 +378,6 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
           Отменить бронирование
         </ButtonCustom>
       </div>
-
       <HotelBookingModalCancel
         isOpen={isCancelModalOpen}
         onClose={() => setCancelModalOpen(false)}
