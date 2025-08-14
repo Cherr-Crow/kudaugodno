@@ -12,21 +12,24 @@ import { HotelBookingPayForm } from '@/shared/hotel-booking-pay-form';
 import { Rating } from '@/shared/rating';
 import { TourFlightCard } from '@/shared/tour-flight-card';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { Checkbox } from '@/shared/ui/checkbox';
 import { NamedInput } from '@/shared/ui/named-input';
-import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
+import { formatNumberToPriceInRub } from '@/shared/utils/formatNumberToPriceInRub';
 import { isoToDateFormat } from '@/shared/utils/isoToDateFormat';
 import { flightData } from '@/temp/flight-mock';
 
 import { ITourBooking } from './TourBooking.types';
 
 const extractNumber = (text: string): number => {
-  const match = text.match(/\d+/);
+  const match = text?.toString().match(/\d+/);
   return match ? parseInt(match[0], 10) : 0;
 };
 
+type TInsuranceSelection = Record<string, { all?: boolean; persons?: number[] }>;
+
 export function TourBooking({ tourId }: ITourBooking) {
-  //  Загрузка дынных из блока поиска
+  //  Загрузка данных из блока поиска
 
   const [searchData, setSearchData] = useState(() => {
     const storedData = localStorage.getItem('searchData');
@@ -72,50 +75,56 @@ export function TourBooking({ tourId }: ITourBooking) {
 
   // Данные
 
-  const [mockData, setMockData] = useState({
-    dates: `${isoToDateFormat(searchData.checkInDate || '2025-06-17')} - ${isoToDateFormat(searchData.checkOutDate || '2025-06-29')}`,
-    guestsInfo: `${guests} гостей на ${searchData.nights} ночей`,
-    paymentInfo: 'Необходимо оплатить при заселении',
-    resortFee: 100,
-    price: searchData.price,
-    flightInfo: {
-      flightType: 'Чартерный рейс',
-      flightDetails:
-        'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
-    },
-    checkInDate: isoToDateFormat(searchData.checkInDate || '2025-06-17'),
-    checkOutDate: isoToDateFormat(searchData.checkOutDate || '2025-06-29'),
-    tourOperatorPhoneNumber: '+7(971) 079–27–45',
-    tourOperatorEmail: 'example@mail.com',
-    airCompany: 'Air Arabia',
-    cancellationPolicy:
-      'Отменить тур можно связавшись с туроператором. В случае аннулирования тура от Вас потребуют возмещения понесённых расходов. Точный размер штрафа уточнит менеджер туроператора.',
-    flightTo: tour?.arrival_city,
-    flightFrom: tour?.departure_city,
-    departureCountry: searchData.departure_country,
-    departureCity: searchData.departure_city,
-    arrivalCountry: searchData.arrival_country,
-    arrivalCity: searchData.arrival_city,
-    roomId: Number(searchData.roomId),
-    guests: guests,
-    phone: '',
-    email: '',
-    wishes: '',
-    med_insurance: true,
-    visa: true,
-    cancellation_insurance: false,
-    guestsDetails: Array.from(
-      { length: extractNumber(searchData.guests) },
-      (_, index) => ({
-        pk: index,
-        firstname: '',
-        lastname: '',
-        date_born: '',
-        citizenship: '',
-        international_passport_no: '',
-        validity_international_passport: '',
-      }),
-    ),
+  const [mockData, setMockData] = useState(() => {
+    return {
+      dates: `${isoToDateFormat(searchData.checkInDate || '2025-06-17')} - ${isoToDateFormat(searchData.checkOutDate || '2025-06-29')}`,
+      guestsInfo: `${searchData.guests} гостей на ${searchData.nights} ночей`,
+      paymentInfo: 'Необходимо оплатить при заселении',
+      resortFee: 100,
+      price: searchData.price,
+      flightInfo: {
+        flightType: 'Чартерный рейс',
+        flightDetails:
+          'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
+      },
+      checkInDate: isoToDateFormat(searchData.checkInDate || '2025-06-17'),
+      checkOutDate: isoToDateFormat(searchData.checkOutDate || '2025-06-29'),
+      tourOperatorPhoneNumber: '+7(971) 079–27–45',
+      tourOperatorEmail: 'example@mail.com',
+      airCompany: 'Air Arabia',
+      cancellationPolicy:
+        'Отменить тур можно связавшись с туроператором. В случае аннулирования тура от Вас потребуют возмещения понесённых расходов. Точный размер штрафа уточнит менеджер туроператора.',
+      flightTo: tour?.arrival_city,
+      flightFrom: tour?.departure_city,
+      departureCountry: searchData.departure_country,
+      departureCity: searchData.departure_city,
+      arrivalCountry: searchData.arrival_country,
+      arrivalCity: searchData.arrival_city,
+      roomId: Number(searchData.roomId),
+      guests: guests,
+      phone: '',
+      email: '',
+      wishes: '',
+      med_insurance_count: 0,
+      med_insurance_price_per_one: '5000',
+      med_insurance_total_price: '0',
+      visa_count: 0,
+      visa_price_per_one: '560',
+      visa_total_price: '0',
+      cancellation_insurance_total: '',
+      guestsDetails: Array.from(
+        { length: extractNumber(searchData.guests) },
+        (_, index) => ({
+          pk: index,
+          firstname: '',
+          lastname: '',
+          date_born: '',
+          citizenship: '',
+          international_passport_no: '',
+          validity_international_passport: '',
+        }),
+      ),
+    };
   });
 
   // Контакты
@@ -147,20 +156,22 @@ export function TourBooking({ tourId }: ITourBooking) {
 
   // Страховка
 
-  const [insuranceData, setInsuranceData] = useState([
+  const INSURANCE = [
     {
       title: 'Медицинская страховка',
       description:
         'Медицинская страховка покрывает расходы в пределах определённой суммы, которая прописана в полисе, при экстренных случаях: сильной боли, плохом самочувствии, травме, обострении хронических заболеваний.',
       key: 'med_insurance',
-      value: true,
+      pricePerOne: '5000',
+      per: 'person',
     },
     {
       title: 'Оформление визы',
       description:
         'Поможем подготовить пакет документов, передадим его туроператору, а он отправит в Визовый центр. Если у вас нет биометрических данных, нужно будет приехать в Визовый центр и сдать отпечатки пальцев. Готовые оригиналы документов доставим вам домой курьером.',
       key: 'visa',
-      value: true,
+      pricePerOne: '560',
+      per: 'person',
     },
     {
       title: 'Расширенная страховка от невыезда',
@@ -173,25 +184,151 @@ export function TourBooking({ tourId }: ITourBooking) {
         '- произошло стихийное бедствие, которое препятствует поездке или возвращению домой\n' +
         'Компенсация расходов рассчитывается на одного человека.',
       key: 'cancellation_insurance',
-      value: false,
+      pricePerOne: '1680',
+      per: 'all',
     },
-  ]);
+  ];
 
-  const toggleInsurance = (key: string) => {
-    if (key in mockData) {
-      setInsuranceData((prevData) =>
-        prevData.map((item) =>
-          item.key === key ? { ...item, value: !item.value } : item,
-        ),
-      );
+  const [insuranceSelection, setInsuranceSelection] = useState<TInsuranceSelection>(
+    {},
+  );
 
-      setMockData((prevData) => ({
-        ...prevData,
-        [key]: !prevData[key as keyof typeof mockData],
+  useEffect(() => {
+    const medEntry = insuranceSelection['med_insurance'];
+    const visaEntry = insuranceSelection['visa'];
+    const cancellationEntry = insuranceSelection['cancellation_insurance'];
+
+    const medCount = medEntry?.all ? guests : medEntry?.persons?.length || 0;
+    const visaCount = visaEntry?.all ? guests : visaEntry?.persons?.length || 0;
+    const cancellationCount = cancellationEntry ? 1 : 0;
+
+    const medPricePerOne = Number(mockData.med_insurance_price_per_one) || 0;
+    const visaPricePerOne = Number(mockData.visa_price_per_one) || 0;
+
+    setMockData((prev) => ({
+      ...prev,
+      med_insurance_count: medCount,
+      med_insurance_total_price: String(medPricePerOne * medCount),
+      visa_count: visaCount,
+      visa_total_price: String(visaPricePerOne * visaCount),
+      cancellation_insurance_total: String(cancellationCount * 1680),
+    }));
+  }, [insuranceSelection, guests]);
+
+  const toggleInsurance = (key: string, per: 'person' | 'all') => {
+    setInsuranceSelection((prev) => {
+      const copy = { ...prev };
+      const existing = copy[key];
+      if (!existing) {
+        if (per === 'all') copy[key] = { all: true };
+        else copy[key] = { persons: Array.from({ length: guests }, (_, i) => i) };
+        return copy;
+      }
+      delete copy[key];
+      return copy;
+    });
+  };
+
+  const handleGuestToggle = (
+    insuranceKey: string,
+    guestIndex: number,
+    checked: boolean,
+  ) => {
+    setInsuranceSelection((prev) => {
+      const entry = prev[insuranceKey];
+      if (!entry || entry.all) return prev;
+
+      const selected = new Set(entry.persons || []);
+      if (checked) selected.add(guestIndex);
+      else selected.delete(guestIndex);
+
+      const arr = Array.from(selected).sort((a, b) => a - b);
+      const copy = { ...prev };
+      if (arr.length === 0) delete copy[insuranceKey];
+      else copy[insuranceKey] = { persons: arr };
+      return copy;
+    });
+  };
+
+  const handleSelectAll = (insuranceKey: string, checked: boolean) => {
+    setInsuranceSelection((prev) => {
+      const entry = prev[insuranceKey];
+      if (!entry) return prev;
+      if (entry.all) return prev;
+
+      const copy = { ...prev };
+      if (checked) {
+        copy[insuranceKey] = {
+          persons: Array.from({ length: guests }, (_, i) => i),
+        };
+      } else {
+        delete copy[insuranceKey];
+      }
+      return copy;
+    });
+  };
+
+  const handleAddGuest = () => {
+    const newIndex = mockData.guestsDetails.length;
+
+    setMockData((prevState) => ({
+      ...prevState,
+      guestsDetails: [
+        ...prevState.guestsDetails,
+        {
+          pk: newIndex,
+          firstname: '',
+          lastname: '',
+          date_born: '',
+          citizenship: '',
+          international_passport_no: '',
+          validity_international_passport: '',
+        },
+      ],
+      guests: prevState.guests + 1,
+    }));
+
+    setInsuranceSelection((prev) => {
+      const updated: TInsuranceSelection = { ...prev };
+      Object.entries(prev).forEach(([k, entry]) => {
+        if (entry.all) return;
+        const arr = entry.persons || [];
+        if (arr.length === mockData.guestsDetails.length) {
+          updated[k] = { persons: [...arr, newIndex] };
+        }
+      });
+      return updated;
+    });
+
+    setGuests((p) => p + 1);
+  };
+
+  const handleRemoveGuest = () => {
+    setGuests((prev) => {
+      if (prev <= 1) return prev;
+      const newCount = prev - 1;
+
+      setMockData((prevState) => ({
+        ...prevState,
+        guestsDetails: prevState.guestsDetails.slice(0, newCount),
+        guests: newCount,
       }));
-    } else {
-      console.error(`Invalid key: ${key}`);
-    }
+
+      setInsuranceSelection((prevIns) => {
+        const updated: TInsuranceSelection = {};
+        Object.entries(prevIns).forEach(([k, entry]) => {
+          if (entry.all) {
+            updated[k] = entry;
+            return;
+          }
+          const filtered = (entry.persons || []).filter((i) => i < newCount);
+          if (filtered.length > 0) updated[k] = { persons: filtered };
+        });
+        return updated;
+      });
+
+      return newCount;
+    });
   };
 
   // Дополнительные пожелания
@@ -332,42 +469,149 @@ export function TourBooking({ tourId }: ITourBooking) {
               </Typography>
             </div>
             <div className='mb-5 rounded-lg bg-white shadow-lg'>
-              <div className='flex flex-col gap-3 p-6'>
-                {insuranceData.map((item, index) => (
-                  <div key={index} className='flex flex-col gap-3'>
-                    <div className='flex flex-col gap-4 md:flex-row'>
-                      <div className='flex flex-col gap-2'>
-                        <Typography variant='l' className='font-bold text-grey-950'>
-                          {item.title}
-                        </Typography>
-                        <Typography variant='m' className='text-grey-950'>
-                          {item.description}
-                        </Typography>
+              <ul className='flex flex-col gap-3 p-4'>
+                {INSURANCE.map((item) => {
+                  const entry = insuranceSelection[item.key];
+                  const personsSelected = entry?.persons || [];
+
+                  const added = !!entry;
+
+                  return (
+                    <li key={item.key} className='flex flex-col gap-3'>
+                      <div className='flex flex-col gap-4 md:flex-row'>
+                        <div className='flex flex-col gap-2'>
+                          <Typography
+                            variant='l'
+                            className='font-bold text-grey-950'
+                          >
+                            {item.title}
+                          </Typography>
+                          <Typography variant='m' className='text-grey-950'>
+                            {item.description}
+                          </Typography>
+                        </div>
+                        <div className='md:min-w-[233px] lg:min-w-[260px]'>
+                          {!added ? (
+                            <button
+                              className='flex w-full items-center justify-between rounded-[20px] bg-white p-5 shadow-lg md:h-[84px] lg:h-[88px]'
+                              onClick={() =>
+                                toggleInsurance(
+                                  item.key,
+                                  item.per === 'all' ? 'all' : 'person',
+                                )
+                              }
+                            >
+                              <div className='flex flex-col items-start gap-1'>
+                                <Typography variant='l-bold'>Добавить</Typography>
+                                <Typography variant='m' className='text-grey-800'>
+                                  {item.per === 'all'
+                                    ? `${formatNumberToPriceInRub(Number(item.pricePerOne))} за всех`
+                                    : `от ${formatNumberToPriceInRub(Number(item.pricePerOne))} за одного`}
+                                </Typography>
+                              </div>
+                              <div className='relative h-[14px] w-[14px]'>
+                                <div className="absolute inset-0 before:absolute before:left-0 before:top-1/2 before:h-0 before:w-full before:-translate-y-1/2 before:border-t-2 before:border-blue-950 before:content-[''] after:absolute after:left-1/2 after:top-0 after:h-full after:w-0 after:-translate-x-1/2 after:border-l-2 after:border-blue-950 after:content-['']"></div>
+                              </div>
+                            </button>
+                          ) : (
+                            <div className='w-full'>
+                              {item.per === 'all' ? (
+                                <div className='flex flex-col gap-3 rounded-[20px] border-4 border-green-300 bg-white p-5'>
+                                  <div className='flex justify-between'>
+                                    <Typography variant='l-bold'>
+                                      {formatNumberToPriceInRub(
+                                        Number(item.pricePerOne),
+                                      )}
+                                    </Typography>
+                                    <button
+                                      onClick={() =>
+                                        toggleInsurance(
+                                          item.key,
+                                          item.per === 'all' ? 'all' : 'person',
+                                        )
+                                      }
+                                    >
+                                      <div className='relative h-[14px] w-[14px]'>
+                                        <div className="absolute inset-0 before:absolute before:left-0 before:top-1/2 before:h-0 before:w-full before:-translate-y-1/2 before:border-t-2 before:border-blue-950 before:content-['']"></div>
+                                      </div>
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className='flex max-h-56 flex-col gap-3 rounded-[20px] border-4 border-green-300 bg-white p-5'>
+                                  <div className='flex justify-between'>
+                                    <Typography variant='l-bold'>
+                                      {formatNumberToPriceInRub(
+                                        Number(item.pricePerOne) *
+                                          personsSelected.length,
+                                      )}
+                                    </Typography>
+                                    <button
+                                      onClick={() =>
+                                        toggleInsurance(
+                                          item.key,
+                                          item.per === 'all' ? 'all' : 'person',
+                                        )
+                                      }
+                                    >
+                                      <div className='relative h-[14px] w-[14px]'>
+                                        <div className="absolute inset-0 before:absolute before:left-0 before:top-1/2 before:h-0 before:w-full before:-translate-y-1/2 before:border-t-2 before:border-blue-950 before:content-['']"></div>
+                                      </div>
+                                    </button>
+                                  </div>
+                                  <div className='mb-2 flex items-center'>
+                                    <Checkbox
+                                      isChecked={
+                                        personsSelected.length === guests &&
+                                        guests > 0
+                                      }
+                                      onChange={(checked) =>
+                                        handleSelectAll(item.key, checked)
+                                      }
+                                      label='Выбрать всех'
+                                      className='bold text-[13px] text-grey-950'
+                                    />
+                                  </div>
+                                  <ul
+                                    className={`flex flex-col gap-2 pl-7 ${guests >= 3 ? 'scrollbar-blue overflow-y-auto' : ''}`}
+                                  >
+                                    {mockData.guestsDetails.map((guest) => (
+                                      <li key={guest.pk} className='flex flex-col'>
+                                        <Checkbox
+                                          isChecked={personsSelected.includes(
+                                            guest.pk,
+                                          )}
+                                          onChange={(checked) =>
+                                            handleGuestToggle(
+                                              item.key,
+                                              guest.pk,
+                                              checked,
+                                            )
+                                          }
+                                          label={`${guest.firstname || `Гость ${guest.pk + 1}`} ${guest.lastname}`}
+                                          className='gap-1 text-[13px] text-grey-950'
+                                        />
+                                        <Typography
+                                          variant='m'
+                                          className='pl-9 text-grey-800'
+                                        >
+                                          {formatNumberToPriceInRub(
+                                            Number(item.pricePerOne),
+                                          )}
+                                        </Typography>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                      <div className='mt-4 flex items-center justify-between md:ml-auto md:mt-0'>
-                        <ButtonCustom
-                          variant='primary'
-                          size='s'
-                          className='group flex h-6 flex-row gap-2 text-nowrap bg-white transition-transform'
-                          onClick={() => toggleInsurance(item.key)}
-                        >
-                          {item.value ? 'Удалить из заказа' : 'Добавить в заказ'}
-                          <SvgSprite
-                            name='cross'
-                            width={10}
-                            className='rotate-45 transition-transform group-active:hidden'
-                          />
-                          <SvgSprite
-                            name='arrow'
-                            width={14}
-                            className='hidden transition-transform group-active:block'
-                          />
-                        </ButtonCustom>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
 
             <div className='flex flex-col gap-1'>
@@ -553,9 +797,7 @@ export function TourBooking({ tourId }: ITourBooking) {
             <div className='flex flex-row justify-between'>
               <ButtonCustom
                 className='mb-4'
-                onClick={() => {
-                  setGuests((prev: number) => prev + 1);
-                }}
+                onClick={handleAddGuest}
                 variant={'secondary'}
                 size={'s'}
               >
@@ -563,9 +805,7 @@ export function TourBooking({ tourId }: ITourBooking) {
               </ButtonCustom>
               <ButtonCustom
                 className='mb-4'
-                onClick={() => {
-                  setGuests((prev: number) => (prev > 1 ? prev - 1 : prev));
-                }}
+                onClick={handleRemoveGuest}
                 variant={'secondary'}
                 size={'s'}
                 disabled={guests === 1}
@@ -596,7 +836,7 @@ export function TourBooking({ tourId }: ITourBooking) {
             </div>
           </div>
           {/* {right side content} */}
-          <div className='w-full p-4 md:w-1/3'>
+          <div className='w-full p-4 md:sticky md:top-[30px] md:w-1/3 md:self-start'>
             <HotelBookingPayForm data={tourData} />
           </div>
         </div>

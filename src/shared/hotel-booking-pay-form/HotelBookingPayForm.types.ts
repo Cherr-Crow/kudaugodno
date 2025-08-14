@@ -37,9 +37,13 @@ export interface IHotelBookingPayForm extends DivProps {
     phone?: string;
     email?: string;
     wishes?: string;
-    med_insurance?: boolean;
-    visa?: boolean;
-    cancellation_insurance?: boolean;
+    med_insurance_count: number;
+    med_insurance_price_per_one: string;
+    med_insurance_total_price: string;
+    visa_count: number;
+    visa_price_per_one: string;
+    visa_total_price: string;
+    cancellation_insurance_total: string;
     guestsDetails?: {
       pk: number;
       firstname: string;

@@ -89,6 +89,13 @@ export function HotelBooking({ hotelId }: IHotelBooking) {
     phone: '',
     email: '',
     wishes: '',
+    med_insurance_count: 0,
+    med_insurance_price_per_one: '5000',
+    med_insurance_total_price: '0',
+    visa_count: 0,
+    visa_price_per_one: '560',
+    visa_total_price: '0',
+    cancellation_insurance_total: '',
     guestsDetails: Array.from(
       { length: extractNumber(searchData.guests) },
       (_, index) => ({

@@ -46,8 +46,12 @@ export interface IApplicationRequest {
   email: string;
   phone_number: string;
   quantity_guests: number[];
-  visa: boolean;
-  med_insurance: boolean;
-  cancellation_insurance: boolean;
+  visa_count: number;
+  visa_price_per_one: string;
+  visa_total_price: string;
+  med_insurance_count: number;
+  med_insurance_price_per_one: string;
+  med_insurance_total_price: string;
+  cancellation_insurance_total: string;
   wishes: string;
 }
