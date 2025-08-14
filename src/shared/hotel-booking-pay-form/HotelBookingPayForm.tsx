@@ -4,11 +4,14 @@ import React, { useEffect, useState } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useAddApplicationMutation } from '@/servicesApi/applicationsApi';
+import {
+  useAddHotelApplicationMutation,
+  useAddTourApplicationMutation,
+} from '@/servicesApi/applicationsApi';
 import { useGetDiscountByTourIdQuery } from '@/servicesApi/discountApi';
 
-import { IHotelBookingPayForm } from './HotelBookingPayForm.types';
 import { HotelBookingModalCancel } from '../hotel-booking-modal-cancel';
+import { IHotelBookingPayForm } from './HotelBookingPayForm.types';
 import { ButtonCustom } from '../ui/button-custom';
 import { NamedInput } from '../ui/named-input';
 import { SvgSprite } from '../ui/svg-sprite';
@@ -22,7 +25,8 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
   const [isCancelModalOpen, setCancelModalOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [isDiscountDetailsOpen, setDiscountDetailsOpen] = useState(false);
-  const [addApplication] = useAddApplicationMutation();
+  const [addTourApplication] = useAddTourApplicationMutation();
+  const [addHotelApplication] = useAddHotelApplicationMutation();
 
   useEffect(() => {
     setIsClient(true);
@@ -152,6 +156,17 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
     wishes: data?.wishes || 'Без пожеланий',
   };
 
+  const isFormValid = isTourBooking
+    ? Boolean(
+        data?.tour?.id &&
+          data?.email &&
+          data?.phone &&
+          data?.guests &&
+          data?.med_insurance !== undefined &&
+          data?.visa !== undefined,
+      )
+    : Boolean(data?.hotel?.id && data?.email && data?.phone && data?.guests);
+
   const handleCompleteBooking = async () => {
     if (isClient) {
       try {
@@ -168,7 +183,9 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
           guests,
         };
 
-        const response = await addApplication(applicationData).unwrap();
+        const response = isTourBooking
+          ? await addTourApplication(applicationData).unwrap()
+          : await addHotelApplication(applicationData).unwrap();
         console.log('Заявка успешно создана:', response);
         localStorage.setItem('bookingData', JSON.stringify(finalBookingData));
 
@@ -305,6 +322,7 @@ export function HotelBookingPayForm({ data }: IHotelBookingPayForm) {
           className='bg-lime-400 hover:bg-lime-500 w-full rounded-full py-3 text-sm font-bold text-grey-950 shadow-md'
           size='s'
           onClick={handleCompleteBooking}
+          disabled={!isFormValid}
         >
           Завершить бронирование
         </ButtonCustom>

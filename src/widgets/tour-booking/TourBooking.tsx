@@ -73,7 +73,7 @@ export function TourBooking({ tourId }: ITourBooking) {
   // Данные
 
   const [mockData, setMockData] = useState({
-    dates: `${isoToDateFormat(searchData.checkInDate)} - ${isoToDateFormat(searchData.checkOutDate)}`,
+    dates: `${isoToDateFormat(searchData.checkInDate || '2025-06-17')} - ${isoToDateFormat(searchData.checkOutDate || '2025-06-29')}`,
     guestsInfo: `${guests} гостей на ${searchData.nights} ночей`,
     paymentInfo: 'Необходимо оплатить при заселении',
     resortFee: 100,
@@ -83,8 +83,8 @@ export function TourBooking({ tourId }: ITourBooking) {
       flightDetails:
         'Туроператор может изменить полётную программу. Например, может поменяться время вылета, авиакомпания или аэропорты. Мы сообщим, если что-то изменится.',
     },
-    checkInDate: isoToDateFormat(searchData.checkInDate),
-    checkOutDate: isoToDateFormat(searchData.checkOutDate),
+    checkInDate: isoToDateFormat(searchData.checkInDate || '2025-06-17'),
+    checkOutDate: isoToDateFormat(searchData.checkOutDate || '2025-06-29'),
     tourOperatorPhoneNumber: '+7(971) 079–27–45',
     tourOperatorEmail: 'example@mail.com',
     airCompany: 'Air Arabia',
