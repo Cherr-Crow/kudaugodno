@@ -14,7 +14,8 @@ import { userApi } from '@/servicesApi/userApi';
 import { wzhuhApi } from '@/servicesApi/wzhuhApi';
 
 import { authModalSlice } from './authModalSlice';
-import { userSlice } from './userSlice';
+import { currentUserSlice } from './currentUserSlice';
+import { prefillEmailSlice } from './prefillEmailSlice';
 
 export const store = configureStore({
   reducer: {
@@ -22,7 +23,8 @@ export const store = configureStore({
     [discountsApi.reducerPath]: discountsApi.reducer,
     [subscribeApi.reducerPath]: subscribeApi.reducer,
     [authModalSlice.reducerPath]: authModalSlice.reducer,
-    [userSlice.reducerPath]: userSlice.reducer,
+    [prefillEmailSlice.reducerPath]: prefillEmailSlice.reducer,
+    [currentUserSlice.reducerPath]: currentUserSlice.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [hotelsApi.reducerPath]: hotelsApi.reducer,

@@ -5,9 +5,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { InputMask, Mask } from '@react-input/mask';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import { z } from 'zod';
 
-import { useFetchMeQuery } from '@/servicesApi/authApi';
+import {
+  clearCurrentUser,
+  selectUserPersonalData,
+  setCurrentUser,
+} from '@/rtk/currentUserSlice';
+import { useLazyFetchMeQuery } from '@/servicesApi/authApi';
 import { useDeleteUserMutation, useUpdateUserMutation } from '@/servicesApi/userApi';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
@@ -124,17 +130,20 @@ export function PersonalData() {
     replacement: { _: /\d/ },
   });
 
+  const dispatch = useDispatch();
   const router = useRouter();
+
   const { showToast } = useToast();
 
   const [previewAvatar, setPreviewAvatar] = useState<string | null>(null);
   const [birthDateValue, setBirthDateValue] = useState<string>('');
 
-  const { data: fetchMeData, refetch } = useFetchMeQuery();
+  const [fetchMe] = useLazyFetchMeQuery();
   const [changeTouristProfile] = useUpdateUserMutation();
   const [deleteTouristProfile] = useDeleteUserMutation();
 
-  const user = fetchMeData?.user;
+  const user = useSelector(selectUserPersonalData);
+
   const userId = user?.id;
 
   const formDataToChangeRequest = (isChangeImage: boolean = false) => {
@@ -222,7 +231,10 @@ export function PersonalData() {
               id: userId,
               formData: formData,
             }).unwrap();
-            refetch();
+            const data = await fetchMe().unwrap();
+            if (data?.user) {
+              dispatch(setCurrentUser(data.user));
+            }
           } catch {}
         }
       }
@@ -280,6 +292,10 @@ export function PersonalData() {
           formData: formData,
         }).unwrap();
         showToast('Данные успешно сохранены', 'success');
+        const data = await fetchMe().unwrap();
+        if (data?.user) {
+          dispatch(setCurrentUser(data.user));
+        }
       } catch {
         showToast('Ошибка сервера', 'error');
       }
@@ -290,6 +306,7 @@ export function PersonalData() {
     if (userId) {
       try {
         await deleteTouristProfile({ role: 'USER', id: userId }).unwrap();
+        dispatch(clearCurrentUser());
         router.push('/');
       } catch {}
     }

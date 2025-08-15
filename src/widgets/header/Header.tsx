@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { InputMask } from '@react-input/mask';
+import { skipToken } from '@reduxjs/toolkit/query';
 import Link from 'next/link';
 // import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,6 +14,11 @@ import {
   openAuthModal,
   selectAuthModalStatus,
 } from '@/rtk/authModalSlice';
+import {
+  selectUserRole,
+  setCurrentUser,
+  clearCurrentUser,
+} from '@/rtk/currentUserSlice';
 import { useFetchMeQuery, useLogoutMutation } from '@/servicesApi/authApi';
 import { Modal } from '@/shared/modal';
 import { ButtonCustom } from '@/shared/ui/button-custom';
@@ -26,6 +32,7 @@ import { AuthRegisterModal } from '../auth-register-modal/AuthRegisterModal';
 export function Header({ className }: IHeader) {
   const dispatch = useDispatch();
   const isOpenAuthModal = useSelector(selectAuthModalStatus);
+  const currentUserRole = useSelector(selectUserRole);
 
   // const router = useRouter();
   const [openUser, setOpenUser] = useState(false);
@@ -38,10 +45,16 @@ export function Header({ className }: IHeader) {
   >(null);
   const [isMobile, setIsMobile] = useState(false);
 
-  const { data: fetchMeData } = useFetchMeQuery();
+  const { data: fetchMeData } = useFetchMeQuery(
+    currentUserRole === '' ? undefined : skipToken,
+  );
   const [logout] = useLogoutMutation();
 
   const user = fetchMeData?.user;
+
+  useEffect(() => {
+    if (fetchMeData && fetchMeData.user) dispatch(setCurrentUser(fetchMeData.user));
+  }, [fetchMeData]);
 
   const closeAllMenus = () => {
     setOpenUser(false);
@@ -609,7 +622,7 @@ export function Header({ className }: IHeader) {
                 <Link
                   href='/'
                   onClick={(e) => {
-                    toggleUserMenu(e), logout();
+                    toggleUserMenu(e), logout(), dispatch(clearCurrentUser());
                   }}
                   className='px-4 py-[10px] text-blue-950 hover:bg-blue-100'
                 >
@@ -782,7 +795,9 @@ export function Header({ className }: IHeader) {
                           <Link
                             href='/'
                             onClick={(e) => {
-                              toggleUserMenu(e), logout();
+                              toggleUserMenu(e),
+                                logout(),
+                                dispatch(clearCurrentUser());
                             }}
                             className='px-4 py-[8px] text-blue-950 hover:bg-grey-100'
                           >
