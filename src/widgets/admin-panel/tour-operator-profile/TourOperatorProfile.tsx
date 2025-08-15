@@ -8,7 +8,10 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/rtk/store';
 import { useFetchMeQuery, useLogoutMutation } from '@/servicesApi/authApi';
 import { authApi } from '@/servicesApi/authApi';
-import { useDeleteUserMutation, useUpdateUserMutation } from '@/servicesApi/userApi';
+import {
+  useDeactivateUserMutation,
+  useUpdateUserMutation,
+} from '@/servicesApi/userApi';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { useToast } from '@/shared/ui/toast/toastService';
@@ -46,7 +49,7 @@ export function TourOperatorProfile() {
   const { data: fetchMeData, refetch } = useFetchMeQuery();
   const [changeCompanyData] = useUpdateUserMutation();
   const [logout] = useLogoutMutation();
-  const [deleteCompanyProfile] = useDeleteUserMutation();
+  const [deactivateCompanyProfile] = useDeactivateUserMutation();
 
   const user = fetchMeData?.user;
   const userId = fetchMeData?.user.id;
@@ -137,12 +140,15 @@ export function TourOperatorProfile() {
     exitEditMode();
   };
 
-  const handleDeleteCompany = async () => {
-    if (userId && roleId) {
+  const handleDeactivateCompany = async () => {
+    if (userId) {
       try {
-        await deleteCompanyProfile({ role: roleId, id: userId }).unwrap();
+        await deactivateCompanyProfile(userId).unwrap();
+        showToast('Аккаунт деактивирован!', 'info');
         router.push('/');
-      } catch {}
+      } catch {
+        showToast('Ошибка деактивации', 'error');
+      }
     }
   };
 
@@ -269,7 +275,7 @@ export function TourOperatorProfile() {
               </button>
               <button
                 className='rounded-[20px] px-4 py-2 text-left text-red-primary-800 hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
-                onClick={handleDeleteCompany}
+                onClick={handleDeactivateCompany}
               >
                 Деактивировать профиль
               </button>
