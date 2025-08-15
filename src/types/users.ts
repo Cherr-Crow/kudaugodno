@@ -5,8 +5,8 @@ export interface ITourist {
   email: string;
   phone_number: string;
   avatar?: string;
-  birth_date: string;
-  role?: 'TOURIST';
+  birth_date?: string;
+  role?: 'USER';
   currency?: 'RUB' | 'EUR' | 'USD';
   language?: 'RU' | 'EN';
   notifications_enabled?: boolean;

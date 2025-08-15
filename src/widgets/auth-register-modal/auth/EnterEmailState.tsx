@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import { useDispatch } from 'react-redux';
 
-import { setUserEmail } from '@/rtk/userSlice';
+import { setPrefillEmail } from '@/rtk/prefillEmailSlice';
 import { useGetCodeMutation } from '@/servicesApi/authApi';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Typography } from '@/shared/ui/typography';
@@ -42,14 +42,14 @@ export function EnterEmailState({ onEmailConfirmed }: IEnterEmailState) {
   const fetchAuthCode = async () => {
     try {
       await getCode({ email: email }).unwrap();
-      dispatch(setUserEmail(email));
+      dispatch(setPrefillEmail(email));
       onEmailConfirmed();
     } catch (err) {
       if (isRegisterError(err)) {
         const { register, error } = err.data;
         if (register === false && error === 'Пользователь не найден') {
           // если при попытке получить код для входа пользователь получает ошибку "Пользователь не найден" и одновременно статус register=false, то диспатчится email и подставляется в таб Регистрация
-          dispatch(setUserEmail(email));
+          dispatch(setPrefillEmail(email));
           return;
         }
       }

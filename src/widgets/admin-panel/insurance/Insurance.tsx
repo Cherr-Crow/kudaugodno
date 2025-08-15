@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { useFetchMeQuery } from '@/servicesApi/authApi';
+import { useSelector } from 'react-redux';
+
+import { selectUserId } from '@/rtk/currentUserSlice';
 import {
   useLazyGetInsuranceDataQuery,
   useUpdateInsurancesMutation,
@@ -37,17 +39,16 @@ export function Insurance({}: IInsurance) {
   const [medicalCompany, setMedicalCompany] = useState<string>('');
   const [departureCompany, setDepartureCompany] = useState<string>('');
 
-  const { data: fetchMeData } = useFetchMeQuery();
-
   const [getInsuranceData, { data: insurance }] = useLazyGetInsuranceDataQuery();
   const [changeInsurances] = useUpdateInsurancesMutation();
 
+  const companyId = useSelector(selectUserId);
+
   useEffect(() => {
-    if (fetchMeData && fetchMeData.user.id) {
-      const userId = fetchMeData.user.id;
-      getInsuranceData(userId);
+    if (companyId) {
+      getInsuranceData(companyId);
     }
-  }, [fetchMeData]);
+  }, [companyId]);
 
   useEffect(() => {
     if (insurance) {
@@ -70,9 +71,9 @@ export function Insurance({}: IInsurance) {
       medical: medicalCompany ? medicalCompany : '',
       not_leaving: departureCompany ? departureCompany : '',
     };
-    if (fetchMeData && fetchMeData.user.id) {
+    if (companyId) {
       try {
-        changeInsurances({ id: fetchMeData.user.id, data: changeData });
+        changeInsurances({ id: companyId, data: changeData });
         showToast('Данные успешно сохранены', 'success');
       } catch {
         showToast('Ошибка сервера', 'error');
@@ -106,14 +107,16 @@ export function Insurance({}: IInsurance) {
               <Typography variant='h5' className='text-[16px] leading-[24px]'>
                 Страховая компания
               </Typography>
-              <Select
-                options={[...insuranceCompanies, 'Не выбрано']}
-                color='blue'
-                size='small'
-                className='relative w-full'
-                getValue={(e) => setMedicalCompany(e)}
-                startValue={medicalCompany || 'Не выбрано'}
-              />
+              {medicalCompany !== '' && (
+                <Select
+                  options={[...insuranceCompanies, 'Не выбрано']}
+                  color='blue'
+                  size='small'
+                  className='relative w-full'
+                  getValue={(e) => setMedicalCompany(e)}
+                  startValue={medicalCompany || 'Не выбрано'}
+                />
+              )}
             </div>
           </div>
         </div>

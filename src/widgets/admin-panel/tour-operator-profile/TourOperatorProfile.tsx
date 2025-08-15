@@ -3,10 +3,16 @@ import { useEffect, useState, useRef } from 'react';
 
 import { InputMask, Mask } from '@react-input/mask';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import {
+  clearCurrentUser,
+  selectUserPersonalData,
+  selectUserRole,
+  setCurrentUser,
+} from '@/rtk/currentUserSlice';
 import { AppDispatch } from '@/rtk/store';
-import { useFetchMeQuery, useLogoutMutation } from '@/servicesApi/authApi';
+import { useLazyFetchMeQuery, useLogoutMutation } from '@/servicesApi/authApi';
 import { authApi } from '@/servicesApi/authApi';
 import {
   useDeactivateUserMutation,
@@ -46,15 +52,14 @@ export function TourOperatorProfile() {
 
   const inputImg = useRef<HTMLInputElement>(null);
 
-  const { data: fetchMeData, refetch } = useFetchMeQuery();
+  const [fetchMe] = useLazyFetchMeQuery();
   const [changeCompanyData] = useUpdateUserMutation();
   const [logout] = useLogoutMutation();
   const [deactivateCompanyProfile] = useDeactivateUserMutation();
 
-  const user = fetchMeData?.user;
-  const userId = fetchMeData?.user.id;
-  const roleId =
-    fetchMeData?.user.role === 'TOUR_OPERATOR' ? 'TOUR_OPERATOR' : 'HOTELIER';
+  const user = useSelector(selectUserPersonalData);
+  const userId = user?.id;
+  const roleId = useSelector(selectUserRole);
 
   console.log(user);
 
@@ -145,6 +150,7 @@ export function TourOperatorProfile() {
       try {
         await deactivateCompanyProfile(userId).unwrap();
         showToast('Аккаунт деактивирован!', 'info');
+        dispatch(clearCurrentUser());
         router.push('/');
       } catch {
         showToast('Ошибка деактивации', 'error');
@@ -171,7 +177,10 @@ export function TourOperatorProfile() {
               id: userId,
               formData: formData,
             }).unwrap();
-            refetch();
+            const data = await fetchMe().unwrap();
+            if (data?.user) {
+              dispatch(setCurrentUser(data.user));
+            }
           } catch {}
         }
       }
@@ -183,6 +192,7 @@ export function TourOperatorProfile() {
   const handleLogout = async () => {
     try {
       logout();
+      dispatch(clearCurrentUser());
       router.push('/');
     } catch {}
   };

@@ -5,9 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { InputMask } from '@react-input/mask';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { z } from 'zod';
 
-import { selectEmail } from '@/rtk/userSlice';
+import { selectPrefillEmail, clearPrefillEmail } from '@/rtk/prefillEmailSlice';
 import { useCreateNewTouristMutation } from '@/servicesApi/userApi';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
@@ -71,11 +72,13 @@ const FormSchema = z.object({
 type FormData = z.infer<typeof FormSchema>;
 
 export function RegisterState() {
+  const dispatch = useDispatch();
+
   const [birthDateValue, setBirthDateValue] = useState<string>('');
 
   const [createTourist] = useCreateNewTouristMutation();
 
-  const email = useSelector(selectEmail);
+  const email = useSelector(selectPrefillEmail);
 
   const { showToast } = useToast();
 
@@ -117,6 +120,7 @@ export function RegisterState() {
       await createTourist(formData).unwrap();
       reset();
       showToast('Успешная регистрация!', 'success');
+      dispatch(clearPrefillEmail());
     } catch (err) {
       if (isRegisterError(err)) {
         const { email } = err.data;

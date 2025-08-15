@@ -8,6 +8,32 @@ interface IFetchMeResponse {
   user: ITourist | ICompany;
 }
 
+interface IFetchMeError {
+  error: {
+    data: {
+      detail: string;
+    };
+    status: number;
+  };
+}
+
+function isFetchMeError(error: unknown): error is IFetchMeError {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'error' in error &&
+    typeof error.error === 'object' &&
+    error.error !== null &&
+    'status' in error.error &&
+    typeof error.error.status === 'number' &&
+    'data' in error.error &&
+    typeof error.error.data === 'object' &&
+    error.error.data !== null &&
+    'detail' in error.error.data &&
+    typeof error.error.data.detail === 'string'
+  );
+}
+
 export const authApi = createApi({
   reducerPath: 'authApi',
   tagTypes: ['auth', 'User'],
@@ -70,7 +96,14 @@ export const authApi = createApi({
           const res = await queryFulfilled;
           console.log('Текущий пользователь получен успешно!', res);
         } catch (error) {
-          console.error('Ошибка при получении текущего пользователя', error);
+          if (isFetchMeError(error)) {
+            const detail = error.error.data.detail;
+            if (detail.includes('Учетные данные не были предоставлены.')) {
+              console.log('Авторизованный пользователь отсутствует:', error);
+              return;
+            }
+          }
+          console.error('Ошибка при получении текущего пользователя: ', error);
         }
       },
       providesTags: (result) =>
@@ -102,5 +135,6 @@ export const {
   useGetCodeMutation,
   useConfirmCodeMutation,
   useFetchMeQuery,
+  useLazyFetchMeQuery,
   useLogoutMutation,
 } = authApi;

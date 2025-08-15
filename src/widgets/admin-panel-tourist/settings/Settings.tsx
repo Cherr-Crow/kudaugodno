@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from 'react';
 
-import { useFetchMeQuery } from '@/servicesApi/authApi';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { selectUserDataWithSettings, setCurrentUser } from '@/rtk/currentUserSlice';
+import { useLazyFetchMeQuery } from '@/servicesApi/authApi';
 import { useUpdateUserMutation } from '@/servicesApi/userApi';
 import { Select } from '@/shared/ui/select';
 import { Switcher } from '@/shared/ui/switcher';
@@ -39,16 +42,18 @@ function isConnection(value: unknown): value is Connection {
 }
 
 export function Settings() {
+  const dispatch = useDispatch();
+
   const [currency, setCurrency] = useState<Currency>('₽');
   const [language, setLanguage] = useState<Language>('RU');
   const [notifications, setNotifications] = useState<boolean>(true);
   const [connection, setConnection] = useState<Connection>('Телефон');
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
 
-  const { data: userData, isLoading } = useFetchMeQuery();
+  const [fetchMe] = useLazyFetchMeQuery();
   const [changeTouristProfile] = useUpdateUserMutation();
 
-  const user = userData?.user;
+  const user = useSelector(selectUserDataWithSettings);
 
   useEffect(() => {
     if (!user || !isTourist(user)) return;
@@ -129,6 +134,10 @@ export function Settings() {
             id: user.id,
             formData: formData,
           }).unwrap();
+          const data = await fetchMe().unwrap();
+          if (data?.user) {
+            dispatch(setCurrentUser(data.user));
+          }
         } catch {}
       }
     }
@@ -145,7 +154,7 @@ export function Settings() {
           >
             Настройки
           </Typography>
-          {isLoading || !isInitialized ? (
+          {!user || !isInitialized ? (
             <SettingsSkeleton />
           ) : (
             <>

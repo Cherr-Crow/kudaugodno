@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { closeAuthModal } from '@/rtk/authModalSlice';
-import { selectEmail } from '@/rtk/userSlice';
+import { selectPrefillEmail } from '@/rtk/prefillEmailSlice';
 import { useGetCodeMutation, useConfirmCodeMutation } from '@/servicesApi/authApi';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { timeForComponent } from '@/shared/ui/time-for-component/time';
@@ -32,7 +32,7 @@ export function EnterCodeState() {
   const dispatch = useDispatch();
   const { showToast } = useToast();
 
-  const email = useSelector(selectEmail);
+  const email = useSelector(selectPrefillEmail);
   const router = useRouter();
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -133,8 +133,6 @@ export function EnterCodeState() {
               }).unwrap();
               showToast('Успешная авторизация!', 'success');
               dispatch(closeAuthModal());
-              showToast('Успешная авторизация!', 'success');
-
               if (isRespFields(resp)) {
                 const redirectUrl =
                   resp.role === 'USER'
