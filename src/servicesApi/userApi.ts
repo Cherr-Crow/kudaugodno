@@ -155,6 +155,26 @@ export const userApi = createApi({
         { type: 'Users' },
       ],
     }),
+    deactivateUser: build.mutation<void, number>({
+      query: (id) => {
+        return {
+          url: `users/${id}/deactivate/`,
+          method: 'POST',
+          headers: {
+            accept: 'application/json',
+          },
+        };
+      },
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          console.log('Пользователь деактивирован!', data);
+        } catch (error) {
+          console.error('Ошибка при деактивации пользователя:', error);
+        }
+      },
+      invalidatesTags: (result, error, arg) => [{ type: 'User', id: arg }],
+    }),
   }),
 });
 
@@ -166,4 +186,5 @@ export const {
   useCreateNewCompanyMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,
+  useDeactivateUserMutation,
 } = userApi;
