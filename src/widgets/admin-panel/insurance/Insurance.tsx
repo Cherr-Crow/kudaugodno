@@ -91,10 +91,6 @@ export function Insurance({}: IInsurance) {
     }
   };
 
-  if (!insurance) {
-    return <div className='text-gray-500 py-10 text-center'>Загрузка...</div>;
-  }
-
   return (
     <section className='w-full lg:min-w-[352px]'>
       <form className='flex flex-col gap-[20px] lg:h-full'>
