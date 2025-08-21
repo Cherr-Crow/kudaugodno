@@ -59,20 +59,6 @@ export default function StocksPromosPage() {
           </Typography>
         </div>
         <PromoCardList promoPage={true} />
-        {/* {hasMore && (
-                <div className='mt-8 flex items-center justify-center'>
-                    <ButtonCustom
-                        variant='tetriary'
-                        size='m'
-                        type='button'
-                        className='mt-2 xl:mt-0'
-                        style={{ gridArea: 'btnSubmit' }}
-                        onClick={() => setCardsToShow((prev) => prev + increment)}
-                    >
-                        <Typography variant='l-bold'>Показать ещё</Typography>
-                    </ButtonCustom>
-                </div>
-            )} */}
       </div>
     </div>
   );

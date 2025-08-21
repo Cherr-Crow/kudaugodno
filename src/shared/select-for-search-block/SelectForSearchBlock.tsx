@@ -1,11 +1,13 @@
+// eslint-disable-next-line import/order
+import { ISelectForSearchBlock } from './SelectForSearchBlock.types';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { nanoid } from 'nanoid';
 
-import { ISelectForSearchBlock } from './SelectForSearchBlock.types';
 import { PopupWindow } from '../ui/popup-window';
 import { SvgSprite } from '../ui/svg-sprite';
-import { Typography } from '../ui/typography';
+import { Typography } from '../ui/typography/Typography';
+
 // eslint-disable-next-line import/order
 
 type SelectType = 'guests' | 'nights';
@@ -66,20 +68,28 @@ export function SelectForSearchBlock({
   const options = generateOptions(type);
   const [selectedOption, setSelectedOption] = useState(startValue ?? options[0]);
 
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
+  const openDropdown = () => {
+    if (disabled || isOpen) return;
+    setIsOpen(true);
+  };
+  const handleOutsideClick = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setIsOpen(false);
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent) => {
+    // Закрываем только если фокус ушел совсем из компонента
+    if (!dropdownRef.current?.contains(e.relatedTarget as Node)) {
+      setIsOpen(false);
+    }
   };
 
   const handleOptionClick = (option: string) => {
     setSelectedOption(option);
     setIsOpen(false);
     onValueSelect?.(option);
-  };
-
-  const handleOutsideClick = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-      setIsOpen(false);
-    }
+    dropdownRef.current?.focus(); // Возвращаем фокус
   };
 
   const handleSelectChange = (value: string) => {
@@ -117,11 +127,15 @@ export function SelectForSearchBlock({
         <div
           className={`z-60 ui-select relative w-full`}
           ref={dropdownRef}
-          onClick={handleToggle}
+          onClick={openDropdown}
+          onFocus={openDropdown}
+          onBlur={handleBlur}
+          tabIndex={disabled ? -1 : 0}
         >
           <input
             name='select'
-            value={startValue ?? ''}
+            tabIndex={-1}
+            value={selectedOption}
             onChange={(e) => handleSelectChange(e.target.value)}
             className='w-full cursor-pointer appearance-none rounded-full px-0 py-0 font-medium outline-none md:font-semibold'
           ></input>
@@ -135,13 +149,15 @@ export function SelectForSearchBlock({
             />
           )}
           {isOpen && !disabled && (
-            <PopupWindow className='right-0 top-[140%] w-full'>
+            <PopupWindow className='right-0 top-[110%] w-full'>
               <ul className='dropdown-list z-100 max-h-60 overflow-y-auto overflow-x-hidden py-2'>
                 {options.map((option) => (
                   <li
                     key={nanoid()}
+                    tabIndex={0}
                     className='px-4 py-2 hover:bg-blue-100'
                     onClick={() => handleOptionClick(option)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleOptionClick(option)}
                   >
                     {option}
                   </li>
