@@ -29,6 +29,7 @@ import {
 import { CheckBoxBlock } from '@/widgets/admin-panel/check-box-block';
 import { PhotosHotel } from '@/widgets/admin-panel/photos-hotel';
 import { RulesAdd } from '@/widgets/admin-panel/rules-add';
+import { AmenitiesChangeBlock } from '@/widgets/amenities-change-block/AmenitiesChangeBlock';
 
 import { IAddedHotelField } from './AddedHotelField.types';
 
@@ -66,9 +67,7 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
   const [description, setDscription] = useState(data?.description || ''); // описание
   const [checkInTime, setCheckInTime] = useState(data?.check_in_time || '00:00'); // время заезда
   const [checkOutTime, setCheckOutTime] = useState(data?.check_out_time || '00:00'); // время выезда
-  const [amenitiesCommon, setAmenitiesCommon] = useState(
-    !!data?.amenities_common.length ? data?.amenities_common : amenities_common,
-  ); // общие удобства
+  const [amenitiesCommon, setAmenitiesCommon] = useState(amenities_common); // общие удобства
   const [amenitiesInTheRoom, setAmenitiesInTheRoom] = useState(
     !!data?.amenities_in_the_room.length
       ? data?.amenities_in_the_room
@@ -130,7 +129,7 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
       description,
       check_in_time: checkInTime,
       check_out_time: checkOutTime,
-      amenities_common: amenitiesCommon,
+      amenities_common: amenitiesCommon.map((s) => s.label),
       amenities_in_the_room: amenitiesInTheRoom,
       amenities_sports_and_recreation: amenitiesSportsAndRecreation,
       amenities_for_children: amenitiesForChildren,
@@ -365,11 +364,9 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
       <Accordeon title='Дополнительно'>
         <div className='flex w-full flex-col gap-3 p-5'>
           <Typography variant='l-bold'>Удобства</Typography>
-          <CheckBoxBlock
-            title='Общие'
+          <AmenitiesChangeBlock
             checkboxes={amenitiesCommon}
             getNewList={setAmenitiesCommon}
-            className='bg-blue-50'
           />
           <CheckBoxBlock
             title='Удобвства а номерах'
