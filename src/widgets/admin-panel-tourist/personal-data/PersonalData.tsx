@@ -231,10 +231,7 @@ export function PersonalData() {
               id: userId,
               formData: formData,
             }).unwrap();
-            const data = await fetchMe().unwrap();
-            if (data?.user) {
-              dispatch(setCurrentUser(data.user));
-            }
+            await fetchMe();
           } catch {}
         }
       }
