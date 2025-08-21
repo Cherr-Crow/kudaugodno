@@ -102,7 +102,10 @@ export type NameSvg =
   | 'frog-modal'
   | 'cross-circled'
   | 'circle'
-  | 'logo-god';
+  | 'logo-god'
+  | 'gym'
+  | 'parking'
+  | 'wheelchair';
 
 // при добавлении нового типа svg, переносите его и в svgNameList для отображения в ПК плз.
 
@@ -201,4 +204,7 @@ export const svgNameList = [
   'cross-circled',
   'circle',
   'logo-god',
+  'gym',
+  'parking',
+  'wheelchair',
 ];
