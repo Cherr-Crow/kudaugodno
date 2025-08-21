@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { selectUserDataWithSettings, setCurrentUser } from '@/rtk/currentUserSlice';
+import { selectUserDataWithSettings } from '@/rtk/currentUserSlice';
 import { useLazyFetchMeQuery } from '@/servicesApi/authApi';
 import { useUpdateUserMutation } from '@/servicesApi/userApi';
 import { Select } from '@/shared/ui/select';
@@ -42,8 +42,6 @@ function isConnection(value: unknown): value is Connection {
 }
 
 export function Settings() {
-  const dispatch = useDispatch();
-
   const [currency, setCurrency] = useState<Currency>('₽');
   const [language, setLanguage] = useState<Language>('RU');
   const [notifications, setNotifications] = useState<boolean>(true);
@@ -134,10 +132,7 @@ export function Settings() {
             id: user.id,
             formData: formData,
           }).unwrap();
-          const data = await fetchMe().unwrap();
-          if (data?.user) {
-            dispatch(setCurrentUser(data.user));
-          }
+          await fetchMe();
         } catch {}
       }
     }

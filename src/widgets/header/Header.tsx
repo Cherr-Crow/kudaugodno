@@ -16,8 +16,8 @@ import {
 } from '@/rtk/authModalSlice';
 import {
   selectUserRole,
-  setCurrentUser,
   clearCurrentUser,
+  selectAvatar,
 } from '@/rtk/currentUserSlice';
 import { useFetchMeQuery, useLogoutMutation } from '@/servicesApi/authApi';
 import { Modal } from '@/shared/modal';
@@ -33,6 +33,7 @@ export function Header({ className }: IHeader) {
   const dispatch = useDispatch();
   const isOpenAuthModal = useSelector(selectAuthModalStatus);
   const currentUserRole = useSelector(selectUserRole);
+  const currentUserAvatar = useSelector(selectAvatar);
 
   // const router = useRouter();
   const [openUser, setOpenUser] = useState(false);
@@ -51,10 +52,6 @@ export function Header({ className }: IHeader) {
   const [logout] = useLogoutMutation();
 
   const user = fetchMeData?.user;
-
-  useEffect(() => {
-    if (fetchMeData && fetchMeData.user) dispatch(setCurrentUser(fetchMeData.user));
-  }, [fetchMeData]);
 
   const closeAllMenus = () => {
     setOpenUser(false);
@@ -512,15 +509,18 @@ export function Header({ className }: IHeader) {
               <div
                 className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-grey-950 p-1 md:h-10 md:w-10`}
                 style={{
-                  backgroundImage: user?.avatar
-                    ? `url('${user.avatar}')`
+                  backgroundImage: currentUserAvatar
+                    ? `url('${currentUserAvatar}')`
                     : undefined,
+                  // backgroundImage: user?.avatar
+                  //   ? `url('${user.avatar}')`
+                  //   : undefined,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
                 }}
                 onClick={(e) => {
-                  if (!user) {
+                  if (!currentUserRole) {
                     dispatch(openAuthModal());
                   } else {
                     toggleUserMenu(e);
@@ -536,7 +536,7 @@ export function Header({ className }: IHeader) {
                 >
                   <AuthRegisterModal />
                 </Modal>
-                {!user?.avatar && (
+                {!currentUserAvatar && (
                   <SvgSprite name='user' width={24} color='#1a1f4c' />
                 )}
               </div>

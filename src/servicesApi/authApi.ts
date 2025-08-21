@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+import { setCurrentUser, clearCurrentUser } from '@/rtk/currentUserSlice';
 import { BASE_URL } from '@/temp/domen_nikita';
 import { ICompany, ITourist } from '@/types/users';
-
 interface IFetchMeResponse {
   message: string;
   user: ITourist | ICompany;
@@ -91,10 +91,13 @@ export const authApi = createApi({
           },
         };
       },
-      async onQueryStarted(arg, { queryFulfilled }) {
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const res = await queryFulfilled;
           console.log('Текущий пользователь получен успешно!', res);
+          if (res.data?.user) {
+            dispatch(setCurrentUser(res.data.user));
+          }
         } catch (error) {
           if (isFetchMeError(error)) {
             const detail = error.error.data.detail;
@@ -104,6 +107,7 @@ export const authApi = createApi({
             }
           }
           console.error('Ошибка при получении текущего пользователя: ', error);
+          dispatch(clearCurrentUser());
         }
       },
       providesTags: (result) =>

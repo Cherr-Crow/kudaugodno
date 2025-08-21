@@ -36,11 +36,13 @@ export const currentUserSlice = createSlice({
     selectUserRole: (currentUser) => currentUser.role,
     selectUserId: (currentUser) => (currentUser.data ? currentUser.data.id : null),
     selectEmail: (currentUser) => (currentUser.data ? currentUser.data.email : null),
+    selectAvatar: (currentUser) =>
+      currentUser.data ? currentUser.data.avatar : null,
   },
 });
 
 export const { setCurrentUser, clearCurrentUser } = currentUserSlice.actions;
-export const { selectUserRole, selectUserId, selectEmail } =
+export const { selectUserRole, selectUserId, selectEmail, selectAvatar } =
   currentUserSlice.selectors;
 
 export const selectUserPersonalData = createSelector(

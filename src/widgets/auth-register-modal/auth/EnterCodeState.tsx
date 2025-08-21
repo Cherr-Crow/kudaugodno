@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { closeAuthModal } from '@/rtk/authModalSlice';
 import { selectPrefillEmail } from '@/rtk/prefillEmailSlice';
-import { useGetCodeMutation, useConfirmCodeMutation } from '@/servicesApi/authApi';
+import {
+  useGetCodeMutation,
+  useConfirmCodeMutation,
+  useLazyFetchMeQuery,
+} from '@/servicesApi/authApi';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { timeForComponent } from '@/shared/ui/time-for-component/time';
 import { useToast } from '@/shared/ui/toast/toastService';
@@ -53,6 +57,7 @@ export function EnterCodeState() {
 
   const [getCode, { error }] = useGetCodeMutation();
   const [confirmCode, { error: confirmCodeError }] = useConfirmCodeMutation();
+  const [refetchMe] = useLazyFetchMeQuery();
 
   const handleFocusForInput2 = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (onlyNumberForFocusChange(e.target.value)) {
@@ -131,6 +136,7 @@ export function EnterCodeState() {
                 email: email,
                 code: `${input1 + input2 + input3 + input4}`,
               }).unwrap();
+              refetchMe();
               showToast('Успешная авторизация!', 'success');
               dispatch(closeAuthModal());
               if (isRespFields(resp)) {
