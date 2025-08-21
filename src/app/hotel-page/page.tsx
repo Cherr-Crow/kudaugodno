@@ -24,7 +24,7 @@ function HotelPage() {
   const searchState = useSearchBlockState({
     defaultCheckInDate: `${getDateNow(+5)}`,
     defaultNights: '7 ночей',
-    defaultGuests: '2 гостя',
+    defaultGuests: '3 гостя',
     defaultType: 'Отели',
   });
   const { updateUrlParams, ...searchProps } = searchState;
