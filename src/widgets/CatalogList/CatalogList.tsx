@@ -263,43 +263,43 @@ export function CatalogList({
   }
 
   return (
-    <main className='mx-auto flex w-full flex-col lg:w-3/4 lg:max-w-none lg:pl-1'>
+    <main className='mx-auto flex w-full flex-col pt-5 md:pt-0 lg:w-3/4 lg:max-w-none lg:pl-1'>
       {/* Мобильная версия кнопок*/}
       <div className='mb-4 flex md:hidden'>
-        {isMapVisible ? (
+        {!isMapVisible ? (
           <button
-            onClick={() => setIsMapVisible((prev) => !prev)}
-            className='text-primary ml-auto flex w-20 justify-center gap-1 rounded-lg bg-blue-50 px-2 py-1 font-medium'
+            onClick={() => setIsMapVisible(true)}
+            className='ml-auto flex justify-center gap-3 rounded-lg bg-blue-50 pb-2 pl-[10px] pr-4 pt-2'
           >
-            <SvgSprite name='map' width={20} />
-            <Typography variant='s'>Карта</Typography>
+            <Typography variant='m'>Карта</Typography>
+            <SvgSprite name='map' width={20} color='#3440CE' />
           </button>
         ) : (
           <button
-            onClick={() => setIsMapVisible((prev) => !prev)}
-            className='text-primary ml-auto flex gap-1 rounded-lg bg-blue-50 px-2 py-1 font-medium'
+            onClick={() => setIsMapVisible(false)}
+            className='ml-auto flex gap-2 rounded-lg bg-blue-50 px-3 pb-2 pt-2'
           >
-            <SvgSprite name='list' width={20} color='blue' />
-            <Typography variant='s'>Список</Typography>
+            <Typography variant='m'>Список</Typography>
+            <SvgSprite name='list' width={20} color='#3440CE' />
           </button>
         )}
       </div>
 
       <div className='view-options mb-4 flex items-center justify-between gap-2 text-grey-950'>
-        <div className='hidden gap-4 text-blue-950 md:flex'>
+        <div className='hidden gap-2 text-blue-950 md:flex'>
           <button
-            onClick={() => setIsMapVisible((prev) => !prev)}
-            className='text-primary flex gap-1 rounded-lg bg-blue-50 px-2 py-1 font-medium'
+            onClick={() => setIsMapVisible(false)}
+            className={`flex items-center justify-end gap-1 rounded-lg px-[10px] pb-2 pt-3 ${!isMapVisible ? 'md:bg-grey-50' : ''}`}
           >
-            <SvgSprite name='list' width={20} color='blue' />
-            <Typography variant='s'>Список</Typography>
+            <SvgSprite name='list' width={24} color='#3440CE' />
+            <Typography variant='m'>Список</Typography>
           </button>
           <button
-            onClick={() => setIsMapVisible((prev) => !prev)}
-            className='text-primary flex gap-1 rounded-lg bg-blue-50 px-2 py-1 font-medium'
+            onClick={() => setIsMapVisible(true)}
+            className={`flex items-center justify-center gap-2 rounded-lg px-[10px] pb-2 pt-3 ${isMapVisible ? 'md:bg-grey-50' : ''}`}
           >
-            <SvgSprite name='map' width={20} />
-            <Typography variant='s'>Карта</Typography>
+            <SvgSprite name='map' width={20} color='#3440CE' />
+            <Typography variant='m'>Карта</Typography>
           </button>
         </div>
         <div className='flex items-center gap-6'>
