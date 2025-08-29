@@ -78,7 +78,7 @@ export function Modal({
       >
         {hasScrollbar ? (
           <div
-            className={`scrollbar max-h-[calc(100vh-2rem)] overflow-y-auto ${isHotelPhotoModal ? 'md:px-8 md:py-10 lg:px-10 lg:py-12' : 'p-5 md:py-9 lg:px-10 lg:py-14'}`}
+            className={`scrollbar max-h-[calc(100vh-2rem)] overflow-y-auto ${isHotelPhotoModal ? 'md:px-8 md:py-10 lg:px-10 lg:py-12' : auth ? `p-0` : 'p-5 md:py-9 lg:px-10 lg:py-14'}`}
           >
             {PopupContent}
           </div>
