@@ -168,6 +168,9 @@ export function TableForFlights({ flights }: ITableForFlights) {
       </div>
     </th>
   );
+  const handleFlights = (id: number) => {
+    router.push(`/admin-panel-tour-operator/flights/${id}`);
+  };
 
   return (
     <div>
@@ -197,6 +200,7 @@ export function TableForFlights({ flights }: ITableForFlights) {
               className='border-b border-b-grey-100 even:bg-grey-50 hover:bg-blue-50'
               key={nanoid()}
               onContextMenu={(event) => handleContextMenu(event, flight.id)}
+              onClick={() => handleFlights(flight.id)}
             >
               <td className='py-1 pl-2'>{flight.flight_number}</td>
               <td>{flight.departure_country}</td>
