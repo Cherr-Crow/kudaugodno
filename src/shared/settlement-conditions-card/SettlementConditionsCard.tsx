@@ -9,15 +9,15 @@ export function SettlementConditionsCard({
 }: ISettlementConditionsCard) {
   return (
     <div className='flex-1 flex-col rounded-[20px] border border-grey-100 p-[18px] pb-[26px] text-blue-950 shadow-md md:max-w-[253px] lg:max-w-none'>
-      <div className='mb-1 flex gap-1 md:mb-3 md:flex-col md:gap-2 lg:mb-4 lg:gap-[6px]'>
+      <div className='flex gap-1 md:mb-3 md:flex-col md:gap-2 lg:mb-4 lg:gap-[6px]'>
         <SvgSprite
           name='amenity-check-in'
           strokeWidth={2}
           className='w-7 text-blue-700 md:h-8 md:w-9'
         />
         <Typography
-          variant='m-bold'
-          className='font-semibold md:text-[18px] lg:text-[20px] lg:font-medium'
+          variant='subtitle4'
+          className='text-[18px] md:text-[18px] lg:text-[20px] lg:font-medium'
         >
           Условия заселения
         </Typography>
