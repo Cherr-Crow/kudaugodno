@@ -16,7 +16,7 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
   const id = useSearchParams().get('id');
   const router = useRouter();
 
-  const [title, setTitle] = useState('Личный кабинет туроператора');
+  const [title, setTitle] = useState('Личный кабинет турагента');
   const [openTabsAddHotel, setOpenTabsAddHotel] = useState(false);
   const [activeTab, setActiveTab] = useState<string | undefined>(undefined);
 
@@ -34,7 +34,7 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
       setOpenTabsAddHotel(false);
       return;
     } else {
-      setTitle('Личный кабинет туроператора');
+      setTitle('Личный кабинет турагента');
       setOpenTabsAddHotel(false);
       return;
     }
@@ -78,12 +78,15 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
   };
 
   return (
-    <div className='rounded-b-2xl bg-blue-600 py-10 md:rounded-b-[100px] md:py-12'>
+    <div className='rounded-b-2xl bg-blue-600 py-5 pb-[30px] md:rounded-b-[100px] md:py-12'>
       <div className='container'>
-        <Typography variant='h4' className='text-white md:text-5xl md:font-medium'>
+        <Typography
+          variant='h4'
+          className='mt-[14px] text-[28px] leading-8 text-white md:text-[40px] md:font-medium lg:text-[60px]'
+        >
           {title}
         </Typography>
-        <div className='mt-10'>
+        <div className=''>
           {openTabsAddHotel && (
             <TabBar
               tabs={tabsHotelAdded}
