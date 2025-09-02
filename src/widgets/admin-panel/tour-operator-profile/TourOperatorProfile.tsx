@@ -1,9 +1,13 @@
+/* eslint-disable no-commented-code/no-commented-code */
 'use client';
 import { useEffect, useState, useRef } from 'react';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { InputMask, Mask } from '@react-input/mask';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { z } from 'zod';
 
 import {
   clearCurrentUser,
@@ -11,12 +15,10 @@ import {
   selectUserRole,
 } from '@/rtk/currentUserSlice';
 import { AppDispatch } from '@/rtk/store';
-import { useLazyFetchMeQuery, useLogoutMutation } from '@/servicesApi/authApi';
+import { useLazyFetchMeQuery } from '@/servicesApi/authApi';
 import { authApi } from '@/servicesApi/authApi';
-import {
-  useDeactivateUserMutation,
-  useUpdateUserMutation,
-} from '@/servicesApi/userApi';
+import { useDeleteUserMutation, useUpdateUserMutation } from '@/servicesApi/userApi';
+import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { useToast } from '@/shared/ui/toast/toastService';
@@ -24,9 +26,126 @@ import { ToastType } from '@/shared/ui/toast/ToastType.types';
 import { Typography } from '@/shared/ui/typography';
 import { ICompany, ITourist } from '@/types/users';
 
+// Размер загружаемой фотографии 1MB
+const MAX_FILE_SIZE = 1 * 1024 * 1024;
+const phoneRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+// Схема ZOD типизации и валидации для формы
+export const FormSchema = z.object({
+  image: z
+    .instanceof(File, { message: 'Некорректный формат изображения' })
+    .refine((file) => file && file.size <= MAX_FILE_SIZE, {
+      message: 'Размер файла не должен быть больше 1MB',
+    })
+    .optional(),
+  firstName: z
+    .string()
+    .refine((it) => it.length != 0, { message: 'Введите имя' })
+    .refine(
+      (it) => {
+        for (let i = 0; i < it.length; i++) {
+          if (it[i] == ' ') return false;
+        }
+
+        return true;
+      },
+      { message: 'Имя не должно содержать пробелы' },
+    )
+    .refine(
+      (it) => {
+        const regexPattern = /^[a-zA-Zа-яА-ЯёЁ\s'-]+$/;
+
+        return regexPattern.test(it);
+      },
+      { message: 'Недопустимые символы' },
+    )
+    .refine((it) => it.length > 2, { message: 'Имя слишком короткое' })
+    .refine((it) => it.length < 20, { message: 'Имя слишком длинное' }),
+  lastName: z
+    .string()
+    .refine((it) => it.length != 0, { message: 'Введите фамилию' })
+    .refine(
+      (it) => {
+        for (let i = 0; i < it.length; i++) {
+          if (it[i] == ' ') return false;
+        }
+
+        return true;
+      },
+      { message: 'Фамилия не должна содержать пробелы' },
+    )
+    .refine(
+      (it) => {
+        const regexPattern = /^[a-zA-Zа-яА-ЯёЁ\s'-]+$/;
+
+        return regexPattern.test(it);
+      },
+      { message: 'Недопустимые символы' },
+    )
+    .refine((it) => it.length > 2, { message: 'Фамилия слишком короткая' })
+    .refine((it) => it.length < 20, { message: 'Фамилия слишком длинная' }),
+  birthDate: z.preprocess(
+    (val) => (typeof val === 'string' && val.trim() === '' ? undefined : val),
+    z
+      .string()
+      .regex(/^\d{2}\.\d{2}\.\d{4}$/, {
+        message: 'Формат даты должен быть ДД.ММ.ГГГГ',
+      })
+      .refine(
+        (val) => {
+          const [dd, mm, yyyy] = val.split('.');
+          const inputDate = new Date(`${yyyy}-${mm}-${dd}`);
+          return inputDate <= new Date();
+        },
+        { message: 'Выберите корректную дату рождения' },
+      )
+      .optional(),
+  ),
+  email: z
+    .string()
+    .refine((it) => it.length != 0, { message: 'Введите Email' })
+    .refine(
+      (it) => {
+        for (let i = 0; i < it.length; i++) {
+          if (it[i] == ' ') return false;
+        }
+
+        return true;
+      },
+      { message: 'Email не должен содержать пробелы' },
+    )
+    .refine((it) => it.includes('@') && it.includes('.'), {
+      message: 'Email должен содержать символы @ и .',
+    }),
+  phone: z
+    .string()
+    .trim()
+    .nonempty({ message: 'Введите номер телефона' })
+    .startsWith('+7', { message: 'Номер телефона должен начинаться с +7' })
+    .regex(phoneRegex, {
+      message: 'Номер должен быть в формате +7 (999) 999-99-99',
+    }),
+  company_name: z
+    .string()
+    .nonempty({ message: 'Введите название компании' })
+    .min(2, { message: 'Название компании слишком короткое' })
+    .max(50, { message: 'Название компании слишком длинное' })
+    .regex(/^[a-zA-Zа-яА-ЯёЁ0-9\s'-]+$/, {
+      message: 'Недопустимые символы в названии компании',
+    }),
+});
+
+// Тип формы исходя из схемы ZOD
+type FormData = z.infer<typeof FormSchema>;
+
 function isCompany(user: ITourist | ICompany): user is ICompany {
   return 'company_name' in user;
 }
+
+const normalizePhone = (phone: string) => {
+  const digits = phone.replace(/\D/g, '');
+  if (digits.startsWith('7')) return `+${digits}`;
+  return `+7${digits}`;
+};
 
 export function TourOperatorProfile() {
   const mask = new Mask({
@@ -38,126 +157,192 @@ export function TourOperatorProfile() {
   const { showToast } = useToast();
 
   const [isMenuVisible, setIsVisible] = useState<boolean>(false);
-  const [companyName, setCompanyName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
   const [previewAvatar, setPreviewAvatar] = useState<string | null>(null);
-  const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   const [bills, setBills] = useState(false);
   const [digest, setDigest] = useState(false);
-  const [bookingInfo, setBookingInfo] = useState(false);
-  const [bookingNotices, setBookingNotices] = useState(false);
+  const [newApplication, setNewApplication] = useState(false);
+  const [changeApplicationInfo, setChangeApplicationInfo] = useState(false);
+  const [touristMessage, setTouristMessage] = useState(false);
 
   const inputImg = useRef<HTMLInputElement>(null);
 
   const [fetchMe] = useLazyFetchMeQuery();
   const [changeCompanyData] = useUpdateUserMutation();
-  const [logout] = useLogoutMutation();
-  const [deactivateCompanyProfile] = useDeactivateUserMutation();
+  // const [logout] = useLogoutMutation();
+  // const [deactivateCompanyProfile] = useDeactivateUserMutation();
 
   const user = useSelector(selectUserPersonalData);
   const userId = user?.id;
   const roleId = useSelector(selectUserRole);
 
-  console.log(user);
+  const [deleteTourOperatorProfile] = useDeleteUserMutation();
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const getCompanyName = (): string | undefined => {
     if (user && isCompany(user) && user.company_name) return user.company_name;
     return undefined;
   };
 
-  const formDataToChangeRequest = (isChangeImage: boolean = false) => {
-    const companyNameFromUser = getCompanyName();
+  const {
+    register,
+    reset,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      firstName: user?.first_name,
+      lastName: user?.last_name,
+      email: user?.email,
+      phone: mask.format(user?.phone_number || ''),
+      birthDate: user?.birth_date?.split('-').reverse().join('.'),
+      company_name: getCompanyName(),
+      // country: user.country || '',
+      // city: user.city || '',
+      // streetAndHouse: user.address || '',
+    },
+  });
 
+  useEffect(() => {
+    if (user) {
+      reset({
+        firstName: user.first_name || '',
+        lastName: user.last_name || '',
+        email: user.email || '',
+        phone: mask.format(user.phone_number) || '',
+        birthDate: user.birth_date?.split('-').reverse().join('.') || '',
+        company_name: getCompanyName(),
+        // country: user.country || '',
+        // city: user.city || '',
+        // streetAndHouse: user.address || '',
+      });
+    }
+  }, [user, reset]);
+
+  const handleEditToggle = () => {
+    if (isEditing) {
+      handleEditProfile();
+    }
+    setIsEditing(!isEditing);
+  };
+
+  const handleCancelEdit = () => {
+    if (user) {
+      // Сбросить значения формы к исходным данным
+      reset({
+        firstName: user.first_name || '',
+        lastName: user.last_name || '',
+        email: user.email || '',
+        phone: mask.format(user.phone_number) || '',
+        birthDate: user.birth_date?.split('-').reverse().join('.') || '',
+        company_name: getCompanyName(),
+        // country: user.country || '',
+        // city: user.city || '',
+        // streetAndHouse: user.address || '',
+      });
+
+      // Сбросить превью аватара, если было загружено
+      setPreviewAvatar(user.avatar || null);
+
+      // Сброс состояния редактирования
+      setIsEditing(false);
+    }
+  };
+
+  const formDataToChangeRequest = (isChangeImage: boolean = false) => {
+    const values = getValues();
     const data = isChangeImage
       ? {
           first_name: user?.first_name,
           last_name: user?.last_name,
           phone_number: user?.phone_number,
           email: user?.email,
-          company_name: companyNameFromUser,
+          birthDate: user?.birth_date?.split('-').reverse().join('.') || '',
+          company_name: getCompanyName(),
+          // country: user.country || '',
+          // city: user.city || '',
+          // streetAndHouse: user.address || '',
         }
       : {
-          first_name: user?.first_name,
-          last_name: user?.last_name,
-          phone_number: phone ? phone : user?.phone_number,
-          email: email ? email : user?.email,
-          company_name: companyName ? companyName : companyNameFromUser,
+          first_name: values.firstName || user?.first_name,
+          last_name: values.lastName || user?.last_name,
+          phone_number: values.phone
+            ? normalizePhone(values.phone)
+            : user?.phone_number,
+          email: values.email || user?.email,
+          birthDate: user?.birth_date?.split('-').reverse().join('.') || '',
+          company_name: getCompanyName(),
+          // country: user.country || '',
+          // city: user.city || '',
+          // streetAndHouse: user.address || '',
         };
 
     const formData = new FormData();
-
-    for (const [key, value] of Object.entries(data)) {
-      if (value !== undefined) {
-        formData.append(key, value);
-      }
-    }
-
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined) formData.append(key, value);
+    });
     return formData;
   };
 
-  const fillUserFields = () => {
-    if (!user || !isCompany(user)) return;
-    setCompanyName(user.company_name || '');
-    setEmail(user.email || '');
-    setPhone(mask.format(user.phone_number) || '');
-  };
-
-  const exitEditMode = () => {
-    setIsVisible(false);
-    setIsEditMode(false);
-  };
-
   const handleEditProfile = async () => {
+    const values = getValues();
     const isDataChanged =
-      (user &&
-        companyName &&
-        isCompany(user) &&
-        companyName !== user?.company_name) ||
-      (phone && phone !== user?.phone_number) ||
-      (email && email !== user?.email);
+      values.firstName !== user?.first_name ||
+      values.lastName !== user?.last_name ||
+      values.email !== user?.email ||
+      (values.phone && normalizePhone(values.phone) !== user?.phone_number) ||
+      (isCompany(user) && values.company_name !== user.company_name) ||
+      (values.birthDate &&
+        values.birthDate !== user?.birth_date?.split('-').reverse().join('.'));
 
     if (!isDataChanged) {
       console.log('Данные не изменились. Запрос не отправляется.');
-      exitEditMode();
       return;
     }
 
     const formData = formDataToChangeRequest();
 
-    if (userId && roleId && user && isCompany(user)) {
+    if (userId && roleId) {
       try {
         const updatedData = await changeCompanyData({
           role: roleId,
           id: userId,
-          formData: formData,
+          formData,
         }).unwrap();
-        // код ниже явно обновляет кэш юзера, чтобы мы заполнили value уже новыми измененными данными, а не подставляли закэшированные
+
         dispatch(
           authApi.util.updateQueryData('fetchMe', undefined, (draft) => {
             Object.assign(draft, updatedData);
           }),
         );
-      } catch {}
-    }
-    exitEditMode();
-  };
 
-  const handleDeactivateCompany = async () => {
-    if (userId) {
-      try {
-        await deactivateCompanyProfile(userId).unwrap();
-        showToast('Аккаунт деактивирован!', 'info');
-        dispatch(clearCurrentUser());
-        router.push('/');
-      } catch {
-        showToast('Ошибка деактивации', 'error');
+        showToast('Профиль успешно обновлён', 'success');
+      } catch (err) {
+        console.error('Ошибка обновления профиля', err);
+        showToast('Ошибка при обновлении профиля', 'error');
       }
     }
+
+    setIsEditing(false);
   };
 
-  function previewFile(event: React.ChangeEvent<HTMLInputElement>) {
+  // const handleDeactivateCompany = async () => {
+  //   if (userId) {
+  //     try {
+  //       await deactivateCompanyProfile(userId).unwrap();
+  //       showToast('Аккаунт деактивирован!', 'info');
+  //       dispatch(clearCurrentUser());
+  //       router.push('/');
+  //     } catch {
+  //       showToast('Ошибка деактивации', 'error');
+  //     }
+  //   }
+  // };
+
+  const previewFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -165,37 +350,27 @@ export function TourOperatorProfile() {
     reader.onload = async () => {
       if (typeof reader.result === 'string') {
         setPreviewAvatar(reader.result);
-
         const formData = formDataToChangeRequest(true);
         formData.append('avatar', file);
 
         if (userId && roleId && user && isCompany(user)) {
           try {
-            await changeCompanyData({
-              role: roleId,
-              id: userId,
-              formData: formData,
-            }).unwrap();
+            await changeCompanyData({ role: roleId, id: userId, formData }).unwrap();
             await fetchMe();
           } catch {}
         }
       }
     };
-
     reader.readAsDataURL(file);
-  }
-
-  const handleLogout = async () => {
-    try {
-      logout();
-      dispatch(clearCurrentUser());
-      router.push('/');
-    } catch {}
   };
 
-  useEffect(() => {
-    fillUserFields();
-  }, [user]);
+  // const handleLogout = async () => {
+  //   try {
+  //     logout();
+  //     dispatch(clearCurrentUser());
+  //     router.push('/');
+  //   } catch {}
+  // };
 
   const handleChangeMailing = (stateSetter: (value: boolean) => void) => {
     return (checked: boolean) => {
@@ -209,7 +384,22 @@ export function TourOperatorProfile() {
     };
   };
 
-  if (!user) {
+  const handleDeleteProfile = async () => {
+    if (userId) {
+      try {
+        await deleteTourOperatorProfile({
+          role: 'TOUR_OPERATOR',
+          id: userId,
+        }).unwrap();
+        dispatch(clearCurrentUser());
+        router.push('/');
+      } catch {}
+    }
+  };
+
+  const isClient = typeof window !== 'undefined';
+
+  if (!user && isClient) {
     return (
       <div className='text-gray-500 py-10 text-center'>Загрузка профиля...</div>
     );
@@ -219,61 +409,39 @@ export function TourOperatorProfile() {
     <div className='mx-auto md:mx-0 md:w-full'>
       <Typography
         variant='l-bold'
-        className='mb-7 block text-[20px] font-semibold md:hidden'
+        className='-mt-5 mb-9 block text-[20px] font-semibold md:hidden'
       >
         Профиль
       </Typography>
 
-      <div className='mb-7 rounded-[20px] border-2 border-grey-50 px-[16px] py-[17px] shadow-lg md:mb-[18px] md:px-[14px] md:pb-[18px] md:pr-[19px] md:pt-[21px]'>
-        <div className='relative mb-4 flex justify-between md:mb-[21px]'>
+      <div className='mb-7 rounded-[20px] border-2 border-grey-50 px-[16px] py-[17px] shadow-lg md:mb-[18px] md:px-[16px] md:pb-[18px] md:pr-[19px] md:pt-[21px]'>
+        <div className='relative mb-4 flex justify-between md:mb-[21px] lg:mb-[34px]'>
           <div>
             <Typography
-              variant='h1'
-              className='mb-1 block text-[24px] md:mb-3 md:text-[32px]'
+              variant='h2'
+              className='mb-0.5 block text-[28px] leading-8 md:mb-1 md:text-[32px] md:tracking-[0.02em] lg:mt-3'
             >
-              Основная информация
+              Основная&nbsp;
+              <br className='md:hidden' />
+              информация
             </Typography>
-            <Typography variant='m' className='text-grey-800 md:text-[20px]'>
-              Данные о&nbsp;туроператоре будем отображать на&nbsp;сайте
+            <Typography
+              variant='m'
+              className='flex leading-5 text-grey-800 md:text-[20px] md:tracking-[-0.045em] lg:hidden'
+            >
+              Данные о&nbsp;турагенте будем отображать на&nbsp;сайте
             </Typography>
           </div>
+          {/* Kebab button */}
           <button
-            className='self-start rounded-[12px] bg-grey-50 px-2 py-2 transition-colors duration-300 ease-in-out hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:rounded-[20px] md:px-[18px] md:py-[18px]'
+            className='kebab-button absolute -top-1 right-0 self-start rounded-[12px] bg-grey-50 px-2 py-2 transition-colors duration-300 ease-in-out hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:rounded-[20px] md:px-[18px] md:py-[18px]'
             onClick={() => setIsVisible(!isMenuVisible)}
           >
             <SvgSprite name='more' className='' />
           </button>
           {isMenuVisible && (
             <div className='z-1 absolute right-0 top-11 flex flex-col rounded-[20px] border-2 border-grey-50 bg-white shadow-lg md:top-[3.75rem]'>
-              {isEditMode ? (
-                <>
-                  <button
-                    className='rounded-[20px] px-4 py-2 text-left hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
-                    onClick={handleEditProfile}
-                  >
-                    Сохранить
-                  </button>
-                  <button
-                    className='rounded-[20px] px-4 py-2 text-left hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
-                    onClick={() => {
-                      exitEditMode(), fillUserFields();
-                    }}
-                  >
-                    Отменить изменения
-                  </button>
-                </>
-              ) : (
-                <button
-                  className='rounded-[20px] px-4 py-2 text-left hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
-                  onClick={() => {
-                    setIsEditMode(true), setIsVisible(false);
-                  }}
-                >
-                  Редактировать
-                </button>
-              )}
-
-              <button
+              {/* <button
                 className='rounded-[20px] px-4 py-2 text-left text-red-primary-800 hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
                 onClick={handleLogout}
               >
@@ -284,14 +452,21 @@ export function TourOperatorProfile() {
                 onClick={handleDeactivateCompany}
               >
                 Деактивировать профиль
+              </button> */}
+              <button
+                className='rounded-[20px] px-4 py-2 text-left text-red-primary-800 hover:bg-grey-200 focus:bg-grey-200 focus:outline-none md:w-[215px] md:px-5 md:py-3'
+                onClick={handleDeleteProfile}
+                type='button'
+              >
+                Удалить профиль
               </button>
             </div>
           )}
         </div>
         <form
           id='tour-operator-data'
-          className='flex flex-col md:flex-row md:justify-between'
-          action='PUT'
+          className='flex flex-col md:flex-row md:justify-between md:gap-5'
+          onSubmit={handleSubmit(handleEditProfile)}
         >
           <label
             htmlFor='image'
@@ -337,88 +512,254 @@ export function TourOperatorProfile() {
               )}
             </div>
           </label>
-          <div className='w-full md:w-[70%] lg:w-[80%]'>
-            <div className='mb-4 w-full'>
-              <label
-                className='mb-2 inline-block text-[20px] font-medium md:mb-1'
-                htmlFor='name'
-              >
-                Название туроператора
-              </label>
-              <input
-                id='tour-operator-name'
-                className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out md:pt-3 ${isEditMode ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
-                onChange={(e) => {
-                  setCompanyName(e.target.value);
-                }}
-                value={companyName}
-                disabled={!isEditMode}
-                type='text'
-                name='name'
-                placeholder='Название туроператора'
-              />
+          <div className='w-full md:w-[80%] lg:w-[76.5%]'>
+            <Typography
+              variant='h2'
+              className='mb-2 block text-[20px] md:mb-4 lg:text-[24px] lg:tracking-wide'
+            >
+              Контактные данные
+            </Typography>
+            <div className='mb-5 flex flex-col gap-[11px] md:mb-10 md:grid md:grid-cols-2 md:gap-x-5 md:gap-y-4 lg:mb-11'>
+              <div>
+                <label
+                  className='block text-[20px] font-medium tracking-tighter lg:tracking-normal'
+                  htmlFor='tour-operator-user-name'
+                >
+                  Имя
+                </label>
+                <input
+                  {...register('firstName', {
+                    required: 'Имя обязательно',
+                    minLength: {
+                      value: 2,
+                      message: 'Имя должно содержать минимум 2 буквы',
+                    },
+                    maxLength: {
+                      value: 30,
+                      message: 'Имя должно содержать максимум 30 букв',
+                    },
+                    pattern: {
+                      value: /^[А-Яа-яЁёA-Za-z\s-]+$/,
+                      message: 'Имя может содержать только буквы',
+                    },
+                  })}
+                  id='tour-operator-user-name'
+                  className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 py-2 duration-300 ease-in-out lg:py-[10px] ${isEditing ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
+                  type='text'
+                  placeholder='Иван'
+                  maxLength={30}
+                  disabled={!isEditing}
+                />
+                {errors.firstName && (
+                  <Typography variant='s' className='text-red-primary-800'>
+                    {errors.firstName.message}
+                  </Typography>
+                )}
+              </div>
+              <div>
+                <label
+                  className='block text-[20px] font-medium tracking-tighter lg:tracking-normal'
+                  htmlFor='tour-operator-user-surname'
+                >
+                  Фамилия
+                </label>
+                <input
+                  {...register('lastName', {
+                    required: 'Фамилия обязательна',
+                    minLength: {
+                      value: 2,
+                      message: 'Фамилия должна содержать минимум 2 буквы',
+                    },
+                    maxLength: {
+                      value: 30,
+                      message: 'Фамилия должна содержать максимум 30 букв',
+                    },
+                    pattern: {
+                      value: /^[А-Яа-яЁёA-Za-z\s-]+$/,
+                      message: 'Фамилия может содержать только буквы',
+                    },
+                  })}
+                  id='tour-operator-user-surname'
+                  className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 py-2 duration-300 ease-in-out lg:py-[10px] ${isEditing ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
+                  type='text'
+                  placeholder='Иванов'
+                  maxLength={30}
+                  disabled={!isEditing}
+                />
+                {errors.lastName && (
+                  <Typography variant='s' className='text-red-primary-800'>
+                    {errors.lastName.message}
+                  </Typography>
+                )}
+              </div>
+              <div>
+                <label
+                  className='block text-[20px] font-medium tracking-tighter lg:tracking-normal'
+                  htmlFor='email'
+                >
+                  Email
+                </label>
+                <input
+                  {...register('email', {
+                    required: 'Email обязателен',
+                    minLength: {
+                      value: 8,
+                      message: 'Email должен быть длиннее 8 символов',
+                    },
+                    maxLength: {
+                      value: 40,
+                      message: 'Email не должен быть длиннее 40 символов',
+                    },
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: 'Введите корректный email',
+                    },
+                  })}
+                  id='tour-operator-email'
+                  className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 py-2 duration-300 ease-in-out lg:py-[10px] ${isEditing ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
+                  disabled={!isEditing}
+                  maxLength={40}
+                  type='email'
+                  name='email'
+                  placeholder='Введите почту'
+                />
+                {errors.email && (
+                  <Typography variant='s' className='text-red-primary-800'>
+                    {errors.email.message}
+                  </Typography>
+                )}
+              </div>
+              <div>
+                <label
+                  className='block text-[20px] font-medium tracking-tighter lg:tracking-normal'
+                  htmlFor='phone'
+                >
+                  Телефон
+                </label>
+                <InputMask
+                  {...register('phone')}
+                  mask='+7 (___) ___-__-__'
+                  replacement={{ _: /\d/ }}
+                  id='tour-operator-phone'
+                  className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 py-2 duration-300 ease-in-out lg:py-[10px] ${isEditing ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
+                  disabled={!isEditing}
+                  type='phone'
+                  name='phone'
+                  placeholder='Введите номер в формате +7(9**)*******'
+                />
+                {errors.phone && (
+                  <Typography variant='s' className='text-red-primary-800'>
+                    {errors.phone.message}
+                  </Typography>
+                )}
+              </div>
             </div>
-            {/* <div className='mb-4 w-full'>
-              <label
-                className='mb-2 inline-block text-[20px] font-medium md:mb-1'
-                htmlFor='address'
-              >
-                Адрес
-              </label>
-              <input
-                id='tour-operator-address'
-                className='transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none md:pt-3'
-                type='text'
-                name='address'
-                placeholder='Введите адрес туроператора'
-              />
-            </div> */}
-            <div className='mb-4 w-full'>
-              <label
-                className='mb-2 block text-[20px] font-medium md:mb-1'
-                htmlFor='email'
-              >
-                Email
-              </label>
-              <input
-                id='tour-operator-email'
-                className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out md:pt-3 ${isEditMode ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-                value={email}
-                disabled={!isEditMode}
-                type='email'
-                name='email'
-                placeholder='Введите почту'
-              />
+            <Typography
+              variant='h2'
+              className='mb-4 block text-[20px] md:mb-5 lg:mb-4 lg:text-[24px] lg:tracking-wide'
+            >
+              Юридический адрес
+            </Typography>
+            <div className='mb-4 flex w-full flex-col gap-[6px] md:grid md:grid-cols-2 md:gap-x-5 md:gap-y-[15px] lg:mb-11'>
+              <div className='md:col-span-2'>
+                <label
+                  className='inline-block text-[20px] font-medium leading-[13.5px] tracking-tighter lg:leading-normal lg:tracking-normal'
+                  htmlFor='name'
+                >
+                  Название турагента
+                </label>
+                <input
+                  {...register('company_name')}
+                  id='tour-operator-name'
+                  className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 py-2 duration-300 ease-in-out lg:py-[10px] ${isEditing ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
+                  disabled={!isEditing}
+                  type='text'
+                  name='name'
+                  maxLength={50}
+                  placeholder='Название туроператора'
+                />
+                {errors.company_name && (
+                  <Typography variant='s' className='text-red-primary-800'>
+                    {errors.company_name.message}
+                  </Typography>
+                )}
+              </div>
+              <div>
+                <label
+                  className='inline-block text-[20px] font-medium tracking-tighter lg:tracking-normal'
+                  htmlFor='country'
+                >
+                  Страна
+                </label>
+                <input
+                  id='tour-operator-country'
+                  className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 py-2 duration-300 ease-in-out lg:py-[10px] ${isEditing ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
+                  type='text'
+                  name='country'
+                  placeholder='Введите страну туроператора'
+                  disabled={!isEditing}
+                />
+              </div>
+              <div>
+                <label
+                  className='inline-block text-[20px] font-medium tracking-tighter lg:tracking-normal'
+                  htmlFor='city'
+                >
+                  Город
+                </label>
+                <input
+                  id='tour-operator-city'
+                  className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 py-2 duration-300 ease-in-out lg:py-[10px] ${isEditing ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
+                  type='text'
+                  name='city'
+                  placeholder='Введите город туроператора'
+                  disabled={!isEditing}
+                />
+              </div>
+              <div className='md:col-span-2'>
+                <label
+                  className='inline-block text-[20px] font-medium tracking-tighter lg:tracking-normal'
+                  htmlFor='address'
+                >
+                  Улица, дом
+                </label>
+                <input
+                  id='tour-operator-address'
+                  className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 py-2 duration-300 ease-in-out lg:py-[10px] ${isEditing ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
+                  type='text'
+                  name='address'
+                  placeholder='Введите адрес туроператора'
+                  disabled={!isEditing}
+                />
+              </div>
             </div>
-            <div className='mb-4 w-full'>
-              <label
-                className='mb-2 block text-[20px] font-medium md:mb-1'
-                htmlFor='phone'
+            <div className='flex w-full text-center md:flex-row-reverse md:gap-3'>
+              <ButtonCustom
+                className='w-full py-[10px] text-[18px] text-green-950 md:max-w-[195px] md:px-7 md:py-[13px] md:text-[20px] lg:max-w-[202px] lg:py-4 lg:text-[21px] xl:px-7 xl:py-5'
+                variant='primary'
+                size='s'
+                onClick={handleEditToggle}
+                type='button'
               >
-                Телефон
-              </label>
-              <InputMask
-                mask='+7 (___) ___-__-__'
-                replacement={{ _: /\d/ }}
-                id='tour-operator-phone'
-                className={`transition-border w-full rounded-[8px] border border-grey-700 px-2 pb-3 pt-2 duration-300 ease-in-out md:pt-3 ${isEditMode ? 'cursor-pointer hover:border-blue-600 focus:border-blue-600 focus:outline-none' : ''}`}
-                onChange={(e) => {
-                  setPhone(e.target.value);
-                }}
-                value={phone}
-                disabled={!isEditMode}
-                type='phone'
-                name='phone'
-                placeholder='Введите номер в формате +7(9**)*******'
-              />
+                {isEditing ? 'Сохранить' : 'Редактировать'}
+              </ButtonCustom>
+              {isEditing && (
+                <ButtonCustom
+                  className='w-full py-[10px] text-[18px] text-green-950 md:max-w-[195px] md:px-7 md:py-[13px] md:text-[20px] lg:max-w-[202px] lg:py-4 lg:text-[21px] xl:px-7 xl:py-5'
+                  variant='secondary'
+                  size='s'
+                  onClick={handleCancelEdit}
+                  type='button'
+                >
+                  Отменить
+                </ButtonCustom>
+              )}
             </div>
           </div>
         </form>
       </div>
 
+      {/* Mobile
       <div className='mb-7 rounded-[20px] border-2 border-grey-50 px-[16px] pb-[16px] pt-[21px] shadow-lg md:hidden'>
         <div className='mb-4 flex justify-between'>
           <Typography variant='l-bold' className='text-[24px]'>
@@ -440,6 +781,7 @@ export function TourOperatorProfile() {
             className='transition-border mb-3 w-full rounded-[10px] border border-grey-700 px-3 py-3 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none'
             type='text'
             placeholder='Иван'
+            disabled={!isEditing}
           />
           <label
             className='mb-1 block text-[20px] font-medium'
@@ -452,6 +794,7 @@ export function TourOperatorProfile() {
             className='transition-border mb-4 w-full rounded-[10px] border border-grey-700 px-3 py-3 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none'
             type='text'
             placeholder='Иванов'
+            disabled={!isEditing}
           />
           <label
             className='mb-1 block text-[20px] font-medium'
@@ -464,6 +807,7 @@ export function TourOperatorProfile() {
             className='transition-border mb-3 w-full rounded-[10px] border border-grey-700 px-3 py-3 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none'
             type='email'
             placeholder='example@gmail.com'
+            disabled={!isEditing}
           />
           <label
             className='mb-1 block text-[20px] font-medium'
@@ -478,6 +822,7 @@ export function TourOperatorProfile() {
             className='transition-border mb-3 w-full rounded-[10px] border border-grey-700 px-3 py-3 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none'
             type='phone'
             placeholder='+7(9**)*******'
+            disabled={!isEditing}
           />
           <label
             className='mb-1 block text-[20px] font-medium'
@@ -490,38 +835,108 @@ export function TourOperatorProfile() {
             className='transition-border w-full rounded-[10px] border border-grey-700 px-3 py-3 duration-300 ease-in-out hover:border-blue-600 focus:border-blue-600 focus:outline-none'
             type='text'
             placeholder='Мастер'
+            disabled={!isEditing}
           />
         </form>
-      </div>
+        <div className='mt-3 w-full text-center md:flex md:flex-row-reverse md:gap-3'>
+          <ButtonCustom
+            className='mb-4 w-full md:max-w-[9.50rem] md:px-7 md:py-3 xl:px-7 xl:py-5'
+            variant='primary'
+            size='s'
+            onClick={handleEditToggle}
+            type='button'
+          >
+            {isEditing ? 'Сохранить' : 'Редактировать'}
+          </ButtonCustom>
+          {isEditing && (
+            <ButtonCustom
+              className='mb-4 w-full md:max-w-[9.50rem] md:px-7 md:py-3 xl:px-7 xl:py-5'
+              variant='secondary'
+              size='s'
+              onClick={handleCancelEdit}
+              type='button'
+            >
+              Отменить
+            </ButtonCustom>
+          )}
+        </div>
+      </div> */}
 
-      <div className='rounded-[20px] border-2 border-grey-50 px-[16px] py-[14px] shadow-lg md:px-[14px] md:pb-[17px]'>
-        <Typography variant='subtitle3' className='mb-3 inline-block font-medium'>
-          Рассылки
-        </Typography>
-        <form action='PUT'>
-          <div className='mb-3 flex'>
+      <div className='rounded-[20px] border-2 border-grey-50 px-[14px] py-[12px] shadow-lg md:px-[14px] md:pb-[17px] lg:px-[16px] lg:py-[16px]'>
+        <div className='mb-1 flex flex-col md:mb-5 lg:mb-6'>
+          <Typography
+            variant='subtitle3'
+            className='inline-block font-medium tracking-[-0.065em] md:tracking-[0.02em]'
+          >
+            Уведомления
+          </Typography>
+          <Typography
+            variant='m'
+            className='hidden text-[18px] font-normal text-grey-700 md:inline-block md:text-[20px] md:tracking-tighter lg:tracking-normal'
+          >
+            Будут приходить на указанный email
+          </Typography>
+        </div>
+        <form action='PUT' className='flex flex-col gap-3 lg:gap-2'>
+          <div className='flex'>
             <Checkbox
               id='bills'
               isChecked={bills}
               onChange={handleChangeMailing(setBills)}
             />
-            <label className='text-[16px]' htmlFor='bills'>
+            <label className='text-[16px] lg:text-[20px]' htmlFor='bills'>
               Сверки и счета
             </label>
           </div>
 
-          <div className='mb-3 flex'>
+          <div className='flex'>
+            <Checkbox
+              id='new-application'
+              isChecked={newApplication}
+              onChange={handleChangeMailing(setNewApplication)}
+            />
+            <label className='text-[16px] lg:text-[20px]' htmlFor='newApplication'>
+              Новая заявка
+            </label>
+          </div>
+
+          <div className='flex'>
+            <Checkbox
+              id='change-application-info'
+              isChecked={changeApplicationInfo}
+              onChange={handleChangeMailing(setChangeApplicationInfo)}
+            />
+            <label
+              className='text-[16px] lg:text-[20px]'
+              htmlFor='changeApplicationInfo'
+            >
+              Изменение информации в заявке
+            </label>
+          </div>
+
+          <div className='flex'>
+            <Checkbox
+              id='tourist-message'
+              isChecked={touristMessage}
+              onChange={handleChangeMailing(setTouristMessage)}
+            />
+            <label className='text-[16px] lg:text-[20px]' htmlFor='touristMessage'>
+              Сообщения от туриста
+            </label>
+          </div>
+
+          <div className='flex'>
             <Checkbox
               id='digest'
               isChecked={digest}
               onChange={handleChangeMailing(setDigest)}
             />
-            <label className='text-[16px]' htmlFor='digest'>
+            <label className='text-[16px] lg:text-[20px]' htmlFor='digest'>
               Дайджест
             </label>
           </div>
 
-          <div className='mb-3 flex'>
+          {/* <div className='flex'>
             <Checkbox
               id='bookingInfo'
               isChecked={bookingInfo}
@@ -541,7 +956,7 @@ export function TourOperatorProfile() {
             <label className='text-[16px]' htmlFor='bookingNotices'>
               Смс-уведомления о бронированиях
             </label>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>

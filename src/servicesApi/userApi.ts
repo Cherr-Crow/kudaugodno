@@ -37,7 +37,7 @@ export const userApi = createApi({
           console.error('Ошибка при получении данных пользователя:', error);
         }
       },
-      providesTags: (result) => (result ? [{ type: 'User' }] : []),
+      providesTags: (result) => (result ? [{ type: 'User', id: 'me' }] : []),
     }),
     getAllUsersData: build.query<
       ITourist[] | ICompany[],
