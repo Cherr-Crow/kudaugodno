@@ -35,7 +35,7 @@ export default function AdminPanelTourOperatorLayout({
         <div className='container flex h-full items-start gap-5 py-10'>
           {openDashboard && (
             <div className='hidden lg:flex'>
-              <AdminPanelDashboard />
+              <AdminPanelDashboard type={'tour-operator'} />
             </div>
           )}
           {children}
