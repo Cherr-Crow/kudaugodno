@@ -5,9 +5,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { FilterAirportDistance } from '@/shared/filter-airport-distance';
 import { FilterAmenities } from '@/shared/filter-amenities';
 import { FilterCity } from '@/shared/filter-city';
+import { FilterCountry } from '@/shared/filter-country';
 import { FilterPlaceType } from '@/shared/filter-place-type';
 import { FilterPrice } from '@/shared/filter-price';
 import { FilterRating } from '@/shared/filter-rating';
@@ -58,24 +58,27 @@ export function FilterCatalog() {
   {
     /* Фильтры*/
   }
-
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [selectedCities, setSelectedCities] = useState<string[]>([]);
   const [recreationType, setRecreationType] = useState<string[]>([]);
   const [placeType, setPlaceType] = useState<string[]>([]);
   const [price, setPrice] = useState<[number, number]>([1000, 1000000]);
-  const [rating, setRating] = useState<[number, number]>([1, 10]);
+  const [rating, setRating] = useState<[number, number]>([5, 10]);
   const [starCategory, setStarCategory] = useState<number[]>([]);
   const [mealType, setMealType] = useState<string[]>([]);
   const [amenities, setAmenities] = useState<string[]>([]);
   const [airportDistance, setAirportDistance] = useState<string>('Любое');
   const [tourOperators, setTourOperators] = useState<string[]>([]);
+  const [filtersAppliedClicked, setFiltersAppliedClicked] = useState<boolean>(false);
+  const [resetInputTrigger, setResetInputTrigger] = useState(0);
 
   const [appliedFilters, setAppliedFilters] = useState({
+    selectedCountries: [] as string[],
     selectedCities: [] as string[],
     recreationType: [] as string[],
     placeType: [] as string[],
     price: [1000, 1000000] as [number, number],
-    rating: [1, 10] as [number, number],
+    rating: [5, 10] as [number, number],
     starCategory: [] as number[],
     mealType: [] as string[],
     amenities: [] as string[],
@@ -105,14 +108,14 @@ export function FilterCatalog() {
   const { ...searchProps } = searchState;
   // Обновление URL
 
-  useEffect(() => {
-    const selectedCitiesParam = searchParams.get('where');
-    if (selectedCitiesParam) {
-      setSelectedCities(selectedCitiesParam.split(','));
-    } else {
-      setSelectedCities([]);
-    }
-  }, [searchParams]);
+  // useEffect(() => {
+  //   const setSelectedCountries = searchParams.get('where');
+  //   if (setSelectedCountries) {
+  //     setSelectedCities(setSelectedCountries.split(','));
+  //   } else {
+  //     setSelectedCities([]);
+  //   }
+  // }, [searchParams]);
 
   // // Load tours from hotelIds
   // const hotelIds = hotels?.map((hotel) => hotel.id) || [];
@@ -134,26 +137,29 @@ export function FilterCatalog() {
   // Filters reset
 
   const handleFiltersReset = () => {
+    setSelectedCountries([]);
     setSelectedCities([]);
     setRecreationType([]);
     setPlaceType([]);
     setPrice([1000, 1000000]);
-    setRating([1, 10]);
+    setRating([5, 10]);
     setStarCategory([]);
     setMealType([]);
     setAmenities([]);
     setAirportDistance('Любое');
     setTourOperators([]);
+    setResetInputTrigger((prev) => prev + 1);
   };
 
   useEffect(() => {
     if (
+      selectedCountries.length === 0 &&
       selectedCities.length === 0 &&
       recreationType.length === 0 &&
       placeType.length === 0 &&
       price[0] === 1000 &&
       price[1] === 1000000 &&
-      rating[0] === 1 &&
+      rating[0] === 5 &&
       rating[1] === 10 &&
       starCategory.length === 0 &&
       mealType.length === 0 &&
@@ -164,6 +170,7 @@ export function FilterCatalog() {
       handleApplyFilters();
     }
   }, [
+    selectedCountries,
     selectedCities,
     recreationType,
     placeType,
@@ -180,6 +187,7 @@ export function FilterCatalog() {
 
   const handleApplyFilters = () => {
     setAppliedFilters({
+      selectedCountries,
       selectedCities,
       recreationType,
       placeType,
@@ -199,10 +207,22 @@ export function FilterCatalog() {
     const allFilters = [
       {
         component: (
+          <FilterCountry
+            key='contry'
+            selectedCountries={selectedCountries}
+            onCountryChange={setSelectedCountries}
+            resetInputTrigger={resetInputTrigger}
+          />
+        ),
+        isActive: appliedFilters.selectedCountries.length > 0,
+      },
+      {
+        component: (
           <FilterCity
             key='city'
             selectedCities={selectedCities}
             onCityChange={setSelectedCities}
+            resetInputTrigger={resetInputTrigger}
           />
         ),
         isActive: appliedFilters.selectedCities.length > 0,
@@ -238,7 +258,7 @@ export function FilterCatalog() {
         component: (
           <FilterRating key='rating' rating={rating} onRatingChange={setRating} />
         ),
-        isActive: appliedFilters.rating[0] !== 1 || appliedFilters.rating[1] !== 10,
+        isActive: appliedFilters.rating[0] !== 5 || appliedFilters.rating[1] !== 10,
       },
       {
         component: (
@@ -270,16 +290,6 @@ export function FilterCatalog() {
         ),
         isActive: appliedFilters.amenities.length > 0,
       },
-      {
-        component: (
-          <FilterAirportDistance
-            key='airport'
-            selectedDistance={airportDistance}
-            onDistanceChange={setAirportDistance}
-          />
-        ),
-        isActive: appliedFilters.airportDistance !== 'Любое',
-      },
       ...(tab === 'Туры'
         ? [
             {
@@ -296,10 +306,9 @@ export function FilterCatalog() {
         : []),
     ];
 
-    return allFilters.sort((a, b) =>
-      a.isActive === b.isActive ? 0 : a.isActive ? -1 : 1,
-    );
+    return allFilters;
   }, [
+    selectedCountries,
     selectedCities,
     recreationType,
     placeType,
@@ -361,7 +370,13 @@ export function FilterCatalog() {
           <div className='filter-section mb-6 flex flex-col gap-1'>
             <div className='hidden flex-wrap items-center justify-between bg-white px-4 text-blue-950 md:flex lg:flex-nowrap'>
               <Typography variant='h5'>Фильтры</Typography>
-              <button className='hover:underline' onClick={handleFiltersReset}>
+              <button
+                className='hover:underline'
+                onClick={() => {
+                  handleFiltersReset();
+                  setFiltersAppliedClicked(false);
+                }}
+              >
                 Сбросить все
               </button>
             </div>
@@ -370,12 +385,15 @@ export function FilterCatalog() {
             ))}
             <div className='mt-2 flex w-full justify-center'>
               <ButtonCustom
-                className='w-full'
-                onClick={handleApplyFilters}
+                className='w-full font-medium'
+                onClick={() => {
+                  handleApplyFilters();
+                  setFiltersAppliedClicked(true);
+                }}
                 variant={'primary'}
                 size={'s'}
               >
-                Найти
+                Применить фильтры
               </ButtonCustom>
             </div>
           </div>
@@ -397,12 +415,12 @@ export function FilterCatalog() {
             ))}
             <div className='mt-2 flex w-full justify-center'>
               <ButtonCustom
-                className='w-full'
+                className='w-full font-medium'
                 onClick={handleApplyFilters}
                 variant={'primary'}
                 size={'s'}
               >
-                Найти
+                Применить фильтры
               </ButtonCustom>
             </div>
           </div>
@@ -419,6 +437,7 @@ export function FilterCatalog() {
           handleToggleFilters={handleToggleFilters}
           searchProps={searchProps}
           tab={tab}
+          filtersAppliedClicked={filtersAppliedClicked}
         />
       </div>
     </div>

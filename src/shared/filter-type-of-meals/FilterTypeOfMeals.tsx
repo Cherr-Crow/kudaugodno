@@ -37,7 +37,9 @@ export function FilterTypeOfMeals({
   return (
     <div className='filter-type-of-meals rounded-lg bg-white p-4 shadow-md'>
       {/* Заголовок */}
-      <div className='mb-4 flex items-center justify-between'>
+      <div
+        className={`flex items-center justify-between ${isCollapsed ? 'mb-0' : 'mb-4'}`}
+      >
         <Typography variant='l' className='text-blue-950'>
           Питание
         </Typography>

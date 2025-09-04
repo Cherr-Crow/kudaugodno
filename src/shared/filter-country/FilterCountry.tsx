@@ -1,21 +1,22 @@
 import React, { useState, useId, useEffect } from 'react';
 
-import { IFilterCity } from './FilterCity.types';
+import { IFilterCountry } from './FilterCountry.types';
 import { Checkbox } from '../ui/checkbox';
 import { SvgSprite } from '../ui/svg-sprite';
 import { Typography } from '../ui/typography';
 import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter';
 
-export const FilterCity = ({
-  selectedCities,
-  onCityChange,
+export const FilterCountry = ({
+  selectedCountries,
+  onCountryChange,
   resetInputTrigger,
-}: IFilterCity) => {
+}: IFilterCountry) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [search, setSearch] = useState('');
   const uniqueId = useId();
-  const cities = ['Москва', 'Санкт-Петербург', 'Нижний Новгород', 'Казань'];
+
+  const countries = ['Россия', 'Турция', 'Египет', 'ОАЭ'];
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -35,27 +36,27 @@ export const FilterCity = ({
     setIsCollapsed(!isCollapsed);
   };
 
-  const filteredCities = cities.filter((city) =>
-    city.toLowerCase().includes(search.toLowerCase()),
+  const filteredCountries = countries.filter((country) =>
+    country.toLowerCase().includes(search.toLowerCase()),
   );
 
-  const handleCityChange = (city: string) => {
-    const isAlreadySelected = selectedCities.includes(city);
-    const newSelectedCities = isAlreadySelected
-      ? selectedCities.filter((item) => item !== city)
-      : [...selectedCities, city];
+  const handleCountryChange = (country: string) => {
+    const isAlreadySelected = selectedCountries.includes(country);
+    const newSelectedCountries = isAlreadySelected
+      ? selectedCountries.filter((item) => item !== country)
+      : [...selectedCountries, country];
 
-    onCityChange(newSelectedCities);
+    onCountryChange(newSelectedCountries);
   };
 
   return (
-    <div className='filter-city rounded-lg bg-white p-4 shadow-md'>
+    <div className='filter-country rounded-lg bg-white p-4 shadow-md'>
       {/* Заголовок */}
       <div
         className={`flex items-center justify-between ${isCollapsed ? 'mb-0' : 'mb-4'}`}
       >
         <Typography variant='l' className='text-blue-950'>
-          Город назначения
+          Страна назначения
         </Typography>
         <button
           onClick={toggleCollapse}
@@ -71,8 +72,8 @@ export const FilterCity = ({
         <div className='relative mb-4'>
           <input
             type='text'
-            id={`city-search-${uniqueId}`}
-            name={`city-search-${uniqueId}`}
+            id={`country-search-${uniqueId}`}
+            name={`country-search-${uniqueId}`}
             value={search}
             onChange={(e) => setSearch(capitalizeFirstLetter(e.target.value))}
             placeholder='Поиск'
@@ -87,35 +88,35 @@ export const FilterCity = ({
         </div>
       )}
 
-      {/* Список городов */}
+      {/* Список стран */}
       <div
         className={`transition-max-height overflow-hidden duration-300 ease-in-out ${
           isCollapsed ? 'max-h-0' : 'max-h-screen'
         }`}
       >
         <ul>
-          {filteredCities.map((city, index) => (
+          {filteredCountries.map((country, index) => (
             <li key={index} className='mb-2'>
               <Checkbox
                 id={`${uniqueId}-checkbox-${index}`}
-                label={city}
-                isChecked={selectedCities.includes(city)}
-                onChange={() => handleCityChange(city)}
+                label={country}
+                isChecked={selectedCountries.includes(country)}
+                onChange={() => handleCountryChange(country)}
                 className='mr-2 text-blue-950'
               />
             </li>
           ))}
 
           {debouncedSearch &&
-            !filteredCities.some(
+            !filteredCountries.some(
               (c) => c.toLowerCase() === debouncedSearch.toLowerCase(),
             ) && (
               <li className='mb-2'>
                 <Checkbox
-                  id={`${uniqueId}-custom-city`}
+                  id={`${uniqueId}-custom-country`}
                   label={debouncedSearch}
-                  isChecked={selectedCities.includes(debouncedSearch)}
-                  onChange={() => handleCityChange(debouncedSearch)}
+                  isChecked={selectedCountries.includes(debouncedSearch)}
+                  onChange={() => handleCountryChange(debouncedSearch)}
                   className='mr-2 text-blue-950'
                 />
               </li>
