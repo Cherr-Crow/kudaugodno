@@ -10,6 +10,7 @@ import { Rating } from '@/shared/rating';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { NamedInput } from '@/shared/ui/named-input';
 import { Typography } from '@/shared/ui/typography';
+import { extractNumber } from '@/shared/utils/extractNumber';
 import { getCheckOutDate } from '@/shared/utils/getCheckoutDate';
 import { isoToDateFormat } from '@/shared/utils/isoToDateFormat';
 
@@ -19,11 +20,6 @@ const userMock = {
   fullName: 'Иванов Иван Иванович',
   birthDate: '12.01.1891',
   document: 'паспорт РФ',
-};
-
-const extractNumber = (text: string): number => {
-  const match = text.match(/\d+/);
-  return match ? parseInt(match[0], 10) : 0;
 };
 
 export function HotelBooking({ hotelId }: IHotelBooking) {

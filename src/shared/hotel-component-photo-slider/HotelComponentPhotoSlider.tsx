@@ -42,7 +42,7 @@ export function HotelComponentPhotoSlider({
             key={index}
             src={photo?.photo || '/placeholder-image.png'}
             alt={`Фото отеля${index}`}
-            className='h-full w-full rounded-l-lg object-cover'
+            className='h-full w-full flex-shrink-0 rounded-l-lg object-cover'
           />
         ))}
       </div>
@@ -50,7 +50,7 @@ export function HotelComponentPhotoSlider({
       {/* Стрелочка слева */}
       <button
         onClick={prevImage}
-        className='absolute left-2 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-white p-2 opacity-60 transition-transform duration-300 ease-in-out'
+        className='absolute left-2 top-1/2 z-10 hidden -translate-y-1/2 transform rounded-full bg-white p-2 opacity-60 transition-transform duration-300 ease-in-out md:left-[18px] md:flex'
       >
         <SvgSprite
           name='arrow'
@@ -64,7 +64,7 @@ export function HotelComponentPhotoSlider({
       {/* Стрелочка справа */}
       <button
         onClick={nextImage}
-        className='absolute right-2 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-white p-2 opacity-60 transition-transform duration-300 ease-in-out'
+        className='absolute right-2 top-1/2 z-10 hidden -translate-y-1/2 transform rounded-full bg-white p-2 opacity-60 transition-transform duration-300 ease-in-out md:right-[52px] md:flex lg:right-[68px]'
       >
         <SvgSprite name='arrow' width={24} height={24} color='blue' />
       </button>

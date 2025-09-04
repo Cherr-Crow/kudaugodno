@@ -24,11 +24,17 @@ export type IHotel = {
   type_of_rest: string;
   width: number;
   longitude: number;
-  rules: rulesType[];
+  rules: HotelRuleType[];
   is_active: boolean;
   photo: photoType[];
   rooms: RoomType[];
 };
+
+type HotelRuleType = {
+  name: string;
+  description: string;
+};
+
 export interface IHotelMiniData {
   id: number;
   country: string;
