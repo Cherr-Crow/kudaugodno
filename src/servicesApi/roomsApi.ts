@@ -36,6 +36,19 @@ export const roomsApi = createApi({
           : [{ type: 'Rooms', id: 'LIST' }],
     }),
 
+    // Получить номера по ID отеля
+    getRoomsByHotelId: build.query<RoomType[], number>({
+      query: (hotelId) => `hotels/${hotelId}/rooms/`,
+      transformResponse: (response: { results: RoomType[] }) => response.results,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map((room) => ({ type: 'Rooms' as const, id: room.id })),
+              { type: 'Rooms', id: 'LIST' },
+            ]
+          : [{ type: 'Rooms', id: 'LIST' }],
+    }),
+
     // Получить один номер по ID
     getOneRoom: build.query<RoomType, { hotelId: number; roomId: number }>({
       query: ({ hotelId, roomId }) => `hotels/${hotelId}/rooms/${roomId}/`,
@@ -86,6 +99,7 @@ export const roomsApi = createApi({
 
 export const {
   useGetRoomsQuery,
+  useGetRoomsByHotelIdQuery,
   useGetOneRoomQuery,
   useAddRoomMutation,
   useUpdateRoomMutation,

@@ -1,38 +1,55 @@
+/* eslint-disable no-commented-code/no-commented-code */
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { BASE_URL } from '@/temp/domen_nikita';
+import { IHotelsParamsQuery, IResponceListHotels } from '@/types/api-interfaces';
 import { IHotel, IHotelMiniData } from '@/types/hotel';
 import { PhotoHotel } from '@/types/photo_hotel';
 import { MealType, RoomType } from '@/types/room';
-
-interface IResponceListHotels {
-  count: number;
-  next: null;
-  previous: null;
-  results: IHotelMiniData[];
-}
 
 export const hotelsApi = createApi({
   reducerPath: 'hotelsApi',
   tagTypes: ['Hotels', 'PhotosHotel', 'RoomsHotel', 'PhotosRoom'],
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (build) => ({
-    getHotels: build.query<IResponceListHotels, { limit?: number; offset?: number }>(
-      {
-        query: ({ limit, offset }) =>
-          `hotels?${limit && 'limit=' + limit}${offset && '&offset=' + offset}`,
-        providesTags: (result) =>
-          result
-            ? [
-                ...result.results.map(({ id }: { id: number }) => ({
-                  type: 'Hotels' as const,
-                  id,
-                })),
-                { type: 'Hotels', id: 'LIST' },
-              ]
-            : [{ type: 'Hotels', id: 'LIST' }],
+    getHotels: build.query<IResponceListHotels, IHotelsParamsQuery>({
+      query: (params) => {
+        const queryParams = Object.entries(params ?? {})
+          .filter(
+            ([, value]) =>
+              value !== undefined &&
+              value !== null &&
+              value !== '' &&
+              !(typeof value === 'number' && isNaN(value)),
+          )
+          .map(([key, value]) => {
+            if (Array.isArray(value)) {
+              return value
+                .map(
+                  (v) =>
+                    `${encodeURIComponent(key)}=${encodeURIComponent(String(v))}`,
+                )
+                .join('&');
+            }
+            return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
+          });
+
+        const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
+
+        return `hotels${queryString}`;
       },
-    ),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.results.map(({ id }: { id: number }) => ({
+                type: 'Hotels' as const,
+                id,
+              })),
+              { type: 'Hotels', id: 'LIST' },
+            ]
+          : [{ type: 'Hotels', id: 'LIST' }],
+    }),
+
     getOneHotel: build.query<IHotel, number | null>({
       query: (id) => `hotels/${id ?? ''}`,
       providesTags: [{ type: 'Hotels', id: 'LIST' }],

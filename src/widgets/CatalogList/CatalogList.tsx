@@ -1,19 +1,25 @@
 /* eslint-disable no-commented-code/no-commented-code */
 import { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 
-import { AnnouncementCard } from '@/entities/announcement-card/AnnouncementCard';
+import { AnnouncementCard } from '@/entities/announcement-card';
 import { HotelCatalogCard } from '@/entities/hotel-catalog-card';
 import { TourCatalogCard } from '@/entities/tour-catalog-card';
+import { useGetHotelsQuery } from '@/servicesApi/hotelsApi';
+import { useGetToursQuery } from '@/servicesApi/toursApi';
 import { HotelComponentMap } from '@/shared/hotel-component-map';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Select } from '@/shared/ui/select';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
+import { getNumericValue } from '@/shared/utils/getNumericValue';
+import { IHotelsParamsQuery, IToursParamsQuery } from '@/types/api-interfaces';
 import { IHotelMiniData } from '@/types/hotel';
 import { ITour } from '@/types/tour';
 
 export interface ICatalog {
   appliedFilters: {
+    selectedCountries: string[];
     selectedCities: string[];
     recreationType: string[];
     placeType: string[];
@@ -36,6 +42,7 @@ export interface ICatalog {
     guests: string;
   };
   tab: 'Отели' | 'Туры';
+  filtersAppliedClicked: boolean;
 }
 
 interface HotelCardProps extends ICatalog {
@@ -48,6 +55,7 @@ export function CatalogList({
   tab,
   handleToggleFilters,
   data,
+  filtersAppliedClicked,
 }: HotelCardProps) {
   {
     /* Карта*/
@@ -71,136 +79,132 @@ export function CatalogList({
     'Сначала дороже',
   ];
 
-  const filterHotels = () =>
-    data.filter((item) => {
-      const isTour = tab === 'Туры';
-      const hotel = isTour ? (item as ITour)?.hotel : (item as IHotelMiniData);
-      // const rooms = isTour ? (item as ITour)?.rooms : (item as IHotel)?.rooms;
-      const {
-        selectedCities,
-        // recreationType,
-        // placeType,
-        // price,
-        rating,
-        starCategory,
-        // mealType,
-        amenities,
-        airportDistance,
-        tourOperators,
-      } = appliedFilters;
-      const isWithinAirportDistance =
-        airportDistance === 'Любое' ||
-        (hotel.distance_to_the_airport !== null &&
-          ((airportDistance === 'До 15 км' &&
-            hotel.distance_to_the_airport <= 15000) ||
-            (airportDistance === 'До 50 км' &&
-              hotel.distance_to_the_airport <= 50000) ||
-            (airportDistance === 'До 75 км' &&
-              hotel.distance_to_the_airport <= 75000) ||
-            (airportDistance === 'До 100 км' &&
-              hotel.distance_to_the_airport <= 100000)));
+  const mapFiltersToQuery = (
+    appliedFilters: ICatalog['appliedFilters'],
+    searchProps: ICatalog['searchProps'],
+    tab: ICatalog['tab'],
+  ): IHotelsParamsQuery | IToursParamsQuery => {
+    const starCategoryString =
+      appliedFilters.starCategory.length > 0
+        ? appliedFilters.starCategory.join(',')
+        : undefined;
 
-      // const isWithinPriceRange =
-      //   (price[0] !== 0 || price[1] !== 0) &&
-      //   (isTour
-      //     ? typeof (item as ITour).total_price === 'string' &&
-      //     Number((item as ITour).total_price) >= price[0] &&
-      //     Number((item as ITour).total_price) <= price[1]
-      //     : rooms.some((room) => {
-      //       const roomPrice = room.calendar_dates?.[0]?.price;
-      //       return (
-      //         typeof roomPrice === 'number' &&
-      //         roomPrice >= price[0] &&
-      //         roomPrice <= price[1]
-      //       );
-      //     }));
+    const userRating =
+      appliedFilters.rating[0] > 0 ? appliedFilters.rating[0] : undefined;
 
-      const isCitySelected =
-        selectedCities.length === 0 || selectedCities.includes(hotel.city);
+    const priceGte =
+      appliedFilters.price[0] > 0 ? appliedFilters.price[0] : undefined;
 
-      const isWhereSelected =
-        !searchProps.where ||
-        searchProps.where === '' ||
-        (isTour
-          ? (item as ITour).arrival_country
-              ?.toLowerCase()
-              .includes(searchProps.where.toLowerCase())
-          : hotel.country?.toLowerCase().includes(searchProps.where.toLowerCase()));
+    const priceLte =
+      appliedFilters.price[1] > 0 ? appliedFilters.price[1] : undefined;
 
-      // const isRecreationTypeSelected =
-      //   recreationType.length === 0 || recreationType.includes(hotel.type_of_rest);
+    const guests =
+      searchProps.guests &&
+      searchProps.guests !== 'Гостей' &&
+      searchProps.guests !== 'Любое'
+        ? Number(getNumericValue(searchProps.guests))
+        : undefined;
 
-      // const isPlaceTypeSelected =
-      //   placeType.length === 0 || placeType.includes(hotel.place);
+    const nights =
+      searchProps.nights && searchProps.nights !== 'Любое'
+        ? Number(getNumericValue(searchProps.nights))
+        : undefined;
 
-      const isWithinRatingRange =
-        (rating[0] === 0 && rating[1] === 0) ||
-        (hotel.user_rating >= rating[0] && hotel.user_rating <= rating[1]);
+    const city =
+      appliedFilters.selectedCities.length > 0
+        ? appliedFilters.selectedCities[0]
+        : undefined;
 
-      const isStarCategorySelected =
-        starCategory.length === 0 || starCategory.includes(hotel.star_category);
+    const country =
+      appliedFilters.selectedCountries.length > 0
+        ? appliedFilters.selectedCountries[0]
+        : undefined;
 
-      const isTourOperatorSelected =
-        tourOperators.length === 0 ||
-        (isTour && tourOperators.length === 0) ||
-        (isTour &&
-          tourOperators.includes(
-            (item as ITour).tour_operator?.toLowerCase() ?? '',
-          ));
+    const baseParams = {
+      price_gte: priceGte,
+      price_lte: priceLte,
+      user_rating: userRating,
+      star_category: starCategoryString,
+      guests: guests,
+      nights: nights,
+      type_of_rest:
+        appliedFilters.recreationType.length > 0
+          ? appliedFilters.recreationType[0]
+          : undefined,
+      place:
+        appliedFilters.placeType.length > 0
+          ? appliedFilters.placeType[0]
+          : undefined,
+    };
 
-      // const isMealTypeSelected =
-      //   mealType.length === 0 ||
-      //   rooms.some((room) =>
-      //     room.type_of_meals.some((meal) => mealType.includes(meal.name)),
-      //   );
+    if (tab === 'Отели') {
+      return {
+        ...baseParams,
+        city: city || undefined,
+        country: country || undefined,
+        check_in_date: searchProps.checkInDate || undefined,
+      };
+    }
 
-      const isAmenitiesSelected =
-        amenities.length === 0 ||
-        amenities.every((amenity) =>
-          hotel.amenities_common.some((cat) => cat.includes(amenity)),
-        );
+    if (tab === 'Туры') {
+      return {
+        ...baseParams,
+        departure_city: searchProps.departureCity || undefined,
+        arrival_city: city || undefined,
+        arrival_country: country || undefined,
+        start_date: searchProps.checkInDate || undefined,
+        distance_to_the_airport:
+          appliedFilters.airportDistance &&
+          appliedFilters.airportDistance !== 'Любое'
+            ? Number(getNumericValue(appliedFilters.airportDistance)) * 1000
+            : undefined,
+        tour_operator:
+          appliedFilters.tourOperators.length > 0
+            ? appliedFilters.tourOperators[0]
+            : undefined,
+      };
+    }
 
-      // const isGuestsSelected =
-      //   searchProps.guests === 'Гостей' ||
-      //   searchProps.guests === undefined ||
-      //   rooms.some((room) => {
-      //     const totalGuests =
-      //       (room.number_of_adults || 0) + (room.number_of_children || 0);
-      //     const guestsNumber =
-      //       searchProps.guests === 'Любое'
-      //         ? 0
-      //         : parseInt(searchProps.guests || '0', 10);
-      //     return totalGuests >= guestsNumber;
-      //   });
+    return baseParams;
+  };
 
-      // const isNightsSelected =
-      //   searchProps.nights === null ||
-      //   (tours || []).some((tour) => {
-      //     const start = new Date(tour.start_date);
-      //     const end = new Date(tour.end_date);
-      //     const tourNights = Math.ceil(
-      //       (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24),
-      //     );
-      //     return tourNights === Number(searchProps.nights);
-      //   });
-      return (
-        isWithinAirportDistance &&
-        isCitySelected &&
-        // isRecreationTypeSelected &&
-        // isPlaceTypeSelected &&
-        // isWithinPriceRange &&
-        isWithinRatingRange &&
-        isStarCategorySelected &&
-        // isMealTypeSelected &&
-        isAmenitiesSelected &&
-        // isGuestsSelected &&
-        isTourOperatorSelected &&
-        isWhereSelected
-        // && isNightsSelected
-      );
-    });
+  const queryParams = mapFiltersToQuery(appliedFilters, searchProps, tab);
 
-  const filteredData = useMemo(() => filterHotels(), [data, appliedFilters]);
+  const { data: hotelsData } = useGetHotelsQuery(queryParams, {
+    skip: tab !== 'Отели',
+  });
+
+  const { data: toursData } = useGetToursQuery(queryParams, {
+    skip: tab !== 'Туры',
+  });
+
+  const filteredResponse = tab === 'Туры' ? toursData : hotelsData;
+
+  const [displayedData, setDisplayedData] =
+    useState<(IHotelMiniData | ITour)[]>(data);
+
+  useEffect(() => {
+    let items = [];
+
+    if (filtersAppliedClicked && filteredResponse?.results) {
+      items = filteredResponse.results;
+    } else {
+      items = data;
+    }
+
+    // убираем дубликаты по id
+    const unique = Array.from(
+      new Map(
+        items.map((item) => [
+          'id' in item ? item.id : (item as ITour)?.hotel?.id,
+          item,
+        ]),
+      ).values(),
+    );
+
+    setDisplayedData(unique);
+  }, [filteredResponse, tab, filtersAppliedClicked, data]);
+
   const [selectedSort, setSelectedSort] = useState<SortOption>('По популярности');
 
   const getPrice = (item: ITour | IHotelMiniData): number => {
@@ -214,7 +218,7 @@ export function CatalogList({
   };
 
   const sortedData = useMemo(() => {
-    return [...filteredData].sort((a, b) => {
+    return [...displayedData].sort((a, b) => {
       // Для рейтинга
       if (selectedSort === 'По рейтингу') {
         const ratingA = 'tour_operator' in a ? a.hotel.user_rating : a.user_rating;
@@ -232,7 +236,7 @@ export function CatalogList({
       // По умолчанию (по популярности)
       return 0;
     });
-  }, [filteredData, selectedSort]);
+  }, [displayedData, selectedSort]);
 
   const handleSortSelect = (option: string) => {
     setSelectedSort(option as SortOption);
@@ -257,6 +261,36 @@ export function CatalogList({
   const handleLoadMore = () => {
     setLoadCount((prev) => prev + 10);
   };
+
+  // const handleRouting = ({
+  //   tourId,
+  //   hotelId,
+  //   hotelName,
+  //   hotelCountry,
+  //   tab,
+  // }: {
+  //   hotelId?: number | null;
+  //   tourId?: number | null;
+  //   hotelName: string;
+  //   hotelCountry: string;
+  //   tab: string;
+  // }) => {
+  //   const encodedName = encodeURIComponent(hotelName);
+  //   const encodedHotelId = hotelId ? encodeURIComponent(hotelId) : null;
+  //   const encodedTourId = tourId ? encodeURIComponent(tourId) : null;
+  //   const encodedCountry = encodeURIComponent(hotelCountry);
+  //   const encodedType = encodeURIComponent(tab);
+
+  //   if (tab === 'Туры' && encodedTourId) {
+  //     router.push(
+  //       `/tour-page?type=${encodedType}&tourId=${encodedTourId}&arrivalCountry=${encodedCountry}`,
+  //     );
+  //   } else {
+  //     router.push(
+  //       `/hotel-page?type=${encodedType}&hotelId=${encodedHotelId}&hotelName=${encodedName}&arrivalCountry=${encodedCountry}`,
+  //     );
+  //   }
+  // };
 
   if (!isClient) {
     return null;
@@ -334,22 +368,17 @@ export function CatalogList({
                 const announcementCardPosition =
                   Math.floor(sortedData.length / 2) - 1;
 
-                const card = isTour ? (
-                  <TourCatalogCard key={`card-${index}`} tour={item} />
-                ) : (
-                  <HotelCatalogCard key={`card-${index}`} hotel={item} />
+                return (
+                  <React.Fragment key={`item-${index}`}>
+                    {isTour ? (
+                      <TourCatalogCard tour={item} />
+                    ) : (
+                      <HotelCatalogCard hotel={item} />
+                    )}
+
+                    {index === announcementCardPosition && <AnnouncementCard />}
+                  </React.Fragment>
                 );
-
-                if (index === announcementCardPosition) {
-                  return (
-                    <>
-                      {card}
-                      <AnnouncementCard />
-                    </>
-                  );
-                }
-
-                return card;
               })}
             </>
           ) : (

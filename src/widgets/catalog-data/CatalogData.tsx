@@ -10,18 +10,19 @@ export default function CatalogData({
   searchProps,
   tab,
   handleToggleFilters,
+  filtersAppliedClicked,
 }: ICatalog) {
   const {
     data: hotels,
     isLoading: isLoadingHotels,
     error: errorHotel,
-  } = useGetHotelsQuery({ limit: 10, offset: 0 }, { skip: tab !== 'Отели' });
+  } = useGetHotelsQuery({ limit: 40, offset: 0 }, { skip: tab !== 'Отели' });
 
   const {
     data: tours,
     error: errorTour,
     isLoading: isLoadingTours,
-  } = useGetToursQuery({ limit: 10, offset: 0 }, { skip: tab !== 'Туры' });
+  } = useGetToursQuery({ limit: 40, offset: 0 }, { skip: tab !== 'Туры' });
 
   const isLoading = isLoadingHotels || isLoadingTours;
 
@@ -56,6 +57,7 @@ export default function CatalogData({
           appliedFilters={appliedFilters}
           tab={tab}
           searchProps={searchProps}
+          filtersAppliedClicked={filtersAppliedClicked}
         />
       )}
     </>

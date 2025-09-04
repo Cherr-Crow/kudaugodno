@@ -2,7 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 
+import { useSearchParams } from 'next/navigation';
+
 import { IFilterPrice } from './FilterPrice.types';
+import { RadioButton } from '../ui/radio-button';
 import { Typography } from '../ui/typography';
 
 export function FilterPrice({ price, onPriceChange }: IFilterPrice) {
@@ -11,36 +14,33 @@ export function FilterPrice({ price, onPriceChange }: IFilterPrice) {
   const [maxInput, setMaxInput] = useState('');
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  const priceData: number[] = [
-    1000, 2000, 3000, 5000, 6000, 7000, 8000, 9000, 10000, 12000, 15000, 18000,
-    20000, 25000, 30000, 35000, 40000, 1000, 2000, 3000, 5000, 6000, 7000, 8000,
-    9000, 10000, 12000, 15000, 18000, 20000, 25000, 30000, 35000, 40000, 1000, 2000,
-    3000, 5000, 6000, 7000, 8000, 9000, 10000, 12000, 15000, 18000, 20000, 25000,
-    30000, 35000, 40000, 1000, 2000, 3000, 5000, 6000, 7000, 8000, 9000, 10000,
-    12000, 15000, 18000, 20000, 25000, 30000, 35000, 40000, 1000, 2000, 3000, 5000,
-    6000, 7000, 8000, 9000, 10000, 12000, 15000, 18000, 20000, 25000, 30000, 35000,
-    40000, 1000, 2000, 3000, 5000, 6000, 7000, 8000, 9000, 10000, 12000, 15000,
-    18000, 20000, 25000, 30000, 35000, 40000, 1000, 2000, 3000, 5000, 6000, 7000,
-    8000, 9000, 10000, 12000, 15000, 18000, 20000, 25000, 30000, 35000, 40000, 1000,
-    2000, 3000, 5000, 6000, 7000, 8000, 9000, 10000, 12000, 15000, 18000, 20000,
-    25000, 30000, 35000, 40000, 1000, 2000, 3000, 5000, 6000, 7000, 8000, 9000,
-    10000, 12000, 15000, 18000, 20000, 25000, 30000, 35000, 40000, 45000, 50000,
-    55000, 60000, 65000, 70000, 75000, 80000, 85000, 90000, 15000, 18000, 20000,
-    25000, 30000, 35000, 40000, 45000, 50000, 55000, 60000, 65000, 70000, 75000,
-    80000, 85000, 90000, 15000, 18000, 20000, 25000, 30000, 35000, 40000, 45000,
-    50000, 55000, 60000, 65000, 70000, 75000, 80000, 85000, 90000, 15000, 18000,
-    20000, 25000, 30000, 35000, 40000, 45000, 50000, 55000, 60000, 65000, 70000,
-    75000, 80000, 85000, 90000, 15000, 18000, 20000, 25000, 30000, 35000, 40000,
-    45000, 50000, 55000, 60000, 65000, 70000, 75000, 80000, 85000, 90000, 70000,
-    75000, 80000, 85000, 90000, 70000, 75000, 80000, 85000, 90000, 70000, 75000,
-    80000, 85000, 90000, 70000, 75000, 80000, 85000, 90000, 70000, 75000, 80000,
-    85000, 90000, 70000, 75000, 80000, 85000, 90000,
-  ];
+  const tab = useSearchParams().get('tab');
+
+  const priceOptions: { label: string; range: [number, number] }[] =
+    tab === 'Отели'
+      ? [
+          { label: 'до 4 000 ₽', range: [0, 4000] },
+          { label: '4 000 – 8 000 ₽', range: [4000, 8000] },
+          { label: '8 000 – 12 000 ₽', range: [8000, 12000] },
+          { label: '12 000 – 20 000 ₽', range: [12000, 20000] },
+          { label: '20 000 – 40 000 ₽', range: [20000, 40000] },
+          { label: '40 000 ₽ и дороже', range: [40000, Infinity] },
+          { label: 'Неважно', range: [0, Infinity] },
+        ]
+      : [
+          { label: 'до 12 000 ₽', range: [0, 12000] },
+          { label: '12 000 – 40 000 ₽', range: [12000, 40000] },
+          { label: '40 000 – 100 000 ₽', range: [40000, 100000] },
+          { label: '100 000 – 200 000 ₽', range: [100000, 200000] },
+          { label: '200 000 – 300 000 ₽', range: [200000, 300000] },
+          { label: '300 000 ₽ и дороже', range: [300000, Infinity] },
+          { label: 'Неважно', range: [0, Infinity] },
+        ];
 
   useEffect(() => {
     setPriceRange(price);
     setMinInput(price[0].toString());
-    setMaxInput(price[1].toString());
+    setMaxInput(price[1] === Infinity ? '' : price[1].toString());
   }, [price]);
 
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
@@ -76,36 +76,24 @@ export function FilterPrice({ price, onPriceChange }: IFilterPrice) {
       setPriceRange(newRange);
       onPriceChange(newRange);
     } else {
-      setMaxInput(priceRange[1].toString());
+      setMaxInput(priceRange[1] === Infinity ? '' : priceRange[1].toString());
     }
   };
 
-  const calculateHistogramData = () => {
-    const intervals = 10;
-    const sorted = [...priceData].sort((a, b) => a - b);
-    const min = sorted[0];
-    const max = sorted[sorted.length - 1];
-    const intervalWidth = (max - min) / intervals;
-    const histogramData = Array(intervals).fill(0);
-
-    priceData.forEach((p) => {
-      const index = Math.floor((p - min) / intervalWidth);
-      histogramData[Math.min(index, intervals - 1)] += 1;
-    });
-
-    return histogramData;
+  const handleRadioChange = (range: [number, number]) => {
+    setPriceRange(range);
+    setMinInput(range[0].toString());
+    setMaxInput(range[1] === Infinity ? '' : range[1].toString());
+    onPriceChange(range);
   };
-
-  const histogramData = calculateHistogramData();
-
-  const minPrice = Math.min(...priceData);
-  const maxPrice = Math.max(...priceData);
 
   return (
     <div className='filter-price rounded-lg bg-white p-4 shadow-md'>
-      <div className='mb-4 flex items-center justify-between'>
+      <div
+        className={`flex items-center justify-between ${isCollapsed ? 'mb-0' : 'mb-4'}`}
+      >
         <Typography variant='l' className='text-blue-950'>
-          Цена за ночь
+          {tab === 'Отели' ? 'Цена за ночь' : 'Цена за тур'}
         </Typography>
         <button
           onClick={toggleCollapse}
@@ -117,56 +105,10 @@ export function FilterPrice({ price, onPriceChange }: IFilterPrice) {
       </div>
 
       <div
-        className={`transition-max-height overflow-hidden duration-500 ease-in-out ${
+        className={`transition-max-height flex flex-col gap-2 overflow-hidden duration-500 ease-in-out ${
           isCollapsed ? 'max-h-0' : 'max-h-[1000px]'
         }`}
       >
-        {/* Гистограмма */}
-        <div className='histogram relative mb-4 flex h-16 items-end gap-1 rounded-lg'>
-          {histogramData.map((height, index) => {
-            const intervals = histogramData.length;
-            const sorted = [...priceData].sort((a, b) => a - b);
-            const min = sorted[0];
-            const max = sorted[sorted.length - 1];
-            const intervalWidth = (max - min) / intervals;
-
-            const intervalStart = min + index * intervalWidth;
-            const intervalEnd = intervalStart + intervalWidth;
-
-            const isInRange =
-              intervalEnd >= priceRange[0] && intervalStart <= priceRange[1];
-
-            const maxFrequency = Math.max(...histogramData);
-            const heightPercentage = (height / maxFrequency) * 100;
-
-            return (
-              <div
-                key={index}
-                className={`flex-1 ${isInRange ? 'bg-blue-300' : 'bg-blue-100'} transition-colors duration-300`}
-                style={{ height: `${heightPercentage}%` }}
-              ></div>
-            );
-          })}
-        </div>
-
-        {/* Слайдер */}
-        <div className='slider relative mx-auto mb-4 flex h-1 w-[93%] rounded-lg px-4'>
-          <div
-            className='absolute h-1 rounded-lg bg-blue-800'
-            style={{
-              left: `${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%`,
-              width: `${Math.min(
-                ((priceRange[1] - priceRange[0]) / (maxPrice - minPrice)) * 100,
-                100 - ((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100,
-              )}%`,
-              maxWidth: '100%',
-            }}
-          >
-            <div className='absolute -left-[6px] top-1/2 h-4 w-4 -translate-y-1/2 rounded-full bg-blue-800 shadow'></div>
-            <div className='absolute -right-[6px] top-1/2 h-4 w-4 -translate-y-1/2 rounded-full bg-blue-800 shadow'></div>
-          </div>
-        </div>
-
         {/* Инпуты */}
         <div className='flex gap-4'>
           <div className='flex-1'>
@@ -189,6 +131,20 @@ export function FilterPrice({ price, onPriceChange }: IFilterPrice) {
               inputMode='numeric'
             />
           </div>
+        </div>
+        {/* Радио кнопки */}
+        <div className='flex flex-col gap-2 text-blue-950'>
+          {priceOptions.map((option) => (
+            <RadioButton
+              key={option.label}
+              label={option.label}
+              isSelected={
+                priceRange[0] === option.range[0] &&
+                priceRange[1] === option.range[1]
+              }
+              onChange={() => handleRadioChange(option.range)}
+            />
+          ))}
         </div>
       </div>
     </div>

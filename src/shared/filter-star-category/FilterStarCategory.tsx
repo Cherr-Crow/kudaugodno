@@ -13,10 +13,11 @@ export function FilterStarCategory({
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
 
   const toggleStarSelection = (stars: number) => {
-    const updatedStars = starCategory.includes(stars)
-      ? starCategory.filter((item) => item !== stars)
-      : [...starCategory, stars];
-    onStarCategoryChange(updatedStars);
+    if (starCategory.includes(stars)) {
+      onStarCategoryChange([]);
+    } else {
+      onStarCategoryChange([stars]);
+    }
   };
 
   const toggleCollapse = () => setIsCollapsed(!isCollapsed);
@@ -24,7 +25,9 @@ export function FilterStarCategory({
   return (
     <div className='filter-star-category rounded-lg bg-white p-4 shadow-md'>
       {/* Заголовок */}
-      <div className='mb-4 flex items-center justify-between'>
+      <div
+        className={`flex items-center justify-between ${isCollapsed ? 'mb-0' : 'mb-4'}`}
+      >
         <Typography variant='l' className='text-blue-950'>
           Категория отеля
         </Typography>

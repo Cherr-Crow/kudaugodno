@@ -1,41 +1,48 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { BASE_URL } from '@/temp/domen_nikita';
+import { IResponceListTours, IToursParamsQuery } from '@/types/api-interfaces';
 import { ITour } from '@/types/tour';
-
-interface IResponceListTours {
-  count: number;
-  next: null;
-  previous: null;
-  results: ITour[];
-}
 
 export const toursApi = createApi({
   reducerPath: 'toursApi',
   tagTypes: ['Tours'],
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (build) => ({
-    getTours: build.query<IResponceListTours, { limit?: number; offset?: number }>({
-      query: ({ limit, offset }) => {
-        const params = new URLSearchParams();
+    getTours: build.query<IResponceListTours, IToursParamsQuery>({
+      query: (params) => {
+        const queryParams = Object.entries(params ?? {})
+          .filter(
+            ([, value]) =>
+              value !== undefined &&
+              value !== null &&
+              value !== '' &&
+              !(typeof value === 'number' && isNaN(value)),
+          )
+          .map(([key, value]) => {
+            if (Array.isArray(value)) {
+              return value
+                .map(
+                  (v) =>
+                    `${encodeURIComponent(key)}=${encodeURIComponent(String(v))}`,
+                )
+                .join('&');
+            }
+            return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
+          });
 
-        if (limit !== undefined) params.set('limit', String(limit));
-        if (offset !== undefined) params.set('offset', String(offset));
-
-        const queryString = params.toString();
-        return `tours/${queryString ? '?' + queryString : ''}`;
+        const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
+        return `tours${queryString}`;
       },
       providesTags: (result) =>
-        result
+        result?.results
           ? [
-              ...result.results.map(({ id }: { id: number }) => ({
-                type: 'Tours' as const,
-                id,
-              })),
+              ...result.results.map(({ id }) => ({ type: 'Tours' as const, id })),
               { type: 'Tours', id: 'LIST' },
             ]
           : [{ type: 'Tours', id: 'LIST' }],
     }),
+
     getToursByHotel: build.query<
       { results: ITour[] },
       { hotelId: number; limit?: number; offset?: number }
@@ -55,6 +62,7 @@ export const toursApi = createApi({
             ]
           : [{ type: 'Tours', id: 'LIST' }],
     }),
+
     getToursByHotels: build.query<
       ITour[],
       { hotelIds: number[]; limit?: number; offset?: number }
