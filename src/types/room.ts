@@ -13,7 +13,7 @@ export type RoomType = {
   amenities_coffee: string[];
   amenities_bathroom: string[];
   amenities_view: string[];
-  rules: RulesType[];
+  rules: RoomRuleType[];
   photo: photoType[];
   calendar_dates: AvailableDates[];
   total_price_without_discount?: string;
@@ -32,7 +32,7 @@ export type MealType = {
   price: string;
 };
 
-type RulesType = {
+type RoomRuleType = {
   name: string;
   option: boolean;
 };

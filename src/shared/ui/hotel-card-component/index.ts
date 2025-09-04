@@ -1,0 +1,1 @@
+export { HotelCardComponent } from './HotelCardComponent';

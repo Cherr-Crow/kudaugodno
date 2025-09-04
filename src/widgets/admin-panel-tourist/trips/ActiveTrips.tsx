@@ -1,4 +1,3 @@
-
 import { HotelCard } from './cards/HotelCard';
 import { TripCard } from './cards/TripCard';
 

@@ -360,7 +360,7 @@ export function CatalogList({
       {isMapVisible ? (
         <HotelComponentMap />
       ) : (
-        <div className='hotels-list mb-5 grid gap-3 md:grid-cols-1 md:gap-4 lg:mb-8 lg:gap-5'>
+        <div className='hotels-list mb-5 flex flex-col gap-3 md:gap-4 lg:mb-8 lg:gap-5'>
           {sortedData.length > 0 ? (
             <>
               {sortedData.slice(0, loadCount).map((item, index) => {
