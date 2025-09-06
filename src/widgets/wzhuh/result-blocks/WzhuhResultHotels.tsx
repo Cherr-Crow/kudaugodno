@@ -16,6 +16,7 @@ export function WzhuhResultHotels({
   description_hotel,
   hotels,
 }: WzhuhResultHotelsProps) {
+  console.log(hotels);
   return (
     <div className='mb-5 overflow-hidden rounded-[20px] bg-blue-50 pt-5 md:mb-10 md:pt-10'>
       <div className='mb-[17px] flex justify-between px-5 md:mb-8 lg:mb-6'>
@@ -48,7 +49,7 @@ export function WzhuhResultHotels({
               key={hotel.id}
               className='max-h-[364px] min-w-[284px] md:max-h-[554px] md:min-w-[380px] lg:min-w-[370px]'
             >
-              <OfferCard offer={hotel} needHotelBadges={true} />
+              <OfferCard offer={hotel} />
             </li>
           ))}
       </ul>
