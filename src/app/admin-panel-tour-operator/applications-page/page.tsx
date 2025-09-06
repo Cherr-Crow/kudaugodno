@@ -3,14 +3,16 @@ import React, { useState } from 'react';
 
 import { useGetTourApplicationsQuery } from '@/servicesApi/applicationsApi';
 import { FilterYear } from '@/shared/filter-year';
+import { Pagination } from '@/shared/pagination';
 import { ApplicationCard } from '@/shared/ui/application-card';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
 
 export default function ApplicationsPage() {
   const [years] = useState<string[]>(['2025']);
-
-  const { data = [] } = useGetTourApplicationsQuery({});
+  const [limit, setLimit] = useState(20);
+  const [offset, setOffset] = useState(0);
+  const { data = [] } = useGetTourApplicationsQuery({ limit, offset });
   return (
     <div className='w-full'>
       <div className='flex flex-col'>
@@ -40,6 +42,19 @@ export default function ApplicationsPage() {
               status={item.status}
             ></ApplicationCard>
           ))}
+
+        {data && (
+          <div className='flex justify-start pt-8'>
+            <Pagination
+              totalItems={data?.length ?? 0}
+              pageSize={limit}
+              onChange={(newOffset, newLimit) => {
+                setOffset(newOffset);
+                setLimit(newLimit);
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

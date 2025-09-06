@@ -6,6 +6,7 @@ import { nanoid } from 'nanoid';
 import { useRouter } from 'next/navigation';
 
 import { useDeleteHotelMutation, useGetHotelsQuery } from '@/servicesApi/hotelsApi';
+import { Pagination } from '@/shared/pagination';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { ContextMenu } from '@/shared/ui/context-menu';
@@ -14,11 +15,14 @@ import { Typography } from '@/shared/ui/typography';
 
 export default function Hotels() {
   const route = useRouter();
-  const { data } = useGetHotelsQuery({});
   const [isVisible, setIsVisible] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [activeItem, setActiveItem] = useState(0);
   const [deleteHotel] = useDeleteHotelMutation();
+
+  const [limit, setLimit] = useState(20);
+  const [offset, setOffset] = useState(0);
+  const { data } = useGetHotelsQuery({ limit, offset });
 
   const workArr = useMemo(() => {
     return data ? [...data.results].sort((a, b) => a.id - b.id) : [];
@@ -109,6 +113,19 @@ export default function Hotels() {
             ))}
         </tbody>
       </table>
+      {data && (
+        <div className='flex justify-center pt-8'>
+          <Pagination
+            totalItems={data?.count ?? 0}
+            pageSize={limit}
+            onChange={(newOffset, newLimit) => {
+              setOffset(newOffset);
+              setLimit(newLimit);
+            }}
+          />
+        </div>
+      )}
+
       <ContextMenu items={menuItems} visible={isVisible} positionProp={position} />
     </div>
   );

@@ -94,24 +94,24 @@ export function TableForTours({ tours }: ITableForTours) {
     return `${day}.${month}.${year}`;
   };
 
-  const renderFlightInfo = (
-    flight: {
-      flight_number: string;
-      airline: string;
-      departure_city: string;
-      departure_airport: string;
-      arrival_country: string;
-      arrival_airport: string;
-    },
-    className = '',
-  ) => {
-    return (
-      <p className={className}>
-        <span className='font-bold'>{flight.flight_number}</span>{' '}
-        {`${flight.airline}, ${flight.departure_city}, ${flight.departure_airport} – ${flight.arrival_country}, ${flight.arrival_airport}`}
-      </p>
-    );
-  };
+  // const renderFlightInfo = (
+  //   flight: {
+  //     flight_number: string;
+  //     airline: string;
+  //     departure_city: string;
+  //     departure_airport: string;
+  //     arrival_country: string;
+  //     arrival_airport: string;
+  //   },
+  //   className = '',
+  // ) => {
+  //   return (
+  //     <p className={className}>
+  //       <span className='font-bold'>{flight.flight_number}</span>{' '}
+  //       {`${flight.airline}, ${flight.departure_city}, ${flight.departure_airport} – ${flight.arrival_country}, ${flight.arrival_airport}`}
+  //     </p>
+  //   );
+  // };
 
   return (
     <div className='w-full overflow-x-auto'>
@@ -180,11 +180,12 @@ export function TableForTours({ tours }: ITableForTours) {
                 {tour.hotel.name}
               </td>
               <td className='pl-3 pt-3 text-left text-[12px] sm:text-[12px] md:text-base'>
-                {renderFlightInfo(tour.flight_to, 'mb-2')}
-                {renderFlightInfo(tour.flight_from)}
+                {/* {renderFlightInfo(tour.flight_to, 'mb-2')}
+                {renderFlightInfo(tour.flight_from)} */}
+                в туре нет рейса
               </td>
               <td className='pl-3 pt-3 text-left text-[12px] sm:text-[12px] md:text-base'>
-                {`${formatDate(tour.start_date)} - ${formatDate(tour.end_date)}`}
+                {`${formatDate(tour.publish_start_date)} - ${formatDate(tour.publish_end_date)}`}
               </td>
             </tr>
           ))}
