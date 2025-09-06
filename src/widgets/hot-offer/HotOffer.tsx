@@ -12,8 +12,6 @@ import { IHotOffer } from './HotOffer.types';
 export function HotOffer({ className, link, title, type }: IHotOffer) {
   const { data: selection } = useGetWhatAboutHotelsQuery();
 
-  console.log(selection);
-
   const handleSaveId = (id: number) => {
     localStorage.setItem('selectedHotelId', `${id}`);
   };
@@ -56,17 +54,17 @@ export function HotOffer({ className, link, title, type }: IHotOffer) {
           )}
         </div>
       </div>
-      <div className='hide-scroll overflow-x-auto md:container md:overflow-visible'>
-        <ul className='flex flex-nowrap gap-3 md:grid md:grid-cols-2 md:gap-5 lg:grid-cols-3'>
+      <div className='hide-scroll overflow-auto md:container md:overflow-visible'>
+        <ul className='flex flex-nowrap gap-3 px-[16px] md:grid md:grid-cols-2 md:gap-5 md:px-0 lg:grid-cols-3'>
           {hotels &&
             hotels.length > 0 &&
             hotels.map((offer, i) => (
               <li
-                className={`mb-5 min-h-[372px] min-w-80 first:pl-4 last:pr-4 md:mb-0 md:first:pl-0 md:last:pr-0 ${i === 2 ? 'md:hidden lg:block' : ''}`}
+                className={`mb-5 min-h-[372px] min-w-80 md:mb-0 md:first:pl-0 md:last:pr-0 ${i === 2 ? 'md:hidden lg:block' : ''}`}
                 key={i}
                 onClick={() => handleSaveId(offer.id)}
               >
-                <OfferCard offer={offer} needHotelBadges={false} />
+                <OfferCard offer={offer} />
               </li>
             ))}
         </ul>

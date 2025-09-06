@@ -31,13 +31,11 @@ export default function StocksHotelsPage() {
   const increment = initialCount;
 
   const { data: hotelsData } = useGetHotelsQuery({});
-
   const enrichedHotels: IHotelMiniData[] = hotelsData?.results ?? [];
 
   const visible = enrichedHotels.slice(0, cardsToShow);
 
   const hasMore = cardsToShow < enrichedHotels.length;
-
   return (
     <div className='mx-auto max-w-[1440px]'>
       <div className='px-4 pt-[26px] md:px-20 md:pt-0 lg:px-[130px]'>
@@ -64,7 +62,7 @@ export default function StocksHotelsPage() {
         >
           {visible.map((hotel) => (
             <li key={hotel.id}>
-              <OfferCard offer={hotel} needHotelBadges={true} />
+              <OfferCard offer={hotel} />
             </li>
           ))}
         </ul>
