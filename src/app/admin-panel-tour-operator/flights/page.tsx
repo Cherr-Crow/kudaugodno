@@ -4,12 +4,11 @@ import React, { useState } from 'react';
 
 import { useGetFlightsQuery } from '@/servicesApi/flightsApi';
 import { Pagination } from '@/shared/pagination';
-import { ButtonCustom } from '@/shared/ui/button-custom';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { TableForFlights } from '@/widgets/admin-panel/table-for-flights';
 
 export default function Flights() {
-  const router = useRouter();
+  // const router = useRouter();
   const [limit, setLimit] = useState(20);
   const [offset, setOffset] = useState(0);
   const { data } = useGetFlightsQuery({ limit, offset });

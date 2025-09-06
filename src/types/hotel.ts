@@ -11,7 +11,7 @@ export type IHotel = {
   distance_to_the_station: number | null;
   distance_to_the_sea: number | null;
   distance_to_the_center: number | null;
-  // distance_to_the_metro: number | null;
+  distance_to_the_metro?: number | null;
   distance_to_the_airport: number | null;
   description: string;
   check_in_time: string;

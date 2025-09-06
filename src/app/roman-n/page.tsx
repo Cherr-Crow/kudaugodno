@@ -234,7 +234,7 @@ const testHotel: IHotel = {
   distance_to_the_station: 5850,
   distance_to_the_sea: 22016,
   distance_to_the_center: 5514,
-  distance_to_the_metro: 36101,
+  // distance_to_the_metro: 36101,
   distance_to_the_airport: 2013,
   description: 'Так себе описание отеля под номером 1',
   check_in_time: '16:00:00',
