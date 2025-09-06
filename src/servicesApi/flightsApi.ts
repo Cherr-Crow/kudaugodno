@@ -19,8 +19,19 @@ export const flightsApi = createApi({
       IResponseListFlights,
       { limit?: number; offset?: number }
     >({
-      query: ({ limit, offset }) =>
-        `flights/?${limit && 'limit=' + limit}${offset && '&offset=' + offset}`,
+      query: ({ limit, offset }) => {
+        let queryString = '';
+
+        if (limit !== undefined) {
+          queryString += `limit=${limit}`;
+        }
+
+        if (offset !== undefined) {
+          queryString += queryString ? `&offset=${offset}` : `offset=${offset}`;
+        }
+
+        return `flights/${queryString ? '?' + queryString : ''}`;
+      },
       providesTags: (result) =>
         result
           ? [

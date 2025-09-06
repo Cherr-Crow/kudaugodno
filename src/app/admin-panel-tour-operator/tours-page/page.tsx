@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { useGetToursQuery } from '@/servicesApi/toursApi';
+import { Pagination } from '@/shared/pagination';
 import { ButtonCustom } from '@/shared/ui/button-custom';
 import { Checkbox } from '@/shared/ui/checkbox';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
@@ -13,7 +14,9 @@ import { TableForTours } from '@/widgets/admin-panel/table-for-tours';
 
 export default function ToursPage() {
   const router = useRouter();
-  const { data } = useGetToursQuery({});
+  const [limit, setLimit] = useState(20);
+  const [offset, setOffset] = useState(0);
+  const { data } = useGetToursQuery({ limit, offset });
   const tours = data?.results;
 
   const handleAddTour = () => {
@@ -64,6 +67,18 @@ export default function ToursPage() {
         className='my-5'
       />
       {data && <TableForTours tours={filteredTours} />}
+      {data && (
+        <div className='flex justify-center pt-8'>
+          <Pagination
+            totalItems={data?.count ?? 0}
+            pageSize={limit}
+            onChange={(newOffset, newLimit) => {
+              setOffset(newOffset);
+              setLimit(newLimit);
+            }}
+          />
+        </div>
+      )}
 
       {/* <button className='' popoverTarget='myPopover' popoverTargetAction='toggle'>
         kjhkjhkjh
