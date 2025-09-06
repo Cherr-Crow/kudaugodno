@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import { Checkbox } from '@/shared/ui/checkbox';
-
 import { IRuleAdd } from './RuleAdd.types';
+import { SvgSprite } from '../svg-sprite';
+import { Typography } from '../typography';
 
 export function RuleAdd({ rule, className, getValue }: IRuleAdd) {
   const [description, setDescription] = useState(rule.description);
@@ -17,17 +17,25 @@ export function RuleAdd({ rule, className, getValue }: IRuleAdd) {
   };
 
   return (
-    <div className={`flex justify-between ${className ?? ''}`}>
-      <Checkbox
-        label={rule.name}
-        className='w-1/3'
-        onChange={handleChange}
-        isChecked={true}
-      />
+    <div className={`flex gap-5 ${className ?? ''}`}>
+      <div className='flex min-w-[280px] items-center justify-between whitespace-nowrap rounded-lg bg-blue-50 px-3 py-[10px]'>
+        <Typography variant='m' className='text-grey-950'>
+          {rule.name}
+        </Typography>
+        <SvgSprite
+          name={'cross'}
+          color='#1a1f4c'
+          strokeWidth='2'
+          width={10}
+          height={10}
+          className='cursor-pointer'
+          onClick={() => handleChange(false)}
+        />
+      </div>
       <input
         type='text'
         name={rule.name}
-        className='w-full rounded-md border border-grey-600 px-4 py-2'
+        className='w-full rounded-md border border-grey-600 px-3 py-2 text-lg outline-none focus:border-blue-600'
         placeholder='Введите описание правила'
         value={description}
         onChange={handleChangeValue}

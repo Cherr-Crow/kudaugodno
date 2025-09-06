@@ -126,7 +126,7 @@ export function AmenitiesChangeBlock({
   }
 
   return (
-    <div className={`flex flex-col gap-4 rounded-xl p-3`}>
+    <div className={`flex flex-col gap-[6px] rounded-xl`}>
       <Typography variant='s-bold'>
         Основные (отображаются вверху страницы)
       </Typography>
@@ -141,7 +141,7 @@ export function AmenitiesChangeBlock({
         onDragCancel={() => setActiveId(null)}
       >
         <SortableContext items={sortedList.map((item) => item.id)}>
-          <div className='flex flex-wrap gap-3'>
+          <div className='flex flex-wrap gap-x-5 gap-y-3'>
             {sortedList.map((item) => (
               <AmenitiesItem
                 key={item.id}

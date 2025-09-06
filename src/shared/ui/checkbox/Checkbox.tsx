@@ -13,6 +13,7 @@ const Checkbox: React.FC<ICheckbox> = ({
   onChange,
   className,
   id,
+  variant,
 }) => {
   const [checked, setChecked] = useState(isChecked ?? false);
   const generatedId = useId();
@@ -32,6 +33,21 @@ const Checkbox: React.FC<ICheckbox> = ({
 
   const checkboxId = id || `checkbox-${generatedId}`;
 
+  const baseStyle =
+    'flex items-center justify-center border transition-colors duration-300 h-6 w-6';
+  const sizeStyle = variant === 'white' ? ' rounded-[4px]' : ' rounded-lg';
+  const bgStyle =
+    variant === 'white'
+      ? checked
+        ? 'border-blue-600 bg-white text-blue-600'
+        : 'border-grey-600 bg-white'
+      : isDisabled
+        ? 'cursor-not-allowed border-grey-700 bg-grey-100'
+        : checked
+          ? 'border-0 bg-blue-600 text-white'
+          : 'border-grey-600 bg-grey-100';
+  const focusStyle = !isDisabled && 'focus:outline-2 focus:outline-blue-600';
+
   return (
     <div
       className={`flex items-center space-x-2 ${className}`}
@@ -42,13 +58,7 @@ const Checkbox: React.FC<ICheckbox> = ({
         name={checkboxId}
         type='button'
         role='switch'
-        className={`flex h-6 w-6 items-center justify-center rounded-lg border transition-colors duration-300 ${
-          isDisabled
-            ? 'cursor-not-allowed border-grey-600 bg-grey-100'
-            : checked
-              ? 'border-0 bg-blue-600 text-white'
-              : 'border-grey-600 bg-grey-100'
-        } ${!isDisabled && 'focus:outline-2 focus:outline-blue-600'}`}
+        className={`${baseStyle} ${sizeStyle} ${bgStyle} ${focusStyle}`}
         disabled={isDisabled}
         aria-checked={checked}
       >

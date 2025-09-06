@@ -5,4 +5,5 @@ export interface ICheckbox {
   isChecked?: boolean;
   isDisabled?: boolean;
   onChange?: (checked: boolean) => void;
+  variant?: string;
 }

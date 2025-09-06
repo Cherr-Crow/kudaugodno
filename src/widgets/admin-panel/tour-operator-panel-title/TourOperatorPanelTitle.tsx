@@ -9,7 +9,7 @@ import { Typography } from '@/shared/ui/typography';
 
 import { ITourOperatorPanelTitle } from './TourOperatorPanelTitle.types';
 
-const tabsHotelAdded = ['Отель', 'Питание', 'Номера', 'Даты'];
+const tabsHotelAdded = ['Информация', 'Питание'];
 
 export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
   const patch = usePathname();
@@ -31,6 +31,10 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
       return;
     } else if (patch.includes('insurance')) {
       setTitle('Страховки');
+      setOpenTabsAddHotel(false);
+      return;
+    } else if (patch.includes('added-hotel')) {
+      setTitle('Добавить отель');
       setOpenTabsAddHotel(false);
       return;
     } else {
@@ -78,7 +82,9 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
   };
 
   return (
-    <div className='rounded-b-2xl bg-blue-600 py-5 pb-[30px] md:rounded-b-[100px] md:py-12'>
+    <div
+      className={`rounded-b-2xl bg-blue-600 py-5 pb-[30px] md:rounded-b-[100px] md:py-14 ${openTabsAddHotel ? 'h-[268px]' : 'h-[240px]'}`}
+    >
       <div className='container'>
         <Typography
           variant='h4'
@@ -86,9 +92,10 @@ export function TourOperatorPanelTitle({}: ITourOperatorPanelTitle) {
         >
           {title}
         </Typography>
-        <div className=''>
+        <div className='mt-[52px] w-[344px]'>
           {openTabsAddHotel && (
             <TabBar
+              className='h-[66px]'
               tabs={tabsHotelAdded}
               getActiveTab={handleTabName}
               setTab={activeTab}

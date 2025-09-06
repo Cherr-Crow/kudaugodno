@@ -15,22 +15,38 @@ export function Rating({
 }: IRating) {
   return (
     <ul className='flex items-center' style={{ gap: `${gap}px` }}>
-      {new Array(5).fill(1).map((_, index) => {
-        const isFilled = index + 1 <= category;
+      {Array.from({ length: 5 }, (_, index) => {
+        const starValue = index + 1;
+        const isFilled = starValue <= category;
 
-        if (!emptyStarsInclude && !isFilled) {
-          return null;
+        // --- READ-ONLY режим (только отображение)
+        if (!setRating) {
+          if (!emptyStarsInclude && !isFilled) {
+            return null;
+          }
+
+          return (
+            <li key={index}>
+              <SvgSprite
+                name={isFilled ? 'star-full' : 'star'}
+                width={starSize}
+                className='text-blue-700'
+              />
+            </li>
+          );
         }
 
+        // --- EDITABLE режим (можно кликать)
         return (
           <li
-            className={setRating ? 'cursor-pointer' : ''}
             key={index}
-            onClick={() => setRating?.(index + 1)}
+            className='cursor-pointer'
+            onClick={() => setRating(starValue)}
           >
             <SvgSprite
               name={isFilled ? 'star-full' : 'star'}
               width={starSize}
+              height={starSize}
               className='text-blue-700'
             />
           </li>

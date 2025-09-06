@@ -17,7 +17,6 @@ export default function AdminPanelTourOperatorLayout({
 
   useEffect(() => {
     if (
-      path.includes('added-hotel') ||
       path.includes('added-flights') ||
       path.includes('change-hotel') ||
       path.includes('added-tour')
@@ -32,7 +31,7 @@ export default function AdminPanelTourOperatorLayout({
     <Suspense>
       <section className='grid h-full'>
         <TourOperatorPanelTitle />
-        <div className='container flex h-full items-start gap-5 py-10'>
+        <div className='container flex h-full items-start gap-5 py-9'>
           {openDashboard && (
             <div className='hidden lg:flex'>
               <AdminPanelDashboard type={'tour-operator'} />

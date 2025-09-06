@@ -7,6 +7,6 @@ export interface IPhotoBlock extends DivProps {
     room?: number;
     hotel?: number;
   }[];
-  additionPhoto(formData: FileList): void;
+  additionPhoto: (e: React.ChangeEvent<HTMLInputElement>) => void;
   deletePhoto(id: number): void;
 }

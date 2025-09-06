@@ -6,8 +6,9 @@ export type IAmenity = {
   icon: NameSvg;
 };
 
-export const typeOfHoliday = ['Пляжный', 'Городской'];
+export const typeOfHoliday = ['Не выбранно', 'Пляжный', 'Городской'];
 export const accommodationType = [
+  'Не выбранно',
   'Отель',
   'Хостел',
   'Вилла',
@@ -73,7 +74,7 @@ export const amenities_common: IAmenity[] = [
   },
   {
     id: 'accessible',
-    label: 'Для маломобильных',
+    label: 'Доступ с коляской',
     icon: 'wheelchair',
   },
   {

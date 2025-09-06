@@ -10,9 +10,10 @@ import {
   useDeleteHotelMutation,
   useGetOneHotelQuery,
 } from '@/servicesApi/hotelsApi';
+import { DistanceBlock } from '@/shared/distance-block/DistanceBlock';
 import { Rating } from '@/shared/rating';
-import { Accordeon } from '@/shared/ui/accordeon';
 import { ButtonCustom } from '@/shared/ui/button-custom';
+import { Checkbox } from '@/shared/ui/checkbox';
 import { NamedInput } from '@/shared/ui/named-input';
 import { Select } from '@/shared/ui/select';
 import { useToast } from '@/shared/ui/toast/toastService';
@@ -46,7 +47,8 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
   const [place, setPlace] = useState(data?.place || ''); // тип размещения
   const [country, setCountry] = useState(data?.country || ''); // страна
   const [city, setCity] = useState(data?.city || ''); // город
-  const [address, setAddress] = useState(data?.address || ''); // адрес
+  const [district, setDistrict] = useState(''); // район
+  const [street, setStreet] = useState(''); // улица, дом
   const [latitude, setLatitude] = useState(data?.width || ''); // широта
   const [longitude, setLongitude] = useState(data?.longitude || ''); // долгота
   const [distanceToTheStation, setDstanceToTheStation] = useState(
@@ -58,13 +60,13 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
   const [distanceToTheCenter, setDstanceToTheCenter] = useState(
     data?.distance_to_the_center || null,
   ); // расстояние до ценра
-  const [distanceToTheMetro, setDstanceToTheMetro] = useState(
-    data?.distance_to_the_metro || null,
-  ); // расстояние до метро
+  // const [distanceToTheMetro, setDstanceToTheMetro] = useState(
+  //   data?.distance_to_the_metro || null,
+  // ); // расстояние до метро
   const [distanceToTheAirport, setDstanceToTheAirport] = useState(
     data?.distance_to_the_airport || null,
   ); // расстояние до аэропорта
-  const [description, setDscription] = useState(data?.description || ''); // описание
+  const [description, setDescription] = useState(data?.description || ''); // описание
   const [checkInTime, setCheckInTime] = useState(data?.check_in_time || '00:00'); // время заезда
   const [checkOutTime, setCheckOutTime] = useState(data?.check_out_time || '00:00'); // время выезда
   const [amenitiesCommon, setAmenitiesCommon] = useState(amenities_common); // общие удобства
@@ -108,23 +110,37 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
     setName(data.name);
   }, [data]);
 
+  useEffect(() => {
+    if (!data?.address) return;
+
+    const [parsedDistrict, ...rest] = data.address.split(', ');
+    if (rest.length > 0) {
+      setDistrict(parsedDistrict);
+      setStreet(rest.join(', '));
+    } else {
+      setStreet(parsedDistrict);
+    }
+  }, [data?.address]);
+
   const handleCancel = () => {
     if (path.includes('added-hotel')) deletHotel(hotelId);
     route.push('/admin-panel-tour-operator/hotels');
   };
 
   const handleSaved = () => {
+    const fullAddress = district ? `${district}, ${street}` : street;
+
     const _obj: Omit<IHotel, 'rooms' | 'id' | 'reviews' | 'photo'> = {
       name,
       star_category: starCategory,
       place,
       country,
       city,
-      address,
+      address: fullAddress,
       distance_to_the_station: distanceToTheStation,
       distance_to_the_sea: distanceToTheSea,
       distance_to_the_center: distanceToTheCenter,
-      distance_to_the_metro: distanceToTheMetro,
+      // distance_to_the_metro: distanceToTheMetro,
       distance_to_the_airport: distanceToTheAirport,
       description,
       check_in_time: checkInTime,
@@ -162,65 +178,60 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
   }, [cangeValueHotel, isError]);
 
   return (
-    <section className='flex flex-col gap-4'>
-      <div className='relative flex flex-col gap-2'>
-        <Typography variant='l-bold'>Название отеля</Typography>
+    <section className='flex flex-col gap-[18px]'>
+      <div className='relative flex flex-col'>
+        <Typography variant='l-bold'>Название</Typography>
         <input
           type='text'
-          className='w-full rounded-lg border border-blue-600 p-3'
+          className='w-full rounded-lg border border-grey-200 px-3 py-2 text-xl font-light text-grey-950 focus:outline-none focus:ring-1 focus:ring-blue-500'
           placeholder='Введите название отеля'
           value={name}
           onChange={(e) => setName(e.target.value)}
           name='nameHotel'
         />
       </div>
-      <Accordeon title='Общие'>
-        <div className='flex flex-col gap-4 p-5'>
-          <div className='w-full'>
+      <div className='flex flex-col gap-[18px]'>
+        <div className='flex gap-5'>
+          <div className='flex w-full flex-col gap-1'>
             <Typography variant='l-bold'>Тип отдыха</Typography>
             <Select
               options={typeOfHoliday}
               color='blue'
-              size='small'
-              className='w-full'
+              size='hotelAdd'
+              className='w-full text-xl text-blue-950'
               id='select-type-of-holiday'
               getValue={setTypeOfRest}
             />
           </div>
-          <div className='w-full'>
+          <div className='flex w-full flex-col gap-1'>
             <Typography variant='l-bold'>Тип размещения</Typography>
             <Select
               options={accommodationType}
               color='blue'
-              size='small'
-              className='w-full'
+              size='hotelAdd'
+              className='w-full text-xl text-blue-950'
               id='select-type-of-placements'
               getValue={setPlace}
             />
           </div>
-          <div className='w-full'>
+        </div>
+        {(!place || place === 'Отель') && (
+          <div className='flex w-full flex-col gap-1'>
             <Typography variant='l-bold'>Категория</Typography>
             <Rating
               category={starCategory}
-              setRating={(index) => setStarCategory(index + 1)}
+              starSize={36}
+              gap={0}
+              setRating={(index) => setStarCategory(index)}
             />
           </div>
-          <div className='flex w-full flex-col gap-3'>
-            <Typography variant='l-bold'>Описание</Typography>
-            <textarea
-              className='w-full resize-none rounded-md border border-blue-600 px-4 py-2'
-              placeholder='Введите описание отеля'
-              value={description}
-              onChange={(e) => setDscription(e.target.value)}
-              name='description'
-            />
-          </div>
-          <PhotosHotel />
-        </div>
-      </Accordeon>
-      <Accordeon title='Локация'>
-        <div className='flex flex-col gap-2 p-5'>
+        )}
+      </div>
+      <div className='flex flex-col gap-[18px]'>
+        <div className='grid grid-cols-2 gap-x-5 gap-y-[18px]'>
           <NamedInput
+            gap='gap-0'
+            paddings='py-2 px-3 text-xl'
             placeholder='Введите страну'
             name='country'
             getValue={(val) => setCountry(val as string)}
@@ -228,6 +239,17 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
             startValue={country}
           />
           <NamedInput
+            gap='gap-0'
+            paddings='py-2 px-3 text-xl'
+            placeholder='Введите район'
+            name='address'
+            getValue={(val) => setDistrict(val as string)}
+            title='Район (если есть)'
+            startValue={district}
+          />
+          <NamedInput
+            gap='gap-0'
+            paddings='py-2 px-3 text-xl'
             placeholder='Введите город'
             name='city'
             getValue={(val) => setCity(val as string)}
@@ -235,79 +257,71 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
             startValue={city}
           />
           <NamedInput
+            gap='gap-0'
+            paddings='py-2 px-3 text-xl'
             placeholder='Введите адрес'
             name='address'
-            getValue={(val) => setAddress(val as string)}
-            title='Адрес'
-            startValue={address}
+            getValue={(val) => setStreet(val as string)}
+            title='Улица, дом'
+            startValue={street}
           />
-          <div className='flex flex-col gap-[10px] md:flex-row md:gap-[20px]'>
-            <NamedInput
-              placeholder='Введите широту'
-              name='latitude'
-              getValue={(val) => setLatitude(val as string)}
-              title='Широта'
-              startValue={latitude}
+          <NamedInput
+            gap='gap-0'
+            paddings='py-2 px-3 text-xl'
+            placeholder='Введите широту'
+            name='latitude'
+            getValue={(val) => setLatitude(val as string)}
+            title='Широта'
+            startValue={latitude}
+          />
+          <NamedInput
+            gap='gap-0'
+            paddings='py-2 px-3 text-xl'
+            placeholder='Введите долготу'
+            name='longitude'
+            getValue={(val) => setLongitude(val as string)}
+            title='Долгота'
+            startValue={longitude}
+          />
+        </div>
+        <div className='flex flex-col gap-4'>
+          <Typography variant='l-bold'>Расстояниe от</Typography>
+          <div className='flex w-full justify-between'>
+            <DistanceBlock
+              label='Аэропорт'
+              value={distanceToTheAirport}
+              onChange={setDstanceToTheAirport}
             />
-            <NamedInput
-              placeholder='Введите долготу'
-              name='longitude'
-              getValue={(val) => setLongitude(val as string)}
-              title='Долгота'
-              startValue={longitude}
+            <DistanceBlock
+              label='Пляж'
+              value={distanceToTheSea}
+              onChange={setDstanceToTheSea}
             />
-          </div>
-          <div className='flex flex-col'>
-            <Typography variant='l-bold'>
-              Расстояния от отеля до основных точек
-            </Typography>
-            <div className='flex gap-2'>
-              <NamedInput
-                placeholder='расстояние в метрах'
-                name='address'
-                getValue={(val) => setDstanceToTheSea(val as number)}
-                title='Моря'
-                type='number'
-                startValue={0}
-              />
-              <NamedInput
-                placeholder='расстояние в метрах'
-                name='address'
-                getValue={(val) => setDstanceToTheCenter(val as number)}
-                title='Центра'
-                type='number'
-                startValue={0}
-              />
-              <NamedInput
-                placeholder='расстояние в метрах'
-                name='address'
-                getValue={(val) => setDstanceToTheStation(val as number)}
-                title='Вокзала'
-                type='number'
-                startValue={0}
-              />
-              <NamedInput
-                placeholder='расстояние в метрах'
-                name='address'
-                getValue={(val) => setDstanceToTheAirport(val as number)}
-                title='Аэропорта'
-                type='number'
-                startValue={0}
-              />
-              <NamedInput
-                placeholder='расстояние в метрах'
-                name='address'
-                getValue={(val) => setDstanceToTheMetro(val as number)}
-                title='Метро'
-                type='number'
-                startValue={0}
-              />
-            </div>
+            <DistanceBlock
+              label='Центр'
+              value={distanceToTheCenter}
+              onChange={setDstanceToTheCenter}
+            />
+            <DistanceBlock
+              label='Ж/д станция'
+              value={distanceToTheStation}
+              onChange={setDstanceToTheStation}
+            />
           </div>
         </div>
-      </Accordeon>
+      </div>
+      <div className='mb-[10px] flex w-full flex-col'>
+        <Typography variant='l-bold'>Описание</Typography>
+        <textarea
+          className='min-h-[110px] w-full resize-none rounded-md border border-blue-600 px-3 py-2 text-xl font-light text-grey-950 outline-none focus:outline-none focus:ring-1 focus:ring-blue-500'
+          placeholder='Введите описание отеля'
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          name='description'
+        />
+      </div>
       {/* <Accordeon title='Питание'>
-        <div className='flex gap-2 p-5'>
+        <div className='flex gap-2'>
           <NamedInput
             placeholder='цена за одного гостя'
             name='address'
@@ -340,36 +354,17 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
           />
         </div>
       </Accordeon> */}
-      <Accordeon title='Регламент'>
-        <div className='flex flex-col gap-2 p-5'>
-          <div className='flex gap-2'>
-            <NamedInput
-              name='checkIn'
-              getValue={(val) => setCheckInTime(val as string)}
-              title='Заселение'
-              type='time'
-              startValue={checkInTime}
-            />
-            <NamedInput
-              name='departure'
-              getValue={(val) => setCheckOutTime(val as string)}
-              title='Выезд'
-              type='time'
-              startValue={checkOutTime}
-            />
-          </div>
-          <RulesAdd getRules={setRules} oldRules={data?.rules} />
-        </div>
-      </Accordeon>
-      <Accordeon title='Дополнительно'>
-        <div className='flex w-full flex-col gap-3 p-5'>
-          <Typography variant='l-bold'>Удобства</Typography>
+      <div className='mb-3'>
+        <Typography variant='h4' className='mb-4'>
+          Удобства
+        </Typography>
+        <div className='flex w-full flex-col gap-5'>
           <AmenitiesChangeBlock
             checkboxes={amenitiesCommon}
             getNewList={setAmenitiesCommon}
           />
           <CheckBoxBlock
-            title='Удобвства а номерах'
+            title='Общие'
             checkboxes={amenitiesInTheRoom}
             getNewList={setAmenitiesInTheRoom}
           />
@@ -377,7 +372,6 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
             title='Спорт и оттдых'
             checkboxes={amenitiesSportsAndRecreation}
             getNewList={setAmenitiesSportsAndRecreation}
-            className='bg-blue-50'
           />
           <CheckBoxBlock
             title='Для детей'
@@ -385,12 +379,65 @@ export function AddedHotelField({ hotelId }: IAddedHotelField) {
             getNewList={setAmenitiesForChildren}
           />
         </div>
-      </Accordeon>
-      <div className={`mt-10 flex justify-end gap-4`}>
-        <ButtonCustom variant='secondary' size='m' onClick={handleCancel}>
+      </div>
+      <div className='flex flex-col'>
+        <Typography variant='h4' className='mb-3'>
+          Правила
+        </Typography>
+        <div className='mb-5 flex gap-5'>
+          <NamedInput
+            gap='gap-0'
+            className='max-w-[180px]'
+            paddings='py-2 px-3 text-xl'
+            placeholder='14:00'
+            name='checkIn'
+            getValue={(val) => setCheckInTime(val as string)}
+            title='Заселение'
+            type='time'
+            startValue={checkInTime}
+          />
+          <NamedInput
+            gap='gap-0'
+            className='max-w-[180px]'
+            paddings='py-2 px-3 text-xl'
+            placeholder='12:00'
+            name='checkOut'
+            getValue={(val) => setCheckOutTime(val as string)}
+            title='Выезд'
+            type='time'
+            startValue={checkOutTime}
+          />
+          <Checkbox
+            className='mb-3 self-end'
+            variant='white'
+            label='Доступно раннее заселение'
+            // checked={isEarlyCheckIn}
+            // onChange={setIsEarlyCheckIn}
+          />
+        </div>
+        <RulesAdd getRules={setRules} oldRules={data?.rules} />
+      </div>
+      <div>
+        <Typography variant='h4' className='mb-[14px]'>
+          Фотографии
+        </Typography>
+        <PhotosHotel />
+      </div>
+      <div className={`mb-10 mt-3 flex justify-end gap-5`}>
+        <ButtonCustom
+          variant='secondary'
+          size='l'
+          onClick={handleCancel}
+          className='min-w-[180px]'
+        >
           <Typography variant='l-bold'>Отменить</Typography>
         </ButtonCustom>
-        <ButtonCustom variant='primary' size='m' onClick={handleSaved}>
+        <ButtonCustom
+          variant='primary'
+          size='l'
+          onClick={handleSaved}
+          className='min-w-[180px]'
+        >
           <Typography variant='l-bold'>Сохранить</Typography>
         </ButtonCustom>
       </div>
