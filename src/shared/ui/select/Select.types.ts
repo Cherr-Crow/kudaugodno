@@ -14,7 +14,9 @@ export interface ISelect {
     | 'mobile'
     | 'meals'
     | 'settings'
-    | 'catalog';
+    | 'catalog'
+    | 'hotelAdd'
+    | 'distance';
   id?: string;
   startValue?: string;
   onSelect?: (value: string) => void;

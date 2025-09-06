@@ -116,7 +116,7 @@ export function TourCatalogCard({ tour }: ITourCatalogCard) {
             variant='s'
             className='flex h-[14px] text-[10px] text-grey-700 md:text-[16px]'
           >
-            {hotel.distance_to_the_metro !== null
+            {hotel.distance_to_the_metro
               ? `${(hotel.distance_to_the_metro / 1000).toFixed(1)} км от метро`
               : ''}
           </Typography>
