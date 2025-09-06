@@ -17,12 +17,14 @@ export function PhotosHotel({}: IPhotosHotel) {
   const [addPhoto] = useAddPhotoHotelMutation();
   const [delPhoto] = useDelPhotoHotelMutation();
 
-  const handleAddPhoto = async (fileList: FileList) => {
-    if (!hotelId) return;
+  const handleAddPhoto = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!hotelId || !e.target.files?.length) return;
     const formData = new FormData();
-    formData.append('photo', fileList[0]);
+    formData.append('photo', e.target.files[0]);
     try {
       await addPhoto({ body: formData, id: +hotelId }).unwrap();
+      console.log('Фото добавлено!');
+      if (e.target) e.target.value = ''; // сбросить input
     } catch (error) {
       console.error('Ошибка при добавлении фото:', error);
     }
@@ -33,11 +35,19 @@ export function PhotosHotel({}: IPhotosHotel) {
     await delPhoto({ hotel_id: +hotelId, photo_id: id });
   };
 
-  if (!data) return null;
+  if (data && data.length > 0) {
+    return (
+      <PhotoBlock
+        photos={data}
+        additionPhoto={handleAddPhoto}
+        deletePhoto={handleDelPhoto}
+      />
+    );
+  }
 
   return (
     <PhotoBlock
-      photos={data.results}
+      photos={[]}
       additionPhoto={handleAddPhoto}
       deletePhoto={handleDelPhoto}
     />

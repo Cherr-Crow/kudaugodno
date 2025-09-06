@@ -10,4 +10,7 @@ export interface INamedInput extends DivProps {
   disabled?: boolean;
   value?: string;
   maskDate?: boolean;
+  gap?: string;
+  paddings?: string;
+  border?: string;
 }

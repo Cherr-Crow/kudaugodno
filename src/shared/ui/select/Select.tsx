@@ -34,13 +34,15 @@ export function Select({
   }
 
   enum Size {
-    'default' = 'rounded-full py-0 px-0',
-    'small' = 'rounded-md py-2 px-4',
-    'medium' = 'rounded-full p-4',
-    'mobile' = 'rounded-[20px] w-20 h-[30px] px-5 md:w-[52px] md:px-3 lg:w-[83px] lg:p-5',
-    'meals' = 'rounded-[20px] w-[180px] h-[30px] px-5 md:w-[164px] md:px-3 lg:w-[180px] lg:p-5',
-    'settings' = 'rounded-[20px] px-4 py-2 flex gap-0',
-    'catalog' = 'rounded-[8px] max-w-[174px] px-3 py-[11.5px] !gap-2 md:max-w-[192px] lg:px-5 lg:py-[9px] lg:max-w-[226px]',
+    'default' = ' gap-6 rounded-full py-0 px-0',
+    'small' = ' gap-6 rounded-md py-2 px-4',
+    'medium' = ' gap-6 rounded-full p-4',
+    'mobile' = ' gap-6 rounded-[20px] w-20 h-[30px] px-5 md:w-[52px] md:px-3 lg:w-[83px] lg:p-5',
+    'meals' = ' gap-6 rounded-[20px] w-[180px] h-[30px] px-5 md:w-[164px] md:px-3 lg:w-[180px] lg:p-5',
+    'settings' = ' gap-6 rounded-[20px] px-4 py-2 flex gap-0',
+    'catalog' = ' gap-6 rounded-[8px] max-w-[174px] px-3 py-[11.5px] !gap-2 md:max-w-[192px] lg:px-5 lg:py-[9px] lg:max-w-[226px]',
+    'hotelAdd' = ' gap-6 rounded-md py-2 px-5 h-10',
+    'distance' = ' gap-2 rounded-md py-[10px] px-5',
   }
 
   useEffect(() => {
@@ -87,7 +89,7 @@ export function Select({
       ref={dropdownRef}
     >
       <div
-        className={`flex items-center justify-between gap-6 ${Size[size]} ${color ? Background[color] : 'bg-transparent'}`}
+        className={`flex items-center justify-between ${Size[size]} ${color ? Background[color] : 'bg-transparent'}`}
         onClick={disabled ? undefined : handleToggle}
       >
         <input
@@ -101,7 +103,7 @@ export function Select({
         {!disabled && (
           <SvgSprite
             name={Icon}
-            width={size === 'settings' ? 32 : 20}
+            width={size === 'settings' || 'distance' ? 32 : 24}
             strokeWidth={size === 'settings' || 'catalog' ? 2 : 1}
             className={`cursor-pointer ${arrowClass} ${Icon != 'arrow' ? '' : isOpen ? '-rotate-90' : 'rotate-90'} ${
               screen?.width < 1280 && arrowHidden && 'hidden'

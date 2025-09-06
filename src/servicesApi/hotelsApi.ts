@@ -54,7 +54,10 @@ export const hotelsApi = createApi({
       query: (id) => `hotels/${id ?? ''}`,
       providesTags: [{ type: 'Hotels', id: 'LIST' }],
     }),
-    addHotel: build.mutation<{ id: number; name: string }, { name: string }>({
+    addHotel: build.mutation<
+      { id: number; name: string; city: string; country: string },
+      { name: string; city: string; country: string }
+    >({
       query: (body) => ({
         url: 'hotels/',
         method: 'POST',
@@ -92,15 +95,12 @@ export const hotelsApi = createApi({
       invalidatesTags: [{ type: 'Hotels', id: 'LIST' }],
     }),
 
-    getPhotosHotel: build.query<{ results: PhotoHotel[] }, number>({
+    getPhotosHotel: build.query<PhotoHotel[], number>({
       query: (id) => `hotels/${id}/photos/`,
       providesTags: (result) =>
         result
           ? [
-              ...result.results.map(({ id }: { id: number }) => ({
-                type: 'PhotosHotel' as const,
-                id,
-              })),
+              ...result.map(({ id }) => ({ type: 'PhotosHotel' as const, id })),
               { type: 'PhotosHotel', id: 'LIST' },
             ]
           : [{ type: 'PhotosHotel', id: 'LIST' }],

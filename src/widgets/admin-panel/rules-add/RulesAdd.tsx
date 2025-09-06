@@ -6,10 +6,7 @@ import { nanoid } from 'nanoid';
 import { useSearchParams } from 'next/navigation';
 
 import { useGetOneHotelQuery } from '@/servicesApi/hotelsApi';
-import { Modal } from '@/shared/modal';
-import { AddedButton } from '@/shared/ui/added-button';
 import { ButtonCustom } from '@/shared/ui/button-custom';
-import { NamedInput } from '@/shared/ui/named-input';
 import { RuleAdd } from '@/shared/ui/rule-add';
 import { Rule } from '@/shared/ui/rule-add/RuleAdd.types';
 import { Typography } from '@/shared/ui/typography';
@@ -26,25 +23,21 @@ const typeRules = [
 
 export function RulesAdd({ className, getRules, oldRules }: IRulesAdd) {
   const id = useSearchParams().get('id');
+  const [ruleName, setRuleName] = useState('');
+  const [ruleDescription, setRuleDescription] = useState('');
   const { data } = useGetOneHotelQuery(id ? +id : 0);
   const [rules, setRules] = useState(oldRules || typeRules);
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  let name: string = '';
-  let description: string = '';
-  let newRules = rules;
 
   const handleChangeCheckbox = (obj: Rule) => {
     if (!obj.checked) {
-      const _rules = newRules?.filter((rule) => rule.name !== obj.name);
+      const _rules = rules.filter((rule) => rule.name !== obj.name);
       setRules(_rules);
-      newRules = _rules;
       return;
     }
-    newRules = newRules?.map((rule) => {
-      return rule.name === obj.name
-        ? { ...rule, description: obj.description }
-        : rule;
-    });
+    const _rules = rules.map((rule) =>
+      rule.name === obj.name ? { ...rule, description: obj.description } : rule,
+    );
+    setRules(_rules);
   };
 
   useEffect(() => {
@@ -53,52 +46,53 @@ export function RulesAdd({ className, getRules, oldRules }: IRulesAdd) {
   }, [data]);
 
   useEffect(() => {
-    getRules(newRules || []);
-  }, [newRules]);
-
-  const handleOpenModal = () => {
-    setIsOpenModal(true);
-  };
+    getRules(rules || []);
+  }, [rules]);
 
   const handleAddRule = () => {
     if (!rules) return;
-    const _rules = [...rules, { name, description }];
+    const _rules = [...rules, { name: ruleName, description: ruleDescription }];
     setRules(_rules);
-    setIsOpenModal(false);
+    setRuleName('');
+    setRuleDescription('');
   };
 
   return (
-    <div className={`flex flex-col gap-3 overflow-scroll pb-10 ${className ?? ''}`}>
-      <Typography variant='l-bold'>Правила</Typography>
-      <ul className='flex flex-col gap-2'>
+    <div className={`flex flex-col gap-3 pb-[10px] ${className ?? ''}`}>
+      <ul className='mb-2 flex flex-col gap-5'>
         {rules?.map((rule) => (
           <li className='' key={nanoid()}>
             <RuleAdd rule={rule} getValue={handleChangeCheckbox} />
           </li>
         ))}
       </ul>
-      <AddedButton text='Добавить правило' onClick={handleOpenModal} />
-      <Modal isOpen={isOpenModal} getState={setIsOpenModal}>
-        <div className='min-w-80'>
-          <NamedInput
-            name='addRule'
-            getValue={(val) => (name = val as string)}
-            title='Название правила'
-            placeholder='Введите название правила'
-            className='mb-5 w-96'
-          />
-          <NamedInput
-            name='addRule'
-            getValue={(val) => (description = val as string)}
-            title='Описание правила'
-            placeholder='Введите описание правила'
-            className='mb-5 w-96'
-          />
-          <ButtonCustom variant='primary' size='m' onClick={handleAddRule}>
-            <Typography>Добавить</Typography>
-          </ButtonCustom>
-        </div>
-      </Modal>
+      <div className='min-w-80 rounded-2xl bg-grey-50 p-5'>
+        <input
+          type='text'
+          name='addRule'
+          className='mb-5 w-full rounded-md border border-grey-700 px-3 py-2 text-lg font-light focus:outline-none focus:ring-1 focus:ring-blue-500'
+          placeholder='Название правила'
+          value={ruleName}
+          onChange={(e) => setRuleName(e.target.value)}
+        />
+        <textarea
+          className='mb-[10px] h-[164px] w-full resize-none rounded-md border border-grey-700 px-3 py-2 text-lg font-light outline-none focus:border-blue-600'
+          placeholder='Введите описание правила'
+          name='addRule'
+          value={ruleDescription}
+          onChange={(e) => setRuleDescription(e.target.value)}
+          title='Описание правила'
+        />
+        <ButtonCustom
+          variant='secondary'
+          size='s'
+          className='min-w-[212px] bg-white'
+          onClick={handleAddRule}
+          disabled={!ruleName.trim() || !ruleDescription.trim()}
+        >
+          <Typography>Добавить правило</Typography>
+        </ButtonCustom>
+      </div>
     </div>
   );
 }

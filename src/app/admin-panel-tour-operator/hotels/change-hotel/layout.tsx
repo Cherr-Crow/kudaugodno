@@ -17,18 +17,16 @@ export default function AddHotelLayout({
   useEffect(() => {
     if (path.includes('food')) {
       setSubtitle('Питание');
-    } else if (path.includes('rooms')) {
-      setSubtitle('Номера');
-    } else if (path.includes('dates')) {
-      setSubtitle('Даты тура');
     } else {
-      setSubtitle('Отель');
+      setSubtitle('Общая информация');
     }
   }, [path]);
 
   return (
     <section className='w-full'>
-      <Typography variant='h4'>{subtitle}</Typography>
+      <Typography variant='h4' className='mb-[14px] text-blue-950'>
+        {subtitle}
+      </Typography>
       {children}
     </section>
   );
