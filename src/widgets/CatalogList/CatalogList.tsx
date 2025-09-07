@@ -42,11 +42,10 @@ export interface ICatalog {
     guests: string;
   };
   tab: 'Отели' | 'Туры';
-  filtersAppliedClicked: boolean;
 }
 
 interface HotelCardProps extends ICatalog {
-  data: IHotelMiniData[] | ITour[];
+  data?: IHotelMiniData[] | ITour[];
 }
 
 export function CatalogList({
@@ -54,8 +53,6 @@ export function CatalogList({
   searchProps,
   tab,
   handleToggleFilters,
-  data,
-  filtersAppliedClicked,
 }: HotelCardProps) {
   {
     /* Карта*/
@@ -78,6 +75,28 @@ export function CatalogList({
     'Сначала дешевле',
     'Сначала дороже',
   ];
+
+  const getPrice = (item: ITour | IHotelMiniData): number => {
+    if ('tour_operator' in item) {
+      return Number(item.total_price) || 0;
+    }
+
+    return (
+      Number(item.min_price_with_discount || item.min_price_without_discount) || 0
+    );
+  };
+
+  function useGetCatalogQuery(
+    tab: 'Отели' | 'Туры',
+    params?: IHotelsParamsQuery | IToursParamsQuery,
+  ) {
+    const safeParams = params ?? {};
+
+    const hotels = useGetHotelsQuery(safeParams, { skip: tab !== 'Отели' });
+    const tours = useGetToursQuery(safeParams, { skip: tab !== 'Туры' });
+
+    return tab === 'Отели' ? hotels : tours;
+  }
 
   const mapFiltersToQuery = (
     appliedFilters: ICatalog['appliedFilters'],
@@ -170,55 +189,14 @@ export function CatalogList({
 
   const queryParams = mapFiltersToQuery(appliedFilters, searchProps, tab);
 
-  const { data: hotelsData } = useGetHotelsQuery(queryParams, {
-    skip: tab !== 'Отели',
-  });
+  const { data: catalogData, isLoading } = useGetCatalogQuery(tab, queryParams);
 
-  const { data: toursData } = useGetToursQuery(queryParams, {
-    skip: tab !== 'Туры',
-  });
-
-  const filteredResponse = tab === 'Туры' ? toursData : hotelsData;
-
-  const [displayedData, setDisplayedData] =
-    useState<(IHotelMiniData | ITour)[]>(data);
-
-  useEffect(() => {
-    let items = [];
-
-    if (filtersAppliedClicked && filteredResponse?.results) {
-      items = filteredResponse.results;
-    } else {
-      items = data;
-    }
-
-    // убираем дубликаты по id
-    const unique = Array.from(
-      new Map(
-        items.map((item) => [
-          'id' in item ? item.id : (item as ITour)?.hotel?.id,
-          item,
-        ]),
-      ).values(),
-    );
-
-    setDisplayedData(unique);
-  }, [filteredResponse, tab, filtersAppliedClicked, data]);
+  const filteredResponse = catalogData?.results ?? [];
 
   const [selectedSort, setSelectedSort] = useState<SortOption>('По популярности');
 
-  const getPrice = (item: ITour | IHotelMiniData): number => {
-    if ('tour_operator' in item) {
-      return Number(item.total_price) || 0;
-    }
-
-    return (
-      Number(item.min_price_with_discount || item.min_price_without_discount) || 0
-    );
-  };
-
   const sortedData = useMemo(() => {
-    return [...displayedData].sort((a, b) => {
+    return [...filteredResponse].sort((a, b) => {
       // Для рейтинга
       if (selectedSort === 'По рейтингу') {
         const ratingA = 'tour_operator' in a ? a.hotel.user_rating : a.user_rating;
@@ -236,7 +214,7 @@ export function CatalogList({
       // По умолчанию (по популярности)
       return 0;
     });
-  }, [displayedData, selectedSort]);
+  }, [filteredResponse, selectedSort]);
 
   const handleSortSelect = (option: string) => {
     setSelectedSort(option as SortOption);
@@ -261,36 +239,6 @@ export function CatalogList({
   const handleLoadMore = () => {
     setLoadCount((prev) => prev + 10);
   };
-
-  // const handleRouting = ({
-  //   tourId,
-  //   hotelId,
-  //   hotelName,
-  //   hotelCountry,
-  //   tab,
-  // }: {
-  //   hotelId?: number | null;
-  //   tourId?: number | null;
-  //   hotelName: string;
-  //   hotelCountry: string;
-  //   tab: string;
-  // }) => {
-  //   const encodedName = encodeURIComponent(hotelName);
-  //   const encodedHotelId = hotelId ? encodeURIComponent(hotelId) : null;
-  //   const encodedTourId = tourId ? encodeURIComponent(tourId) : null;
-  //   const encodedCountry = encodeURIComponent(hotelCountry);
-  //   const encodedType = encodeURIComponent(tab);
-
-  //   if (tab === 'Туры' && encodedTourId) {
-  //     router.push(
-  //       `/tour-page?type=${encodedType}&tourId=${encodedTourId}&arrivalCountry=${encodedCountry}`,
-  //     );
-  //   } else {
-  //     router.push(
-  //       `/hotel-page?type=${encodedType}&hotelId=${encodedHotelId}&hotelName=${encodedName}&arrivalCountry=${encodedCountry}`,
-  //     );
-  //   }
-  // };
 
   if (!isClient) {
     return null;
@@ -361,7 +309,11 @@ export function CatalogList({
         <HotelComponentMap />
       ) : (
         <div className='hotels-list mb-5 flex flex-col gap-3 md:gap-4 lg:mb-8 lg:gap-5'>
-          {sortedData.length > 0 ? (
+          {isLoading ? (
+            <div className='flex w-auto items-center justify-center'>
+              <Typography variant='h4'>Загрузка...</Typography>
+            </div>
+          ) : sortedData.length > 0 ? (
             <>
               {sortedData.slice(0, loadCount).map((item, index) => {
                 const isTour = 'tour_operator' in item;

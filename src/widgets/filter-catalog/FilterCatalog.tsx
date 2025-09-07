@@ -22,7 +22,8 @@ import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
 import { getDateNow } from '@/shared/utils/getDateNow';
 import { useSearchBlockState } from '@/shared/utils/useSearchBlockState';
-import CatalogData from '@/widgets/catalog-data/CatalogData';
+
+import { CatalogList } from '../CatalogList/CatalogList';
 
 export function FilterCatalog() {
   {
@@ -69,7 +70,6 @@ export function FilterCatalog() {
   const [amenities, setAmenities] = useState<string[]>([]);
   const [airportDistance, setAirportDistance] = useState<string>('Любое');
   const [tourOperators, setTourOperators] = useState<string[]>([]);
-  const [filtersAppliedClicked, setFiltersAppliedClicked] = useState<boolean>(false);
   const [resetInputTrigger, setResetInputTrigger] = useState(0);
 
   const [appliedFilters, setAppliedFilters] = useState({
@@ -374,7 +374,6 @@ export function FilterCatalog() {
                 className='hover:underline'
                 onClick={() => {
                   handleFiltersReset();
-                  setFiltersAppliedClicked(false);
                 }}
               >
                 Сбросить все
@@ -388,7 +387,6 @@ export function FilterCatalog() {
                 className='w-full font-medium'
                 onClick={() => {
                   handleApplyFilters();
-                  setFiltersAppliedClicked(true);
                 }}
                 variant={'primary'}
                 size={'s'}
@@ -432,12 +430,11 @@ export function FilterCatalog() {
           </button>
         </div>
 
-        <CatalogData
-          appliedFilters={appliedFilters}
+        <CatalogList
           handleToggleFilters={handleToggleFilters}
-          searchProps={searchProps}
+          appliedFilters={appliedFilters}
           tab={tab}
-          filtersAppliedClicked={filtersAppliedClicked}
+          searchProps={searchProps}
         />
       </div>
     </div>
