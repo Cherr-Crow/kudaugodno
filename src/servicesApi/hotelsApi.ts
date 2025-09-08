@@ -12,39 +12,40 @@ export const hotelsApi = createApi({
   tagTypes: ['Hotels', 'PhotosHotel', 'RoomsHotel', 'PhotosRoom'],
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (build) => ({
-getHotels: build.query<IResponceListHotels, IHotelsParamsQuery>({
-  query: (params) => {
-    const queryParams = Object.entries(params ?? {})
-      .filter(([, value]) => 
-        value !== undefined &&
-        value !== null &&
-        value !== '' &&
-        !(typeof value === 'number' && isNaN(value))
-      )
-      .flatMap(([key, value]) => {
-        if (Array.isArray(value)) {
-          return value.map(
-            (v) => `${encodeURIComponent(key)}=${encodeURIComponent(String(v))}`
-          );
-        }
-        return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
-      });
+    getHotels: build.query<IResponceListHotels, IHotelsParamsQuery>({
+      query: (params) => {
+        const queryParams = Object.entries(params ?? {})
+          .filter(
+            ([, value]) =>
+              value !== undefined &&
+              value !== null &&
+              value !== '' &&
+              !(typeof value === 'number' && isNaN(value)),
+          )
+          .flatMap(([key, value]) => {
+            if (Array.isArray(value)) {
+              return value.map(
+                (v) => `${encodeURIComponent(key)}=${encodeURIComponent(String(v))}`,
+              );
+            }
+            return `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`;
+          });
 
-    const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
+        const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
 
-    return `hotels${queryString}`;
-  },
-  providesTags: (result) =>
-    result
-      ? [
-          ...result.results.map(({ id }: { id: number }) => ({
-            type: 'Hotels' as const,
-            id,
-          })),
-          { type: 'Hotels', id: 'LIST' },
-        ]
-      : [{ type: 'Hotels', id: 'LIST' }],
-}),
+        return `hotels${queryString}`;
+      },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.results.map(({ id }: { id: number }) => ({
+                type: 'Hotels' as const,
+                id,
+              })),
+              { type: 'Hotels', id: 'LIST' },
+            ]
+          : [{ type: 'Hotels', id: 'LIST' }],
+    }),
 
     getOneHotel: build.query<IHotel, number | null>({
       query: (id) => `hotels/${id ?? ''}`,

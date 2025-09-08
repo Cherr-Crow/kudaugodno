@@ -11,6 +11,7 @@ import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
 import { calculateNights } from '@/shared/utils/calculateNights';
 import { formatNumberToPriceInRub } from '@/shared/utils/formatNumberToPriceInRub';
+import { getNearestDistances } from '@/shared/utils/getNearestDistance';
 
 import { ITourCatalogCard } from './TourCatalogCard.types';
 
@@ -18,7 +19,7 @@ export function TourCatalogCard({ tour }: ITourCatalogCard) {
   const router = useRouter();
   const hotel = tour.hotel;
   const hotelFullData = useGetOneHotelQuery(hotel.id).data;
-
+  const distances = getNearestDistances(tour);
   const handleRouting = ({
     tourId,
     hotelCountry,
@@ -103,22 +104,12 @@ export function TourCatalogCard({ tour }: ITourCatalogCard) {
         </div>
 
         {/* Расстояния от отеля*/}
-        <div className='relative mb-[12px] flex flex-col flex-wrap gap-0 md:-mt-1 md:mb-[23px] md:gap-2 lg:mb-[23px] lg:gap-2'>
-          <Typography
-            variant='s'
-            className='flex h-[14px] text-[10px] text-grey-700 md:text-[16px]'
-          >
-            {hotel.distance_to_the_center !== null
-              ? `${(hotel.distance_to_the_center / 1000).toFixed(1)} км от центра`
-              : ''}
+        <div>
+          <Typography className='flex flex-col text-grey-600'>
+            {distances.firstDistance}
           </Typography>
-          <Typography
-            variant='s'
-            className='flex h-[14px] text-[10px] text-grey-700 md:text-[16px]'
-          >
-            {hotel.distance_to_the_metro
-              ? `${(hotel.distance_to_the_metro / 1000).toFixed(1)} км от метро`
-              : ''}
+          <Typography className='flex flex-col text-grey-600'>
+            {distances.secondDistance}
           </Typography>
         </div>
 
