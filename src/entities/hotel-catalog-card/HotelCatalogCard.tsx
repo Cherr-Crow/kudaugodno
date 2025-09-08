@@ -11,6 +11,7 @@ import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
 import { calculateNights } from '@/shared/utils/calculateNights';
 import { formatNumberToPriceInRub } from '@/shared/utils/formatNumberToPriceInRub';
+import { getNearestDistances } from '@/shared/utils/getNearestDistance';
 
 import { IHotelCatalogCard } from './HotelCatalogCard.types';
 
@@ -41,7 +42,7 @@ export function HotelCatalogCard({ hotel }: IHotelCatalogCard) {
       );
     }
   };
-
+  const distances = getNearestDistances(hotel); // получаем дистанцию
   return (
     <li className='hotel-card relative flex flex-col justify-between rounded-3xl bg-white text-blue-950 shadow-xl md:h-[246px] md:flex-row lg:h-[260px]'>
       {/* Фото */}
@@ -100,28 +101,16 @@ export function HotelCatalogCard({ hotel }: IHotelCatalogCard) {
           <Typography variant='s' className='flex text-xs md:text-[16px]'>
             {hotel.city}
           </Typography>
+          {/* Расстояния от отеля*/}
+          <div>
+            <Typography className='flex flex-col text-grey-600'>
+              {distances.firstDistance}
+            </Typography>
+            <Typography className='flex flex-col text-grey-600'>
+              {distances.secondDistance}
+            </Typography>
+          </div>
         </div>
-
-        {/* Расстояния от отеля*/}
-        <div className='relative mb-[12px] flex flex-col flex-wrap gap-0 md:-mt-1 md:mb-[21px] md:gap-1 lg:mb-[23px] lg:gap-2'>
-          <Typography
-            variant='s'
-            className='flex h-[14px] text-[10px] text-grey-700 md:text-[16px]'
-          >
-            {hotel.distance_to_the_center !== null
-              ? `${(hotel.distance_to_the_center / 1000).toFixed(1)} км от центра`
-              : ''}
-          </Typography>
-          <Typography
-            variant='s'
-            className='flex h-[14px] text-[10px] text-grey-700 md:text-[16px]'
-          >
-            {hotel.distance_to_the_metro !== null
-              ? `${(hotel.distance_to_the_metro / 1000).toFixed(1)} км от метро`
-              : ''}
-          </Typography>
-        </div>
-
         {/* Удобства */}
         <div className='hotel-amenities mb-[12px] flex gap-2 md:mb-[16px] md:flex-nowrap lg:mb-[16px]'>
           {hotel.amenities_common.slice(0, 3).map((amenity, amenityIndex) => (

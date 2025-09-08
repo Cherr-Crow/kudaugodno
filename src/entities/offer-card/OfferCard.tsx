@@ -9,15 +9,17 @@ import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
 import { calculateNights } from '@/shared/utils/calculateNights';
 import { formatDateRange } from '@/shared/utils/formatDateRange';
-import { formatDistance } from '@/shared/utils/formatDistance';
 import { formatNumberToPriceInRub } from '@/shared/utils/formatNumberToPriceInRub';
+import { getNearestDistances } from '@/shared/utils/getNearestDistance';
 import { getOfferUrl } from '@/shared/utils/getOfferUrl';
 import { IHotelMiniData } from '@/types/hotel';
 import { ITourMiniData } from '@/types/tour';
 
 import { IOfferCard } from './OfferCard.types';
 
-function isHotel(offer: IHotelMiniData | ITourMiniData): offer is IHotelMiniData {
+export function isHotel(
+  offer: IHotelMiniData | ITourMiniData,
+): offer is IHotelMiniData {
   return (offer as IHotelMiniData).distance_to_the_center !== undefined;
 }
 
@@ -27,7 +29,6 @@ function isTour(offer: IHotelMiniData | ITourMiniData): offer is ITourMiniData {
 
 export function OfferCard({ offer }: IOfferCard) {
   const stars = Array.from({ length: offer.star_category }, (_, index) => index + 1);
-
   const tourBadges = isTour(offer)
     ? [`${formatDateRange(offer.start_date, offer.end_date)}`, '2 взрослых']
     : [];
@@ -50,7 +51,7 @@ export function OfferCard({ offer }: IOfferCard) {
   const hasDiscount = originalPrice > currentPrice && currentPrice > 0;
   const displayPrice = formatNumberToPriceInRub(currentPrice);
   const displayOriginalPrice = formatNumberToPriceInRub(originalPrice);
-
+  const distances = getNearestDistances(offer); // получаем дистанцию
   return (
     <article className='relative flex h-full flex-col overflow-hidden rounded-[20px] bg-white shadow-lg md:max-h-[478px] lg:max-h-[510px]'>
       <div
@@ -108,14 +109,8 @@ export function OfferCard({ offer }: IOfferCard) {
           </Typography>
         </div>
         {isHotel(offer) && (
-          <div
-            className={`flex flex-col text-grey-600 ${isHotel(offer) ? 'px-4' : 'px-5'} md:px-5`}
-          >
-            {offer.distance_to_the_center && (
-              <Typography className='leading-[22px]'>
-                {`${formatDistance(offer.distance_to_the_center)} от центра`}
-              </Typography>
-            )}
+          <div className='flex flex-col text-grey-600'>
+            <Typography>{distances.firstDistance}</Typography>
           </div>
         )}
         <div
@@ -130,12 +125,12 @@ export function OfferCard({ offer }: IOfferCard) {
             </Typography>
 
             {hasDiscount && (
-              <Typography className='mt-[3px] text-sm text-grey-300 md:text-[18px] md:font-medium'>
+              <Typography className='text-sm text-grey-300 md:text-[18px] md:font-medium'>
                 <s>{displayOriginalPrice}</s>
               </Typography>
             )}
           </>
-          <Typography className='mt-[3px] text-grey-600'>
+          <Typography className='text-grey-600'>
             {isHotel(offer)
               ? 'за сутки'
               : `за ${calculateNights(offer.start_date, offer.end_date)} ночей`}
