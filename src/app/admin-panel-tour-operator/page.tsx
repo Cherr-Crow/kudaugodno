@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { TourOperatorProfile } from '@/widgets/admin-panel/tour-operator-profile';
+import { AdminProfileComponent } from '@/shared/admin-profile-component';
 
 export default function AdminPanelTourOperator() {
-  return <TourOperatorProfile />;
+  return <AdminProfileComponent />;
 }

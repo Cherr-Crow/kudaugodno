@@ -139,93 +139,83 @@ export function Settings() {
   };
 
   return (
-    <section className='relative pb-2 pt-10 md:min-h-[85vh] md:pt-10 lg:flex lg:min-h-0 lg:justify-start lg:pb-2 lg:pt-12'>
-      <div className='absolute left-0 top-0 z-[-1] h-[159px] w-full rounded-bl-2xl rounded-br-2xl bg-[url("/admin-panel-tourist-bg375.svg")] bg-cover bg-no-repeat md:h-[427px] md:rounded-bl-[100px] md:rounded-br-[100px] md:bg-[url("/admin-panel-tourist-bg960.svg")] lg:md:rounded-br-[100px] lg:h-[280px] lg:bg-[url("/admin-panel-tourist-bg1446.svg")]'></div>
-      <div className='container'>
-        <div className='lg:max-w-[876px]'>
-          <Typography
-            variant='h1'
-            className='mb-5 text-[32px] font-semibold text-white md:mb-9 md:text-[40px] md:font-medium lg:text-[60px]'
-          >
-            Настройки
-          </Typography>
-          {!user || !isInitialized ? (
-            <SettingsSkeleton />
-          ) : (
-            <>
-              <div className='mb-4 flex items-center justify-between rounded-[20px] border border-grey-100 bg-white px-5 py-5 shadow-lg md:py-5'>
-                <Typography variant='m' className='md:text-xl'>
-                  Валюта
-                </Typography>
-                <Select
-                  options={CURRENCIES.map((c) => c.label)}
-                  onSelect={(e) => {
-                    if (isCurrency(e) && e !== currency) {
-                      setCurrency(e);
-                      handleChangeSetting('currency', e);
-                    }
-                  }}
-                  value={currency}
-                  color='blue'
-                  size='settings'
-                  className='relative max-h-[42px] max-w-[83px] rounded-[20px]'
-                />
-              </div>
-              <div className='mb-4 flex items-center justify-between rounded-[20px] border border-grey-100 bg-white px-5 py-4 shadow-lg md:py-5'>
-                <Typography variant='m' className='md:text-xl'>
-                  Язык
-                </Typography>
-                <Select
-                  options={LANGUAGES.map((c) => c.label)}
-                  onSelect={(e) => {
-                    if (isLanguage(e) && e !== language) {
-                      setLanguage(e);
-                      handleChangeSetting('language', e);
-                    }
-                  }}
-                  value={language}
-                  color='blue'
-                  size='settings'
-                  className='relative max-h-[42px] max-w-[97px] rounded-[20px] p-0'
-                />
-              </div>
-              <div className='mb-4 flex items-center justify-between rounded-[20px] border border-grey-100 bg-white px-5 pb-5 pt-4 shadow-lg md:py-6'>
-                <Typography variant='m' className='md:text-xl'>
-                  Оповещения
-                </Typography>
-                <Switcher
-                  className=''
-                  isActive={notifications}
-                  onToggle={(val: boolean) => {
-                    if (typeof val === 'boolean' && val !== notifications) {
-                      setNotifications(val);
-                      handleChangeSetting('notifications', val);
-                    }
-                  }}
-                />
-              </div>
-              <div className='flex flex-wrap items-center justify-between rounded-[20px] border border-grey-100 bg-white px-4 py-4 shadow-lg md:py-[18px] md:pl-5'>
-                <Typography variant='m' className='mb-4 md:mb-0 md:text-xl'>
-                  Приоритетный канал связи с оператором
-                </Typography>
-                <Select
-                  options={CONNECTIONS.map((c) => c.label)}
-                  value={connection}
-                  onSelect={(e) => {
-                    if (isConnection(e) && e !== connection) {
-                      setConnection(e);
-                      handleChangeSetting('connection', e);
-                    }
-                  }}
-                  color='blue'
-                  size='settings'
-                  className='relative ml-auto max-h-[42px] max-w-[137px] rounded-[20px] p-0'
-                />
-              </div>
-            </>
-          )}
-        </div>
-      </div>
+    <section className='w-full'>
+      {!user || !isInitialized ? (
+        <SettingsSkeleton />
+      ) : (
+        <>
+          <div className='mb-4 flex items-center justify-between rounded-[20px] border border-grey-100 bg-white px-5 py-5 shadow-lg md:py-5'>
+            <Typography variant='m' className='md:text-xl'>
+              Валюта
+            </Typography>
+            <Select
+              options={CURRENCIES.map((c) => c.label)}
+              onSelect={(e) => {
+                if (isCurrency(e) && e !== currency) {
+                  setCurrency(e);
+                  handleChangeSetting('currency', e);
+                }
+              }}
+              value={currency}
+              color='blue'
+              size='settings'
+              className='relative max-h-[42px] max-w-[83px] rounded-[20px]'
+            />
+          </div>
+          <div className='mb-4 flex items-center justify-between rounded-[20px] border border-grey-100 bg-white px-5 py-4 shadow-lg md:py-5'>
+            <Typography variant='m' className='md:text-xl'>
+              Язык
+            </Typography>
+            <Select
+              options={LANGUAGES.map((c) => c.label)}
+              onSelect={(e) => {
+                if (isLanguage(e) && e !== language) {
+                  setLanguage(e);
+                  handleChangeSetting('language', e);
+                }
+              }}
+              value={language}
+              color='blue'
+              size='settings'
+              className='relative max-h-[42px] max-w-[97px] rounded-[20px] p-0'
+            />
+          </div>
+          <div className='mb-4 flex items-center justify-between rounded-[20px] border border-grey-100 bg-white px-5 pb-5 pt-4 shadow-lg md:py-6'>
+            <Typography variant='m' className='md:text-xl'>
+              Оповещения
+            </Typography>
+            <Switcher
+              className=''
+              isActive={notifications}
+              onToggle={(val: boolean) => {
+                if (typeof val === 'boolean' && val !== notifications) {
+                  setNotifications(val);
+                  handleChangeSetting('notifications', val);
+                }
+              }}
+            />
+          </div>
+          <div className='flex flex-wrap items-center justify-between rounded-[20px] border border-grey-100 bg-white px-4 py-4 shadow-lg md:py-[18px] md:pl-5'>
+            <Typography variant='m' className='mb-4 md:mb-0 md:text-xl'>
+              Приоритетный канал связи с оператором
+            </Typography>
+            <Select
+              options={CONNECTIONS.map((c) => c.label)}
+              value={connection}
+              onSelect={(e) => {
+                if (isConnection(e) && e !== connection) {
+                  setConnection(e);
+                  handleChangeSetting('connection', e);
+                }
+              }}
+              color='blue'
+              size='settings'
+              className='relative ml-auto max-h-[42px] max-w-[137px] rounded-[20px] p-0'
+            />
+          </div>
+        </>
+      )}
+
       <div className='hidden md:absolute md:bottom-[-20px] md:right-[45%] md:block lg:right-[10%]'>
         <img
           src='/frog_sits_on_suitcase.png'
