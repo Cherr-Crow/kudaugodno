@@ -9,7 +9,12 @@ import { Typography } from '@/shared/ui/typography';
 
 import { IAdminPanelDashboard } from './AdminPanelDashboard.types';
 
-const linksTourOperator = [
+interface LinkItem {
+  name: string;
+  path: string;
+}
+
+const linksTourOperator: LinkItem[] = [
   { name: 'Профиль', path: '/admin-panel-tour-operator' },
   { name: 'Отели', path: '/admin-panel-tour-operator/hotels' },
   { name: 'Рейсы', path: '/admin-panel-tour-operator/flights' },
@@ -18,8 +23,15 @@ const linksTourOperator = [
   { name: 'Заявки', path: '/admin-panel-tour-operator/applications-page' },
 ];
 
-const linksTourist = [
-  { name: 'Профиль', path: '/admin-panel-tourist/profile' },
+const linksHotelier: LinkItem[] = [
+  { name: 'Профиль', path: '/admin-panel-hotelier' },
+  { name: 'Заявки', path: '/admin-panel-hotelier/applications-page' },
+  { name: 'Отели', path: '/admin-panel-hotelier/hotels' },
+  { name: 'Номера', path: '/admin-panel-hotelier/rooms' },
+];
+
+const linksTourist: LinkItem[] = [
+  { name: 'Профиль', path: '/admin-panel-tourist' },
   { name: 'Настройки', path: '/admin-panel-tourist/settings' },
   { name: 'Поездки', path: '/admin-panel-tourist/trips' },
   { name: 'Мои отзывы', path: '/admin-panel-tourist/reviews' },
@@ -30,7 +42,20 @@ const linksTourist = [
 export function AdminPanelDashboard({ type }: IAdminPanelDashboard) {
   const patch = usePathname();
   const routes = useRouter();
-  const links = type === 'tourist' ? linksTourist : linksTourOperator;
+  let links: LinkItem[];
+  switch (type) {
+    case 'tourist':
+      links = linksTourist;
+      break;
+    case 'hotelier':
+      links = linksHotelier;
+      break;
+    case 'tour-operator':
+      links = linksTourOperator;
+      break;
+    default:
+      links = [];
+  }
   return (
     <ul className='h-full min-w-[180px] rounded-2xl bg-grey-100 p-2'>
       {links.map((link) => (

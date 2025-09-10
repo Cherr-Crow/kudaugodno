@@ -1,5 +1,5 @@
 type DivProps = React.ComponentPropsWithoutRef<'div'>;
 
-export interface IAdminPanelDashboard extends DivProps {
+export interface IAdminProfileComponent extends DivProps {
   type: 'tourist' | 'tour-operator' | 'hotelier';
 }

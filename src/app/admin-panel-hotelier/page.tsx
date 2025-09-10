@@ -1,5 +1,7 @@
+import React from 'react';
+
 import { AdminProfileComponent } from '@/shared/admin-profile-component';
 
-export default function PersonalDataPage({}) {
+export default function AdminPanelHotelier() {
   return <AdminProfileComponent />;
 }

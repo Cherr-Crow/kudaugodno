@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import { AdminPanelDashboard } from '@/widgets/admin-panel/admin-panel-dashboard';
 import { PanelTitle } from '@/widgets/admin-panel/panel-title/PanelTitle';
 
-export default function AdminPanelTourOperatorLayout({
+export default function AdminPanelHotelierLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -17,6 +17,7 @@ export default function AdminPanelTourOperatorLayout({
 
   useEffect(() => {
     if (
+      path.includes('added-hotel') ||
       path.includes('added-flights') ||
       path.includes('change-hotel') ||
       path.includes('added-tour')
@@ -30,11 +31,11 @@ export default function AdminPanelTourOperatorLayout({
   return (
     <Suspense>
       <section className='grid h-full'>
-        <PanelTitle type={'tour-operator'} />
+        <PanelTitle type='tourist' />
         <div className='container mb-10 flex h-full items-start gap-5 py-10'>
           {openDashboard && (
             <div className='hidden lg:flex'>
-              <AdminPanelDashboard type={'tour-operator'} />
+              <AdminPanelDashboard type={'tourist'} />
             </div>
           )}
           {children}

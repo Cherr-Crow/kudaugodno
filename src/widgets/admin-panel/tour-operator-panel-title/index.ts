@@ -1,1 +1,0 @@
-export { TourOperatorPanelTitle } from './TourOperatorPanelTitle';

@@ -1,0 +1,1 @@
+export { AdminProfileComponent } from './AdminProfileComponent';

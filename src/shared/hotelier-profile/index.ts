@@ -1,0 +1,1 @@
+export { HotelierProfile } from './HotelierProfile';
