@@ -169,7 +169,7 @@ export function TableForFlights({ flights }: ITableForFlights) {
     </th>
   );
   const handleFlights = (id: number) => {
-    router.push(`/admin-panel-tour-operator/flights/${id}`);
+    router.push(`/admin-panel-tour-operator/flights/info/?id=${id}`);
   };
 
   return (

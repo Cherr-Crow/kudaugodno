@@ -1,0 +1,1 @@
+export { DetailedFlightInfo } from './DetailedFlightInfo';

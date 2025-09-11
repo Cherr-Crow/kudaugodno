@@ -19,7 +19,8 @@ export default function AdminPanelTourOperatorLayout({
     if (
       path.includes('added-flights') ||
       path.includes('change-hotel') ||
-      path.includes('added-tour')
+      path.includes('added-tour') ||
+      path.includes('info')
     ) {
       setOpenDashboard(false);
     } else {

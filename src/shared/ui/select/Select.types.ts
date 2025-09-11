@@ -16,7 +16,8 @@ export interface ISelect {
     | 'settings'
     | 'catalog'
     | 'hotelAdd'
-    | 'distance';
+    | 'distance'
+    | 'flights';
   id?: string;
   startValue?: string;
   onSelect?: (value: string) => void;

@@ -18,6 +18,7 @@ export function PanelTitle({ type }: IPanelTitle) {
 
   const getTitle = (): string => {
     if (type === 'tour-operator') {
+      if (patch.includes('info')) return 'Информация о рейсе';
       if (patch.includes('flights')) return 'Добавить рейс';
       if (patch.includes('hotels')) return 'Добавить отель';
       if (patch.includes('insurance')) return 'Страховки';

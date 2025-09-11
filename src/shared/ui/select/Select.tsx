@@ -43,6 +43,7 @@ export function Select({
     'catalog' = ' gap-6 rounded-[8px] max-w-[174px] px-3 py-[11.5px] !gap-2 md:max-w-[192px] lg:px-5 lg:py-[9px] lg:max-w-[226px]',
     'hotelAdd' = ' gap-6 rounded-md py-2 px-5 h-10',
     'distance' = ' gap-2 rounded-md py-[10px] px-5',
+    'flights' = 'rounded-md py-2 px-5',
   }
 
   useEffect(() => {
