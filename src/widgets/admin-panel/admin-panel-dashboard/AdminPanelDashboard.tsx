@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { nanoid } from 'nanoid';
 import { usePathname, useRouter } from 'next/navigation';
 
+import { ApplicationsContext } from '@/app/admin-panel-tour-operator/layout';
 import { Typography } from '@/shared/ui/typography';
 
 import { IAdminPanelDashboard } from './AdminPanelDashboard.types';
@@ -42,6 +43,8 @@ const linksTourist: LinkItem[] = [
 export function AdminPanelDashboard({ type }: IAdminPanelDashboard) {
   const patch = usePathname();
   const routes = useRouter();
+  const { countApplications } = useContext(ApplicationsContext);
+
   let links: LinkItem[];
   switch (type) {
     case 'tourist':
@@ -60,11 +63,14 @@ export function AdminPanelDashboard({ type }: IAdminPanelDashboard) {
     <ul className='h-full min-w-[180px] rounded-2xl bg-grey-100 p-2'>
       {links.map((link) => (
         <li
-          className={`cursor-pointer rounded-2xl px-5 py-4 ${patch === link.path && 'bg-white'}`}
           key={nanoid()}
           onClick={() => routes.push(link.path)}
+          className={`flex cursor-pointer justify-between rounded-2xl px-5 py-4 ${patch === link.path ? 'bg-white text-blue-500' : 'text-blue-950 hover:text-blue-500'} `}
         >
           <Typography>{link.name}</Typography>
+          {link.name === 'Заявки' && countApplications > 0 && (
+            <Typography>{countApplications}</Typography>
+          )}
         </li>
       ))}
     </ul>

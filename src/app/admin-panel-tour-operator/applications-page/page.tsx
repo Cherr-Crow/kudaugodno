@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { useGetTourApplicationsQuery } from '@/servicesApi/applicationsApi';
 import { FilterYear } from '@/shared/filter-year';
@@ -8,11 +8,20 @@ import { ApplicationCard } from '@/shared/ui/application-card';
 import { SvgSprite } from '@/shared/ui/svg-sprite';
 import { Typography } from '@/shared/ui/typography';
 
+import { ApplicationsContext } from '../layout';
+
 export default function ApplicationsPage() {
   const [years] = useState<string[]>(['2025']);
   const [limit, setLimit] = useState(20);
   const [offset, setOffset] = useState(0);
   const { data = [] } = useGetTourApplicationsQuery({ limit, offset });
+  // Контекст для проброса количества заявок
+  const { setCountApplications } = useContext(ApplicationsContext);
+
+  useEffect(() => {
+    setCountApplications(data.length);
+  }, [data, setCountApplications]);
+
   return (
     <div className='w-full'>
       <div className='flex flex-col'>

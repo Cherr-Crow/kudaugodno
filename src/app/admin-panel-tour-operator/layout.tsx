@@ -1,11 +1,20 @@
 'use client';
 
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { createContext, Suspense, useEffect, useState } from 'react';
 
 import { usePathname } from 'next/navigation';
 
 import { AdminPanelDashboard } from '@/widgets/admin-panel/admin-panel-dashboard';
 import { PanelTitle } from '@/widgets/admin-panel/panel-title/PanelTitle';
+
+// Контекст для проброса количества заявок
+export const ApplicationsContext = createContext<{
+  countApplications: number;
+  setCountApplications: (n: number) => void;
+}>({
+  countApplications: 0,
+  setCountApplications: () => {},
+});
 
 export default function AdminPanelTourOperatorLayout({
   children,
@@ -14,6 +23,7 @@ export default function AdminPanelTourOperatorLayout({
 }>) {
   const path = usePathname();
   const [openDashboard, setOpenDashboard] = useState<boolean>(true);
+  const [countApplications, setCountApplications] = useState(0);
 
   useEffect(() => {
     if (
@@ -29,18 +39,22 @@ export default function AdminPanelTourOperatorLayout({
   }, [path]);
 
   return (
-    <Suspense>
-      <section className='grid h-full'>
-        <PanelTitle type={'tour-operator'} />
-        <div className='container mb-10 flex h-full items-start gap-5 py-10'>
-          {openDashboard && (
-            <div className='hidden lg:flex'>
-              <AdminPanelDashboard type={'tour-operator'} />
-            </div>
-          )}
-          {children}
-        </div>
-      </section>
-    </Suspense>
+    <ApplicationsContext.Provider
+      value={{ countApplications, setCountApplications }}
+    >
+      <Suspense>
+        <section className='grid h-full'>
+          <PanelTitle type={'tour-operator'} />
+          <div className='container mb-10 flex h-full items-start gap-5 py-10'>
+            {openDashboard && (
+              <div className='hidden lg:flex'>
+                <AdminPanelDashboard type={'tour-operator'} />
+              </div>
+            )}
+            {children}
+          </div>
+        </section>
+      </Suspense>
+    </ApplicationsContext.Provider>
   );
 }
