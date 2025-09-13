@@ -5,4 +5,5 @@ export interface IInputDateForSearchBlock extends DivProps {
   getValue(value: string): void;
   startValue?: string;
   min?: string;
+  ref?: HTMLInputElement | null;
 }

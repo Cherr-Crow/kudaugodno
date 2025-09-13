@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
@@ -13,6 +13,7 @@ import { getDateNow } from '@/shared/utils/getDateNow';
 import { getNumericValue } from '@/shared/utils/getNumericValue';
 
 import { ISearchTour } from './SearchTour.types';
+import { InputForSearchBlockRef } from '../input-for-search-block/InputForSearchBlock';
 
 export function SearchTour({
   type,
@@ -31,7 +32,7 @@ export function SearchTour({
   setGuests,
 }: ISearchTour) {
   const [isClient, setIsClient] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [errorMessage] = useState<string>('');
   const [errModal, setErrModal] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -41,6 +42,12 @@ export function SearchTour({
   const [localCheckInDate, setLocalCheckInDate] = useState(checkInDate);
   const [localNights, setLocalNights] = useState(nights);
   const [localGuests, setLocalGuests] = useState(guests);
+
+  const departureRef = useRef<InputForSearchBlockRef>(null);
+  const whereRef = useRef<InputForSearchBlockRef>(null);
+  const dateRef = useRef<HTMLInputElement>(null);
+  const nightsRef = useRef<HTMLInputElement>(null);
+  const guestsRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -65,19 +72,49 @@ export function SearchTour({
     return valid;
   };
 
-  // Handle search button
+  const focusNextEmptyInput = () => {
+    const inputs = Array.from(
+      document.querySelectorAll<HTMLInputElement>('#search-tour-search-bar input'),
+    );
+
+    const nextEmpty = inputs.find((inp) => inp.value.trim() === '');
+    if (nextEmpty) {
+      nextEmpty.focus();
+      return false;
+    }
+    return true;
+  };
 
   const handleSearch = () => {
     const isValid = checkFormValidity();
 
     if (!isValid) {
-      setErrorMessage('Пожалуйста, заполните все поля формы');
-      setErrModal(true);
-      return;
+      if (type === 'Туры' && !localDepartureCity.trim()) {
+        departureRef.current?.focusInput();
+        focusNextEmptyInput();
+        return;
+      }
+      if (!localWhere.trim()) {
+        whereRef.current?.focusInput();
+        focusNextEmptyInput();
+        return;
+      }
+      if (!localCheckInDate.trim()) {
+        dateRef.current?.focus();
+        focusNextEmptyInput();
+        return;
+      }
+      if (!localNights.trim() || localNights === 'Ночей') {
+        nightsRef.current?.focus();
+        focusNextEmptyInput();
+        return;
+      }
+      if (!localGuests.trim() || localGuests === 'Гостей') {
+        guestsRef.current?.focus();
+        focusNextEmptyInput();
+        return;
+      }
     }
-
-    setErrorMessage('');
-    setErrModal(false);
 
     setIsSubmitted(true);
   };
@@ -129,12 +166,13 @@ export function SearchTour({
   if (!isClient) return null;
 
   return (
-    <div className='md:flex md:justify-center'>
+    <div id='search-tour-search-bar' className='md:flex md:justify-center'>
       <div
         className={`hidden w-full max-w-[1000px] gap-2 rounded-full border-solid bg-white py-1.5 pr-1 shadow-lg md:flex md:h-[64px] md:justify-between lg:h-[78px] lg:max-w-[1180px] lg:gap-4 lg:py-[13px]`}
       >
         {type === 'Туры' && (
           <InputForSearchBlock
+            ref={departureRef}
             placeholder='Откуда'
             value={localDepartureCity}
             getValue={setLocalDepartureCity}
@@ -143,6 +181,7 @@ export function SearchTour({
           />
         )}
         <InputForSearchBlock
+          ref={whereRef}
           placeholder='Куда'
           type={type}
           value={localWhere}
@@ -150,6 +189,7 @@ export function SearchTour({
           className={`border-r-2 border-grey-400 md:w-[129px] ${type !== 'Туры' ? 'md:min-w-[176px] md:pl-[16px] lg:min-w-[270px] lg:pl-6' : 'lg:min-w-[194px]'} `}
         />
         <InputDateForSearchBlock
+          ref={dateRef}
           placeholder='Когда'
           className={`border-r-2 border-grey-400 ${type !== 'Туры' ? 'md:min-w-[161px] lg:min-w-[246px]' : 'md:w-[125px] lg:min-w-[194px]'} `}
           startValue={localCheckInDate}
@@ -157,6 +197,7 @@ export function SearchTour({
         />
         <div className='flex items-center align-middle'>
           <SelectForSearchBlock
+            ref={nightsRef}
             type='nights'
             className={`border-r-2 border-grey-400 md:w-[130px] ${type !== 'Туры' ? 'md:min-w-[162px] lg:min-w-[247px]' : 'lg:min-w-[193px]'} `}
             startValue={localNights}
@@ -165,6 +206,7 @@ export function SearchTour({
         </div>
         <div className='flex h-full items-center align-middle'>
           <SelectForSearchBlock
+            ref={guestsRef}
             type='guests'
             startValue={localGuests}
             getValue={setLocalGuests}
@@ -173,6 +215,7 @@ export function SearchTour({
         </div>
         <div className='flex items-center align-middle'>
           <ButtonCustom
+            id='search-tour-button'
             variant='primary'
             className='text-[18px] md:w-[105px] md:px-[19px] md:py-[12px] lg:w-[110px] lg:px-[28px] lg:py-[20px]'
             size='m'
@@ -187,6 +230,7 @@ export function SearchTour({
       <div className='container grid w-[100vw] grid-cols-2 gap-x-4 gap-y-[16px] md:hidden'>
         {type === 'Туры' && (
           <InputForSearchBlock
+            ref={departureRef}
             placeholder='Откуда'
             value={localDepartureCity}
             getValue={setLocalDepartureCity}
@@ -194,12 +238,14 @@ export function SearchTour({
           />
         )}
         <InputForSearchBlock
+          ref={whereRef}
           placeholder='Куда'
           value={localWhere}
           getValue={setLocalWhere}
           className='md:text-md col-span-2 h-[50px] max-h-[56px] w-full justify-between rounded-lg bg-white p-4'
         />
         <InputDateForSearchBlock
+          ref={dateRef}
           placeholder='Когда'
           className='col-span-2 h-[50px] w-full rounded-lg bg-white px-4 md:py-[6px]'
           min={new Date().toISOString().split('T')[0]}
@@ -207,6 +253,7 @@ export function SearchTour({
           getValue={setLocalCheckInDate}
         />
         <SelectForSearchBlock
+          ref={guestsRef}
           type='guests'
           className='h-[50px] w-full rounded-lg bg-white px-[16px] py-[6px] md:h-full'
           startValue={localGuests}
@@ -214,6 +261,7 @@ export function SearchTour({
         />
         <div className='flex items-center align-middle md:h-full'>
           <SelectForSearchBlock
+            ref={nightsRef}
             type='nights'
             className='h-[50px] w-full rounded-lg bg-white px-4 py-[6px]'
             startValue={localNights}
@@ -222,6 +270,7 @@ export function SearchTour({
         </div>
         <div className='col-span-2 mt-2 h-[38px]'>
           <ButtonCustom
+            id='search-tour-button'
             variant='primary'
             size='m'
             onClick={handleSearch}

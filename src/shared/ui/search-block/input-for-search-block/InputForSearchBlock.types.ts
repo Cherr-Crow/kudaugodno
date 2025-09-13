@@ -5,4 +5,5 @@ export interface IInputForSearchBlock extends DivProps {
   getValue: (value: string) => void;
   value?: string;
   type?: string;
+  ref?: HTMLInputElement | null;
 }
