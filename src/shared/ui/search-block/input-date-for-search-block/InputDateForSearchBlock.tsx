@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
 import { Typography } from '@/shared/ui/typography';
 
@@ -8,15 +8,15 @@ import { SvgSprite } from '../../svg-sprite';
 // eslint-disable-next-line import/order
 import { IInputDateForSearchBlock } from './InputDateForSearchBlock.types';
 
-export function InputDateForSearchBlock({
-  placeholder,
-  getValue,
-  className,
-  startValue,
-}: IInputDateForSearchBlock) {
+export const InputDateForSearchBlock = forwardRef<
+  HTMLInputElement,
+  IInputDateForSearchBlock
+>(({ placeholder, getValue, className, startValue }, ref) => {
   const [value, setValue] = useState<string>(startValue ?? '');
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = React.useRef<HTMLInputElement>(null);
+
+  useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
   const russianDateFormat = new Intl.DateTimeFormat('ru-RU', {
     day: 'numeric',
@@ -36,6 +36,7 @@ export function InputDateForSearchBlock({
 
   const handleClickDiv = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    setIsFocused(true);
     inputRef.current?.showPicker?.();
   };
 
@@ -79,10 +80,10 @@ export function InputDateForSearchBlock({
         </Typography>
       </div>
       <input
+        tabIndex={-1}
         ref={inputRef}
         type='date'
-        tabIndex={-1}
-        className='cursor-pointerappearance-none h-full w-full bg-transparent font-medium outline-none md:font-semibold'
+        className='absolute top-0 h-full w-full cursor-pointer appearance-none bg-transparent font-medium outline-none md:font-semibold'
         placeholder={placeholder}
         value={value}
         onChange={handleChangeInput}
@@ -95,4 +96,5 @@ export function InputDateForSearchBlock({
       />
     </div>
   );
-}
+});
+InputDateForSearchBlock.displayName = 'InputDateForSearchBlock';
